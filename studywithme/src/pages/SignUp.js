@@ -1,9 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { actionCreators as userActions } from "../redux/modules/user";
+
+import Grid from "../elements/Grid";
+import Text from "../elements/Text";
+import Input from "../elements/Input";
+import Button from "../elements/Button";
+
 
 const SignUp = () => {
+    const dispatch = useDispatch();
 
+    const [email, setEmail] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const emailCheck = () => {
+    const onChangeEmail = (e) => {
+        // console.log(e.target.value);
+        setEmail(e.target.value);
+    }
+
+    const onChangeNickName = (e) => {
+        // console.log(e.target.value);
+        setNickname(e.target.value);
+    }
+
+    const onChangePassword = (e) => {
+        // console.log(e.target.value);
+        setPassword(e.target.value);
+    }
+
+    const onChangeConfirmPassword = (e) => {
+        // console.log(e.target.value);
+        setConfirmPassword(e.target.value);
+    }
+
+    const onClickSignUp = () => {
+        console.log("회원가입 실행");
+        console.log("이메일", email);
+        console.log("닉네임", nickname);
+        console.log("비밀번호", password);
+        console.log("비밀번호 확인", confirmPassword);
+        // 회원가입 미들웨어 디스패치
+        dispatch(userActions.signUpMiddleware());
+    }
+
+    const onClickEmailCheck = () => {
         console.log("이메일 중복 체크 실행");
         // 정규표현식에 부합하는지 확인
 
@@ -16,164 +60,109 @@ const SignUp = () => {
         // 이메일 상태 셋팅
     }
 
-    const nicknameCheck = () => {
+    const onClickNicknameCheck = () => {
         console.log("닉네임 중복 체크 실행");
     }
 
-    const login = () => {
-        console.log("회원가입 실행");
-        // 회원가입 미들웨어 디스패치
-    }
-
     return (
-        <React.Fragment>
-            <div
-                style={{
-                    margin: "auto",
-                    width: "50%",
+        <Grid>
+            {/* 페이지 제목 */}
+            <Grid>
+                <h1> 회원가입 페이지 </h1>
+            </Grid>
 
-                }}
+            {/* 페이지 본문 */}
+            <Grid
+                width="20%"
             >
-                <h1
-                    style={{
-                        textAlign: "center",
-                    }}
-                >
-                    회원가입 페이지
-                </h1>
-
                 {/* 이메일 */}
-                <div
-                    style={{
-                        // width: "70%",
-                        display: "flex",
-                        margin: "5px auto",
-                        justifyContent: "center"
-                    }}
+                <Grid
+                    is_flex
                 >
-                    <div
-                        style={{
-                            width: "30%"
-                        }}
-                    >
-                        이메일
-                    </div>
-                    <div>
-                        <input
-                            placeholder="allnighter@studywithme.com"
+                    <Grid>
+                        <Text>이메일</Text>
+                    </Grid>
+                    <Grid>
+                        <Input
+                            value={email}
+                            _onChange={onChangeEmail}
                         />
-                    </div>
-                    <div
-                        style={{
-                            marginLeft: "5px",
-                        }}
-                    >
-                        <button
-                            onClick={emailCheck}
+                    </Grid>
+                    <Grid>
+                        <Button
                         >
                             중복 확인
-                        </button>
-                    </div>
-                </div>
+                        </Button>
+                    </Grid>
+                </Grid>
 
                 {/* 닉네임 */}
-                <div
-                    style={{
-                        // width: "70%",
-                        display: "flex",
-                        margin: "5px auto",
-                        justifyContent: "center"
-                    }}
+                <Grid
+                    is_flex
                 >
-                    <div
-                        style={{
-                            width: "30%"
-                        }}
-                    >
-                        닉네임
-                    </div>
-                    <div>
-                        <input
-                            placeholder="allnighter"
+                    <Grid>
+                        <Text>닉네임</Text>
+                    </Grid>
+                    <Grid>
+                        <Input
+                            value={nickname}
+                            _onChange={onChangeNickName}
                         />
-                    </div>
-                    <div
-                        style={{
-                            marginLeft: "5px",
-                        }}
-                    >
-                        <button
-                            onClick={nicknameCheck}
+                    </Grid>
+                    <Grid>
+                        <Button
                         >
                             중복 확인
-                        </button>
-                    </div>
-                </div>
+                        </Button>
+                    </Grid>
+                </Grid>
 
-                {/* 패스워드 */}
-                <div
-                    style={{
-                        // width: "70%",
-                        display: "flex",
-                        margin: "5px auto",
-                        justifyContent: "center"
-                    }}
+                {/* 비밀번호 */}
+                <Grid
+                    is_flex
                 >
-                    <div
-                        style={{
-                            width: "30%"
-                        }}
-                    >
-                        패스워드
-                    </div>
-                    <div>
-                        <input />
-                    </div>
-                </div>
+                    <Grid>
+                        <Text>비밀번호</Text>
+                    </Grid>
+                    <Grid>
+                        <Input
+                            value={password}
+                            _onChange={onChangePassword}
+                        />
+                    </Grid>
+                    <Grid>
+                        {/* <Button>중복 확인</Button> */}
+                    </Grid>
+                </Grid>
 
-                {/* 패스워드 확인 */}
-                <div
-                    style={{
-                        // width: "70%",
-                        display: "flex",
-                        margin: "5px auto",
-                        justifyContent: "center"
-                    }}
+                {/* 비밀번호 확인 */}
+                <Grid
+                    is_flex
                 >
-                    <div
-                        style={{
-                            width: "30%"
-                        }}
-                    >
-                        패스워드 확인
-                    </div>
-                    <div>
-                        <input />
-                    </div>
-                </div>
+                    <Grid>
+                        <Text>비밀번호 확인</Text>
+                    </Grid>
+                    <Grid>
+                        <Input
+                            value={confirmPassword}
+                            _onChange={onChangeConfirmPassword}
+                        />
+                    </Grid>
+                    <Grid>
+                        {/* <Button>중복 확인</Button> */}
+                    </Grid>
+                </Grid>
 
                 {/* 회원가입 버튼 */}
-                <div
-                    style={{
-                        margin: "5px 0px",
-                        width: "100%",
-                    }}
-                >
-                    <button
-                        style={{
-                            textAlign: "center",
-                            width: "100%"
-                        }}
-
-                        onClick={login}
+                <Grid>
+                    <Button
+                        _onClick={onClickSignUp}
                     >
                         회원가입
-                    </button>
-                </div>
-            </div>
-
-
-        </React.Fragment>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
     )
 }
 
