@@ -3,21 +3,21 @@ import thunk from "redux-thunk";
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { connectRouter } from "connected-react-router";
 
-import Comment from "./modules/comment";
-import User from "./modules/user";
-import Post from "./modules/post";
-import PostWrite from "./modules/postWrite";
-import Image from "./modules/image";
+// import Comment from "./modules/comment";
+// import User from "./modules/user";
+// import Post from "./modules/post";
+// import PostWrite from "./modules/postWrite";
+// import Image from "./modules/image";
 
 export const history = createBrowserHistory();
 
 const rootReducer = combineReducers({
-  user: User,
-  post: Post,
-  postWrite: PostWrite,
-  image: Image,
+  // user: User,
+  // post: Post,
+  // postWrite: PostWrite,
   // image: Image,
-  comment: Comment,
+  // image: Image,
+  // comment: Comment,
 
   // 8. 리덕스에 history를 이제 넣어줄 것이다. 우리가 만든 history와 우리의 라우터가 연결이되는 것이다. 그리고 이것의 우리의 스토어에 저장이되는 것이다.
   router: connectRouter(history),
@@ -42,8 +42,8 @@ const composeEnhancers =
   // 브라우저일 때만  window === "object"이 부분을 돌려주라고 넣어준것이다. __REDUX_DEVTOOLS_EXTENSION_COMPOSE__부분을 데브툴이 있으면 열어주려고 하는 것이다.
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-      })
+      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+    })
     : compose;
 
 // 5. 미들웨어 묶어주기
