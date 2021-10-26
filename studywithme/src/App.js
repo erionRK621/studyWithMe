@@ -9,6 +9,7 @@ import { history } from "./redux/configStore";
 // Components
 import Main from "./pages/Main";
 import Login from "./pages/Login";
+import PostWrite from "./pages/PostWrite";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main} />
         <Route path="/login" exact component={Login} />
+        <Route path="/write" exact component={PostWrite} />
       </ConnectedRouter>
     </div>
 
