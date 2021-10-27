@@ -1,5 +1,7 @@
 import React from "react";
 
-export const PostWrite = () => {
+const PostWrite = () => {
   return <div></div>;
 };
+
+export default PostWrite;
