@@ -27,6 +27,7 @@ function App() {
         <Route path="/" exact component={Main} />
         <Route path="/signup" exact component={SignUp} />
         <Route path="/login" exact component={Login} />
+        <Route path="/write" exact component={PostWrite} />
       </ConnectedRouter>
     </div>
   );
