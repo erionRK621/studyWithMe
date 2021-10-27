@@ -46,12 +46,16 @@ const SignUp = () => {
 
     const onClickEmailCheck = () => {
         console.log("이메일 중복 체크 실행");
-        // 이메일 중복 체크 미들웨어 디스패치
+        console.log("email", email);
+        // 이메일 중복 체크 미들웨어 디스패치 (v)
+        dispatch(userActions.checkEmailMiddleware(email));
     }
 
     const onClickNicknameCheck = () => {
         console.log("닉네임 중복 체크 실행");
-        // 닉네임 중복 체크 미들웨어 디스패치
+        console.log("nickname", nickname);
+        // 닉네임 중복 체크 미들웨어 디스패치 (v)
+        dispatch(userActions.checkEmailMiddleware(nickname));
     }
 
     const onClickSignUp = () => {
@@ -61,7 +65,6 @@ const SignUp = () => {
         // 닉네임 입력 여부 확인
         // 비밀번호 입력 여부 및 형식 확인
         // 비밀번호와 비밀번호 확인 일치 여부 확인
-        // 회원가입 미들웨어 디스패치
         dispatch(userActions.signUpMiddleware(signUpInputs));
     }
 

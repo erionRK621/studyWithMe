@@ -35,7 +35,7 @@ const SignUp = () => {
         console.log("loginInputs", loginInputs);
         // 이메일 정규표현식 부합 여부 확인
         // 비밀번호 입력 여부 및 형식 확인
-        // 로그인 미들웨어 디스패치
+        dispatch(userActions.loginMiddleware(loginInputs));
     }
 
     const onClickToSignUpPage = () => {
