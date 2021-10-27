@@ -1,16 +1,17 @@
 import axios from "axios";
+import { getCookie } from "../shared/cookie";
 
 const instance = axios.create({
-  // 기본적으로 우리가 바라볼 서버의 주소
-
-  baseURL: "",
+  // baseURL: "http://localhost:4000",
 
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    //authorization: `Bearer ${localStorage.getItem("token")}`,
-    // "Access-Control-Allow-Origin": true,
+    Authorization: `Bearer ${getCookie("focus-with-me!!")}`,
   },
+  withCredentials: true,
 });
 
-export default instance;
+export const apis = {
+  // setUserAxios
+};
