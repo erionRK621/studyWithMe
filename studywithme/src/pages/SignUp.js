@@ -95,7 +95,7 @@ const SignUp = () => {
                     <Grid>
                         <Button
                             _onClick={onClickEmailCheck}
-                            
+
                         >
                             중복 확인
                         </Button>
