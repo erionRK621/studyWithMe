@@ -17,6 +17,13 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    const signUpInputs = {
+        email: email,
+        nickname: nickname,
+        password: password,
+        confirmPassword: confirmPassword,
+    };
+
     const onChangeEmail = (e) => {
         // console.log(e.target.value);
         setEmail(e.target.value);
@@ -37,44 +44,40 @@ const SignUp = () => {
         setConfirmPassword(e.target.value);
     }
 
-    const onClickSignUp = () => {
-        console.log("회원가입 실행");
-        console.log("이메일", email);
-        console.log("닉네임", nickname);
-        console.log("비밀번호", password);
-        console.log("비밀번호 확인", confirmPassword);
-        // 회원가입 미들웨어 디스패치
-        dispatch(userActions.signUpMiddleware());
-    }
-
     const onClickEmailCheck = () => {
         console.log("이메일 중복 체크 실행");
-        // 정규표현식에 부합하는지 확인
-
-        // 정규 표현식에 부합하지 않는다면
-        // warning 띄우기
-        // 이메일 상태 삭제
-
-        // 정규표현식에 부합한다면
-        // warning 없음
-        // 이메일 상태 셋팅
+        // 이메일 중복 체크 미들웨어 디스패치
     }
 
     const onClickNicknameCheck = () => {
         console.log("닉네임 중복 체크 실행");
+        // 닉네임 중복 체크 미들웨어 디스패치
     }
 
+    const onClickSignUp = () => {
+        console.log("회원가입 실행");
+        console.log("signUpInputs", signUpInputs);
+        // 이메일 정규표현식 부합 여부 확인
+        // 닉네임 입력 여부 확인
+        // 비밀번호 입력 여부 및 형식 확인
+        // 비밀번호와 비밀번호 확인 일치 여부 확인
+        // 회원가입 미들웨어 디스패치
+        dispatch(userActions.signUpMiddleware(signUpInputs));
+    }
+
+
+
     return (
-        <Grid>
+        <Grid
+            width="500px"
+        >
             {/* 페이지 제목 */}
             <Grid>
                 <h1> 회원가입 페이지 </h1>
             </Grid>
 
             {/* 페이지 본문 */}
-            <Grid
-                width="20%"
-            >
+            <Grid>
                 {/* 이메일 */}
                 <Grid
                     is_flex
@@ -85,11 +88,14 @@ const SignUp = () => {
                     <Grid>
                         <Input
                             value={email}
+                            type="email"
                             _onChange={onChangeEmail}
                         />
                     </Grid>
                     <Grid>
                         <Button
+                            _onClick={onClickEmailCheck}
+                            
                         >
                             중복 확인
                         </Button>
@@ -106,11 +112,13 @@ const SignUp = () => {
                     <Grid>
                         <Input
                             value={nickname}
+                            type="text"
                             _onChange={onChangeNickName}
                         />
                     </Grid>
                     <Grid>
                         <Button
+                            _onClick={onClickNicknameCheck}
                         >
                             중복 확인
                         </Button>
@@ -127,6 +135,7 @@ const SignUp = () => {
                     <Grid>
                         <Input
                             value={password}
+                            type="password"
                             _onChange={onChangePassword}
                         />
                     </Grid>
@@ -145,6 +154,7 @@ const SignUp = () => {
                     <Grid>
                         <Input
                             value={confirmPassword}
+                            type="password"
                             _onChange={onChangeConfirmPassword}
                         />
                     </Grid>

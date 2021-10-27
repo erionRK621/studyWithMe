@@ -24,17 +24,13 @@ const logOut = createAction(LOG_OUT, (user) => ({ user }));
 // MIDDLEWARES
 const signUpMiddleware = (user) => {
   return function ({ history }) {
-    console.log("회원가입 미들웨어 실행!")
+    console.log("회원가입 미들웨어 실행!");
+    console.log("user", user);
     // 회원가입 API 실행
   }
 }
 
-// setUserMiddleware 
-// apis.setUserAxios() {
-
-//}
-// dispatch(setUser)
-
+// const loginMiddleware = ()
 
 // REDUCER
 export default handleActions(

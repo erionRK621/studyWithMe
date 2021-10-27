@@ -61,7 +61,7 @@ Input.defaultProps = {
   is_Submit: false,
   onSubmit: () => { },
   _onChange: () => { },
-  width: "",
+  width: "100%",
 };
 
 const ElTextarea = styled.textarea`

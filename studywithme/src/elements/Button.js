@@ -28,6 +28,7 @@ Button.defaultProps = {
   is_float: false,
   margin: false,
   width: "100%",
+  padding: "",
 };
 
 const ElButton = styled.button`
