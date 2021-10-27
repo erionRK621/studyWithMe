@@ -10,6 +10,7 @@ import { history } from "./redux/configStore";
 import Main from "./pages/Main";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
+import PostWrite from "./pages/PostWrite";
 import Header from "./shared/Header";
 
 function App() {
