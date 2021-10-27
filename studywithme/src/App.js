@@ -10,7 +10,7 @@ import { history } from "./redux/configStore";
 import Main from "./pages/Main";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
-import PostWrite from "./pages/PostWrite";
+import Header from "./shared/Header";
 
 function App() {
   // 쿠키가 있는지 확인 (getCookie)
@@ -20,11 +20,9 @@ function App() {
   // 사용자 정보가 redux state에는 있지만 쿠키에는 없을 때, 로그인 정보 초기화
   // deps = [dispatch, user, userByCookie]
 
-
-
-
   return (
     <div>
+      <Header></Header>
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main} />
         <Route path="/signup" exact component={SignUp} />
@@ -32,7 +30,6 @@ function App() {
         <Route path="/write" exact component={PostWrite} />
       </ConnectedRouter>
     </div>
-
   );
 }
 
