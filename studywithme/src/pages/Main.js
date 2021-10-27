@@ -1,11 +1,14 @@
 import React from "react";
+import Slide from "../components/Slide";
 
 const Main = () => {
-    return (
-        <React.Fragment>
-            메인 페이지
-        </React.Fragment>
-    )
-}
+  return (
+    <React.Fragment>
+      <div>
+        <Slide></Slide>
+      </div>
+    </React.Fragment>
+  );
+};
 
 export default Main;
