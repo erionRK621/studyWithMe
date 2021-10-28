@@ -7,62 +7,48 @@ import Text from "../elements/Text";
 import Image from "../elements/Image";
 
 const Post = (props) => {
-  const dispatch = useDispatch();
-
-
-  // console.log(props.Like.length);
-
-  // let _postingDate = props.createdAt.substr(0.10);
-  // let postingDate = moment(_postingDate).format('YYYY년 MM월 DD일');
-
-  // const deletePost = () => {
-  //   dispatch(deleteActions.deletePostDB(contents));
-  // };
+  const user = useSelector((state) => state.user);
+  console.log("유저정보", user);
 
   return (
     <PostContainer>
       <Grid padding="16px" bg="#ffffff" margin="8px 0px">
         <Grid is_flex>
           <Profile>
-            <Image shape="circle" src={props.user_profile} />
-            <Text bold>{props.authorName}</Text>
+            <Image shape="circle" src={props.avatarUrl} />
+            <Text bold>{props.userNickname}</Text>
           </Profile>
-          <Text>{props.createdAt}</Text>
+          <Text>{props.title}</Text>
         </Grid>
         <Grid>
-          <Image
-            shape="rectangle"
-            src={`${props.imageUrl}`}
-          />
+          <Image shape="rectangle" src={`${props.imageContent}`} />
         </Grid>
         <Grid is_flex>
-          <Text>{props.text}</Text>
+          <Text>{props.textContent}</Text>
         </Grid>
         <Grid is_flex>
-          <Text bold>댓글{props.comment_cnt}개 </Text>
-          {is_login && like_result && (
-          )}
+          <Text bold>댓글2개 </Text>
         </Grid>
-        
       </Grid>
     </PostContainer>
   );
 };
 
 Post.defaultProps = {
-  user_info: {
-    user_name: "위시",
-    user_profile:
-      "https://images.unsplash.com/photo-1540331547168-8b63109225b7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=719&q=80",
+  body: {
+    imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
+    title: "제목",
+    categorySpace: "방 안",
+    categoryStudyMate: true,
+    categoryInterest: "수능",
+    imageContent:
+      "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
+    textContent: "String",
+    youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
+    userNickname: "지방이",
+    avatarUrl:
+      "https://newsimg.hankookilbo.com/cms/articlerelease/2017/01/22/201701222050082111_1.jpg",
   },
-  image_url:
-    "https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=880&q=80",
-  content: "블라블라",
-  insert_dt: "2021-10-11 10:00:00",
-  like_cnt: 10,
-  comment_cnt: 10,
-  is_like: false,
-  is_me: false,
 };
 const PostContainer = styled.div`
   background-color: white;

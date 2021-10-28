@@ -8,15 +8,19 @@ const EDIT_POST = "EDIT_POST";
 const DELETE_POST = "DELETE_POST";
 
 //액션생성함수
-//타입이 SET_POST인 오브젝트를 반환해주는 액션으로
+//타입이 GET_POST인 오브젝트를 반환해주는 액션으로
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 
 //초기상태값
+//paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
+//is_loading 로딩중이니?
 const initialState = {
   list: [],
+  paging: { start: null, next: null, size: 3 },
+  is_loading: false,
 };
 
 //게시글하나에 들어가야할 기본내용
