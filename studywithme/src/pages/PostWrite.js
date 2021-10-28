@@ -7,7 +7,10 @@ import ReactHtmlParser, {
 } from "react-html-parser";
 const PostWrite = () => {
   const [post, setPost] = useState("");
-  const posting = () => {};
+
+  const posting = () => {
+
+  };
   const getContent = (content) => {
     setPost(ReactHtmlParser(content));
     // setPost(content);
@@ -17,7 +20,6 @@ const PostWrite = () => {
       <div style={{height:"100px"}}></div>
       <Editor getContent={getContent} />
       <button onClick={posting}>작성</button>
-      {post}
     </div>
   );
 };

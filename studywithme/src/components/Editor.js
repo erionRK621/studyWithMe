@@ -18,10 +18,12 @@ import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
+
 
 // import Swal from "sweetalert2";
 
@@ -44,41 +46,46 @@ class MyUploadAdapter {
             file =>
                 new Promise((resolve, reject) => {
                     //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-                    const req = { img: file };
+                    const req = { image: file };
 
                     //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
                     let formData = new FormData();
                     for (let entry of Object.entries(req)) {
                         formData.append(entry[0], entry[1]);
                     }
+                    
                     //통신헤더설정
-                    // const config = {
-                    //     header: { "content-type": "multipart/form-data" },
-                    // };
+                    const config = {
+                        header: { "content-type": "multipart/form-data" },
+                    };
 
-                    // async function sendImg() {
-                    //     //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
-                    //     try {
-                    //         const response = await axios.post(
-                    //             `${process.env.REACT_APP_API_URL}util/image`,
-                    //             formData,
-                    //             config,
-                    //         );
-                    //         if (response.data.ok) {
-                    //             const downloadURL = `${process.env.REACT_APP_API_URL}${response.data.result}`;
-                    //             resolve({
-                    //                 default: downloadURL,
-                    //             });
-                    //         }
-                    //     } catch (err) {
+                    async function sendImg() {
+                        //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
+                        try {
+                            const response = await axios.post(
+                                "http://3.34.44.44/api/test",
+                                formData,
+                                config,
+                            )
+                            if (response.statusText==="OK") {
+                                const downloadURL = `http://3.34.44.44/${response.data.path}`;
+                                // const splitPath = downloadURL.split("public");
+                                // const url = splitPath[0]+ "static" + splitPath[1];
+                                // console.log(url);
+                                resolve({
+                                    default: downloadURL,
+                                });
+                            }
+                        } catch (err) {
+                            console.log(err);
                     //         Swal.fire(
                     //             "에러",
                     //             "이미지를 등록할 수 없습니다. 다시 시도해주세요!",
                     //             "error",
-                    //         );
-                    //     }
-                    // }
-                    // sendImg();
+                            // );
+                        }
+                    }
+                    sendImg();
                 }),
         );
     }
