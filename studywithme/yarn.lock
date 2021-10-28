@@ -1208,6 +1208,13 @@
   dependencies:
     ckeditor5 "^31.0.0"
 
+"@ckeditor/ckeditor5-alignment@^31.0.0":
+  version "31.0.0"
+  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-alignment/-/ckeditor5-alignment-31.0.0.tgz#b91e935a9fef8731cea13a83cc6bc3d9391a45cf"
+  integrity sha512-nbu6O657MyUj+OaUrVTE7VZaHO7KFqCmsYeQJq+endcLiwKqBWEBtBKNRgakJCsgbIvh/7E6QQCr75kmLKa9+Q==
+  dependencies:
+    ckeditor5 "^31.0.0"
+
 "@ckeditor/ckeditor5-autoformat@^31.0.0":
   version "31.0.0"
   resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-autoformat/-/ckeditor5-autoformat-31.0.0.tgz#63dbec340438f923542d2ea29e9f4dce9f341241"
