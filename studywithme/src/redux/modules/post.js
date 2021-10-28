@@ -20,7 +20,19 @@ const initialState = {
 };
 
 //게시글하나에 들어가야할 기본내용
-const initialPost = {};
+const initialPost = {
+  body: {
+    imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
+    title: "제목",
+    categorySpace: "방 안",
+    categoryStudyMate: true,
+    categoryInterest: "수능",
+    imageContent:
+      "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
+    textContent: "String",
+    youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
+  },
+};
 
 // //미들웨어
 // //메인페이지 게시글 가져오기
