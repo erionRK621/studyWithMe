@@ -30,56 +30,56 @@ import ReactHtmlParser, {
 import styled from "styled-components";
 
 class MyUploadAdapter {
-    constructor(loader) {
-        this.loader = loader;
-    }
-    // Starts the upload process.
-    upload() {
-        return this.loader.file.then(
-            // file은 파일객체이다.
-            file =>
-                new Promise((resolve, reject) => {
-                    //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-                    const req = { img: file };
+  constructor(loader) {
+    this.loader = loader;
+  }
+  // Starts the upload process.
+  upload() {
+    return this.loader.file.then(
+      // file은 파일객체이다.
+      file =>
+        new Promise((resolve, reject) => {
+          //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
+          const req = { img: file };
 
-                    //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
-                    let formData = new FormData();
-                    for (let entry of Object.entries(req)) {
-                        formData.append(entry[0], entry[1]);
-                        console.log(entry);
-                    }
+          //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
+          let formData = new FormData();
+          for (let entry of Object.entries(req)) {
+            formData.append(entry[0], entry[1]);
+            console.log(entry);
+          }
 
-                    //통신헤더설정
-                    // const config = {
-                    //     header: { "content-type": "multipart/form-data" },
-                    // };
+          //통신헤더설정
+          // const config = {
+          //     header: { "content-type": "multipart/form-data" },
+          // };
 
-                    // async function sendImg() {
-                    //     //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
-                    //     try {
-                    //         const response = await axios.post(
-                    //             `${process.env.REACT_APP_API_URL}util/image`,
-                    //             formData,
-                    //             config,
-                    //         );
-                    //         if (response.data.ok) {
-                    //             const downloadURL = `${process.env.REACT_APP_API_URL}${response.data.result}`;
-                    //             resolve({
-                    //                 default: downloadURL,
-                    //             });
-                    //         }
-                    //     } catch (err) {
-                    //         Swal.fire(
-                    //             "에러",
-                    //             "이미지를 등록할 수 없습니다. 다시 시도해주세요!",
-                    //             "error",
-                    //         );
-                    //     }
-                    // }
-                    // sendImg();
-                }),
-        );
-    }
+          // async function sendImg() {
+          //     //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
+          //     try {
+          //         const response = await axios.post(
+          //             `${process.env.REACT_APP_API_URL}util/image`,
+          //             formData,
+          //             config,
+          //         );
+          //         if (response.data.ok) {
+          //             const downloadURL = `${process.env.REACT_APP_API_URL}${response.data.result}`;
+          //             resolve({
+          //                 default: downloadURL,
+          //             });
+          //         }
+          //     } catch (err) {
+          //         Swal.fire(
+          //             "에러",
+          //             "이미지를 등록할 수 없습니다. 다시 시도해주세요!",
+          //             "error",
+          //         );
+          //     }
+          // }
+          // sendImg();
+        }),
+    );
+  }
 }
 
 const editorConfiguration = {
@@ -146,12 +146,13 @@ const editorConfiguration = {
     options: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
   },
 };
-const Editor = ({getContent}) => {
+const Editor = ({ getContent }) => {
   const [data, setData] = useState("");
   const handleChange = (event, editor) => {
     setData(ReactHtmlParser(editor.getData()));
-    const a=ReactHtmlParser(editor.getData());
-    setData(editor.getData());
+    // setData(editor.getData());
+    // const a = ReactHtmlParser(editor.getData());
+    // setData(editor.getData());
     // console.log(a);
   };
   return (
@@ -167,14 +168,14 @@ const Editor = ({getContent}) => {
             getContent(data);
             // console.log(data);
           }}
-          onReady={editor=> {
-              if(editor?.plugins) {
-                  editor.plugins.get(
-                      "FileRepository",
-                  ).createUploadAdapter = loader=>{
-                      return new MyUploadAdapter(loader);
-                  }
+          onReady={editor => {
+            if (editor?.plugins) {
+              editor.plugins.get(
+                "FileRepository",
+              ).createUploadAdapter = loader => {
+                return new MyUploadAdapter(loader);
               }
+            }
           }}
         />
       </StyledEditor>
@@ -182,8 +183,8 @@ const Editor = ({getContent}) => {
   );
 };
 
-Editor.defaultProps= {
-    getContent: () => {},
+Editor.defaultProps = {
+  getContent: () => { },
 }
 
 const StyledEditor = styled.div`
