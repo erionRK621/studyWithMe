@@ -10,6 +10,7 @@ const PostWrite = () => {
   const posting = () => {};
   const getContent = (content) => {
     setPost(ReactHtmlParser(content));
+    // setPost(content);
   };
   return (
     <div>
@@ -22,3 +23,9 @@ const PostWrite = () => {
 };
 
 export default PostWrite;
+
+
+
+//<p><img></p>
+
+//<figure class="image"><img src="https://i.ytimg.com/vi/Fb2IbIYGHd8/maxresdefault.jpg" alt="지방이 - 나무위키"></figure>
