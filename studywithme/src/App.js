@@ -10,8 +10,8 @@ import { history } from "./redux/configStore";
 import Main from "./pages/Main";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
-import Header from "./shared/Header";
 import PostWrite from "./pages/PostWrite";
+import Header from "./shared/Header";
 
 function App() {
   // 쿠키가 있는지 확인 (getCookie)
