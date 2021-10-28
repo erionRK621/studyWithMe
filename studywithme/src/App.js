@@ -12,7 +12,6 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import PostWrite from "./pages/PostWrite";
 import Header from "./shared/Header";
-import PostWrite from "./pages/PostWrite";
 
 function App() {
   // 쿠키가 있는지 확인 (getCookie)
