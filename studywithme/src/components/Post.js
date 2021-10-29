@@ -10,14 +10,14 @@ import Image from "../elements/Image";
 const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
   console.log("포스트정보", post_list);
+  console.log("포스트의 프롭스", props);
 
   return (
     <PostContainer>
       <Grid padding="16px" bg="#ffffff" margin="8px 0px">
         <Grid is_flex>
           <Profile>
-            <Image shape="circle" src={props.avatarUrl} />
-            <Text bold>{props.userNickname}</Text>
+            <Text bold>{props.date}</Text>
           </Profile>
           <Text>{props.title}</Text>
         </Grid>
