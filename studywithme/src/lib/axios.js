@@ -33,5 +33,5 @@ export const apis = {
   deleteAccountAxios: () => instance.post("/api/users/withdrawal"),
 
   //게시물 가져오기
-  getPost: () => instance.get("/api/posts/:postId", {}),
+  getPost: () => instance.get("/api/posts", {}),
 };

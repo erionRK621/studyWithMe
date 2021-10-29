@@ -11,11 +11,11 @@ import Post from "../components/Post";
 const Main = (props) => {
   const dispatch = useDispatch();
   const { history } = props;
-
-  //   const post_list = useSelector((state) => state.post.list);
+  const post_list = useSelector((state) => state.post.list);
+  console.log(post_list);
 
   useEffect(() => {
-    dispatch(postCreators.getPost());
+    dispatch(postCreators.getPostDB());
   }, []);
 
   return (
@@ -26,22 +26,13 @@ const Main = (props) => {
       <Image shape="main" />
       <Grid>
         <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
+          {post_list.map((p, idx) => {
+            return (
+              <Grid key={idx}>
+                <Post key={idx} {...p} />
+              </Grid>
+            );
+          })}
         </GridWrap>
       </Grid>
     </React.Fragment>
