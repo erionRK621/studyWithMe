@@ -58,6 +58,14 @@ const getPostDB = () => {
   };
 };
 
+const addPostDB = (formData) => {
+  return function (dispatch, getState, { history }) {
+    apis.addPost(formData).then((res) => {
+      console.log(decodeURIComponent(res.data.post.encodedHTML));
+    });
+  };
+};
+
 // 리듀서
 export default handleActions(
   {
@@ -96,6 +104,7 @@ const actionCreators = {
   editPost,
   deletePost,
   getPostDB,
+  addPostDB,
 };
 
 export { actionCreators };
