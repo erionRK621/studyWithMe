@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -218,10 +217,7 @@ const editorConfiguration = {
 const Editor = ({ getContent }) => {
   const [data, setData] = useState("");
   const handleChange = (event, editor) => {
-    // setData(ReactHtmlParser(editor.getData()));
-    // const a=ReactHtmlParser(editor.getData());
     setData(editor.getData());
-    // console.log(a);
   };
   return (
     <>
@@ -234,7 +230,6 @@ const Editor = ({ getContent }) => {
             handleChange(event, editor);
             const data = editor.getData();
             getContent(data);
-            // console.log(data);
           }}
           onReady={editor => {
             if (editor?.plugins) {
@@ -261,5 +256,4 @@ const StyledEditor = styled.div`
     }
 `;
 
-//class="ck ck-content ck-editor__editable ck-rounded-corners ck-editor__editable_inline ck-blurred"
 export default Editor;
