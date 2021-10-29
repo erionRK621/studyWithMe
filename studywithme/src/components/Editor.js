@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
 import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
@@ -35,10 +34,12 @@ import Undo from "@ckeditor/ckeditor5-undo/src/undo";
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+
 import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
 import AutoImage from '@ckeditor/ckeditor5-image/src/autoimage';
+
 
 
 // import Swal from "sweetalert2";
@@ -52,54 +53,56 @@ import ReactHtmlParser, {
 import styled from "styled-components";
 
 class MyUploadAdapter {
-  constructor(loader) {
-    this.loader = loader;
-  }
-  // Starts the upload process.
-  upload() {
-    return this.loader.file.then(
-      // file은 파일객체이다.
-      file =>
-        new Promise((resolve, reject) => {
-          //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-          const req = { img: file };
+    constructor(loader) {
+        this.loader = loader;
+    }
+    // Starts the upload process.
+    upload() {
+        return this.loader.file.then(
+            // file은 파일객체이다.
+            file =>
+                new Promise((resolve, reject) => {
+                    //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
+                    const req = { image: file };
 
-          //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
-          let formData = new FormData();
-          for (let entry of Object.entries(req)) {
-            formData.append(entry[0], entry[1]);
-          }
-          //통신헤더설정
-          // const config = {
-          //     header: { "content-type": "multipart/form-data" },
-          // };
+                    //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
+                    let formData = new FormData();
+                    for (let entry of Object.entries(req)) {
+                        formData.append(entry[0], entry[1]);
+                    }
+                    
+                    //통신헤더설정
+                    const config = {
+                        header: { "content-type": "multipart/form-data" },
+                    };
 
-          // async function sendImg() {
-          //     //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
-          //     try {
-          //         const response = await axios.post(
-          //             `${process.env.REACT_APP_API_URL}util/image`,
-          //             formData,
-          //             config,
-          //         );
-          //         if (response.data.ok) {
-          //             const downloadURL = `${process.env.REACT_APP_API_URL}${response.data.result}`;
-          //             resolve({
-          //                 default: downloadURL,
-          //             });
-          //         }
-          //     } catch (err) {
-          //         Swal.fire(
-          //             "에러",
-          //             "이미지를 등록할 수 없습니다. 다시 시도해주세요!",
-          //             "error",
-          //         );
-          //     }
-          // }
-          // sendImg();
-        }),
-    );
-  }
+                    async function sendImg() {
+                        //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
+                        try {
+                            const response = await axios.post(
+                                "http://3.34.44.44/api/test",
+                                formData,
+                                config,
+                            )
+                            if (response.statusText==="OK") {
+                                const downloadURL = `http://3.34.44.44/${response.data.path}`;
+                                resolve({
+                                    default: downloadURL,
+                                });
+                            }
+                        } catch (err) {
+                            console.log(err);
+                    //         Swal.fire(
+                    //             "에러",
+                    //             "이미지를 등록할 수 없습니다. 다시 시도해주세요!",
+                    //             "error",
+                            // );
+                        }
+                    }
+                    sendImg();
+                }),
+        );
+    }
 }
 
 const editorConfiguration = {
@@ -214,10 +217,7 @@ const editorConfiguration = {
 const Editor = ({ getContent }) => {
   const [data, setData] = useState("");
   const handleChange = (event, editor) => {
-    // setData(ReactHtmlParser(editor.getData()));
-    // const a=ReactHtmlParser(editor.getData());
     setData(editor.getData());
-    // console.log(a);
   };
   return (
     <>
@@ -230,7 +230,6 @@ const Editor = ({ getContent }) => {
             handleChange(event, editor);
             const data = editor.getData();
             getContent(data);
-            // console.log(data);
           }}
           onReady={editor => {
             if (editor?.plugins) {
@@ -257,5 +256,4 @@ const StyledEditor = styled.div`
     }
 `;
 
-//class="ck ck-content ck-editor__editable ck-rounded-corners ck-editor__editable_inline ck-blurred"
 export default Editor;

@@ -40,6 +40,14 @@ const initialPost = {
 };
 
 // // //미들웨어
+
+const addPostDB = (formData) => {
+  return function (dispatch, getState, {history}) {
+    apis.addPost(formData).then((res) => {
+      console.log(decodeURIComponent(res.data.post.encodedHTML));
+    })
+  }
+}
 // //데스크테리어 포스트 가져오기
 // const getPostDB = () => {
 //   return function (dispatch, getState, { history }) {
@@ -94,6 +102,7 @@ const actionCreators = {
   getPost,
   editPost,
   deletePost,
+  addPostDB,
   //getPostDB,
 };
 
