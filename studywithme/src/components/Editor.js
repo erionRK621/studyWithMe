@@ -18,6 +18,10 @@ import MediaEmbed from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import ImageToolbar from '@ckeditor/ckeditor5-image/src/imagetoolbar';
+import ImageCaption from '@ckeditor/ckeditor5-image/src/imagecaption';
+import ImageStyle from '@ckeditor/ckeditor5-image/src/imagestyle';
+import Alignment from '@ckeditor/ckeditor5-alignment/src/alignment';
 
 // import Swal from "sweetalert2";
 
@@ -46,9 +50,7 @@ class MyUploadAdapter {
           let formData = new FormData();
           for (let entry of Object.entries(req)) {
             formData.append(entry[0], entry[1]);
-            console.log(entry);
           }
-
           //통신헤더설정
           // const config = {
           //     header: { "content-type": "multipart/form-data" },
@@ -97,20 +99,35 @@ const editorConfiguration = {
     ImageResize,
     Link,
     MediaEmbed,
+    Alignment,
+    ImageToolbar,
+    ImageCaption,
+    ImageStyle,
   ],
   toolbar: [
     "heading",
     "|",
     "bold",
     "italic",
-    "|",
     "fontSize",
     "FontColor",
     "FontBackgroundColor",
-    "imageUpload",
+    "|",
+    "alignment",
     "Link",
+    "imageUpload",
     "MediaEmbed",
   ],
+  image: {
+    toolbar: [
+      'imageStyle:inline',
+      'imageStyle:block',
+      'imageStyle:side',
+      '|',
+      'toggleImageCaption',
+      'imageTextAlternative',
+    ]
+  },
   mediaEmbed: {
     previewsInData: true
   },
@@ -149,10 +166,9 @@ const editorConfiguration = {
 const Editor = ({ getContent }) => {
   const [data, setData] = useState("");
   const handleChange = (event, editor) => {
-    setData(ReactHtmlParser(editor.getData()));
-    // setData(editor.getData());
-    // const a = ReactHtmlParser(editor.getData());
-    // setData(editor.getData());
+    // setData(ReactHtmlParser(editor.getData()));
+    // const a=ReactHtmlParser(editor.getData());
+    setData(editor.getData());
     // console.log(a);
   };
   return (
@@ -193,4 +209,5 @@ const StyledEditor = styled.div`
     }
 `;
 
+//class="ck ck-content ck-editor__editable ck-rounded-corners ck-editor__editable_inline ck-blurred"
 export default Editor;
