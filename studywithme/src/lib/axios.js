@@ -20,7 +20,8 @@ export const apis = {
   checkEmailAxios: (email) => instance.post("/api/users/emailexist", email),
 
   // 닉네임 중복 확인
-  checkNicknameAxios: (nickname) => instance.post("/api/users/nicknameexist", nickname),
+  checkNicknameAxios: (nickname) =>
+    instance.post("/api/users/nicknameexist", nickname),
 
   // 로그인
   logInAxios: (user) => instance.post("/api/users/login", user),
@@ -30,4 +31,7 @@ export const apis = {
 
   // 회원탈퇴
   deleteAccountAxios: () => instance.post("/api/users/withdrawal"),
+
+  //게시물 가져오기
+  getPost: () => instance.get("/api/posts/:postId", {}),
 };

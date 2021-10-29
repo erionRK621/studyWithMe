@@ -1,15 +1,22 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { actionCreators as postCreators } from "../redux/modules/post";
+
 import Grid from "../elements/Grid";
 import Image from "../elements/Image";
 import Slide from "../components/Slide";
+import Post from "../components/Post";
 
-const Main = () => {
-  //   const dispatch = useDispatch();
-  //   const { history } = props;
+const Main = (props) => {
+  const dispatch = useDispatch();
+  const { history } = props;
 
   //   const post_list = useSelector((state) => state.post.list);
+
+  useEffect(() => {
+    dispatch(postCreators.getPost());
+  }, []);
 
   return (
     <React.Fragment>
@@ -18,7 +25,24 @@ const Main = () => {
       </div>
       <Image shape="main" />
       <Grid>
-        <GridWrap></GridWrap>
+        <GridWrap>
+          <Post />
+        </GridWrap>
+        <GridWrap>
+          <Post />
+        </GridWrap>
+        <GridWrap>
+          <Post />
+        </GridWrap>
+        <GridWrap>
+          <Post />
+        </GridWrap>
+        <GridWrap>
+          <Post />
+        </GridWrap>
+        <GridWrap>
+          <Post />
+        </GridWrap>
       </Grid>
     </React.Fragment>
   );
