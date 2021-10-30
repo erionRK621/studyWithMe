@@ -26,20 +26,37 @@ const initialState = {
 
 //게시글하나에 들어가야할 기본내용
 const initialPost = {
-  body: {
-    imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
-    title: "제목",
-    categorySpace: "방 안",
-    categoryStudyMate: true,
-    categoryInterest: "수능",
-    imageContent:
-      "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
-    textContent: "String",
-    youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
-  },
+  body: [
+    {
+      imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
+      title: "제목",
+      categorySpace: "방 안",
+      categoryStudyMate: true,
+      categoryInterest: "수능",
+      imageContent:
+        "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
+      textContent: "String",
+      youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
+    },
+  ],
 };
 
-// // //미들웨어
+// //미들웨어
+//데스크테리어 포스트 가져오기
+const getPostDB = () => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getPost()
+      .then((res) => {
+        // console.log(res.data.posts);
+        dispatch(getPost(res.data.posts));
+      })
+      .catch((err) => {
+        //요청이 정상적으로 안됬을때 수행
+        console.log(err, "에러");
+      });
+  };
+};
 
 const addPostDB = (formData) => {
   return function (dispatch, getState, { history }) {
@@ -69,6 +86,7 @@ const addPostDB = (formData) => {
 //       });
 //   };
 // };
+  
 
 // 리듀서
 export default handleActions(
@@ -107,8 +125,8 @@ const actionCreators = {
   getPost,
   editPost,
   deletePost,
+  getPostDB,
   addPostDB,
-  //getPostDB,
 };
 
 export { actionCreators };
