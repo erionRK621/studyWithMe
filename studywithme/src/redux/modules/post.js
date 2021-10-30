@@ -61,10 +61,32 @@ const getPostDB = () => {
 const addPostDB = (formData) => {
   return function (dispatch, getState, { history }) {
     apis.addPost(formData).then((res) => {
-      console.log(decodeURIComponent(res.data.post.encodedHTML));
+      // console.log(decodeURIComponent(res.data.post.encodedHTML));
+      // console.log(res.data.post.encodedHTML);
+      console.log(res.data.post);
+    }).catch((err)=>{
+      console.log(err.response.data);
     });
   };
 };
+
+// //데스크테리어 포스트 가져오기
+// const getPostDB = () => {
+//   return function (dispatch, getState, { history }) {
+//     apis
+//       .getPost()
+//       .then((res) => {
+//         // console.log(res);
+//         // console.log(res.data.data.datainfo);
+//         dispatch(getPost(res.data.data.datainfo));
+//       })
+//       .catch((err) => {
+//         //요청이 정상적으로 안됬을때 수행
+//         console.log(err, "에러");
+//       });
+//   };
+// };
+  
 
 // 리듀서
 export default handleActions(

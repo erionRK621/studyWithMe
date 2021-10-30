@@ -12,6 +12,17 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+const formInstance = axios.create({
+  // baseURL: "http://3.34.44.44",
+  baseURL: "http://3.35.235.79",
+  headers: {
+    "content-type": "multipart/form-data",
+    accept: "application/json",
+    Authorization: `Bearer ${getCookie("user")}`,
+  },
+  withCredentials: true,
+});
+
 export const apis = {
   // 회원가입
   signUpAxios: (user) => instance.post("/api/users/signup", user),
@@ -35,5 +46,5 @@ export const apis = {
   //게시물 가져오기
   getPost: () => instance.get("/api/posts", {}),
 
-  addPost: (formData) => instance.post("api/test2", formData),
+  addPost : (formData) => formInstance.post("api/posts", formData),
 };
