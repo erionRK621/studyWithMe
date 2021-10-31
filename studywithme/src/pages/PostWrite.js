@@ -78,6 +78,7 @@ const PostWrite = () => {
   }
   return (
     <div>
+      <div style = {{height:"100px"}}></div>
       <Upload _onChange={selectFile}/>
       <img src = {preview} alt=""/>
       <p>title : <input type="text" onChange={titleChange} value={title}/></p>
