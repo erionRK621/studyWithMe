@@ -54,7 +54,7 @@ const PostWrite = () => {
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
     formData.append("categoryInterest", interestVal);
-    formData.append("contentEditor", content);
+    formData.append("contentsEditor", content);
 
     dispatch(postActions.addPostDB(formData));
   };

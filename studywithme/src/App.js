@@ -1,5 +1,6 @@
 // General
 import React from "react";
+import "./App.css";
 import { Route } from "react-router";
 import { ConnectedRouter } from "connected-react-router";
 import { apis } from "./lib/axios";
@@ -23,7 +24,7 @@ function App() {
 
   return (
     <div>
-      {/* <Header></Header> */}
+      <Header></Header>
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main} />
         <Route path="/signup" exact component={SignUp} />

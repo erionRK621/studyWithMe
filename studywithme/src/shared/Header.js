@@ -25,7 +25,8 @@ const HeaderWrap = styled.div`
   height: 80px;
   width: 100%;
   background-color: black;
-  position: fixed;
+  position: sticky;
+  top: 0;
   z-index: 10;
   padding: 10px;
   display: flex;
