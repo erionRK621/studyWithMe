@@ -46,7 +46,7 @@ const Slide = (props) => {
   //SlideContent를 따로 빼지말고 직접적으로 내용 채워주면 될 듯
   return (
     <Wrap>
-      <Slider {...settings}>
+      <StyledSlider {...settings}>
         {post_list.map((p, idx) => {
           return (
             <PostWrap key={idx}>
@@ -54,18 +54,41 @@ const Slide = (props) => {
             </PostWrap>
           );
         })}
-      </Slider>
+      </StyledSlider>
     </Wrap>
   );
 };
 
 const Wrap = styled.div`
   width: 100%;
-  height: 600px;
+  height: 550px;
 `;
 
 const PostWrap = styled.div`
   width: 100px;
   height: 100px;
 `;
+
+//슬라이더 css부분
+const StyledSlider = styled(Slider)`
+  .slick-list {
+    width: 1300px;
+    height: 450px;
+    margin: 0 auto;
+  }
+
+  .slick-slide div {
+    /* cursor: pointer; */
+  }
+
+  .slick-dots {
+    bottom: -50px;
+    margin-top: 200px;
+  }
+
+  .slick-track {
+    /* overflow-x: hidden; */
+  }
+`;
+
 export default Slide;
