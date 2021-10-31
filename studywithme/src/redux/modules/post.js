@@ -58,15 +58,34 @@ const getPostDB = () => {
   };
 };
 
+const getFilterPostDB = (queryString) => {
+  return function (dispatch, getState, { history }) {
+    console.log(queryString);
+    apis
+      .getFilterPost(queryString)
+      .then((res) => {
+        const post_list = res.data.posts;
+        dispatch(getPost(post_list));
+        history.push(`list?searchMode=filter${queryString?queryString:""}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 const addPostDB = (formData) => {
   return function (dispatch, getState, { history }) {
-    apis.addPost(formData).then((res) => {
-      // console.log(decodeURIComponent(res.data.post.encodedHTML));
-      // console.log(res.data.post.encodedHTML);
-      console.log(res.data.post);
-    }).catch((err)=>{
-      console.log(err.response.data);
-    });
+    apis
+      .addPost(formData)
+      .then((res) => {
+        // console.log(decodeURIComponent(res.data.post.encodedHTML));
+        // console.log(res.data.post.encodedHTML);
+        console.log(res.data.post);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   };
 };
 
@@ -86,7 +105,6 @@ const addPostDB = (formData) => {
 //       });
 //   };
 // };
-  
 
 // 리듀서
 export default handleActions(
@@ -94,7 +112,6 @@ export default handleActions(
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
         // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
-        console.log(action.payload);
         draft.list = action.payload.post_list;
       }),
 
@@ -126,6 +143,7 @@ const actionCreators = {
   editPost,
   deletePost,
   getPostDB,
+  getFilterPostDB,
   addPostDB,
 };
 
