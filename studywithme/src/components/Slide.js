@@ -15,8 +15,10 @@ const Slide = (props) => {
     dots: true, // 점은 안 보이게
     infinite: true, // 무한으로 즐기게
     speed: 500,
-    slidesToShow: 1, //장씩 보이게 해주세요
+    slidesToShow: 3, //1장씩 보이게 해주세요
     slidesToScroll: 1, //1장씩 넘어가세요
+    centerMode: true,
+    centerPadding: "0px",
 
     responsive: [
       // 반응형 웹 구현 옵션
@@ -29,7 +31,7 @@ const Slide = (props) => {
       {
         breakpoint: 1023,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
         },
       },
       {
@@ -58,7 +60,7 @@ const Slide = (props) => {
 };
 
 const Wrap = styled.div`
-  width: 600px;
+  width: 100%;
   height: 600px;
 `;
 

@@ -23,7 +23,7 @@ const Main = (props) => {
       <div>
         <Slide></Slide>
       </div>
-      <Image shape="main" />
+
       <Grid>
         <GridWrap>
           {post_list.map((p, idx) => {

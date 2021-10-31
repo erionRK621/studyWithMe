@@ -11,6 +11,7 @@ const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
   console.log("포스트정보", post_list);
   console.log("포스트의 프롭스", props);
+  console.log("포스트의 이미지", props.ImageCover);
 
   return (
     <PostContainer>
@@ -22,7 +23,10 @@ const Post = (props) => {
           <Text>{props.title}</Text>
         </Grid>
         <Grid>
-          <Image shape="rectangle" src={`${props.imageContent}`} />
+          <Image
+            shape="rectangle"
+            src={`http://3.35.235.79/${props.imageCover}`}
+          />
         </Grid>
         <Grid is_flex>
           <Text>{props.textContent}</Text>
