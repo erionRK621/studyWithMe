@@ -9,19 +9,13 @@ import Image from "../elements/Image";
 
 const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
-  console.log("포스트정보", post_list);
   console.log("포스트의 프롭스", props);
   console.log("포스트의 이미지", props.ImageCover);
 
   return (
     <PostContainer>
       <Grid padding="16px" bg="#ffffff" margin="8px 0px">
-        <Grid is_flex>
-          <Profile>
-            <Text bold>{props.date}</Text>
-          </Profile>
-          <Text>{props.title}</Text>
-        </Grid>
+        <Grid is_flex></Grid>
         <Grid>
           <Image
             shape="rectangle"
@@ -29,10 +23,17 @@ const Post = (props) => {
           />
         </Grid>
         <Grid is_flex>
-          <Text>{props.textContent}</Text>
+          <Text>{props.title}</Text>
         </Grid>
         <Grid is_flex>
-          <Text bold>댓글2개 </Text>
+          <Profile>
+            <Text bold>{props.userId}</Text>
+            {/* <Text bold>{props.avatarUrl}</Text> */}
+          </Profile>
+          <CategoryInfo>
+            <Text bold>{props.categorySpace}</Text>
+            <Text bold>{props.categoryInterest}</Text>
+          </CategoryInfo>
         </Grid>
       </Grid>
     </PostContainer>
@@ -66,6 +67,9 @@ const PostContainer = styled.div`
 `;
 
 const Profile = styled.div`
+  display: flex;
+`;
+const CategoryInfo = styled.div`
   display: flex;
 `;
 
