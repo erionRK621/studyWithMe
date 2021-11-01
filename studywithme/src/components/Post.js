@@ -46,18 +46,17 @@ Post.defaultProps = {
     categorySpace: "방 안",
     categoryStudyMate: true,
     categoryInterest: "수능",
-    imageContent:
-      "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
-    textContent: "String",
-    youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
-    userNickname: "지방이",
     avatarUrl:
       "https://newsimg.hankookilbo.com/cms/articlerelease/2017/01/22/201701222050082111_1.jpg",
+    date: "2021-11-01T11:29:36.000Z",
+    contentEditor: "내용",
+    postId: 4,
+    userId: 1,
   },
 };
 const PostContainer = styled.div`
   background-color: white;
-  width: 60vw;
+  width: 80%;
   max-width: 350px;
   margin: auto;
   margin-top: 30px;

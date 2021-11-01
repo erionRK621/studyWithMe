@@ -7,6 +7,7 @@ import Grid from "../elements/Grid";
 import Image from "../elements/Image";
 import Slide from "../components/Slide";
 import Post from "../components/Post";
+import LikeSlide from "../components/LikeSlide";
 
 const Main = (props) => {
   const dispatch = useDispatch();
@@ -21,6 +22,9 @@ const Main = (props) => {
   return (
     <React.Fragment>
       <Wrap>
+        <div>
+          <LikeSlide></LikeSlide>
+        </div>
         <div>
           <Slide></Slide>
         </div>
