@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { actionCreators as postCreators } from "../redux/modules/post";
 import { useSelector, useDispatch } from "react-redux";
+import styled from "styled-components";
 
+import Grid from "../elements/Grid";
+import Text from "../elements/Text";
+import Image from "../elements/Image";
 import SelectBox from "../components/SelectBox";
 const PostList = (props) => {
   const dispatch = useDispatch();
@@ -49,25 +53,65 @@ const PostList = (props) => {
     }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
       studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
     }`;
-
     dispatch(postCreators.getFilterPostDB(setQueryString));
   }, [interestVal, spaceVal, studyMateVal]);
 
   return (
-    <>
-      <SelectBox
-        category="interest"
-        _onChange={interest}
-        _value={interestVal}
-      />
-      <SelectBox category="space" _onChange={space} _value={spaceVal} />
-      <SelectBox
-        category="studyMate"
-        _onChange={studyMate}
-        _value={studyMateVal}
-      />
-    </>
+    <Wrap>
+      <FlexGrid>
+        <SelectBox
+          category="interest"
+          _onChange={interest}
+          _value={interestVal}
+        />
+        <SelectBox category="space" _onChange={space} _value={spaceVal} />
+        <SelectBox
+          category="studyMate"
+          _onChange={studyMate}
+          _value={studyMateVal}
+        />
+      </FlexGrid>
+      <GridWrap>
+        {post_list.map((p, idx) => {
+          return (
+            <div key={idx}>
+              <PostContainer>
+                <Image
+                  shape="rectangle"
+                  src={`http://3.35.235.79/${p.imageCover}`}
+                ></Image>
+                <Grid>
+                  <Text size="20px" bold>{p.title}</Text>
+                </Grid>
+              </PostContainer>
+            </div>
+          );
+        })}
+      </GridWrap>
+    </Wrap>
   );
 };
-
+const Wrap = styled.div`
+  width: 100%;
+`;
+const GridWrap = styled.div`
+  max-width: 1000px;
+  margin: auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 40px;
+`;
+const PostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  max-width: 350px;
+  margin: 30px auto;
+  border-radius: 5px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
+`;
+const FlexGrid = styled.div`
+  display: flex;
+`;
 export default PostList;
