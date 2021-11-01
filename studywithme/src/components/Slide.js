@@ -72,7 +72,7 @@ const PostWrap = styled.div`
 //슬라이더 css부분
 const StyledSlider = styled(Slider)`
   .slick-list {
-    width: 1300px;
+    width: 100%;
     height: 450px;
     margin: 0 auto;
   }
