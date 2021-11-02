@@ -28,7 +28,7 @@ Button.defaultProps = {
   _onClick: () => { },
   is_float: false,
   margin: false,
-  width: "100%",
+  width: "",
   padding: "",
 };
 
