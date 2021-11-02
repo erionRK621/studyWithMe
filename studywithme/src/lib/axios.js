@@ -46,5 +46,6 @@ export const apis = {
   //게시물 가져오기
   getPost: () => instance.get("/api/posts", {}),
   getFilterPost: (queryString) => instance.get(`/api/posts?searchMode=filter${queryString}`),
+  getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
 };
