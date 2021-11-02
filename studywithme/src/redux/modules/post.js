@@ -58,6 +58,20 @@ const getPostDB = () => {
   };
 };
 
+// 상세페이지 포스트 가져오기
+const getDetailPostDB = (postId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getDetailPost(postId)
+      .then((res) => {
+        dispatch(getPost(res.data.post));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 const getFilterPostDB = (queryString) => {
   return function (dispatch, getState, { history }) {
     console.log(queryString);
@@ -66,7 +80,7 @@ const getFilterPostDB = (queryString) => {
       .then((res) => {
         const post_list = res.data.posts;
         dispatch(getPost(post_list));
-        history.push(`list?searchMode=filter${queryString?queryString:""}`);
+        history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
       .catch((err) => {
         console.log(err);
@@ -144,6 +158,7 @@ const actionCreators = {
   deletePost,
   getPostDB,
   getFilterPostDB,
+  getDetailPostDB,
   addPostDB,
 };
 
