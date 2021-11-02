@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 // 스피너 불러오기
 
-const KakaoLoginRedirect = (props) => {
+const KakaoLoginRedirection = (props) => {
     const dispatch = useDispatch();
 
     // 인가 코드
@@ -11,9 +11,9 @@ const KakaoLoginRedirect = (props) => {
     console.log("인가 코드", code);
 
     // 렌더링되며 인가 코드 백엔드로 넘겨주기
-    // React.useEffect(async () => {
-    //     await dispatch(userActions.kakaoLoginMiddleware(code));
-    // }, []);
+    React.useEffect(async () => {
+        await dispatch(userActions.kakaoLoginMiddleware(code));
+    }, []);
 
     return (
         // 스피너 컴포넌트 삽입`
@@ -21,4 +21,4 @@ const KakaoLoginRedirect = (props) => {
     );
 };
 
-export default KakaoLoginRedirect;
+export default KakaoLoginRedirection;

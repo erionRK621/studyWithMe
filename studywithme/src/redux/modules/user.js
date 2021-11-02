@@ -92,20 +92,20 @@ const checkNicknameMiddleware = (nickname) => {
   };
 };
 
+
 const kakaoLoginMiddleware = (code) => {
   return function (dispatch, getState, { history }) {
     console.log("kakaoLoginMiddleware 실행");
     axios({
       method: "GET",
-      // url 확인 필요 w/ 재원 님
-      // url: `http://3.34.44.44/api/kakao/callback?code=${code}`,
-      url: `http://3.34.44.44/api/kakao/callback/abcd?code=${code}`,
-      // `http://{서버주소}?code=${code}`
+      url: `http://3.34.44.44/api/kakao/callback?code=${code}`,
     })
       .then((response) => {
         console.log("kakaoLoginMiddleware 응답받기 성공");
-        console.log(response);
+        console.log(response.data.token);
+        console.log("decoded", jwt_decode(response.data.token));
 
+        // 프론트 서버 열면 구현할 부분들:
         // 토큰 받아서
         // session에 저장함
         // 로그인 됐으니 메인페이지로 이동

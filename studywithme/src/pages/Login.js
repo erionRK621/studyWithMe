@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { history } from "../redux/configStore";
 
-import { KAKAO_AUTH_URL } from "../shared/kakaoOAuth";
-
 import { actionCreators as userActions } from "../redux/modules/user";
 
 import Grid from "../elements/Grid";
@@ -41,12 +39,6 @@ const Login = () => {
         dispatch(userActions.loginMiddleware(loginInputs));
     }
 
-
-    // const onClickKakaoLogin = () => {
-    //     console.log("카카오 계정으로 로그인하기 실행");
-    //     document.location = KAKAO_AUTH_URL;
-    //     document.location = "http://3.34.44.44/api/kakao";
-    // }
 
     const onClickToSignUpPage = () => {
         console.log("회원가입 페이지로 이동");
@@ -125,11 +117,6 @@ const Login = () => {
             {/* 소셜 로그인 */}
             <Grid>
                 <Grid>
-                    {/* <Button
-                        _onClick={onClickKakaoLogin}
-                    >
-                        카카오 로그인 (REST API)
-                    </Button> */}
                     <KakaoLoginButton />
                 </Grid>
             </Grid>
