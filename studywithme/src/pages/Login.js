@@ -8,8 +8,9 @@ import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Input from "../elements/Input";
 import Button from "../elements/Button";
+import KakaoLoginButton from "../components/KakaoLoginButton";
 
-const SignUp = () => {
+const Login = () => {
     const dispatch = useDispatch();
 
     const [email, setEmail] = useState("");
@@ -38,6 +39,7 @@ const SignUp = () => {
         dispatch(userActions.loginMiddleware(loginInputs));
     }
 
+
     const onClickToSignUpPage = () => {
         console.log("회원가입 페이지로 이동");
         history.push("/signup");
@@ -52,7 +54,7 @@ const SignUp = () => {
                 <h1> 로그인 페이지 </h1>
             </Grid>
 
-            {/* 페이지 본문 */}
+            {/* 이메일 로그인 */}
             <Grid>
                 {/* 이메일 */}
                 <Grid
@@ -86,7 +88,6 @@ const SignUp = () => {
                     </Grid>
                 </Grid>
 
-
                 {/* 로그인, 회원가입 버튼 */}
                 <Grid
                 // is_flex
@@ -111,8 +112,16 @@ const SignUp = () => {
                     </Grid>
                 </Grid>
             </Grid>
+
+            {/* 소셜 로그인 */}
+            <Grid>
+                <Grid>
+                    <KakaoLoginButton />
+                </Grid>
+            </Grid>
+
         </Grid>
     )
 }
 
-export default SignUp;
+export default Login;

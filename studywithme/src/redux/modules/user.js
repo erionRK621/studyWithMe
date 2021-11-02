@@ -1,6 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 import { apis } from "../../lib/axios";
 import { setCookie, deleteCookie, getCookie } from "../../shared/cookie";
 
@@ -46,19 +47,18 @@ const signUpMiddleware = (user) => {
 
 const loginMiddleware = (user) => {
   return (dispatch, { history }) => {
-    console.log("로그인 미들웨어 실행!");
+    console.log("loginMiddleware 실행!");
     console.log("user", user);
     // 로그인 API 실행
     apis
       .logInAxios(user)
       .then((response) => {
-        console.log(response.data);
-        // SET_USER 디스패치
+        // console.log(response.data.token);
+        console.log(jwt_decode(response.data.token));
       })
       .catch((error) => {
         console.log(error.response);
       });
-
   };
 };
 
@@ -90,6 +90,34 @@ const checkNicknameMiddleware = (nickname) => {
     // CHECK_NICKNAME 디스패치
   };
 };
+
+
+const kakaoLoginMiddleware = (code) => {
+  return function (dispatch, getState, { history }) {
+    console.log("kakaoLoginMiddleware 실행");
+    axios({
+      method: "GET",
+      url: `http://3.34.44.44/api/kakao/callback?code=${code}`,
+    })
+      .then((response) => {
+        console.log("kakaoLoginMiddleware 응답받기 성공");
+        console.log(response.data.token);
+        console.log("decoded", jwt_decode(response.data.token));
+
+        // 프론트 서버 열면 구현할 부분들:
+        // 토큰 받아서
+        // session에 저장함
+        // 로그인 됐으니 메인페이지로 이동
+      })
+      .catch((error) => {
+        console.log("카카오 로그인 에러", error);
+        window.alert("로그인에 실패했습니다.");
+        // history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
+      })
+  }
+}
+
+
 
 // REDUCER
 export default handleActions(
@@ -132,4 +160,5 @@ export const actionCreators = {
   checkEmailMiddleware,
   checkNickname,
   checkNicknameMiddleware,
+  kakaoLoginMiddleware,
 }

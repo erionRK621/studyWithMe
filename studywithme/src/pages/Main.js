@@ -7,6 +7,7 @@ import Grid from "../elements/Grid";
 import Image from "../elements/Image";
 import Slide from "../components/Slide";
 import Post from "../components/Post";
+import LikeSlide from "../components/LikeSlide";
 
 const Main = (props) => {
   const dispatch = useDispatch();
@@ -20,24 +21,32 @@ const Main = (props) => {
 
   return (
     <React.Fragment>
-      <div>
-        <Slide></Slide>
-      </div>
+      <Wrap>
+        <div>
+          <LikeSlide></LikeSlide>
+        </div>
+        <div>
+          <Slide></Slide>
+        </div>
 
-      <Grid>
-        <GridWrap>
-          {post_list.map((p, idx) => {
-            return (
-              <Grid key={idx}>
-                <Post key={idx} {...p} />
-              </Grid>
-            );
-          })}
-        </GridWrap>
-      </Grid>
+        <Grid>
+          <GridWrap>
+            {post_list.map((p, idx) => {
+              return (
+                <Grid key={idx}>
+                  <Post key={idx} {...p} />
+                </Grid>
+              );
+            })}
+          </GridWrap>
+        </Grid>
+      </Wrap>
     </React.Fragment>
   );
 };
+const Wrap = styled.div`
+  width: 100%;
+`;
 
 const GridWrap = styled.div`
   max-width: 1300px;

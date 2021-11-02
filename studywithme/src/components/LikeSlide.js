@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import SlideContent from "./SliderContent";
 import Post from "./Post";
 
-const Slide = (props) => {
+const LikeSlide = (props) => {
   const post_list = useSelector((state) => state.post.list);
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
@@ -45,7 +45,7 @@ const Slide = (props) => {
 
   return (
     <React.Fragment>
-      <div>유저들의 게시물</div>
+      <div>인기게시글</div>
       <Wrap>
         <StyledSlider {...settings}>
           {post_list.map((p, idx) => {
@@ -63,7 +63,7 @@ const Slide = (props) => {
 
 const Wrap = styled.div`
   width: 100%;
-  height: 450px;
+  height: 550px;
 `;
 
 const PostWrap = styled.div`
@@ -93,4 +93,4 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
-export default Slide;
+export default LikeSlide;
