@@ -7,46 +7,46 @@ import Grid from "../elements/Grid";
 import Image from "../elements/Image";
 import Slide from "../components/Slide";
 import Post from "../components/Post";
+import LikeSlide from "../components/LikeSlide";
 
 const Main = (props) => {
   const dispatch = useDispatch();
   const { history } = props;
-
-  //   const post_list = useSelector((state) => state.post.list);
+  const post_list = useSelector((state) => state.post.list);
+  console.log(post_list);
 
   useEffect(() => {
-    dispatch(postCreators.getPost());
+    dispatch(postCreators.getPostDB());
   }, []);
 
   return (
     <React.Fragment>
-      <div>
-        <Slide></Slide>
-      </div>
-      <Image shape="main" />
-      <Grid>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-        <GridWrap>
-          <Post />
-        </GridWrap>
-      </Grid>
+      <Wrap>
+        <div>
+          <LikeSlide></LikeSlide>
+        </div>
+        <div>
+          <Slide></Slide>
+        </div>
+
+        <Grid>
+          <GridWrap>
+            {post_list.map((p, idx) => {
+              return (
+                <Grid key={idx}>
+                  <Post key={idx} {...p} />
+                </Grid>
+              );
+            })}
+          </GridWrap>
+        </Grid>
+      </Wrap>
     </React.Fragment>
   );
 };
+const Wrap = styled.div`
+  width: 100%;
+`;
 
 const GridWrap = styled.div`
   max-width: 1300px;

@@ -26,28 +26,69 @@ const initialState = {
 
 //게시글하나에 들어가야할 기본내용
 const initialPost = {
-  body: {
-    imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
-    title: "제목",
-    categorySpace: "방 안",
-    categoryStudyMate: true,
-    categoryInterest: "수능",
-    imageContent:
-      "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
-    textContent: "String",
-    youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
-  },
+  body: [
+    {
+      imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
+      title: "제목",
+      categorySpace: "방 안",
+      categoryStudyMate: true,
+      categoryInterest: "수능",
+      imageContent:
+        "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
+      textContent: "String",
+      youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
+    },
+  ],
 };
 
-// // //미들웨어
+// //미들웨어
+//데스크테리어 포스트 가져오기
+const getPostDB = () => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getPost()
+      .then((res) => {
+        // console.log(res.data.posts);
+        dispatch(getPost(res.data.posts));
+      })
+      .catch((err) => {
+        //요청이 정상적으로 안됬을때 수행
+        console.log(err, "에러");
+      });
+  };
+};
+
+const getFilterPostDB = (queryString) => {
+  return function (dispatch, getState, { history }) {
+    console.log(queryString);
+    apis
+      .getFilterPost(queryString)
+      .then((res) => {
+        const post_list = res.data.posts;
+        dispatch(getPost(post_list));
+        history.push(`list?searchMode=filter${queryString?queryString:""}`);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
 
 const addPostDB = (formData) => {
-  return function (dispatch, getState, {history}) {
-    apis.addPost(formData).then((res) => {
-      console.log(decodeURIComponent(res.data.post.encodedHTML));
-    })
-  }
-}
+  return function (dispatch, getState, { history }) {
+    apis
+      .addPost(formData)
+      .then((res) => {
+        // console.log(decodeURIComponent(res.data.post.encodedHTML));
+        // console.log(res.data.post.encodedHTML);
+        console.log(res.data.post);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  };
+};
+
 // //데스크테리어 포스트 가져오기
 // const getPostDB = () => {
 //   return function (dispatch, getState, { history }) {
@@ -71,7 +112,6 @@ export default handleActions(
     [GET_POST]: (state, action) =>
       produce(state, (draft) => {
         // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
-        console.log(action.payload);
         draft.list = action.payload.post_list;
       }),
 
@@ -102,8 +142,9 @@ const actionCreators = {
   getPost,
   editPost,
   deletePost,
+  getPostDB,
+  getFilterPostDB,
   addPostDB,
-  //getPostDB,
 };
 
 export { actionCreators };

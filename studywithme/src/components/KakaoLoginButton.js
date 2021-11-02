@@ -20,8 +20,6 @@ const onClickKakaoLogin = () => {
     })
 
 
-
-
     Kakao.Auth.authorize({
         redirectUri: "http://localhost:3000/api/kakao/callback"
     })

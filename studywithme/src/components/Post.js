@@ -9,26 +9,31 @@ import Image from "../elements/Image";
 
 const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
-  console.log("포스트정보", post_list);
+  console.log("포스트의 프롭스", props);
+  console.log("포스트의 이미지", props.ImageCover);
 
   return (
     <PostContainer>
       <Grid padding="16px" bg="#ffffff" margin="8px 0px">
+        <Grid is_flex></Grid>
+        <Grid>
+          <Image
+            shape="rectangle"
+            src={`http://3.35.235.79/${props.imageCover}`}
+          />
+        </Grid>
         <Grid is_flex>
-          <Profile>
-            <Image shape="circle" src={props.avatarUrl} />
-            <Text bold>{props.userNickname}</Text>
-          </Profile>
           <Text>{props.title}</Text>
         </Grid>
-        <Grid>
-          <Image shape="rectangle" src={`${props.imageContent}`} />
-        </Grid>
         <Grid is_flex>
-          <Text>{props.textContent}</Text>
-        </Grid>
-        <Grid is_flex>
-          <Text bold>댓글2개 </Text>
+          <Profile>
+            <Text bold>{props.userId}</Text>
+            {/* <Text bold>{props.avatarUrl}</Text> */}
+          </Profile>
+          <CategoryInfo>
+            <Text bold>{props.categorySpace}</Text>
+            <Text bold>{props.categoryInterest}</Text>
+          </CategoryInfo>
         </Grid>
       </Grid>
     </PostContainer>
@@ -42,18 +47,17 @@ Post.defaultProps = {
     categorySpace: "방 안",
     categoryStudyMate: true,
     categoryInterest: "수능",
-    imageContent:
-      "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
-    textContent: "String",
-    youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
-    userNickname: "지방이",
     avatarUrl:
       "https://newsimg.hankookilbo.com/cms/articlerelease/2017/01/22/201701222050082111_1.jpg",
+    date: "2021-11-01T11:29:36.000Z",
+    contentEditor: "내용",
+    postId: 4,
+    userId: 1,
   },
 };
 const PostContainer = styled.div`
   background-color: white;
-  width: 60vw;
+  width: 80%;
   max-width: 350px;
   margin: auto;
   margin-top: 30px;
@@ -63,6 +67,9 @@ const PostContainer = styled.div`
 `;
 
 const Profile = styled.div`
+  display: flex;
+`;
+const CategoryInfo = styled.div`
   display: flex;
 `;
 
