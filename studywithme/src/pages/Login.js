@@ -88,7 +88,6 @@ const Login = () => {
                     </Grid>
                 </Grid>
 
-
                 {/* 로그인, 회원가입 버튼 */}
                 <Grid
                 // is_flex

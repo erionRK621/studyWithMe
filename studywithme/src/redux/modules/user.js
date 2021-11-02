@@ -47,19 +47,18 @@ const signUpMiddleware = (user) => {
 
 const loginMiddleware = (user) => {
   return (dispatch, { history }) => {
-    console.log("로그인 미들웨어 실행!");
+    console.log("loginMiddleware 실행!");
     console.log("user", user);
     // 로그인 API 실행
     apis
       .logInAxios(user)
       .then((response) => {
-        console.log(response.data);
-        // SET_USER 디스패치
+        // console.log(response.data.token);
+        console.log(jwt_decode(response.data.token));
       })
       .catch((error) => {
         console.log(error.response);
       });
-
   };
 };
 
