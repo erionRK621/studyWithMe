@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Image from "../elements/Image";
+import Post from "../components/Post";
 import SelectBox from "../components/SelectBox";
 const PostList = (props) => {
   const dispatch = useDispatch();
@@ -74,17 +75,9 @@ const PostList = (props) => {
       <GridWrap>
         {post_list.map((p, idx) => {
           return (
-            <div key={idx}>
-              <PostContainer>
-                <Image
-                  shape="rectangle"
-                  src={`http://3.35.235.79/${p.imageCover}`}
-                ></Image>
-                <Grid>
-                  <Text size="20px" bold>{p.title}</Text>
-                </Grid>
-              </PostContainer>
-            </div>
+            <Grid key={p.postId}>
+              <Post {...p} />
+            </Grid>
           );
         })}
       </GridWrap>
@@ -95,23 +88,19 @@ const Wrap = styled.div`
   width: 100%;
 `;
 const GridWrap = styled.div`
-  max-width: 1000px;
+  max-width: 1300px;
   margin: auto;
-  padding: 16px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   grid-gap: 40px;
 `;
-const PostContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  max-width: 350px;
-  margin: 30px auto;
-  border-radius: 5px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
-`;
+
 const FlexGrid = styled.div`
   display: flex;
+  margin: auto;
+  padding-top: 20px;
+  padding-left: 80px;
+  min-height: 30px;
+  max-width: 1300px;
 `;
 export default PostList;
