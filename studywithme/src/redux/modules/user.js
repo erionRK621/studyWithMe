@@ -1,6 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 import { apis } from "../../lib/axios";
 import { setCookie, deleteCookie, getCookie } from "../../shared/cookie";
 
@@ -91,6 +92,34 @@ const checkNicknameMiddleware = (nickname) => {
   };
 };
 
+const kakaoLoginMiddleware = (code) => {
+  return function (dispatch, getState, { history }) {
+    console.log("kakaoLoginMiddleware 실행");
+    axios({
+      method: "GET",
+      // url 확인 필요 w/ 재원 님
+      // url: `http://3.34.44.44/api/kakao/callback?code=${code}`,
+      url: `http://3.34.44.44/api/kakao/callback/abcd?code=${code}`,
+      // `http://{서버주소}?code=${code}`
+    })
+      .then((response) => {
+        console.log("kakaoLoginMiddleware 응답받기 성공");
+        console.log(response);
+
+        // 토큰 받아서
+        // session에 저장함
+        // 로그인 됐으니 메인페이지로 이동
+      })
+      .catch((error) => {
+        console.log("카카오 로그인 에러", error);
+        window.alert("로그인에 실패했습니다.");
+        // history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
+      })
+  }
+}
+
+
+
 // REDUCER
 export default handleActions(
   {
@@ -132,4 +161,5 @@ export const actionCreators = {
   checkEmailMiddleware,
   checkNickname,
   checkNicknameMiddleware,
+  kakaoLoginMiddleware,
 }

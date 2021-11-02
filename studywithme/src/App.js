@@ -12,6 +12,7 @@ import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import PostWrite from "./pages/PostWrite";
 import Header from "./shared/Header";
+import KakaoLoginRedirect from "./pages/KakaoLoginRedirect";
 
 function App() {
   // 쿠키가 있는지 확인 (getCookie)
@@ -29,6 +30,7 @@ function App() {
         <Route path="/signup" exact component={SignUp} />
         <Route path="/login" exact component={Login} />
         <Route path="/write" exact component={PostWrite} />
+        <Route path="/api/kakao/callback" exact component={KakaoLoginRedirect} />
       </ConnectedRouter>
     </div>
   );
