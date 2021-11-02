@@ -12,6 +12,7 @@ import Main from "./pages/Main";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import PostWrite from "./pages/PostWrite";
+import PostDetail from "./pages/PostDetail";
 import PostList from "./pages/PostList";
 import Header from "./shared/Header";
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" exact component={Login} />
         <Route path="/write" exact component={PostWrite} />
         <Route path="/list" exact component={PostList} />
+        <Route path="/detail/:id" exact component={PostDetail} />
       </ConnectedRouter>
     </div>
   );
