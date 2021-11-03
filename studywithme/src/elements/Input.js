@@ -5,8 +5,14 @@ import Grid from "./Grid";
 import Text from "./Text";
 
 const Input = (props) => {
-  const { label, placeholder, _onChange, type, multiLine, value, is_Submit, onSubmit, width } = props;
+  const { label, placeholder, _onChange, type, multiLine, value, is_Submit, onSubmit, width,border,borderBottom, size } = props;
 
+  const styles = {
+    width: width,
+    border : border,
+    borderBottom:borderBottom,
+    size:size,
+  };
   if (multiLine) {
     return (
       <Grid>
@@ -16,7 +22,7 @@ const Input = (props) => {
           value={value}
           placeholder={placeholder}
           onChange={_onChange}
-          width={width}
+          {...styles}
         ></ElTextarea>
       </Grid>
     );
@@ -38,14 +44,14 @@ const Input = (props) => {
                 onSubmit(e);
               }
             }}
-            width={width}
+            {...styles}
           />)
           :
           (<ElInput
             type={type}
             placeholder={placeholder}
             onChange={_onChange}
-            width={width}
+            {...styles}
           />)}
       </Grid>
     </React.Fragment>
@@ -61,22 +67,26 @@ Input.defaultProps = {
   is_Submit: false,
   onSubmit: () => { },
   _onChange: () => { },
-  width: "100%",
 };
 
 const ElTextarea = styled.textarea`
-  border: 1px solid #212121;
-  width: ${(props) => props.width};
+  border: ${(props) => props.border? props.border : "1px solid #212121"};
+  width: ${(props) => props.width? props.width : "100%"};
   padding: 12px 4px;
   box-sizing: border-box;
 `;
 
 
 const ElInput = styled.input`
-  border: 1px solid #212121;
-  width: ${(props) => props.width};
+  border: ${(props) => props.border? props.border : "1px solid #212121"};
+  ${props=> props.borderBottom ? `border-bottom:1px solid;`:null};
+  width: ${(props) => props.width? props.width : "100%"};
   padding: 12px 4px;
   box-sizing: border-box;
+  &:focus {
+    outline:none;
+  }
+  ${props=>props.size? `font-size:${props.size};` : null};
 `;
 
 export default Input;

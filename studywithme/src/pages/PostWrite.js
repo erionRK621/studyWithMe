@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import {actionCreators as postActions} from "../redux/modules/post";
+import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
 
 // import ReactHtmlParser, {
@@ -9,6 +9,7 @@ import Editor from "../components/Editor";
 //   convertNodeToElement,
 //   htmlparser2,
 // } from "react-html-parser";
+import Input from "../elements/Input";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 const PostWrite = () => {
@@ -18,15 +19,13 @@ const PostWrite = () => {
   const [spaceVal, setSpaceVal] = useState("home");
   const [studyMateVal, setStudyMateVal] = useState("solo");
   const [interestVal, setInterestVal] = useState("dev");
-  const [title, setTitle]=useState("");
-  const [image, setImage]=useState("");
-
+  const [title, setTitle] = useState("");
+  const [image, setImage] = useState("");
 
   let formData = new FormData();
 
   // 커버 이미지 로드
   const selectFile = (e) => {
-
     //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
     const request = { imageCover: e.target.files[0] };
     const file = e.target.files[0];
@@ -37,17 +36,17 @@ const PostWrite = () => {
       formData.append(entry[0], entry[1]);
     }
     const reader = new FileReader();
-    
+
     // 미리보기를 위해 file을 읽어온다
     reader.readAsDataURL(file);
-    
+
     //file이 load 된 후
-    reader.onloadend = () => { 
-      const imagePreview = reader.result; 
+    reader.onloadend = () => {
+      const imagePreview = reader.result;
       //base64로 된 이미지를 가져온다(string형태)
       setPreview(imagePreview);
     };
-}
+  };
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
@@ -67,35 +66,62 @@ const PostWrite = () => {
 
   const space = (e) => {
     setSpaceVal(e.target.value);
-  }
+  };
   const studyMate = (e) => {
     setStudyMateVal(e.target.value);
-  }
+  };
   const interest = (e) => {
     setInterestVal(e.target.value);
-  }
+  };
 
-  const titleChange=(e) => {
+  const titleChange = (e) => {
     setTitle(e.target.value);
-  }
+  };
   return (
-    <FlexGrid direction="column">
-      <div style = {{height:"100px"}}></div>
-      <Upload _onChange={selectFile}/>
-      <img src = {preview} alt=""/>
-      <p>title : <input type="text" onChange={titleChange} value={title}/></p>
-      <p>공간 : <SelectBox category = "space" _onChange={space} _value = {spaceVal}/></p>
-      <p>형태 : <SelectBox category = "studyMate" _onChange={studyMate} _value = {studyMateVal}/></p>
-      <p>분야 : <SelectBox category = "interest" _onChange={interest} _value = {interestVal}/></p>
-      <Editor getContent={getContent} />
-      <button onClick={posting}>작성</button>
-    </FlexGrid>
+    <>
+      <ImageCover src={preview} alt="" />
+      <Upload _onChange={selectFile} />
+      <FlexGrid direction="column" justify="space-evenly">
+        <Input
+          _onChange={titleChange}
+          value={title}
+          borderBottom
+          border="0px"
+          placeholder="제목을 입력해주세요"
+          size="20px"
+        />
+        <FlexGrid margin="20px 0px">
+          <SelectBox category="space" _onChange={space} _value={spaceVal} />
+          <SelectBox
+            category="studyMate"
+            _onChange={studyMate}
+            _value={studyMateVal}
+          />
+          <SelectBox
+            category="interest"
+            _onChange={interest}
+            _value={interestVal}
+          />
+        </FlexGrid>
+        <Editor getContent={getContent} />
+        <button onClick={posting}>작성</button>
+      </FlexGrid>
+    </>
   );
 };
 const FlexGrid = styled.div`
   display: flex;
   max-width: 750px;
-  margin : auto;
+  margin: ${(props) => (props.margin ? props.margin : "auto")};
   ${(props) => (props.direction ? `flex-direction:${props.direction};` : null)};
-  `;
+`;
+
+const ImageCover = styled.div`
+  position: relative;
+  overflow: hidden;
+  height: calc(100vh - 350px);
+  background-color: #eeeeee;
+  background-image: url(${(props) => props.src});
+  background-size: cover;
+`;
 export default PostWrite;
