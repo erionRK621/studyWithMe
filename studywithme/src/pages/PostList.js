@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { actionCreators as postCreators } from "../redux/modules/post";
+import { actionCreators as postActions } from "../redux/modules/post";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
@@ -55,7 +55,7 @@ const PostList = (props) => {
     }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
       studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
     }`;
-    dispatch(postCreators.getFilterPostDB(setQueryString));
+    dispatch(postActions.getFilterPostDB(setQueryString));
   }, [interestVal, spaceVal, studyMateVal]);
 
   return (

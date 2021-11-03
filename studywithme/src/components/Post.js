@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postCreators } from "../redux/modules/post";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
@@ -9,8 +9,8 @@ import Image from "../elements/Image";
 
 const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
-  console.log("포스트의 프롭스", props);
-  console.log("포스트의 이미지", props.ImageCover);
+  // console.log("포스트의 프롭스", props);
+  // console.log("포스트의 이미지", props.ImageCover);
 
   return (
     <PostContainer>
