@@ -10,13 +10,13 @@ import styled from "styled-components";
 import Image from "../elements/Image";
 import Button from "../elements/Button";
 import Text from "../elements/Text";
-// "https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
 const PostDetail = (props) => {
   const postId = props.match.params.id;
   const dispatch = useDispatch();
   const post = useSelector((state) => state.post.detail);
-  const imageCover = "http://3.35.235.79/" + post.imageCover;
+  const imageCover = post.imageCover && "http://3.35.235.79/" + post.imageCover;
   const content = ReactHtmlParser(post.contentEditor);
+  // const content = post.contentEditor;
 
   const onClickLike = () => {
     console.log("좋아요 버튼 클릭");
@@ -33,8 +33,9 @@ const PostDetail = (props) => {
   useEffect(() => {
     dispatch(postActions.getDetailPostDB(postId));
   }, []);
+
   return (
-    <React.Fragment>
+    <div className="ck-content">
       <ImageCover src={imageCover} />
       <FlexGrid direction="column" margin="40px auto">
         <H1>{post.title}</H1>
@@ -84,7 +85,7 @@ const PostDetail = (props) => {
           </FlexGrid>
         </FlexGrid>
 
-        <FlexGrid margin="40px 0px">
+        <ContentGrid>
           {/* CKEditor의 콘텐츠로 대체 예정 */}
           {/* "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -94,7 +95,7 @@ const PostDetail = (props) => {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum." */}
           {content}
-        </FlexGrid>
+        </ContentGrid>
 
         <FlexGrid justify="center">
           <Button
@@ -117,7 +118,7 @@ const PostDetail = (props) => {
           />
         </FlexGrid>
       </FlexGrid>
-    </React.Fragment>
+    </div>
   );
 };
 
@@ -143,4 +144,11 @@ const FlexGrid = styled.div`
   ${(props) => (props.justify ? `justify-content:${props.justify};` : null)}
   ${(props) => (props.padding ? `padding:${props.padding};` : null)}
 `;
+
+const ContentGrid = styled.div`
+  p {
+    word-break:break-all;
+  }
+`;
+
 export default PostDetail;

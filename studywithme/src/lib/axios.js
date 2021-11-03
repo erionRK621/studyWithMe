@@ -2,19 +2,19 @@ import axios from "axios";
 import { getCookie } from "../shared/cookie";
 
 const instance = axios.create({
-  baseURL: "http://3.34.44.44",
-  // baseURL: "http://3.35.235.79",
+  // baseURL: "http://3.34.44.44",
+  baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    Authorization: `Bearer ${sessionStorage.getItem("user")}`,
+    // Authorization: `Bearer ${sessionStorage.getItem("user")}`,
   },
   withCredentials: true,
 });
 
 const formInstance = axios.create({
-  baseURL: "http://3.34.44.44",
-  // baseURL: "http://3.35.235.79",
+  // baseURL: "http://3.34.44.44",
+  baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "multipart/form-data",
     accept: "application/json",
