@@ -53,25 +53,28 @@ const loginMiddleware = (user) => {
     apis
       .logInAxios(user)
       .then((response) => {
-        // console.log(response.data.token);
-        console.log(jwt_decode(response.data.token));
+        const { token } = response.data;
+
+        // 기존 user 토큰이 쿠키에 존재하면, 삭제
+        if (getCookie("user")) {
+          deleteCookie("user");
+          console.log("쿠키에 저장된 기존 user 토큰 삭제");
+        }
+
+        // 쿠키에 user 토큰 저장
+        setCookie("user", token);
+
+        // reducer에서 SET_USER 실행
+        dispatch(setUser(token));
+
+        // 로그인이 완료됐으므로 메인페이지로 이동
+        window.location.href = "/";
       })
       .catch((error) => {
         console.log(error.response);
       });
   };
 };
-
-const logOutMiddleware = () => {
-  return (dispatch, { history }) => {
-    // 로그아웃 API 실행
-    // logOut 디스패치
-    // 페이지 새로고침
-
-    // 실패할 경우
-    // 실패 메시지 띄우기
-  }
-}
 
 const checkEmailMiddleware = (email) => {
   return (dispatch, { history }) => {
@@ -125,16 +128,17 @@ export default handleActions(
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
         console.log("SET_USER 리듀서 실행!");
-        // 토큰 jwt_decode 실행
-        // 유저 정보  = decode된 토큰
-        // 로그인 상태 true
+        const decodedToken = jwt_decode(action.payload.token)
+        draft.user = decodedToken;
+        draft.isLoggedIn = true;
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
         console.log("LOG_OUT 리듀서 실행!");
-        // deleteCookie("user");
-        // 유저 정보 null
-        // 로그인 상태 false
+        deleteCookie("user");
+        draft.user = null;
+        draft.isLoggedIn = false;
+        window.location.reload();
       }),
     [CHECK_EMAIL]: (state, action) =>
       produce(state, (draft) => {
@@ -155,7 +159,6 @@ export const actionCreators = {
   logOut,
   signUpMiddleware,
   loginMiddleware,
-  logOutMiddleware,
   checkEmail,
   checkEmailMiddleware,
   checkNickname,

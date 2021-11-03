@@ -30,7 +30,7 @@ const PostDetail = (props) => {
           <FlexGrid align="center">
             <Image />
             <span>
-              allnighter1
+              nerd5555
             </span>
             <span
               style={{

@@ -1,11 +1,32 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { history } from "../redux/configStore";
+
+// Redux Modules
+import { actionCreators as userActions } from "../redux/modules/user";
+
+// Design-related
 import styled from "styled-components";
 import { FaUserAlt, FaBell } from "react-icons/fa";
 import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 
+// Components
+import Text from "../elements/Text";
+import Button from "../elements/Button";
+
+
 export const Header = () => {
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user.user);
+
   const [menuState, setMenuState] = useState(false);
+
+  const onClickLogOut = () => {
+    console.log("로그아웃 버튼 클릭");
+    dispatch(userActions.logOut());
+  };
 
   const menuHandler = () => {
     if (menuState === false) {
@@ -15,40 +36,64 @@ export const Header = () => {
     }
   };
 
-  return (
-    <Navbar>
-      <NavbarLogo>
-        <IMG />
-      </NavbarLogo>
+  // 로그인된 상태의 헤더
+  if (user) {
+    return (
+      <Navbar>
+        <NavbarLogo>
+          <IMG />
+        </NavbarLogo>
 
-      <NavbarMenu menuState={menuState}>
-        <List>홈</List>
-        <List>게시글 모아보기</List>
-      </NavbarMenu>
-      <NavbarIcon menuState={menuState}>
-        <InfoList>
-          <FaUserAlt cursor="pointer" size="1.7em" color="grey" />
-        </InfoList>
-        <InfoList>
-          <BiLogIn cursor="pointer" size="1.7em" color="grey" />
-        </InfoList>
-        <InfoList>
-          <BiLogOut cursor="pointer" size="1.7em" color="grey" />
-        </InfoList>
-        <InfoList>
-          <FaBell cursor="pointer" size="1.7em" color="grey" />
-        </InfoList>
-      </NavbarIcon>
-      <Hamberger href="#">
-        <GiHamburgerMenu
-          cursor="pointer"
-          size="1.7em"
-          color="grey"
-          onClick={menuHandler}
-        />
-      </Hamberger>
-    </Navbar>
-  );
+        <NavbarMenu menuState={menuState}>
+          <List>홈</List>
+          <List>게시글 모아보기</List>
+        </NavbarMenu>
+        <NavbarIcon menuState={menuState}>
+          <InfoList>
+            <FaUserAlt cursor="pointer" size="1.7em" color="grey" />
+          </InfoList>
+          <InfoList>
+            <BiLogIn cursor="pointer" size="1.7em" color="grey" />
+          </InfoList>
+          <InfoList
+            onClick={onClickLogOut}
+          >
+            <BiLogOut cursor="pointer" size="1.7em" color="grey" />
+          </InfoList>
+          <InfoList>
+            <FaBell cursor="pointer" size="1.7em" color="grey" />
+          </InfoList>
+        </NavbarIcon>
+        <Hamberger href="#">
+          <GiHamburgerMenu
+            cursor="pointer"
+            size="1.7em"
+            color="grey"
+            onClick={menuHandler}
+          />
+        </Hamberger>
+      </Navbar>
+    );
+  }
+
+  // 로그인 안 된 상태의 헤더
+  else {
+    return (
+      <Navbar>
+        <Text
+          color="white"
+        >
+          로그인 안 됨
+        </Text>
+        <Button
+          _onClick={() => { history.push("/login") }}
+        >
+          로그인
+        </Button>
+      </Navbar>
+    );
+  }
+
 };
 
 const Navbar = styled.div`
