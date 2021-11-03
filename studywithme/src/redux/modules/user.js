@@ -37,6 +37,7 @@ const signUpMiddleware = (user) => {
     apis
       .signUpAxios(user)
       .then((response) => {
+        console.log(response);
         console.log(response.data);
       })
       .catch((error) => {
@@ -53,6 +54,7 @@ const loginMiddleware = (user) => {
     apis
       .logInAxios(user)
       .then((response) => {
+        console.log(response);
         const { token } = response.data;
 
         // 기존 user 토큰이 쿠키에 존재하면, 삭제

@@ -13,7 +13,7 @@ const DELETE_POST = "DELETE_POST";
 //타입이 GET_POST인 오브젝트를 반환해주는 액션으로
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const setPost = createAction(SET_POST, (post)=>({post}))
+const setPost = createAction(SET_POST, (post) => ({ post }))
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 
@@ -132,7 +132,7 @@ export default handleActions(
         // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
         draft.list = action.payload.post_list;
       }),
-      [SET_POST]: (state, action) =>
+    [SET_POST]: (state, action) =>
       produce(state, (draft) => {
         draft.detail = action.payload.post;
       }),

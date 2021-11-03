@@ -2,19 +2,19 @@ import axios from "axios";
 import { getCookie } from "../shared/cookie";
 
 const instance = axios.create({
-  // baseURL: "http://3.34.44.44",
-  baseURL: "http://3.35.235.79",
+  baseURL: "http://3.34.44.44",
+  // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    Authorization: `Bearer ${sessionStorage.getItem("user")}`,
+    Authorization: `Bearer ${getCookie("user")}`,
   },
   withCredentials: true,
 });
 
 const formInstance = axios.create({
-  // baseURL: "http://3.34.44.44",
-  baseURL: "http://3.35.235.79",
+  baseURL: "http://3.34.44.44",
+  // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "multipart/form-data",
     accept: "application/json",
@@ -37,9 +37,6 @@ export const apis = {
   // 로그인
   logInAxios: (user) => instance.post("/api/users/login", user),
 
-  // 사용자 인증
-  isMeAxios: () => instance.get("/api/users/isme"),
-
   // 회원탈퇴
   deleteAccountAxios: () => instance.post("/api/users/withdrawal"),
 
@@ -48,4 +45,10 @@ export const apis = {
   getFilterPost: (queryString) => instance.get(`/api/posts?searchMode=filter${queryString}`),
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
+
+  // 북마크 추가
+  addBookmarkAxios: (postId) => instance.post(`api/bookmarks/${postId}`),
+
+  // 북마크 취소
+  deleteBookmarkAxios: (postId) => instance.delete(`api/bookmarks/${postId}`),
 };

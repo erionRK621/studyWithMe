@@ -12,12 +12,15 @@ import Button from "../elements/Button";
 import Text from "../elements/Text";
 // "https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
 const PostDetail = (props) => {
-  const postId = props.match.params.id;
   const dispatch = useDispatch();
+
+  const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
-  console.log(post);
+  // console.log(post);
   const imageCover = "http://3.35.235.79/" + post.imageCover;
   const content = ReactHtmlParser(post.contentEditor);
+
+  const [isBookmarked, setIsBookmarked] = React.useState(false);
 
   const onClickLike = () => {
     console.log("좋아요 버튼 클릭");
@@ -25,6 +28,15 @@ const PostDetail = (props) => {
 
   const onClickBookmark = () => {
     console.log("북마크 버튼 클릭");
+    if (isBookmarked === false) {
+      setIsBookmarked(true);
+      console.log("isBookmarked", isBookmarked);
+      // dispatch
+    }
+    else {
+      setIsBookmarked(false);
+      console.log("isBookmarked", isBookmarked);
+    }
   };
 
   const onClickShare = () => {
@@ -32,6 +44,7 @@ const PostDetail = (props) => {
   };
 
   useEffect(() => {
+    console.log("상세페이지 로딩");
     dispatch(postActions.getDetailPostDB(postId));
   }, []);
   return (
