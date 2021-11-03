@@ -33,6 +33,8 @@ import Undo from "@ckeditor/ckeditor5-undo/src/undo";
 import Image from "@ckeditor/ckeditor5-image/src/image";
 import ImageUpload from "@ckeditor/ckeditor5-image/src/imageupload";
 import ImageResize from "@ckeditor/ckeditor5-image/src/imageresize";
+import ImageResizeEditing from "@ckeditor/ckeditor5-image/src/imageresize/imageresizeediting";
+import ImageResizeHandles from "@ckeditor/ckeditor5-image/src/imageresize/imageresizehandles";
 
 import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
 import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
@@ -40,12 +42,6 @@ import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
 import AutoImage from "@ckeditor/ckeditor5-image/src/autoimage";
 
 // import Swal from "sweetalert2";
-
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2,
-} from "react-html-parser";
 
 import styled from "styled-components";
 
@@ -77,12 +73,12 @@ class MyUploadAdapter {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
               const response = await axios.post(
-                "http://3.34.44.44/api/posts/ckUpload",
+                "http://3.35.235.79/api/ckUpload",
                 formData,
                 config
               );
               if (response.statusText === "OK") {
-                const downloadURL = `http://3.34.44.44/${response.data.path}`;
+                const downloadURL = `http://3.35.235.79/${response.data.path}`;
                 console.log(downloadURL);
                 resolve({
                   default: downloadURL,
@@ -123,6 +119,8 @@ const editorConfiguration = {
     ImageToolbar,
     ImageCaption,
     ImageStyle,
+    ImageResizeEditing,
+    ImageResizeHandles,
     ListStyle,
     Autoformat,
     TodoList,
@@ -162,16 +160,36 @@ const editorConfiguration = {
   ],
 
   image: {
+    resizeUnit:'%',
     toolbar: [
-      "imageStyle:inline",
-      "imageStyle:block",
-      "imageStyle:side",
-      "|",
-      "toggleImageCaption",
       "imageTextAlternative",
+      "|",
+      "imageStyle:full",
+      "imageStyle:side",
+      "imageStyle:alignCenter",
+      "imageStyle:alignLeft",
+      "imageStyle:alignRight",
+      "resizeImage",
     ],
+    resizeOptions: [
+      {
+        name: "resizeImage:original",
+        value: null,
+        icon: "original",
+      },
+      {
+        name: "resizeImage:50",
+        value: "50",
+        icon: "medium",
+      },
+      {
+        name: "resizeImage:75",
+        value: "75",
+        icon: "large",
+      },
+    ],
+    styles: ["full", "alignLeft", "alignRight", "side", "alignCenter"],
   },
-
   table: {
     defaultHeadings: { rows: 1, columns: 1 },
     contentToolbar: ["tableColumn", "tableRow", "mergeTableCells"],
@@ -218,7 +236,7 @@ const Editor = ({ getContent }) => {
     setData(editor.getData());
   };
   return (
-    <>
+    <div className="ck-content">
       <StyledEditor height="500px">
         <CKEditor
           editor={ClassicEditor}
@@ -226,9 +244,7 @@ const Editor = ({ getContent }) => {
           config={editorConfiguration}
           onChange={(event, editor) => {
             handleChange(event, editor);
-            const data = editor.getData();
             getContent(data);
-            console.log(data);
           }}
           onReady={(editor) => {
             if (editor?.plugins) {
@@ -241,7 +257,7 @@ const Editor = ({ getContent }) => {
           }}
         />
       </StyledEditor>
-    </>
+    </div>
   );
 };
 
