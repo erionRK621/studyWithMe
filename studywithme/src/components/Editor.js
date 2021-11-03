@@ -77,12 +77,12 @@ class MyUploadAdapter {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
               const response = await axios.post(
-                "http://3.35.235.79/api/ckUpload",
+                "http://3.34.44.44/api/posts/ckUpload",
                 formData,
                 config
               );
               if (response.statusText === "OK") {
-                const downloadURL = `http://3.35.235.79/${response.data.path}`;
+                const downloadURL = `http://3.34.44.44/${response.data.path}`;
                 console.log(downloadURL);
                 resolve({
                   default: downloadURL,
