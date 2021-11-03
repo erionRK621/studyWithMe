@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import {actionCreators as postActions} from "../redux/modules/post";
 import Editor from "../components/Editor";
+
 // import ReactHtmlParser, {
 //   processNodes,
 //   convertNodeToElement,
@@ -77,7 +79,7 @@ const PostWrite = () => {
     setTitle(e.target.value);
   }
   return (
-    <div>
+    <FlexGrid direction="column">
       <div style = {{height:"100px"}}></div>
       <Upload _onChange={selectFile}/>
       <img src = {preview} alt=""/>
@@ -87,8 +89,13 @@ const PostWrite = () => {
       <p>분야 : <SelectBox category = "interest" _onChange={interest} _value = {interestVal}/></p>
       <Editor getContent={getContent} />
       <button onClick={posting}>작성</button>
-    </div>
+    </FlexGrid>
   );
 };
-
+const FlexGrid = styled.div`
+  display: flex;
+  max-width: 750px;
+  margin : auto;
+  ${(props) => (props.direction ? `flex-direction:${props.direction};` : null)};
+  `;
 export default PostWrite;
