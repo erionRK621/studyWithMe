@@ -14,7 +14,8 @@ import Text from "../elements/Text";
 const PostDetail = (props) => {
   const postId = props.match.params.id;
   const dispatch = useDispatch();
-  const post = useSelector((state) => state.post.list);
+  const post = useSelector((state) => state.post.detail);
+  console.log(post);
   const imageCover = "http://3.35.235.79/" + post.imageCover;
   const content = ReactHtmlParser(post.contentEditor);
 
