@@ -12,11 +12,11 @@ const LikeSlide = (props) => {
   const post_list = useSelector((state) => state.post.list);
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
-    dots: true, // 점은 안 보이게
+    dots: true, // 점보이게 할거니?
     infinite: true, // 무한으로 즐기게
     speed: 500,
-    slidesToShow: 3, //1장씩 보이게 해주세요
-    slidesToScroll: 1, //1장씩 넘어가세요
+    slidesToShow: 3, //한번에 몇 장씩 보이게 할거니?
+    slidesToScroll: 1, //몇 장씩 넘어갈래?
     centerMode: true,
     centerPadding: "0px",
 
@@ -43,7 +43,6 @@ const LikeSlide = (props) => {
     ],
   };
 
-  //SlideContent를 따로 빼지말고 직접적으로 내용 채워주면 될 듯
   return (
     <React.Fragment>
       <div>인기게시글</div>

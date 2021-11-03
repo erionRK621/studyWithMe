@@ -5,6 +5,7 @@ import { apis } from "../../lib/axios";
 
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
 const GET_POST = "GET_POST";
+const SET_POST = "SET_POST";
 const EDIT_POST = "EDIT_POST";
 const DELETE_POST = "DELETE_POST";
 
@@ -12,6 +13,7 @@ const DELETE_POST = "DELETE_POST";
 //타입이 GET_POST인 오브젝트를 반환해주는 액션으로
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
+const setPost = createAction(SET_POST, (post)=>({post}))
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 
@@ -20,6 +22,7 @@ const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 //is_loading 로딩중이니?
 const initialState = {
   list: [],
+  detail: [],
   paging: { start: null, next: null, size: 3 },
   is_loading: false,
 };
@@ -58,6 +61,21 @@ const getPostDB = () => {
   };
 };
 
+// 상세페이지 포스트 가져오기
+const getDetailPostDB = (postId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getDetailPost(postId)
+      .then((res) => {
+        // dispatch(getPost(res.data.post));
+        dispatch(setPost(res.data.post));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 const getFilterPostDB = (queryString) => {
   return function (dispatch, getState, { history }) {
     console.log(queryString);
@@ -66,7 +84,7 @@ const getFilterPostDB = (queryString) => {
       .then((res) => {
         const post_list = res.data.posts;
         dispatch(getPost(post_list));
-        history.push(`list?searchMode=filter${queryString?queryString:""}`);
+        history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
       .catch((err) => {
         console.log(err);
@@ -114,7 +132,10 @@ export default handleActions(
         // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
         draft.list = action.payload.post_list;
       }),
-
+      [SET_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.detail = action.payload.post;
+      }),
     [EDIT_POST]: (state, action) =>
       produce(state, (draft) => {
         // 배열의 몇 번째에 있는 지 찾습니다.
@@ -144,6 +165,7 @@ const actionCreators = {
   deletePost,
   getPostDB,
   getFilterPostDB,
+  getDetailPostDB,
   addPostDB,
 };
 
