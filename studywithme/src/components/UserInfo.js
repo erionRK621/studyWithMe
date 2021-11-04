@@ -13,7 +13,7 @@ const UserInfo = (props) => {
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userPic = "http://3.35.235.79/" + userInfo.avatarUrl;
+  const userPic = "http://3.34.44.44/" + userInfo.avatarUrl;
 
   console.log("user정보받아왔니", userInfo);
 

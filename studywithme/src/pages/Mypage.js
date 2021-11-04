@@ -10,13 +10,15 @@ import UserInfo from "../components/UserInfo";
 
 const Mypage = (props) => {
   const [bookMarkState, setBookMarkState] = useState(false);
-
+  console.log(bookMarkState);
   const showMyPost = () => {
     setBookMarkState(false);
+    console.log("내가쓴게시물실행");
   };
 
   const showBookMark = () => {
     setBookMarkState(true);
+    console.log("북마크한게시물실행");
   };
 
   return (

@@ -1,21 +1,25 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/post";
+import { actionCreators as userActions } from "../redux/modules/mypage";
 
 import Grid from "../elements/Grid";
 import Post from "../components/Post";
 
 const BookMarks = (props) => {
-  const post_list = useSelector((state) => state.post.list);
-  // console.log("포스트의 프롭스", props);
-  // console.log("포스트의 이미지", props.ImageCover);
+  const dispatch = useDispatch();
 
+  const myBookmarkList = useSelector((state) => state.mypage.bookmarkedPosts);
+  console.log("마이북마크 받아왔니", myBookmarkList);
+
+  useEffect(() => {
+    dispatch(userActions.getBookMarkMiddleware());
+  }, []);
   return (
     <PostContainer>
       <Grid>
         <GridWrap>
-          {post_list.map((p, idx) => {
+          {myBookmarkList.map((p, idx) => {
             return (
               <Grid key={idx}>
                 <Post key={idx} {...p} />

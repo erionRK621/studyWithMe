@@ -19,13 +19,17 @@ const DELETE_BOOKMARK = "DELETE_BOOKMARK";
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const setPost = createAction(SET_POST, (post) => ({ post }))
+const setPost = createAction(SET_POST, (post) => ({ post }));
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 // 북마크
-const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({ bookmarkList }));
+const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({
+  bookmarkList,
+}));
 const addBookmark = createAction(ADD_BOOKMARK, (bookmark) => ({ bookmark }));
-const deleteBookmark = createAction(DELETE_BOOKMARK, (bookmark) => ({ bookmark }));
+const deleteBookmark = createAction(DELETE_BOOKMARK, (bookmark) => ({
+  bookmark,
+}));
 
 //초기상태값
 //paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
@@ -118,21 +122,22 @@ const addPostDB = (formData) => {
 };
 
 const loadBookmarkListMiddleware = () => {
-  console.log("loadBookmarkListMiddleware 실행");
-  // loadBookmarkListAxios API 호출
-  // response = 나의 북마크 리스트
-  // loadBookmarkList 디스패치
-}
+  return function (dispatch, getState, { history }) {
+    console.log("loadBookmarkListMiddleware 실행");
+    // loadBookmarkListAxios API 호출
+    // response = 나의 북마크 리스트
+    // loadBookmarkList 디스패치
+  };
+};
 
 const addBookmarkMiddleware = (postId) => {
-  console.log("addBookmarkMiddleware 실행");
-  console.log("postId", postId);
-  // apis
-  //   .addBookmarkAxios(postId)
-
-
-}
-
+  return function (dispatch, getState, { history }) {
+    console.log("addBookmarkMiddleware 실행");
+    console.log("postId", postId);
+    // apis
+    //   .addBookmarkAxios(postId)
+  };
+};
 
 // 리듀서
 export default handleActions(
@@ -178,7 +183,6 @@ export default handleActions(
       produce(state, (draft) => {
         console.log("ADD_BOOKMARK 리듀서 실행");
       }),
-
   },
   initialState
 );

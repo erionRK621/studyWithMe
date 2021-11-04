@@ -1,21 +1,25 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/post";
+import { actionCreators as userActions } from "../redux/modules/mypage";
 
 import Grid from "../elements/Grid";
 import Post from "../components/Post";
 
 const MyPosts = (props) => {
-  const post_list = useSelector((state) => state.post.list);
-  // console.log("포스트의 프롭스", props);
-  // console.log("포스트의 이미지", props.ImageCover);
+  const dispatch = useDispatch();
 
+  const myPostList = useSelector((state) => state.mypage.myPost);
+  console.log("마이포스트 받아왔니", myPostList);
+
+  useEffect(() => {
+    dispatch(userActions.getMyPostMiddleware());
+  }, []);
   return (
     <PostContainer>
       <Grid>
         <GridWrap>
-          {post_list.map((p, idx) => {
+          {myPostList.map((p, idx) => {
             return (
               <Grid key={idx}>
                 <Post key={idx} {...p} />

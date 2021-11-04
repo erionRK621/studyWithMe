@@ -57,9 +57,12 @@ export const apis = {
   deleteBookmarkAxios: (postId) => instance.delete(`api/bookmarks/${postId}`),
 
   //마이페이지 게시물 가져오기
-  getMyPost: (userId) => instance.get(`/api/mypage/myposts/${userId}`),
-  getBookMark: (userId) => instance.get(`/api/mypage/mybookmarks/${userId}`),
+  getMyPostAxios: (userId) => instance.get("/api/mypage/myposts", { userId }),
+  getBookMarkAxios: (userId) =>
+    instance.get("/api/mypage/mybookmarks", { userId }),
 
   //회원정보 가져오기
   getUser: (userId) => instance.get("/api/mypage/myinfo", { userId }),
+
+  //내 게시물 가져오기
 };
