@@ -15,6 +15,8 @@ import styled from "styled-components";
 import Image from "../elements/Image";
 import Button from "../elements/Button";
 import Text from "../elements/Text";
+import CommentWrite from "../components/CommentWrite";
+import CommentList from "../components/CommentList";
 
 const PostDetail = (props) => {
   const dispatch = useDispatch();
@@ -147,6 +149,8 @@ const PostDetail = (props) => {
             _onClick={onClickShare}
           />
         </FlexGrid>
+        <CommentWrite postId={postId}/>
+        <CommentList postId={postId}/>
       </FlexGrid>
     </div>
   );
