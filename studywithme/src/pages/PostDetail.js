@@ -21,9 +21,8 @@ const PostDetail = (props) => {
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
-  // const imageCover = post.imageCover && "http://3.35.235.79/" + post.imageCover;
-  // const content = ReactHtmlParser(post.contentEditor);
-  // const content = post.contentEditor;
+  const imageCover = post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
+  const content = ReactHtmlParser(post?.contentEditor);
 
   const [isBookmarked, setIsBookmarked] = React.useState(false);
 
@@ -36,6 +35,7 @@ const PostDetail = (props) => {
     if (isBookmarked === false) {
       setIsBookmarked(true);
       console.log("isBookmarked", isBookmarked);
+      console.log("postId", postId);
       dispatch(postActions.addBookmarkMiddleware(postId));
     }
     else {
@@ -48,14 +48,14 @@ const PostDetail = (props) => {
     console.log("공유 버튼 클릭");
   };
 
-  useEffect((postId) => {
+  useEffect(() => {
     console.log("상세페이지 로딩");
-    // dispatch(postActions.getDetailPostDB(postId));
-  }, [dispatch, isBookmarked]);
+    dispatch(postActions.getDetailPostDB(postId));
+  }, []);
 
   return (
     <div className="ck-content">
-      {/* <ImageCover src={imageCover} /> */}
+      <ImageCover src={imageCover} />
       <FlexGrid direction="column" margin="40px auto">
         <H1>{post?.title}</H1>
         <FlexGrid justify="space-between">
@@ -113,7 +113,7 @@ const PostDetail = (props) => {
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum." */}
-          {/* {content} */}
+          {content}
         </ContentGrid>
 
         <FlexGrid justify="center">

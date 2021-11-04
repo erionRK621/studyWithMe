@@ -74,10 +74,10 @@ const getPostDB = () => {
 // 상세페이지 포스트 가져오기
 const getDetailPostDB = (postId) => {
   return function (dispatch, getState, { history }) {
+    // console.log("getDetailPostDB 실행");
     apis
       .getDetailPost(postId)
       .then((res) => {
-        // dispatch(getPost(res.data.post));
         dispatch(setPost(res.data.post));
       })
       .catch((err) => {
@@ -117,23 +117,6 @@ const addPostDB = (formData) => {
   };
 };
 
-// //데스크테리어 포스트 가져오기
-// const getPostDB = () => {
-//   return function (dispatch, getState, { history }) {
-//     apis
-//       .getPost()
-//       .then((res) => {
-//         // console.log(res);
-//         // console.log(res.data.data.datainfo);
-//         dispatch(getPost(res.data.data.datainfo));
-//       })
-//       .catch((err) => {
-//         //요청이 정상적으로 안됬을때 수행
-//         console.log(err, "에러");
-//       });
-//   };
-// };
-
 const loadBookmarkListMiddleware = () => {
   console.log("loadBookmarkListMiddleware 실행");
   // loadBookmarkListAxios API 호출
@@ -149,7 +132,6 @@ const addBookmarkMiddleware = (postId) => {
 
 
 }
-
 
 
 // 리듀서
