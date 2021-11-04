@@ -9,7 +9,7 @@ import ReactHtmlParser, {
 
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
-
+import {history} from "../redux/configStore";
 // Components
 import styled from "styled-components";
 import Image from "../elements/Image";
@@ -66,7 +66,12 @@ const PostDetail = (props) => {
     <div className="ck-content">
       <ImageCover src={imageCover} />
       <FlexGrid direction="column" margin="40px auto">
-        <H1>{post?.title}</H1>
+        <FlexGrid>
+          <H1>{post?.title}</H1>
+          <Button _onClick={()=>{
+            history.push(`/edit/${postId}`)
+          }}>수정</Button>
+        </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
             <Image />
