@@ -64,5 +64,7 @@ export const apis = {
   //회원정보 가져오기
   getUser: (userId) => instance.get("/api/mypage/myinfo", { userId }),
 
-  //내 게시물 가져오기
+  // 댓글 가져오기
+  addCommentAxios : (postId, comment) => instance.post(`/api/posts/${postId}/comments`, comment),
+  getCommentAxios : (postId) => instance.get(`/api/posts/${postId}/comments`),
 };
