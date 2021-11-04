@@ -235,8 +235,8 @@ const editorConfiguration = {
     options: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
   },
 };
-const Editor = ({ getContent }) => {
-  const [data, setData] = useState("");
+const Editor = ({ getContent, value }) => {
+  const [data, setData] = useState(value);
   const handleChange = (event, editor) => {
     setData(editor.getData());
   };
@@ -245,7 +245,7 @@ const Editor = ({ getContent }) => {
       <StyledEditor height="500px">
         <CKEditor
           editor={ClassicEditor}
-          data="<p>Hello from CKEditor 5!</p>"
+          data={data}
           config={editorConfiguration}
           onChange={(event, editor) => {
             handleChange(event, editor);

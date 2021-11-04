@@ -65,6 +65,7 @@ const Input = (props) => {
           <ElInput
             type={type}
             placeholder={placeholder}
+            value={value}
             onChange={_onChange}
             {...styles}
           />
