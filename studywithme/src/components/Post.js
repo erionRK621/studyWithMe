@@ -19,7 +19,7 @@ const Post = (props) => {
         <Grid>
           <Image
             shape="rectangle"
-            src={`http://3.35.235.79/${props.imageCover}`}
+            src={`http://3.34.44.44/${props.imageCover}`}
           />
         </Grid>
         <Grid is_flex>

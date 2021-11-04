@@ -16,9 +16,9 @@ const PostWrite = () => {
   const dispatch = useDispatch();
   const [preview, setPreview] = useState("");
   const [content, setContent] = useState("");
-  const [spaceVal, setSpaceVal] = useState("home");
-  const [studyMateVal, setStudyMateVal] = useState("solo");
-  const [interestVal, setInterestVal] = useState("dev");
+  const [spaceVal, setSpaceVal] = useState("");
+  const [studyMateVal, setStudyMateVal] = useState("");
+  const [interestVal, setInterestVal] = useState("");
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
 

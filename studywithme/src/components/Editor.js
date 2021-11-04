@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { getCookie } from "../shared/cookie";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
@@ -66,19 +67,23 @@ class MyUploadAdapter {
 
           //통신헤더설정
           const config = {
-            header: { "content-type": "multipart/form-data" },
+            headers: {
+              "content-type": "multipart/form-data",
+              "Authorization": `Bearer ${getCookie("user")}`,
+            },
           };
 
           async function sendImg() {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
               const response = await axios.post(
-                "http://3.35.235.79/api/ckUpload",
+                "http://3.34.44.44/api/posts/ckUpload",
                 formData,
                 config
               );
+              console.log(response.data);
               if (response.statusText === "OK") {
-                const downloadURL = `http://3.35.235.79/${response.data.path}`;
+                const downloadURL = `http://3.34.44.44/${response.data.path}`;
                 console.log(downloadURL);
                 resolve({
                   default: downloadURL,
@@ -160,7 +165,7 @@ const editorConfiguration = {
   ],
 
   image: {
-    resizeUnit:'%',
+    resizeUnit: "%",
     toolbar: [
       "imageTextAlternative",
       "|",
