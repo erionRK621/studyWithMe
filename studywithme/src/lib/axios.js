@@ -48,7 +48,7 @@ export const apis = {
   addPost: (formData) => formInstance.post("api/posts", formData),
 
   // 북마크 조회
-  loadBookmarkListAxios: () => instance.post("api/mypage/mybookmarks"),
+  loadBookmarkListAxios: () => instance.get("api/mypage/mybookmarks"),
 
   // 북마크 추가
   addBookmarkAxios: (postId) => instance.post(`api/bookmarks/${postId}`),

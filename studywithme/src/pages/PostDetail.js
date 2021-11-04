@@ -21,10 +21,17 @@ const PostDetail = (props) => {
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
+
   const imageCover = post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
   const content = ReactHtmlParser(post?.contentEditor);
 
-  const [isBookmarked, setIsBookmarked] = React.useState(false);
+  const bookmarkList = useSelector((state) => state.post.bookmarkList);
+  const bookmarkedPost = bookmarkList?.find((bookmarkedPost) => bookmarkedPost?.postId.toString() === postId);
+  const [isBookmarked, setIsBookmarked] = React.useState(bookmarkedPost?.postId == postId ? true : false);
+
+  console.log("bookmarkList", bookmarkList);
+  console.log("bookmarkedPost", bookmarkedPost);
+  console.log("isBookmarked", isBookmarked);
 
   const onClickLike = () => {
     console.log("좋아요 버튼 클릭");
@@ -34,13 +41,11 @@ const PostDetail = (props) => {
     console.log("북마크 버튼 클릭");
     if (isBookmarked === false) {
       setIsBookmarked(true);
-      console.log("isBookmarked", isBookmarked);
-      console.log("postId", postId);
       dispatch(postActions.addBookmarkMiddleware(postId));
     }
     else {
       setIsBookmarked(false);
-      console.log("isBookmarked", isBookmarked);
+      dispatch(postActions.deleteBookmarkMiddleware(postId));
     }
   };
 
@@ -49,9 +54,11 @@ const PostDetail = (props) => {
   };
 
   useEffect(() => {
-    console.log("상세페이지 로딩");
     dispatch(postActions.getDetailPostDB(postId));
-  }, []);
+    console.log("상세페이지 로딩");
+    dispatch(postActions.loadBookmarkListMiddleware());
+    console.log("북마크 리스트 조회");
+  }, [dispatch, isBookmarked]);
 
   return (
     <div className="ck-content">
@@ -105,14 +112,6 @@ const PostDetail = (props) => {
         </FlexGrid>
 
         <ContentGrid>
-          {/* CKEditor의 콘텐츠로 대체 예정 */}
-          {/* "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum." */}
           {content}
         </ContentGrid>
 
