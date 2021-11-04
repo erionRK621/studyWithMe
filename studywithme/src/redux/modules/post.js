@@ -2,6 +2,7 @@ import React from "react";
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { apis } from "../../lib/axios";
+import { AiFillHeart } from "react-icons/ai";
 
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
 // 게시물
@@ -124,6 +125,16 @@ const addPostDB = (formData) => {
 const loadBookmarkListMiddleware = () => {
   return function (dispatch, getState, { history }) {
     console.log("loadBookmarkListMiddleware 실행");
+    apis
+      .loadBookmarkListAxios()
+      .then((response) => {
+        // console.log("bookmarkedList", response.data.bookmarkedPosts);
+        const bookmarkList = response.data.bookmarkedPosts;
+        dispatch(loadBookmarkList(bookmarkList));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     // loadBookmarkListAxios API 호출
     // response = 나의 북마크 리스트
     // loadBookmarkList 디스패치
@@ -133,9 +144,30 @@ const loadBookmarkListMiddleware = () => {
 const addBookmarkMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
     console.log("addBookmarkMiddleware 실행");
-    console.log("postId", postId);
-    // apis
-    //   .addBookmarkAxios(postId)
+    apis
+      .addBookmarkAxios(postId)
+      .then((response) => {
+        console.log(response.data);
+        window.alert("북마크 추가 완료");
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
+  };
+};
+
+const deleteBookmarkMiddleware = (postId) => {
+  return function (dispatch, getState, { history }) {
+    console.log("deleteBookmarkMiddleware 실행");
+    apis
+      .deleteBookmarkAxios(postId)
+      .then((response) => {
+        console.log(response.data);
+        window.alert("북마크 취소 완료");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 };
 
@@ -173,6 +205,7 @@ export default handleActions(
     [LOAD_BOOKMARK_LIST]: (state, action) =>
       produce(state, (draft) => {
         console.log("LOAD_BOOKMARK_LIST 리듀서 실행");
+        draft.bookmarkList = action.payload.bookmarkList;
         // draft.bookmarList에 나의 북마크 리스트 담기
       }),
     [ADD_BOOKMARK]: (state, action) =>
@@ -197,6 +230,7 @@ const actionCreators = {
   addPostDB,
   loadBookmarkListMiddleware,
   addBookmarkMiddleware,
+  deleteBookmarkMiddleware,
 };
 
 export { actionCreators };
