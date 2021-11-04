@@ -14,7 +14,7 @@ const PostDetail = (props) => {
   const postId = props.match.params.id;
   const dispatch = useDispatch();
   const post = useSelector((state) => state.post.detail);
-  const imageCover = post.imageCover && "http://3.35.235.79/" + post.imageCover;
+  const imageCover = post.imageCover && "http://3.34.44.44/" + post.imageCover;
   const content = ReactHtmlParser(post.contentEditor);
   // const content = post.contentEditor;
 
