@@ -11,24 +11,41 @@ const initialState = {
   isLoggedIn: false, // 로그인 상태 여부
   checkEmailMsg: "", // 이메일 중복 여부 메세지
   checkNicknameMsg: "", // 닉네임 중복 여부 메세지
+  userInfo: "",
 };
-
 
 // ACTIONS
 const SET_USER = "SET_USER";
+const GET_USER = "GET_USER";
 const LOG_OUT = "LOG_OUT";
 const CHECK_EMAIL = "CHECK_EMAIL";
 const CHECK_NICKNAME = "CHECK_NICKNAME";
 
-
 // ACTION CREATORS
 const setUser = createAction(SET_USER, (token) => ({ token }));
+const getUser = createAction(GET_USER, (userInfo) => ({ userInfo }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const checkEmail = createAction(CHECK_EMAIL, (email) => ({ email }));
-const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({ nickname }));
-
+const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({
+  nickname,
+}));
 
 // MIDDLEWARES
+const getUserDB = () => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .getUser()
+      .then((res) => {
+        console.log(res.data.userInfo[0]);
+        dispatch(getUser(res.data.userInfo[0]));
+      })
+      .catch((err) => {
+        //요청이 정상적으로 안됬을때 수행
+        console.log(err, "에러");
+      });
+  };
+};
+
 const signUpMiddleware = (user) => {
   return function ({ history }) {
     console.log("회원가입 미들웨어 실행!");
@@ -96,7 +113,6 @@ const checkNicknameMiddleware = (nickname) => {
   };
 };
 
-
 const kakaoLoginMiddleware = (code) => {
   return function (dispatch, getState, { history }) {
     console.log("kakaoLoginMiddleware 실행");
@@ -118,11 +134,9 @@ const kakaoLoginMiddleware = (code) => {
         console.log("카카오 로그인 에러", error);
         window.alert("로그인에 실패했습니다.");
         // history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
-      })
-  }
-}
-
-
+      });
+  };
+};
 
 // REDUCER
 export default handleActions(
@@ -130,9 +144,14 @@ export default handleActions(
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
         console.log("SET_USER 리듀서 실행!");
-        const decodedToken = jwt_decode(action.payload.token)
+        const decodedToken = jwt_decode(action.payload.token);
         draft.user = decodedToken;
         draft.isLoggedIn = true;
+      }),
+    [GET_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.userInfo = action.payload.userInfo;
+        console.log(action.payload.userInfo);
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
@@ -154,10 +173,11 @@ export default handleActions(
       }),
   },
   initialState
-)
+);
 
 export const actionCreators = {
   setUser,
+  getUserDB,
   logOut,
   signUpMiddleware,
   loginMiddleware,
@@ -166,4 +186,4 @@ export const actionCreators = {
   checkNickname,
   checkNicknameMiddleware,
   kakaoLoginMiddleware,
-}
+};

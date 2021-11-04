@@ -1,3 +1,4 @@
+// Packages
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactHtmlParser, {
@@ -5,18 +6,23 @@ import ReactHtmlParser, {
   convertNodeToElement,
   htmlparser2,
 } from "react-html-parser";
+
+// Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
+
+// Components
 import styled from "styled-components";
 import Image from "../elements/Image";
 import Button from "../elements/Button";
 import Text from "../elements/Text";
+
 const PostDetail = (props) => {
   const dispatch = useDispatch();
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
-  const imageCover = post.imageCover && "http://3.35.235.79/" + post.imageCover;
-  const content = ReactHtmlParser(post.contentEditor);
+  // const imageCover = post.imageCover && "http://3.35.235.79/" + post.imageCover;
+  // const content = ReactHtmlParser(post.contentEditor);
   // const content = post.contentEditor;
 
   const [isBookmarked, setIsBookmarked] = React.useState(false);
@@ -30,7 +36,7 @@ const PostDetail = (props) => {
     if (isBookmarked === false) {
       setIsBookmarked(true);
       console.log("isBookmarked", isBookmarked);
-      // dispatch
+      dispatch(postActions.addBookmarkMiddleware(postId));
     }
     else {
       setIsBookmarked(false);
@@ -42,16 +48,16 @@ const PostDetail = (props) => {
     console.log("공유 버튼 클릭");
   };
 
-  useEffect(() => {
+  useEffect((postId) => {
     console.log("상세페이지 로딩");
-    dispatch(postActions.getDetailPostDB(postId));
-  }, []);
+    // dispatch(postActions.getDetailPostDB(postId));
+  }, [dispatch, isBookmarked]);
 
   return (
     <div className="ck-content">
-      <ImageCover src={imageCover} />
+      {/* <ImageCover src={imageCover} /> */}
       <FlexGrid direction="column" margin="40px auto">
-        <H1>{post.title}</H1>
+        <H1>{post?.title}</H1>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
             <Image />
@@ -62,7 +68,7 @@ const PostDetail = (props) => {
                 color: "#cccccc",
               }}
             >
-              {post.date}
+              {post?.date}
             </span>
           </FlexGrid>
           <Button radius="30px" width="100px">
@@ -79,21 +85,21 @@ const PostDetail = (props) => {
             <Image />
             <FlexGrid direction="column" justify="center">
               <Text>관심사</Text>
-              <H1 size="10px">{post.categoryInterest}</H1>
+              <H1 size="10px">{post?.categoryInterest}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
             <Image />
             <FlexGrid direction="column" justify="center">
               <Text>공간</Text>
-              <H1 size="10px">{post.categorySpace}</H1>
+              <H1 size="10px">{post?.categorySpace}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
             <Image />
             <FlexGrid direction="column" justify="center">
               <Text>유형</Text>
-              <H1 size="10px">{post.categoryStudyMate}</H1>
+              <H1 size="10px">{post?.categoryStudyMate}</H1>
             </FlexGrid>
           </FlexGrid>
         </FlexGrid>
@@ -107,22 +113,33 @@ const PostDetail = (props) => {
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum." */}
-          {content}
+          {/* {content} */}
         </ContentGrid>
 
         <FlexGrid justify="center">
+
           <Button
             text="좋아요"
             width="60px"
             margin="20px"
             _onClick={onClickLike}
           />
-          <Button
-            text="북마크"
-            width="60px"
-            margin="20px"
-            _onClick={onClickBookmark}
-          />
+
+          {isBookmarked ?
+            <Button
+              text="북마크(YES)"
+              width="60px"
+              margin="20px"
+              _onClick={onClickBookmark}
+            /> :
+            <Button
+              text="북마크(NO)"
+              width="60px"
+              margin="20px"
+              _onClick={onClickBookmark}
+            />
+          }
+
           <Button
             text="공유"
             width="60px"

@@ -4,29 +4,39 @@ import { produce } from "immer";
 import { apis } from "../../lib/axios";
 
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
+// 게시물
 const GET_POST = "GET_POST";
 const SET_POST = "SET_POST";
 const EDIT_POST = "EDIT_POST";
 const DELETE_POST = "DELETE_POST";
+//북마크
+const LOAD_BOOKMARK_LIST = "LOAD_BOOKMARK_LIST";
+const ADD_BOOKMARK = "ADD_BOOKMARK";
+const DELETE_BOOKMARK = "DELETE_BOOKMARK";
 
 //액션생성함수
 //타입이 GET_POST인 오브젝트를 반환해주는 액션으로
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
+// 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
 const setPost = createAction(SET_POST, (post) => ({ post }))
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
+// 북마크
+const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({ bookmarkList }));
+const addBookmark = createAction(ADD_BOOKMARK, (bookmark) => ({ bookmark }));
+const deleteBookmark = createAction(DELETE_BOOKMARK, (bookmark) => ({ bookmark }));
 
 //초기상태값
 //paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
-//is_loading 로딩중이니?
+//isLoading 로딩중이니?
 const initialState = {
   list: [],
   detail: [],
   paging: { start: null, next: null, size: 3 },
-  is_loading: false,
+  isLoading: false,
+  bookmarkList: [],
 };
-
 //게시글하나에 들어가야할 기본내용
 const initialPost = {
   body: [
@@ -124,6 +134,24 @@ const addPostDB = (formData) => {
 //   };
 // };
 
+const loadBookmarkListMiddleware = () => {
+  console.log("loadBookmarkListMiddleware 실행");
+  // loadBookmarkListAxios API 호출
+  // response = 나의 북마크 리스트
+  // loadBookmarkList 디스패치
+}
+
+const addBookmarkMiddleware = (postId) => {
+  console.log("addBookmarkMiddleware 실행");
+  console.log("postId", postId);
+  // apis
+  //   .addBookmarkAxios(postId)
+
+
+}
+
+
+
 // 리듀서
 export default handleActions(
   {
@@ -155,6 +183,20 @@ export default handleActions(
         // 새롭게 바뀐 리스트를 현재의 리스트로 변경
         draft.list = new_post_list;
       }),
+    [LOAD_BOOKMARK_LIST]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("LOAD_BOOKMARK_LIST 리듀서 실행");
+        // draft.bookmarList에 나의 북마크 리스트 담기
+      }),
+    [ADD_BOOKMARK]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("ADD_BOOKMARK 리듀서 실행");
+      }),
+    [ADD_BOOKMARK]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("ADD_BOOKMARK 리듀서 실행");
+      }),
+
   },
   initialState
 );
@@ -167,6 +209,8 @@ const actionCreators = {
   getFilterPostDB,
   getDetailPostDB,
   addPostDB,
+  loadBookmarkListMiddleware,
+  addBookmarkMiddleware,
 };
 
 export { actionCreators };
