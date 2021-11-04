@@ -2,19 +2,19 @@ import axios from "axios";
 import { getCookie } from "../shared/cookie";
 
 const instance = axios.create({
-  // baseURL: "http://3.34.44.44",
-  baseURL: "http://3.35.235.79",
+  baseURL: "http://3.34.44.44",
+  // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    Authorization: `Bearer ${sessionStorage.getItem("user")}`,
+    Authorization: `Bearer ${getCookie("user")}`,
   },
   withCredentials: true,
 });
 
 const formInstance = axios.create({
-  // baseURL: "http://3.34.44.44",
-  baseURL: "http://3.35.235.79",
+  baseURL: "http://3.34.44.44",
+  // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "multipart/form-data",
     accept: "application/json",
@@ -45,7 +45,15 @@ export const apis = {
 
   //게시물 가져오기
   getPost: () => instance.get("/api/posts", {}),
-  getFilterPost: (queryString) => instance.get(`/api/posts?searchMode=filter${queryString}`),
+  getFilterPost: (queryString) =>
+    instance.get(`/api/posts?searchMode=filter${queryString}`),
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
+
+  //마이페이지 게시물 가져오기
+  getMyPost: (userId) => instance.get(`/api/mypage/myposts/${userId}`),
+  getBookMark: (userId) => instance.get(`/api/mypage/mybookmarks/${userId}`),
+
+  //회원정보 가져오기
+  getUser: (userId) => instance.get("/api/mypage/myinfo", { userId }),
 };
