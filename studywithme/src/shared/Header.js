@@ -45,14 +45,14 @@ export const Header = () => {
 
         <NavbarMenu menuState={menuState}>
           <List
-            _onClick={() => {
+            onClick={() => {
               history.push("/");
             }}
           >
             홈
           </List>
           <List
-            _onClick={() => {
+            onClick={() => {
               history.push("/list");
             }}
           >
@@ -65,7 +65,7 @@ export const Header = () => {
               cursor="pointer"
               size="1.7em"
               color="grey"
-              _onClick={() => {
+              onClick={() => {
                 history.push("/mypage");
               }}
             />
@@ -98,7 +98,7 @@ export const Header = () => {
       <Navbar>
         <Text color="white">로그인 안 됨</Text>
         <Button
-          _onClick={() => {
+          onClick={() => {
             history.push("/login");
           }}
         >

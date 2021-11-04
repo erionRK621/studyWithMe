@@ -7,6 +7,7 @@ import { connectRouter } from "connected-react-router";
 import User from "./modules/user";
 import Post from "./modules/post";
 import comment from "./modules/comment";
+import Mypage from "./modules/mypage";
 // import PostWrite from "./modules/postWrite";
 // import Image from "./modules/image";
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   user: User,
   post: Post,
   comment: comment,
+  mypage: Mypage,
   // postWrite: PostWrite,
   // image: Image,
   // image: Image,
@@ -44,8 +46,8 @@ const composeEnhancers =
   // 브라우저일 때만  window === "object"이 부분을 돌려주라고 넣어준것이다. __REDUX_DEVTOOLS_EXTENSION_COMPOSE__부분을 데브툴이 있으면 열어주려고 하는 것이다.
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-    })
+        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
+      })
     : compose;
 
 // 5. 미들웨어 묶어주기
