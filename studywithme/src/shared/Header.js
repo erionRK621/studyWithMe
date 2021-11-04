@@ -15,7 +15,6 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Text from "../elements/Text";
 import Button from "../elements/Button";
 
-
 export const Header = () => {
   const dispatch = useDispatch();
 
@@ -45,19 +44,36 @@ export const Header = () => {
         </NavbarLogo>
 
         <NavbarMenu menuState={menuState}>
-          <List>홈</List>
-          <List>게시글 모아보기</List>
+          <List
+            _onClick={() => {
+              history.push("/");
+            }}
+          >
+            홈
+          </List>
+          <List
+            _onClick={() => {
+              history.push("/list");
+            }}
+          >
+            게시글 모아보기
+          </List>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
           <InfoList>
-            <FaUserAlt cursor="pointer" size="1.7em" color="grey" />
+            <FaUserAlt
+              cursor="pointer"
+              size="1.7em"
+              color="grey"
+              _onClick={() => {
+                history.push("/mypage");
+              }}
+            />
           </InfoList>
           <InfoList>
             <BiLogIn cursor="pointer" size="1.7em" color="grey" />
           </InfoList>
-          <InfoList
-            onClick={onClickLogOut}
-          >
+          <InfoList onClick={onClickLogOut}>
             <BiLogOut cursor="pointer" size="1.7em" color="grey" />
           </InfoList>
           <InfoList>
@@ -80,20 +96,17 @@ export const Header = () => {
   else {
     return (
       <Navbar>
-        <Text
-          color="white"
-        >
-          로그인 안 됨
-        </Text>
+        <Text color="white">로그인 안 됨</Text>
         <Button
-          _onClick={() => { history.push("/login") }}
+          _onClick={() => {
+            history.push("/login");
+          }}
         >
           로그인
         </Button>
       </Navbar>
     );
   }
-
 };
 
 const Navbar = styled.div`

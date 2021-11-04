@@ -42,11 +42,11 @@ const initialPost = {
 };
 
 // //미들웨어
-//데스크테리어 포스트 가져오기
-const getPostDB = () => {
+//내가 작성한 포스트 가져오기
+const getMyPostDB = (userId) => {
   return function (dispatch, getState, { history }) {
     apis
-      .getPost()
+      .getMyPost(userId)
       .then((res) => {
         // console.log(res.data.posts);
         dispatch(getMyPost(res.data.posts));
@@ -58,29 +58,13 @@ const getPostDB = () => {
   };
 };
 
-// 상세페이지 포스트 가져오기
-const getDetailPostDB = (postId) => {
+//내가 북마크한 포스트 가져오기
+const getBookMarkDB = (userId) => {
   return function (dispatch, getState, { history }) {
     apis
-      .getDetailPost(postId)
+      .getBookMark(userId)
       .then((res) => {
-        dispatch(getMyPost(res.data.post));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-};
-
-const getFilterPostDB = (queryString) => {
-  return function (dispatch, getState, { history }) {
-    console.log(queryString);
-    apis
-      .getFilterPost(queryString)
-      .then((res) => {
-        const post_list = res.data.posts;
-        dispatch(getPost(post_list));
-        history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
+        dispatch(getBookMark(res.data.post));
       })
       .catch((err) => {
         console.log(err);
@@ -96,16 +80,18 @@ export default handleActions(
         // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
         draft.list = action.payload.post_list;
       }),
+    [GET_MYBOOKMARKS]: (state, action) =>
+      produce(state, (draft) => {
+        // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
+        draft.list = action.payload.post_list;
+      }),
   },
   initialState
 );
 
 const actionCreators = {
-  getMyPost,
-
-  getPostDB,
-  getFilterPostDB,
-  getDetailPostDB,
+  getMyPostDB,
+  getBookMarkDB,
 };
 
 export { actionCreators };

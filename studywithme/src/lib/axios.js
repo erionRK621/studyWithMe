@@ -56,7 +56,15 @@ export const apis = {
 
   //게시물 가져오기
   getPost: () => instance.get("/api/posts", {}),
-  getFilterPost: (queryString) => instance.get(`/api/posts?searchMode=filter${queryString}`),
+  getFilterPost: (queryString) =>
+    instance.get(`/api/posts?searchMode=filter${queryString}`),
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
+
+  //마이페이지 게시물 가져오기
+  getMyPost: (userId) => instance.get(`/api/mypage/myposts/${userId}`),
+  getBookMark: (userId) => instance.get(`/api/mypage/mybookmarks/${userId}`),
+
+  //회원정보 가져오기
+  getUser: (userId) => instance.get("/api/mypage/myinfo", { userId }),
 };
