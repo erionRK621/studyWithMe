@@ -24,12 +24,17 @@ const PostDetail = (props) => {
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
 
-  const imageCover = post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
+  const imageCover =
+    post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
   const content = ReactHtmlParser(post?.contentEditor);
 
   const bookmarkList = useSelector((state) => state.post.bookmarkList);
-  const bookmarkedPost = bookmarkList?.find((bookmarkedPost) => bookmarkedPost?.postId.toString() === postId);
-  const [isBookmarked, setIsBookmarked] = React.useState(bookmarkedPost?.postId == postId ? true : false);
+  const bookmarkedPost = bookmarkList?.find(
+    (bookmarkedPost) => bookmarkedPost?.postId.toString() === postId
+  );
+  const [isBookmarked, setIsBookmarked] = React.useState(
+    bookmarkedPost?.postId == postId ? true : false
+  );
 
   console.log("bookmarkList", bookmarkList);
   console.log("bookmarkedPost", bookmarkedPost);
@@ -44,8 +49,7 @@ const PostDetail = (props) => {
     if (isBookmarked === false) {
       setIsBookmarked(true);
       dispatch(postActions.addBookmarkMiddleware(postId));
-    }
-    else {
+    } else {
       setIsBookmarked(false);
       dispatch(postActions.deleteBookmarkMiddleware(postId));
     }
@@ -60,7 +64,7 @@ const PostDetail = (props) => {
     console.log("상세페이지 로딩");
     dispatch(postActions.loadBookmarkListMiddleware());
     console.log("북마크 리스트 조회");
-  }, [dispatch, isBookmarked]);
+  }, [isBookmarked]);
 
   return (
     <div className="ck-content">
@@ -113,12 +117,9 @@ const PostDetail = (props) => {
           </FlexGrid>
         </FlexGrid>
 
-        <ContentGrid>
-          {content}
-        </ContentGrid>
+        <ContentGrid>{content}</ContentGrid>
 
         <FlexGrid justify="center">
-
           <Button
             text="좋아요"
             width="60px"
@@ -126,20 +127,21 @@ const PostDetail = (props) => {
             _onClick={onClickLike}
           />
 
-          {isBookmarked ?
+          {isBookmarked ? (
             <Button
               text="북마크(YES)"
               width="60px"
               margin="20px"
               _onClick={onClickBookmark}
-            /> :
+            />
+          ) : (
             <Button
               text="북마크(NO)"
               width="60px"
               margin="20px"
               _onClick={onClickBookmark}
             />
-          }
+          )}
 
           <Button
             text="공유"
@@ -148,8 +150,8 @@ const PostDetail = (props) => {
             _onClick={onClickShare}
           />
         </FlexGrid>
-        <CommentWrite postId={postId}/>
-        <CommentList postId={postId}/>
+        <CommentWrite postId={postId} />
+        <CommentList postId={postId} />
       </FlexGrid>
     </div>
   );
@@ -180,7 +182,7 @@ const FlexGrid = styled.div`
 
 const ContentGrid = styled.div`
   p {
-    word-break:break-all;
+    word-break: break-all;
   }
 `;
 
