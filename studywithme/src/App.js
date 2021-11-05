@@ -1,11 +1,15 @@
 // General
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Route } from "react-router";
 import { ConnectedRouter } from "connected-react-router";
+import { useSelector, useDispatch } from "react-redux";
 import { apis } from "./lib/axios";
-
 import { history } from "./redux/configStore";
+import { getCookie } from "./shared/cookie";
+
+// Redux Modules
+import { actionCreators as userActions } from "./redux/modules/user";
 
 // Components
 import Main from "./pages/Main";
@@ -17,14 +21,24 @@ import PostList from "./pages/PostList";
 import Header from "./shared/Header";
 import KakaoLoginRedirection from "./pages/KakaoLoginRedirection";
 import Mypage from "./pages/Mypage";
+import UserEdit from "./pages/UserEdit";
 
 function App() {
-  // 쿠키가 있는지 확인 (getCookie)
+  const dispatch = useDispatch();
 
-  // useEffect
-  // 사용자 정보가 redux state에는 없지만 쿠키에는 있을 때, setCookie
-  // 사용자 정보가 redux state에는 있지만 쿠키에는 없을 때, 로그인 정보 초기화
-  // deps = [dispatch, user, userByCookie]
+  const user = useSelector((state) => state.user.user);
+  const userInCookie = getCookie("user");
+
+  useEffect(() => {
+    // 사용자 정보가 리덕스에는 없지만 쿠키에는 있을 때? SET_USER 실행
+    if (!user && userInCookie) {
+      dispatch(userActions.setUser(getCookie("user")));
+    }
+    // 사용자 정보가 리덕스에는 있지만 쿠키에는 없을 때? 로그인 정보 초기화
+    if (user && !userInCookie) {
+      dispatch(userActions.setUser(null));
+    }
+  }, [dispatch, user, userInCookie]);
 
   return (
     <div>
@@ -41,7 +55,9 @@ function App() {
         <Route path="/write" exact component={PostWrite} />
         <Route path="/list" exact component={PostList} />
         <Route path="/detail/:id" exact component={PostDetail} />
-        <Route path="/mypage" exact component={Mypage} />
+        <Route path="/edit/:id" exact component={PostWrite} />
+        <Route path="/mypage/:id" exact component={Mypage} />
+        <Route path="/userEdit/:id" exact component={UserEdit} />
       </ConnectedRouter>
     </div>
   );

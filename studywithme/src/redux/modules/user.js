@@ -11,24 +11,42 @@ const initialState = {
   isLoggedIn: false, // 로그인 상태 여부
   checkEmailMsg: "", // 이메일 중복 여부 메세지
   checkNicknameMsg: "", // 닉네임 중복 여부 메세지
+  userInfo: "",
 };
-
 
 // ACTIONS
 const SET_USER = "SET_USER";
+const GET_USER = "GET_USER";
 const LOG_OUT = "LOG_OUT";
 const CHECK_EMAIL = "CHECK_EMAIL";
 const CHECK_NICKNAME = "CHECK_NICKNAME";
 
-
 // ACTION CREATORS
 const setUser = createAction(SET_USER, (token) => ({ token }));
+const getUser = createAction(GET_USER, (userInfo) => ({ userInfo }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const checkEmail = createAction(CHECK_EMAIL, (email) => ({ email }));
-const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({ nickname }));
-
+const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({
+  nickname,
+}));
 
 // MIDDLEWARES
+const getUserDB = (userId) => {
+  return function (dispatch, getState, { history }) {
+    console.log(userId);
+    apis
+      .getUser(userId)
+      .then((res) => {
+        console.log("미들웨어", res.data.userInfo);
+        dispatch(getUser(res.data.userInfo[0]));
+      })
+      .catch((err) => {
+        //요청이 정상적으로 안됬을때 수행
+        console.log(err, "에러");
+      });
+  };
+};
+
 const signUpMiddleware = (user) => {
   return function ({ history }) {
     console.log("회원가입 미들웨어 실행!");
@@ -37,6 +55,7 @@ const signUpMiddleware = (user) => {
     apis
       .signUpAxios(user)
       .then((response) => {
+        console.log(response);
         console.log(response.data);
       })
       .catch((error) => {
@@ -53,25 +72,29 @@ const loginMiddleware = (user) => {
     apis
       .logInAxios(user)
       .then((response) => {
-        // console.log(response.data.token);
-        console.log(jwt_decode(response.data.token));
+        console.log(response);
+        const { token } = response.data;
+
+        // 기존 user 토큰이 쿠키에 존재하면, 삭제
+        if (getCookie("user")) {
+          deleteCookie("user");
+          console.log("쿠키에 저장된 기존 user 토큰 삭제");
+        }
+
+        // 쿠키에 user 토큰 저장
+        setCookie("user", token);
+
+        // reducer에서 SET_USER 실행
+        dispatch(setUser(token));
+
+        // 로그인이 완료됐으므로 메인페이지로 이동
+        window.location.href = "/";
       })
       .catch((error) => {
         console.log(error.response);
       });
   };
 };
-
-const logOutMiddleware = () => {
-  return (dispatch, { history }) => {
-    // 로그아웃 API 실행
-    // logOut 디스패치
-    // 페이지 새로고침
-
-    // 실패할 경우
-    // 실패 메시지 띄우기
-  }
-}
 
 const checkEmailMiddleware = (email) => {
   return (dispatch, { history }) => {
@@ -90,7 +113,6 @@ const checkNicknameMiddleware = (nickname) => {
     // CHECK_NICKNAME 디스패치
   };
 };
-
 
 const kakaoLoginMiddleware = (code) => {
   return function (dispatch, getState, { history }) {
@@ -113,11 +135,9 @@ const kakaoLoginMiddleware = (code) => {
         console.log("카카오 로그인 에러", error);
         window.alert("로그인에 실패했습니다.");
         // history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
-      })
-  }
-}
-
-
+      });
+  };
+};
 
 // REDUCER
 export default handleActions(
@@ -125,16 +145,22 @@ export default handleActions(
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
         console.log("SET_USER 리듀서 실행!");
-        // 토큰 jwt_decode 실행
-        // 유저 정보  = decode된 토큰
-        // 로그인 상태 true
+        const decodedToken = jwt_decode(action.payload.token);
+        draft.user = decodedToken;
+        draft.isLoggedIn = true;
+      }),
+    [GET_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.userInfo = action.payload.userInfo;
+        console.log("리듀서 실행되냐?", action.payload.userInfo);
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
         console.log("LOG_OUT 리듀서 실행!");
-        // deleteCookie("user");
-        // 유저 정보 null
-        // 로그인 상태 false
+        deleteCookie("user");
+        draft.user = null;
+        draft.isLoggedIn = false;
+        window.location.reload();
       }),
     [CHECK_EMAIL]: (state, action) =>
       produce(state, (draft) => {
@@ -148,17 +174,17 @@ export default handleActions(
       }),
   },
   initialState
-)
+);
 
 export const actionCreators = {
   setUser,
+  getUserDB,
   logOut,
   signUpMiddleware,
   loginMiddleware,
-  logOutMiddleware,
   checkEmail,
   checkEmailMiddleware,
   checkNickname,
   checkNicknameMiddleware,
   kakaoLoginMiddleware,
-}
+};

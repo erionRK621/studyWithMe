@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postCreators } from "../redux/modules/post";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
@@ -9,21 +9,21 @@ import Image from "../elements/Image";
 
 const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
-  console.log("포스트의 프롭스", props);
-  console.log("포스트의 이미지", props.ImageCover);
+  // console.log("포스트의 프롭스", props);
+  // console.log("포스트의 이미지", props.ImageCover);
 
   return (
     <PostContainer>
-      <Grid padding="16px" bg="#ffffff" margin="8px 0px">
+      <Grid padding="16px" bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
         <Grid is_flex></Grid>
         <Grid>
           <Image
             shape="rectangle"
-            src={`http://3.35.235.79/${props.imageCover}`}
+            src={`http://3.34.44.44/${props.imageCover}`}
           />
         </Grid>
         <Grid is_flex>
-          <Text>{props.title}</Text>
+          <Text>{decodeURIComponent(props.title)}</Text>
         </Grid>
         <Grid is_flex>
           <Profile>

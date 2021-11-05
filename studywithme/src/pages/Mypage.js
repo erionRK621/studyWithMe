@@ -1,62 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Image from "../elements/Image";
-import Text from "../elements/Text";
+import { useSelector, useDispatch } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/mypage";
 
-const Mypage = () => {
+import MyPosts from "../components/MyPosts";
+import BookMarks from "../components/BookMarks";
+
+import UserInfo from "../components/UserInfo";
+
+const Mypage = (props) => {
+  const [bookMarkState, setBookMarkState] = useState(false);
+  console.log(bookMarkState);
+  const userId = props.match.params.id;
+  console.log(userId);
+
+  const showMyPost = () => {
+    setBookMarkState(false);
+    console.log("내가쓴게시물실행");
+  };
+
+  const showBookMark = () => {
+    setBookMarkState(true);
+    console.log("북마크한게시물실행");
+  };
+
   return (
     <React.Fragment>
-      <UserInfo>
-        <LeftDiv>
-          <Image>프로필 사진</Image>
-        </LeftDiv>
-
-        <RightDiv>
-          <UpDiv>
-            <Text>닉네임</Text>
-            <EditBtn>수정버튼</EditBtn>
-          </UpDiv>
-          <DownDiv>
-            <Text>게시글 1개</Text>
-            <Text>팔로우 2명</Text>
-            <Text>팔로잉 3명</Text>
-          </DownDiv>
-        </RightDiv>
-      </UserInfo>
-      <div>포스트들</div>
+      <UserInfo userId={userId}></UserInfo>
+      <BtnWrap>
+        <Mypost onClick={showMyPost}>내가쓴 게시물</Mypost>
+        <MyBookMark onClick={showBookMark}>내가 북마크한 게시물</MyBookMark>
+      </BtnWrap>
+      {bookMarkState === true ? <BookMarks /> : <MyPosts />}
     </React.Fragment>
   );
 };
 
-const UserInfo = styled.div`
+const BtnWrap = styled.div`
   width: 100%;
-  height: 300px;
-  background-color: lightgray;
   display: flex;
-  margin: auto;
+  text-align: center;
+  margin: 20px;
 `;
-const LeftDiv = styled.div`
-  width: 30%;
-  height: 100%;
+const Mypost = styled.div`
+  width: 50%;
 `;
-const RightDiv = styled.div`
-  width: 70%;
-  height: 100%;
+
+const MyBookMark = styled.div`
+  width: 50%;
 `;
-const UpDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 50%;
-  padding: 40px;
-  padding-right: 0;
-`;
-const DownDiv = styled.div`
-  display: flex;
-  justify-content: space-evenly;
+const PostWrap = styled.div`
   width: 100%;
-  height: 50%;
-  margin: auto;
 `;
-const EditBtn = styled.button``;
 
 export default Mypage;

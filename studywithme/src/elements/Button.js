@@ -4,13 +4,15 @@ import { Grid } from "./Grid";
 import styled from "styled-components";
 
 export default function Button(props) {
-  const { text, children, _onClick, is_float, margin, width, padding, radius } = props;
+  const { text, children, _onClick, is_float, margin, width, padding, radius, bgColor, color } = props;
 
   const styles = {
     margin: margin,
     width: width,
     padding: padding,
-    radius:radius,
+    radius: radius,
+    bgColor: bgColor,
+    color: color,
   };
 
   return (
@@ -34,8 +36,8 @@ Button.defaultProps = {
 
 const ElButton = styled.button`
   width: ${(props) => props.width};
-  background-color: #212121;
-  color: #ffffff;
+  background-color: ${props => props.bgColor ? props.bgColor : "#212121"};
+  color: ${props => props.color ? props.color : "#ffffff"};
   padding: 12px 0px;
   box-sizing: border-box;
   border: none;

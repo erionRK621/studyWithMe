@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postCreators } from "../redux/modules/post";
+import { actionCreators as postActions } from "../redux/modules/post";
+import { actionCreators as userActions } from "../redux/modules/user";
+
 
 import Grid from "../elements/Grid";
 import Image from "../elements/Image";
@@ -13,10 +15,12 @@ const Main = (props) => {
   const dispatch = useDispatch();
   const { history } = props;
   const post_list = useSelector((state) => state.post.list);
-  console.log(post_list);
+  const user = useSelector((state) => state.user.user);
+  // console.log(post_list);
+  console.log("user", user);
 
   useEffect(() => {
-    dispatch(postCreators.getPostDB());
+    dispatch(postActions.getPostDB());
   }, []);
 
   return (
@@ -33,8 +37,10 @@ const Main = (props) => {
           <GridWrap>
             {post_list.map((p, idx) => {
               return (
-                <Grid key={idx}>
-                  <Post key={idx} {...p} />
+                <Grid key={p.postId}>
+                  <Post {...p} onClick = {() => {
+                history.push(`/detail/${p.postId}`)
+              }}/>
                 </Grid>
               );
             })}

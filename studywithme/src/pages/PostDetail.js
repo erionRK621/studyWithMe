@@ -1,50 +1,127 @@
-import React from "react";
+// Packages
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ReactHtmlParser, {
+  processNodes,
+  convertNodeToElement,
+  htmlparser2,
+} from "react-html-parser";
+import moment from "moment";
+// Redux Modules
+import { actionCreators as postActions } from "../redux/modules/post";
+import { history } from "../redux/configStore";
+// Components
 import styled from "styled-components";
 import Image from "../elements/Image";
 import Button from "../elements/Button";
 import Text from "../elements/Text";
+import CommentWrite from "../components/CommentWrite";
+import CommentList from "../components/CommentList";
 
 const PostDetail = (props) => {
+  const dispatch = useDispatch();
 
-  const onClickLike = () => {
-    console.log("좋아요 버튼 클릭");
+  const postId = props.match.params.id;
+  const post = useSelector((state) => state.post.detail);
+  const userId = post.userId;
+  const isBookmarked = post.isBookmarked;
+  const isLiked = post.isLiked;
+  const isFollowing = post.isFollowing;
+  const imageCover =
+    post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
+  const content = ReactHtmlParser(post?.contentEditor);
+
+  console.log("상세페이지", post);
+
+  const onClickFollow = () => {
+    console.log("팔로우 버튼 클릭");
+    dispatch(postActions.followUserMiddleware(userId));
+  }
+
+  const onClickUnfollow = () => {
+    console.log("언팔로우 버튼 클릭");
+    dispatch(postActions.unfollowUserMiddleware(userId));
+  }
+
+  const onClickAddLike = () => {
+    dispatch(postActions.addLikeMiddleware(postId));
   };
 
-  const onClickBookmark = () => {
-    console.log("북마크 버튼 클릭");
+  const onClickDeleteLike = () => {
+    dispatch(postActions.deleteLikeMiddleware(postId));
+  }
+
+  const onClickAddBookmark = () => {
+    dispatch(postActions.addBookmarkMiddleware(postId));
+  };
+
+  const onClickDeleteBookmark = () => {
+    dispatch(postActions.deleteBookmarkMiddleware(postId));
   };
 
   const onClickShare = () => {
     console.log("공유 버튼 클릭");
   };
 
+  const deletePost = () => {
+    dispatch(postActions.deletePostMiddleware(postId));
+  };
+
+  useEffect(() => {
+    dispatch(postActions.getDetailPostDB(postId));
+    console.log("상세페이지 로딩");
+    // dispatch(postActions.loadBookmarkListMiddleware());
+    // console.log("북마크 리스트 조회");
+  }, [dispatch, postId]);
 
   return (
-    <React.Fragment>
-      <AspectOutter>
-        <ImageCover />
-      </AspectOutter>
-      <FlexGrid direction="column" margin="auto">
-        <H1>title</H1>
+    <div className="ck-content">
+      <ImageCover src={imageCover} />
+      <FlexGrid direction="column" margin="40px auto">
+        <FlexGrid>
+          <H1>{decodeURIComponent(post?.title)}</H1>
+          {post.userId === userId ? (
+            <>
+              <Button
+                margin="0px 20px"
+                _onClick={() => {
+                  history.push(`/edit/${postId}`);
+                }}
+              >
+                수정
+              </Button>
+              <Button _onClick={deletePost}>삭제</Button>
+            </>
+          ) : null}
+        </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
             <Image />
-            <span>
-              allnighter1
-            </span>
+            <span>userNickname</span>
             <span
               style={{
-                marginLeft: "4px",
-                color: "#cccccc"
-
+                marginLeft: "20px",
+                color: "#cccccc",
               }}
             >
-              2021.11.02
+              {moment(post?.date).format("YYYY-MM-DD")}
             </span>
           </FlexGrid>
-          <Button radius="30px" width="100px">
-            팔로우
-          </Button>
+          {isFollowing ?
+            <Button
+              radius="30px"
+              width="100px"
+              _onClick={onClickUnfollow}
+            >
+              언팔로우
+            </Button> :
+            <Button
+              radius="30px"
+              width="100px"
+              _onClick={onClickFollow}
+            >
+              팔로우
+            </Button>}
         </FlexGrid>
         <FlexGrid
           padding="30px"
@@ -56,44 +133,59 @@ const PostDetail = (props) => {
             <Image />
             <FlexGrid direction="column" justify="center">
               <Text>관심사</Text>
-              <H1 size="10px">수능/입시</H1>
+              <H1 size="10px">{post?.categoryInterest}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
             <Image />
             <FlexGrid direction="column" justify="center">
               <Text>공간</Text>
-              <H1 size="10px">스터디 카페</H1>
+              <H1 size="10px">{post?.categorySpace}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
             <Image />
             <FlexGrid direction="column" justify="center">
               <Text>유형</Text>
-              <H1 size="10px">친구와 함께</H1>
+              <H1 size="10px">{post?.categoryStudyMate}</H1>
             </FlexGrid>
           </FlexGrid>
         </FlexGrid>
 
-        <FlexGrid>
-          {/* CKEditor의 콘텐츠로 대체 예정 */}
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-        </FlexGrid>
-
+        <ContentGrid>{content}</ContentGrid>
 
         <FlexGrid justify="center">
-          <Button
-            text="좋아요"
+
+          {isLiked ? <Button
+            text="좋아요 취소하기"
             width="60px"
             margin="20px"
-            _onClick={onClickLike}
-          />
-          <Button
-            text="북마크"
-            width="60px"
-            margin="20px"
-            _onClick={onClickBookmark}
-          />
+            _onClick={onClickDeleteLike}
+          /> :
+            <Button
+              text="좋아요 추가하기"
+              width="60px"
+              margin="20px"
+              _onClick={onClickAddLike}
+            />}
+
+          {/* 북마크된 상태라면? 북마크 취소 버튼 활성화 */}
+          {/* 북마크 안 된 상태라면? 북마크 추가 버튼 활성화 */}
+          {isBookmarked ? (
+            <Button
+              text="북마크 취소하기"
+              width="60px"
+              margin="20px"
+              _onClick={onClickDeleteBookmark}
+            />
+          ) : (
+            <Button
+              text="북마크 추가하기"
+              width="60px"
+              margin="20px"
+              _onClick={onClickAddBookmark}
+            />
+          )}
           <Button
             text="공유"
             width="60px"
@@ -101,22 +193,18 @@ const PostDetail = (props) => {
             _onClick={onClickShare}
           />
         </FlexGrid>
-
+        <CommentWrite postId={postId} />
+        <CommentList postId={postId} />
       </FlexGrid>
-    </React.Fragment>
+    </div>
   );
 };
 
-const AspectOutter = styled.div`
-  width: 100%;
-  min-width: 100px;
-`;
 const ImageCover = styled.div`
   position: relative;
-  bottom: 50px;
   overflow: hidden;
   height: calc(100vh - 350px);
-  background-image: url("https://images.pexels.com/photos/3183132/pexels-photo-3183132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  background-image: url(${(props) => props.src});
   background-size: cover;
 `;
 
@@ -126,7 +214,7 @@ const H1 = styled.h1`
 
 const FlexGrid = styled.div`
   display: flex;
-  max-width: 1300px;
+  max-width: 750px;
   ${(props) => (props.color ? `background-color:${props.color};` : null)};
   ${(props) => (props.margin ? `margin:${props.margin};` : null)};
   ${(props) => (props.direction ? `flex-direction:${props.direction};` : null)};
@@ -134,4 +222,14 @@ const FlexGrid = styled.div`
   ${(props) => (props.justify ? `justify-content:${props.justify};` : null)}
   ${(props) => (props.padding ? `padding:${props.padding};` : null)}
 `;
+
+const ContentGrid = styled.div`
+  p {
+    word-break: break-all;
+  }
+  img {
+    max-width: 750px;
+  }
+`;
+
 export default PostDetail;
