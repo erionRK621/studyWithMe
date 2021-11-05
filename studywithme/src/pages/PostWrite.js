@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { isValidElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
@@ -12,14 +12,17 @@ import Editor from "../components/Editor";
 import Input from "../elements/Input";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
-const PostWrite = () => {
+const PostWrite = (props) => {
+  const post = useSelector(state=>state.post.detail);
+  const postId = props.match.params.id;
+  const _editMode = postId?true:false;
   const dispatch = useDispatch();
-  const [preview, setPreview] = useState("");
-  const [content, setContent] = useState("");
-  const [spaceVal, setSpaceVal] = useState("");
-  const [studyMateVal, setStudyMateVal] = useState("");
-  const [interestVal, setInterestVal] = useState("");
-  const [title, setTitle] = useState("");
+  const [preview, setPreview] = useState(_editMode?"http://3.34.44.44/"+post.imageCover:"");
+  const [content, setContent] = useState(_editMode?post.contentEditor:"");
+  const [spaceVal, setSpaceVal] = useState(_editMode?post.categorySpace:"");
+  const [studyMateVal, setStudyMateVal] = useState(_editMode?post.categoryStudyMate:"");
+  const [interestVal, setInterestVal] = useState(_editMode?post.categoryInterest:"");
+  const [title, setTitle] = useState(_editMode?post.title:"");
   const [image, setImage] = useState("");
 
   let formData = new FormData();
@@ -55,11 +58,25 @@ const PostWrite = () => {
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
     formData.append("categoryInterest", interestVal);
-    formData.append("contentsEditor", content);
+    formData.append("contentEditor", content);
+    
+    // for(var a of formData.entries()) {
+    //   console.log(a);
+    // }
 
     dispatch(postActions.addPostDB(formData));
   };
 
+  const editing = () => {
+    formData.append("imageCover", image);
+    formData.append("title", title);
+    formData.append("categorySpace", spaceVal);
+    formData.append("categoryStudyMate", studyMateVal);
+    formData.append("categoryInterest", interestVal);
+    formData.append("contentEditor", content);
+
+    dispatch(postActions.editPostMiddleware(postId, formData));
+  }
   const getContent = (content) => {
     setContent(content);
   };
@@ -77,6 +94,7 @@ const PostWrite = () => {
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
+  
   return (
     <>
       <ImageCover src={preview} alt="" />
@@ -103,8 +121,8 @@ const PostWrite = () => {
             _value={interestVal}
           />
         </FlexGrid>
-        <Editor getContent={getContent} />
-        <button onClick={posting}>작성</button>
+        <Editor value={content} getContent={getContent} />
+        {_editMode?<button onClick={editing}>수정</button> : <button onClick={posting}>작성</button>}
       </FlexGrid>
     </>
   );

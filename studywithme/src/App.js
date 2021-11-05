@@ -54,6 +54,7 @@ function App() {
         <Route path="/write" exact component={PostWrite} />
         <Route path="/list" exact component={PostList} />
         <Route path="/detail/:id" exact component={PostDetail} />
+        <Route path="/edit/:id" exact component={PostWrite} />
         <Route path="/mypage" exact component={Mypage} />
       </ConnectedRouter>
     </div>
