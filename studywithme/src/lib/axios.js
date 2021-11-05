@@ -40,12 +40,13 @@ export const apis = {
   // 회원탈퇴
   deleteAccountAxios: () => instance.post("/api/users/withdrawal"),
 
-  //게시물 가져오기
+  //게시물
   getPost: () => instance.get("/api/posts", {}),
   getFilterPost: (queryString) =>
     instance.get(`/api/posts?searchMode=filter${queryString}`),
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
+  editPostAxios: (postId, formData) => formInstance.put(`/api/posts/${postId}`, formData),
 
   // 북마크 조회
   loadBookmarkListAxios: () => instance.get("api/mypage/mybookmarks"),

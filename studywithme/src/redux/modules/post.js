@@ -114,12 +114,29 @@ const addPostDB = (formData) => {
     apis
       .addPost(formData)
       .then((res) => {
-        // console.log(decodeURIComponent(res.data.post.encodedHTML));
-        // console.log(res.data.post.encodedHTML);
-        console.log(res.data.post);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err.response.data);
+      });
+  };
+};
+
+// 게시물 수정
+const editPostMiddleware = (postId, formData) => {
+  return function (dispatch, getState, { history }) {
+    console.log(postId);
+    for(let a of formData.entries()) {
+      console.log(a);
+    }
+    apis
+      .editPostAxios(postId, formData)
+      .then((res) => {
+        console.log(res);
+        history.push("/");
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
       });
   };
 };
@@ -244,6 +261,7 @@ const actionCreators = {
   loadBookmarkListMiddleware,
   addBookmarkMiddleware,
   deleteBookmarkMiddleware,
+  editPostMiddleware,
 };
 
 export { actionCreators };

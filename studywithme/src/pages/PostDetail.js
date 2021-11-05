@@ -9,7 +9,7 @@ import ReactHtmlParser, {
 
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
-
+import { history } from "../redux/configStore";
 // Components
 import styled from "styled-components";
 import Image from "../elements/Image";
@@ -26,7 +26,8 @@ const PostDetail = (props) => {
   // const bookmark = useSelector((state) => state.post.detailIsBookmarked);
   const isBookmarked = post.isBookmarked; // true vs. false
 
-  const imageCover = post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
+  const imageCover =
+    post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
   const content = ReactHtmlParser(post?.contentEditor);
 
   console.log("bookmark", isBookmarked);
@@ -73,7 +74,12 @@ const PostDetail = (props) => {
     <div className="ck-content">
       <ImageCover src={imageCover} />
       <FlexGrid direction="column" margin="40px auto">
-        <H1>{post?.title}</H1>
+        <FlexGrid>
+          <H1>{post?.title}</H1>
+          <Button _onClick={() => {
+            history.push(`/edit/${postId}`)
+          }}>수정</Button>
+        </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
             <Image />
@@ -120,12 +126,9 @@ const PostDetail = (props) => {
           </FlexGrid>
         </FlexGrid>
 
-        <ContentGrid>
-          {content}
-        </ContentGrid>
+        <ContentGrid>{content}</ContentGrid>
 
         <FlexGrid justify="center">
-
           <Button
             text="좋아요"
             width="60px"
@@ -189,7 +192,7 @@ const FlexGrid = styled.div`
 
 const ContentGrid = styled.div`
   p {
-    word-break:break-all;
+    word-break: break-all;
   }
 `;
 
