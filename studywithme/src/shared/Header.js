@@ -101,7 +101,7 @@ export const Header = () => {
       <Navbar>
         <Text color="white">로그인 안 됨</Text>
         <Button
-          onClick={() => {
+          _onClick={() => {
             history.push("/login");
           }}
         >

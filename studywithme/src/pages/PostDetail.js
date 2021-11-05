@@ -6,10 +6,10 @@ import ReactHtmlParser, {
   convertNodeToElement,
   htmlparser2,
 } from "react-html-parser";
-
+import moment from "moment";
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
-import {history} from "../redux/configStore";
+import { history } from "../redux/configStore";
 // Components
 import styled from "styled-components";
 import Image from "../elements/Image";
@@ -23,58 +23,76 @@ const PostDetail = (props) => {
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
-
+  const userId = post.userId;
+  const isBookmarked = post.isBookmarked;
+  const isLiked = post.isLiked;
+  const isFollowing = post.isFollowing;
   const imageCover =
     post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
   const content = ReactHtmlParser(post?.contentEditor);
 
-  const bookmarkList = useSelector((state) => state.post.bookmarkList);
-  const bookmarkedPost = bookmarkList?.find(
-    (bookmarkedPost) => bookmarkedPost?.postId.toString() === postId
-  );
-  const [isBookmarked, setIsBookmarked] = React.useState(
-    bookmarkedPost?.postId == postId ? true : false
-  );
+  console.log("상세페이지", post);
 
-  console.log("bookmarkList", bookmarkList);
-  console.log("bookmarkedPost", bookmarkedPost);
-  console.log("isBookmarked", isBookmarked);
+  const onClickFollow = () => {
+    console.log("팔로우 버튼 클릭");
+    dispatch(postActions.followUserMiddleware(userId));
+  }
 
-  const onClickLike = () => {
-    console.log("좋아요 버튼 클릭");
+  const onClickUnfollow = () => {
+    console.log("언팔로우 버튼 클릭");
+    dispatch(postActions.unfollowUserMiddleware(userId));
+  }
+
+  const onClickAddLike = () => {
+    dispatch(postActions.addLikeMiddleware(postId));
   };
 
-  const onClickBookmark = () => {
-    console.log("북마크 버튼 클릭");
-    if (isBookmarked === false) {
-      setIsBookmarked(true);
-      dispatch(postActions.addBookmarkMiddleware(postId));
-    } else {
-      setIsBookmarked(false);
-      dispatch(postActions.deleteBookmarkMiddleware(postId));
-    }
+  const onClickDeleteLike = () => {
+    dispatch(postActions.deleteLikeMiddleware(postId));
+  }
+
+  const onClickAddBookmark = () => {
+    dispatch(postActions.addBookmarkMiddleware(postId));
+  };
+
+  const onClickDeleteBookmark = () => {
+    dispatch(postActions.deleteBookmarkMiddleware(postId));
   };
 
   const onClickShare = () => {
     console.log("공유 버튼 클릭");
   };
 
+  const deletePost = () => {
+    dispatch(postActions.deletePostMiddleware(postId));
+  };
+
   useEffect(() => {
     dispatch(postActions.getDetailPostDB(postId));
     console.log("상세페이지 로딩");
-    dispatch(postActions.loadBookmarkListMiddleware());
-    console.log("북마크 리스트 조회");
-  }, [isBookmarked]);
+    // dispatch(postActions.loadBookmarkListMiddleware());
+    // console.log("북마크 리스트 조회");
+  }, [dispatch, postId]);
 
   return (
     <div className="ck-content">
       <ImageCover src={imageCover} />
       <FlexGrid direction="column" margin="40px auto">
         <FlexGrid>
-          <H1>{post?.title}</H1>
-          <Button _onClick={()=>{
-            history.push(`/edit/${postId}`)
-          }}>수정</Button>
+          <H1>{decodeURIComponent(post?.title)}</H1>
+          {post.userId === userId ? (
+            <>
+              <Button
+                margin="0px 20px"
+                _onClick={() => {
+                  history.push(`/edit/${postId}`);
+                }}
+              >
+                수정
+              </Button>
+              <Button _onClick={deletePost}>삭제</Button>
+            </>
+          ) : null}
         </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
@@ -86,12 +104,24 @@ const PostDetail = (props) => {
                 color: "#cccccc",
               }}
             >
-              {post?.date}
+              {moment(post?.date).format("YYYY-MM-DD")}
             </span>
           </FlexGrid>
-          <Button radius="30px" width="100px">
-            팔로우
-          </Button>
+          {isFollowing ?
+            <Button
+              radius="30px"
+              width="100px"
+              _onClick={onClickUnfollow}
+            >
+              언팔로우
+            </Button> :
+            <Button
+              radius="30px"
+              width="100px"
+              _onClick={onClickFollow}
+            >
+              팔로우
+            </Button>}
         </FlexGrid>
         <FlexGrid
           padding="30px"
@@ -125,29 +155,37 @@ const PostDetail = (props) => {
         <ContentGrid>{content}</ContentGrid>
 
         <FlexGrid justify="center">
-          <Button
-            text="좋아요"
+
+          {isLiked ? <Button
+            text="좋아요 취소하기"
             width="60px"
             margin="20px"
-            _onClick={onClickLike}
-          />
-
-          {isBookmarked ? (
+            _onClick={onClickDeleteLike}
+          /> :
             <Button
-              text="북마크(YES)"
+              text="좋아요 추가하기"
               width="60px"
               margin="20px"
-              _onClick={onClickBookmark}
+              _onClick={onClickAddLike}
+            />}
+
+          {/* 북마크된 상태라면? 북마크 취소 버튼 활성화 */}
+          {/* 북마크 안 된 상태라면? 북마크 추가 버튼 활성화 */}
+          {isBookmarked ? (
+            <Button
+              text="북마크 취소하기"
+              width="60px"
+              margin="20px"
+              _onClick={onClickDeleteBookmark}
             />
           ) : (
             <Button
-              text="북마크(NO)"
+              text="북마크 추가하기"
               width="60px"
               margin="20px"
-              _onClick={onClickBookmark}
+              _onClick={onClickAddBookmark}
             />
           )}
-
           <Button
             text="공유"
             width="60px"
@@ -188,6 +226,9 @@ const FlexGrid = styled.div`
 const ContentGrid = styled.div`
   p {
     word-break: break-all;
+  }
+  img {
+    max-width: 750px;
   }
 `;
 
