@@ -249,7 +249,7 @@ const Editor = ({ getContent, value }) => {
           config={editorConfiguration}
           onChange={(event, editor) => {
             handleChange(event, editor);
-            getContent(data);
+            getContent(editor.getData());
           }}
           onReady={(editor) => {
             if (editor?.plugins) {
