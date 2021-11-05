@@ -6,15 +6,13 @@ import { PasswordEdit } from "../components/PasswordEdit";
 
 const UserEdit = () => {
   const [passwordEditState, setPasswordEditState] = useState(true);
-  console.log(passwordEditState);
+
   const showProfileEdit = () => {
     setPasswordEditState(true);
-    console.log("닉네임수정실행");
   };
 
   const showPasswordEdit = () => {
     setPasswordEditState(false);
-    console.log("비밀번호수정실행");
   };
   return (
     <React.Fragment>
@@ -42,7 +40,7 @@ const MenuWrap = styled.ul`
   background-color: #f1f1f1;
   position: fixed;
   height: 100%;
-  overflow: auto;
+  overflow: none;
 `;
 const MenuItem = styled.div`
   display: block;
