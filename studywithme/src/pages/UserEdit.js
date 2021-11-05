@@ -1,20 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { ProfileEdit } from "../components/ProfileEdit";
+import { PasswordEdit } from "../components/PasswordEdit";
+
 const UserEdit = () => {
+  const [passwordEditState, setPasswordEditState] = useState(true);
+  console.log(passwordEditState);
+  const showProfileEdit = () => {
+    setPasswordEditState(true);
+    console.log("닉네임수정실행");
+  };
+
+  const showPasswordEdit = () => {
+    setPasswordEditState(false);
+    console.log("비밀번호수정실행");
+  };
   return (
     <React.Fragment>
       <MenuWrap>
         <li>
-          <MenuItem>프로필 수정</MenuItem>
+          <MenuItem onClick={showProfileEdit}>프로필 수정</MenuItem>
         </li>
         <li>
-          <MenuItem>비밀번호 변경</MenuItem>
+          <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
         </li>
       </MenuWrap>
 
       <ContentDiv>
-        <h1>내용표시구간</h1>
+        {passwordEditState === true ? <ProfileEdit /> : <PasswordEdit />}
       </ContentDiv>
     </React.Fragment>
   );
@@ -37,7 +51,6 @@ const MenuItem = styled.div`
   text-decoration: none;
   :hover {
     background-color: red;
-    border-radius: 10px;
   }
 `;
 
