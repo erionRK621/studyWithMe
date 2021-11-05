@@ -2,7 +2,7 @@ import React from "react";
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { apis } from "../../lib/axios";
-import { AiFillHeart } from "react-icons/ai";
+import { AiFillExclamationCircle, AiFillHeart } from "react-icons/ai";
 
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
 // 게시물
@@ -14,13 +14,19 @@ const DELETE_POST = "DELETE_POST";
 const LOAD_BOOKMARK_LIST = "LOAD_BOOKMARK_LIST";
 const ADD_BOOKMARK = "ADD_BOOKMARK";
 const DELETE_BOOKMARK = "DELETE_BOOKMARK";
+// 좋아요
+const ADD_LIKE = "ADD_LIKE";
+const DELETE_LIKE = "DELETE_LIKE";
+// 팔로우
+const FOLLOW_USER = "FOLLOW_USER";
+const UNFOLLOW_USER = "UNFOLLOW_USER";
 
 //액션생성함수
 //타입이 GET_POST인 오브젝트를 반환해주는 액션으로
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const setPost = createAction(SET_POST, (post, isBookmarked) => ({ post, isBookmarked }));
+const setPost = createAction(SET_POST, (post, isBookmarked, isLiked, isFollowing) => ({ post, isBookmarked, isLiked, isFollowing }));
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 // 북마크
@@ -29,6 +35,13 @@ const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({
 }));
 const addBookmark = createAction(ADD_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
 const deleteBookmark = createAction(DELETE_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
+// 좋아요
+const addLike = createAction(ADD_LIKE, (postDetail, isLiked) => ({ postDetail, isLiked }));
+const deleteLike = createAction(DELETE_LIKE, (postDetail, isLiked) => ({ postDetail, isLiked }));
+// 팔로우
+const followUser = createAction(FOLLOW_USER, (postDetail, isFollowing) => ({ postDetail, isFollowing }));
+const unfollowUser = createAction(UNFOLLOW_USER, (postDetail, isFollowing) => ({ postDetail, isFollowing }));
+
 
 //초기상태값
 //paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
@@ -40,23 +53,6 @@ const initialState = {
   isLoading: false,
   bookmarkList: [], // 현재 로그인된 유저가 북마크한 게시물 리스트
 };
-
-//게시글하나에 들어가야할 기본내용
-// const initialPost = {
-//   body: [
-//     {
-//       imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
-//       title: "제목",
-//       categorySpace: "방 안",
-//       categoryStudyMate: true,
-//       categoryInterest: "수능",
-//       imageContent:
-//         "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
-//       textContent: "String",
-//       youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
-//     },
-//   ],
-// };
 
 // //미들웨어
 //데스크테리어 포스트 가져오기
@@ -78,14 +74,14 @@ const getPostDB = () => {
 // 상세페이지 포스트 가져오기
 const getDetailPostDB = (postId) => {
   return function (dispatch, getState, { history }) {
-    // console.log("getDetailPostDB 실행");
     apis
       .getDetailPost(postId)
       .then((res) => {
         const isBookmarked = res.data.isBookmarked;
+        const isLiked = res.data.isLiked;
+        const isFollowing = res.data.isFollowing;
         const post = res.data.post;
-        console.log("isBookmarked", isBookmarked);
-        dispatch(setPost(post, isBookmarked));
+        dispatch(setPost(post, isBookmarked, isLiked, isFollowing));
       })
       .catch((err) => {
         console.log(err);
@@ -126,7 +122,7 @@ const addPostDB = (formData) => {
 const editPostMiddleware = (postId, formData) => {
   return function (dispatch, getState, { history }) {
     console.log(postId);
-    for(let a of formData.entries()) {
+    for (let a of formData.entries()) {
       console.log(a);
     }
     apis
@@ -168,7 +164,7 @@ const addBookmarkMiddleware = (postId) => {
         const isBookmarked = response.data.isBookmarked;
         console.log("isBookmarked", isBookmarked);
         dispatch(addBookmark(postDetail, isBookmarked));
-        window.alert("북마크 추가 완료");
+        // window.alert("북마크 추가 완료");
       })
       .catch((error) => {
         console.log(error.response.data.message);
@@ -187,13 +183,86 @@ const deleteBookmarkMiddleware = (postId) => {
         const isBookmarked = response.data.isBookmarked;
         console.log("isBookmarked", isBookmarked);
         dispatch(deleteBookmark(postDetail, isBookmarked));
-        window.alert("북마크 취소 완료");
+        // window.alert("북마크 취소 완료");
       })
       .catch((error) => {
         console.log(error.response.data.message);
       });
   };
 };
+
+const addLikeMiddleware = (postId) => {
+  return function (dispatch, getState, { history }) {
+    console.log("addLikeMiddleware 실행");
+    const postDetail = getState().post.detail;
+    apis
+      .addLikeAxios(postId)
+      .then((response) => {
+        console.log(response);
+        const isLiked = response.data.isLiked;
+        console.log("isLiked", isLiked);
+        dispatch(addLike(postDetail, isLiked));
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
+  }
+}
+
+const deleteLikeMiddleware = (postId) => {
+  return function (dispatch, getState, { history }) {
+    console.log("deleteLikeMiddleware 실행");
+    const postDetail = getState().post.detail;
+    apis
+      .deleteLikeAxios(postId)
+      .then((response) => {
+        console.log(response);
+        const isLiked = response.data.isLiked;
+        console.log("isLiked", isLiked);
+        dispatch(deleteLike(postDetail, isLiked));
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
+  }
+}
+
+const followUserMiddleware = (userId) => {
+  return function (dispatch, getState, { history }) {
+    console.log("followUserMiddleware 실행");
+    console.log("userId", userId);
+    const postDetail = getState().post.detail;
+    apis
+      .followUserAxios(userId)
+      .then((response) => {
+        const isFollowing = response.data.isUser;
+        console.log("isFollowing", isFollowing, typeof (isFollowing));
+        dispatch(followUser(postDetail, isFollowing));
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  }
+}
+
+const unfollowUserMiddleware = (userId) => {
+  return function (dispatch, getState, { history }) {
+    console.log("unfollowUserMiddleware 실행");
+    console.log("userId", userId);
+    const postDetail = getState().post.detail;
+    apis
+      .unfollowUserAxios(userId)
+      .then((response) => {
+        const isFollowing = response.data.isUser;
+        console.log("isFollowing", isFollowing, typeof (isFollowing));
+        dispatch(unfollowUser(postDetail, isFollowing));
+      })
+      .catch((error) => {
+        console.log(error.response);
+      })
+  }
+}
+
 
 // 리듀서
 export default handleActions(
@@ -205,8 +274,12 @@ export default handleActions(
       }),
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
-        console.log("action.payload.isBookmarked", action.payload.isBookmarked);
-        draft.detail = { ...action.payload.post, isBookmarked: action.payload.isBookmarked };
+        draft.detail = {
+          ...action.payload.post,
+          isBookmarked: action.payload.isBookmarked,
+          isLiked: action.payload.isLiked,
+          isFollowing: action.payload.isFollowing,
+        };
       }),
     [EDIT_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -232,6 +305,20 @@ export default handleActions(
         console.log("LOAD_BOOKMARK_LIST 리듀서 실행");
         draft.bookmarkList = action.payload.bookmarkList;
       }),
+    [FOLLOW_USER]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("FOLLOW_USER 리듀서 실행");
+        console.log("action.payload.postDetail", action.payload.postDetail);
+        console.log("action.payload.isFollowing", action.payload.isFollowing);
+        draft.detail = { ...action.payload.postDetail, isFollowing: action.payload.isFollowing };
+      }),
+    [UNFOLLOW_USER]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("UNFOLLOW_USER 리듀서 실행");
+        console.log("action.payload.postDetail", action.payload.postDetail);
+        console.log("action.payload.isFollowing", action.payload.isFollowing);
+        draft.detail = { ...action.payload.postDetail, isFollowing: action.payload.isFollowing };
+      }),
     [ADD_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
         console.log("ADD_BOOKMARK 리듀서 실행");
@@ -245,6 +332,16 @@ export default handleActions(
         console.log("action.payload.postDetail", action.payload.postDetail);
         console.log("action.payload.isBookmarked", action.payload.isBookmarked);
         draft.detail = { ...action.payload.postDetail, isBookmarked: action.payload.isBookmarked };
+      }),
+    [ADD_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("ADD_LIKE 리듀서 실행");
+        draft.detail = { ...action.payload.postDetail, isLiked: action.payload.isLiked };
+      }),
+    [DELETE_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        console.log("DELETE_LIKE 리듀서 실행");
+        draft.detail = { ...action.payload.postDetail, isLiked: action.payload.isLiked };
       }),
   },
   initialState
@@ -262,6 +359,10 @@ const actionCreators = {
   addBookmarkMiddleware,
   deleteBookmarkMiddleware,
   editPostMiddleware,
+  addLikeMiddleware,
+  deleteLikeMiddleware,
+  followUserMiddleware,
+  unfollowUserMiddleware,
 };
 
 export { actionCreators };

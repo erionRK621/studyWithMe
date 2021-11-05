@@ -48,14 +48,18 @@ export const apis = {
   addPost: (formData) => formInstance.post("api/posts", formData),
   editPostAxios: (postId, formData) => formInstance.put(`/api/posts/${postId}`, formData),
 
-  // 북마크 조회
+  // 팔로우
+  followUserAxios: (userId) => instance.post("api/follows", { userId }),
+  unfollowUserAxios: (userId) => instance.delete("api/follows", { data: { userId: userId } }),
+
+  // 북마크
   loadBookmarkListAxios: () => instance.get("api/mypage/mybookmarks"),
-
-  // 북마크 추가
   addBookmarkAxios: (postId) => instance.post(`api/bookmarks/${postId}`),
-
-  // 북마크 취소
   deleteBookmarkAxios: (postId) => instance.delete(`api/bookmarks/${postId}`),
+
+  // 좋아요
+  addLikeAxios: (postId) => instance.post(`api/posts/${postId}/like`),
+  deleteLikeAxios: (postId) => instance.delete(`api/posts/${postId}/like`),
 
   //마이페이지 게시물 가져오기
   getMyPostAxios: (userId) => instance.get("/api/mypage/myposts", { userId }),
