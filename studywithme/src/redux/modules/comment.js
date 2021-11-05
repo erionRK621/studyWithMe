@@ -52,7 +52,7 @@ const getCommentMiddleware = (postId) => {
 const deleteCommentMiddleware = (postId, commentId) => {
   return function (dispatch, getState, { history }) {
     apis
-      .deletePostAxios(postId, commentId)
+      .deleteCommentAxios(postId, commentId)
       .then((res) => {
         dispatch(deleteComment(commentId));
       })
