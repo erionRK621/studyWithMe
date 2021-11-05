@@ -6,6 +6,7 @@ import { actionCreators as commentActions } from "../redux/modules/comment";
 import Image from "../elements/Image";
 import Text from "../elements/Text";
 import Button from "../elements/Button";
+import time from "../shared/time";
 const CommentList = (props) => {
   const postId = props.postId;
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const CommentList = (props) => {
                 <FlexGrid direction="column" margin="0px 10px">
                   <Text size="15px">{c.userNickname}</Text>
                   <Text size="10px" color="#cccccc">
-                    {c.date}
+                    {time(c.date)}
                   </Text>
                 </FlexGrid>
                 <FlexGrid direction="column">

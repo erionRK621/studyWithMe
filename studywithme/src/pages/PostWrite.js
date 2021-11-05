@@ -18,11 +18,11 @@ const PostWrite = (props) => {
   const _editMode = postId?true:false;
   const dispatch = useDispatch();
   const [preview, setPreview] = useState(_editMode?"http://3.34.44.44/"+post.imageCover:"");
-  const [content, setContent] = useState(_editMode?post.contentEditor:"");
+  const [content, setContent] = useState(_editMode?decodeURIComponent(post.contentEditor):"");
   const [spaceVal, setSpaceVal] = useState(_editMode?post.categorySpace:"");
   const [studyMateVal, setStudyMateVal] = useState(_editMode?post.categoryStudyMate:"");
   const [interestVal, setInterestVal] = useState(_editMode?post.categoryInterest:"");
-  const [title, setTitle] = useState(_editMode?post.title:"");
+  const [title, setTitle] = useState(_editMode?decodeURIComponent(post.title):"");
   const [image, setImage] = useState("");
 
   let formData = new FormData();

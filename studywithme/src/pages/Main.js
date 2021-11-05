@@ -37,8 +37,10 @@ const Main = (props) => {
           <GridWrap>
             {post_list.map((p, idx) => {
               return (
-                <Grid key={idx}>
-                  <Post key={idx} {...p} />
+                <Grid key={p.postId}>
+                  <Post {...p} onClick = {() => {
+                history.push(`/detail/${p.postId}`)
+              }}/>
                 </Grid>
               );
             })}

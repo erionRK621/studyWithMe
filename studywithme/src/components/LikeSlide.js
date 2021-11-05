@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
+import { history } from "../redux/configStore";
 import SlideContent from "./SliderContent";
 import Post from "./Post";
 
@@ -51,7 +52,13 @@ const LikeSlide = (props) => {
           {post_list.map((p, idx) => {
             return (
               <PostWrap key={idx}>
-                <Post key={idx} {...p} />
+                <Post
+                  key={idx}
+                  {...p}
+                  onClick={() => {
+                    history.push(`/detail/${p.postId}`);
+                  }}
+                />
               </PostWrap>
             );
           })}
