@@ -47,6 +47,7 @@ export const apis = {
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
   editPostAxios: (postId, formData) => formInstance.put(`/api/posts/${postId}`, formData),
+  deletePostAxios : (postId) => instance.delete(`api/posts/${postId}`),
 
   // 팔로우
   followUserAxios: (userId) => instance.post("api/follows", { userId }),
@@ -72,4 +73,5 @@ export const apis = {
   // 댓글 가져오기
   addCommentAxios: (postId, comment) => instance.post(`/api/posts/${postId}/comments`, comment),
   getCommentAxios: (postId) => instance.get(`/api/posts/${postId}/comments`),
+  deleteCommentAxios: (postId, commentId) => instance.delete(`api/posts/${postId}/comments/${commentId}`),
 };

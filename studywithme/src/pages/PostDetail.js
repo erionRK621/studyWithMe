@@ -6,7 +6,7 @@ import ReactHtmlParser, {
   convertNodeToElement,
   htmlparser2,
 } from "react-html-parser";
-
+import moment from "moment";
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
 import { history } from "../redux/configStore";
@@ -57,10 +57,14 @@ const PostDetail = (props) => {
 
   const onClickDeleteBookmark = () => {
     dispatch(postActions.deleteBookmarkMiddleware(postId));
-  }
+  };
 
   const onClickShare = () => {
     console.log("공유 버튼 클릭");
+  };
+
+  const deletePost = () => {
+    dispatch(postActions.deletePostMiddleware(postId));
   };
 
   useEffect(() => {
@@ -75,10 +79,20 @@ const PostDetail = (props) => {
       <ImageCover src={imageCover} />
       <FlexGrid direction="column" margin="40px auto">
         <FlexGrid>
-          <H1>{post?.title}</H1>
-          <Button _onClick={() => {
-            history.push(`/edit/${postId}`)
-          }}>수정</Button>
+          <H1>{decodeURIComponent(post?.title)}</H1>
+          {post.userId === userId ? (
+            <>
+              <Button
+                margin="0px 20px"
+                _onClick={() => {
+                  history.push(`/edit/${postId}`);
+                }}
+              >
+                수정
+              </Button>
+              <Button _onClick={deletePost}>삭제</Button>
+            </>
+          ) : null}
         </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
@@ -90,7 +104,7 @@ const PostDetail = (props) => {
                 color: "#cccccc",
               }}
             >
-              {post?.date}
+              {moment(post?.date).format("YYYY-MM-DD")}
             </span>
           </FlexGrid>
           {isFollowing ?
@@ -157,21 +171,21 @@ const PostDetail = (props) => {
 
           {/* 북마크된 상태라면? 북마크 취소 버튼 활성화 */}
           {/* 북마크 안 된 상태라면? 북마크 추가 버튼 활성화 */}
-          {isBookmarked ?
+          {isBookmarked ? (
             <Button
               text="북마크 취소하기"
               width="60px"
               margin="20px"
               _onClick={onClickDeleteBookmark}
             />
-            :
+          ) : (
             <Button
               text="북마크 추가하기"
               width="60px"
               margin="20px"
               _onClick={onClickAddBookmark}
             />
-          }
+          )}
           <Button
             text="공유"
             width="60px"
@@ -212,6 +226,9 @@ const FlexGrid = styled.div`
 const ContentGrid = styled.div`
   p {
     word-break: break-all;
+  }
+  img {
+    max-width: 750px;
   }
 `;
 

@@ -111,9 +111,24 @@ const addPostDB = (formData) => {
       .addPost(formData)
       .then((res) => {
         console.log(res.data);
+        history.push("/");
       })
       .catch((err) => {
         console.log(err.response.data);
+      });
+  };
+};
+
+const deletePostMiddleware = (postId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .deletePostAxios(postId)
+      .then((res) => {
+        dispatch(deletePost(postId));
+        history.push("/")
+      })
+      .catch((err) => {
+        console.log(err);
       });
   };
 };
@@ -324,14 +339,20 @@ export default handleActions(
         console.log("ADD_BOOKMARK 리듀서 실행");
         console.log("action.payload.postDetail", action.payload.postDetail);
         console.log("action.payload.isBookmarked", action.payload.isBookmarked);
-        draft.detail = { ...action.payload.postDetail, isBookmarked: action.payload.isBookmarked };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isBookmarked: action.payload.isBookmarked,
+        };
       }),
     [DELETE_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
         console.log("DELETE_BOOKMARK 리듀서 실행");
         console.log("action.payload.postDetail", action.payload.postDetail);
         console.log("action.payload.isBookmarked", action.payload.isBookmarked);
-        draft.detail = { ...action.payload.postDetail, isBookmarked: action.payload.isBookmarked };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isBookmarked: action.payload.isBookmarked,
+        };
       }),
     [ADD_LIKE]: (state, action) =>
       produce(state, (draft) => {
@@ -351,6 +372,7 @@ const actionCreators = {
   getPost,
   editPost,
   deletePost,
+  deletePostMiddleware,
   getPostDB,
   getFilterPostDB,
   getDetailPostDB,
