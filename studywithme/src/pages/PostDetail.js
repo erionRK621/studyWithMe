@@ -23,29 +23,39 @@ const PostDetail = (props) => {
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
-  const userId = useSelector((state) => state.user.user?.userId);
-  // const bookmark = useSelector((state) => state.post.detailIsBookmarked);
-  const isBookmarked = post.isBookmarked; // true vs. false
+  const userId = post.userId;
+  const isBookmarked = post.isBookmarked;
+  const isLiked = post.isLiked;
+  const isFollowing = post.isFollowing;
   const imageCover =
     post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
-  const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
-  // const bookmarkList = useSelector((state) => state.post.bookmarkList);
-  // const bookmarkedPost = bookmarkList?.find((bookmarkedPost) => bookmarkedPost?.postId.toString() === postId);
-  // const [isBookmarked, setIsBookmarked] = React.useState(bookmarkedPost ? true : false);
-  // const [isBookmarked, setIsBookmarked] = React.useState(post?.isBookmarked);
-  const onClickLike = () => {
-    console.log("좋아요 버튼 클릭");
+  const content = ReactHtmlParser(post?.contentEditor);
+
+  console.log("상세페이지", post);
+
+  const onClickFollow = () => {
+    console.log("팔로우 버튼 클릭");
+    dispatch(postActions.followUserMiddleware(userId));
+  }
+
+  const onClickUnfollow = () => {
+    console.log("언팔로우 버튼 클릭");
+    dispatch(postActions.unfollowUserMiddleware(userId));
+  }
+
+  const onClickAddLike = () => {
+    dispatch(postActions.addLikeMiddleware(postId));
   };
 
+  const onClickDeleteLike = () => {
+    dispatch(postActions.deleteLikeMiddleware(postId));
+  }
+
   const onClickAddBookmark = () => {
-    // console.log("onClickAddBookmark", "setIsBookmarked", isBookmarked);
-    // setIsBookmarked(true);
     dispatch(postActions.addBookmarkMiddleware(postId));
   };
 
   const onClickDeleteBookmark = () => {
-    // console.log("onClickDeleteBookmark", "setIsBookmarked", isBookmarked);
-    // setIsBookmarked(false);
     dispatch(postActions.deleteBookmarkMiddleware(postId));
   };
 
@@ -97,9 +107,21 @@ const PostDetail = (props) => {
               {moment(post?.date).format("YYYY-MM-DD")}
             </span>
           </FlexGrid>
-          <Button radius="30px" width="100px">
-            팔로우
-          </Button>
+          {isFollowing ?
+            <Button
+              radius="30px"
+              width="100px"
+              _onClick={onClickUnfollow}
+            >
+              언팔로우
+            </Button> :
+            <Button
+              radius="30px"
+              width="100px"
+              _onClick={onClickFollow}
+            >
+              팔로우
+            </Button>}
         </FlexGrid>
         <FlexGrid
           padding="30px"
@@ -133,12 +155,19 @@ const PostDetail = (props) => {
         <ContentGrid>{content}</ContentGrid>
 
         <FlexGrid justify="center">
-          <Button
-            text="좋아요"
+
+          {isLiked ? <Button
+            text="좋아요 취소하기"
             width="60px"
             margin="20px"
-            _onClick={onClickLike}
-          />
+            _onClick={onClickDeleteLike}
+          /> :
+            <Button
+              text="좋아요 추가하기"
+              width="60px"
+              margin="20px"
+              _onClick={onClickAddLike}
+            />}
 
           {/* 북마크된 상태라면? 북마크 취소 버튼 활성화 */}
           {/* 북마크 안 된 상태라면? 북마크 추가 버튼 활성화 */}
