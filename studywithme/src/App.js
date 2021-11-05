@@ -21,6 +21,7 @@ import PostList from "./pages/PostList";
 import Header from "./shared/Header";
 import KakaoLoginRedirection from "./pages/KakaoLoginRedirection";
 import Mypage from "./pages/Mypage";
+import UserEdit from "./pages/UserEdit";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ function App() {
         <Route path="/detail/:id" exact component={PostDetail} />
         <Route path="/edit/:id" exact component={PostWrite} />
         <Route path="/mypage" exact component={Mypage} />
+        <Route path="/userEdit" exact component={UserEdit} />
       </ConnectedRouter>
     </div>
   );
