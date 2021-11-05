@@ -20,44 +20,43 @@ const DELETE_BOOKMARK = "DELETE_BOOKMARK";
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const setPost = createAction(SET_POST, (post) => ({ post }));
+const setPost = createAction(SET_POST, (post, isBookmarked) => ({ post, isBookmarked }));
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 // 북마크
 const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({
   bookmarkList,
 }));
-const addBookmark = createAction(ADD_BOOKMARK, (bookmark) => ({ bookmark }));
-const deleteBookmark = createAction(DELETE_BOOKMARK, (bookmark) => ({
-  bookmark,
-}));
+const addBookmark = createAction(ADD_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
+const deleteBookmark = createAction(DELETE_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
 
 //초기상태값
 //paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
 //isLoading 로딩중이니?
 const initialState = {
-  list: [],
-  detail: [],
+  list: [], // 전체 게시물 리스트
+  detail: [], // 현재 상세 페이지의 게시물 정보
   paging: { start: null, next: null, size: 3 },
   isLoading: false,
-  bookmarkList: [],
+  bookmarkList: [], // 현재 로그인된 유저가 북마크한 게시물 리스트
 };
+
 //게시글하나에 들어가야할 기본내용
-const initialPost = {
-  body: [
-    {
-      imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
-      title: "제목",
-      categorySpace: "방 안",
-      categoryStudyMate: true,
-      categoryInterest: "수능",
-      imageContent:
-        "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
-      textContent: "String",
-      youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
-    },
-  ],
-};
+// const initialPost = {
+//   body: [
+//     {
+//       imageCover: "https://t1.daumcdn.net/cfile/tistory/9937F94B5FF1FB7B0E",
+//       title: "제목",
+//       categorySpace: "방 안",
+//       categoryStudyMate: true,
+//       categoryInterest: "수능",
+//       imageContent:
+//         "https://blog.hmgjournal.com/images_n/contents/180713_desk02.png",
+//       textContent: "String",
+//       youtubeUrl: "https://youtu.be/6iVxp-4Gzu0",
+//     },
+//   ],
+// };
 
 // //미들웨어
 //데스크테리어 포스트 가져오기
@@ -83,7 +82,10 @@ const getDetailPostDB = (postId) => {
     apis
       .getDetailPost(postId)
       .then((res) => {
-        dispatch(setPost(res.data.post));
+        const isBookmarked = res.data.isBookmarked;
+        const post = res.data.post;
+        console.log("isBookmarked", isBookmarked);
+        dispatch(setPost(post, isBookmarked));
       })
       .catch((err) => {
         console.log(err);
@@ -135,19 +137,20 @@ const loadBookmarkListMiddleware = () => {
       .catch((error) => {
         console.log(error);
       });
-    // loadBookmarkListAxios API 호출
-    // response = 나의 북마크 리스트
-    // loadBookmarkList 디스패치
   };
 };
 
 const addBookmarkMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
     console.log("addBookmarkMiddleware 실행");
+    const postDetail = getState().post.detail;
+    console.log("postDetail", postDetail);
     apis
       .addBookmarkAxios(postId)
       .then((response) => {
-        console.log(response.data);
+        const isBookmarked = response.data.isBookmarked;
+        console.log("isBookmarked", isBookmarked);
+        dispatch(addBookmark(postDetail, isBookmarked));
         window.alert("북마크 추가 완료");
       })
       .catch((error) => {
@@ -159,14 +162,18 @@ const addBookmarkMiddleware = (postId) => {
 const deleteBookmarkMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
     console.log("deleteBookmarkMiddleware 실행");
+    const postDetail = getState().post.detail;
+    console.log("postDetail", postDetail);
     apis
       .deleteBookmarkAxios(postId)
       .then((response) => {
-        console.log(response.data);
+        const isBookmarked = response.data.isBookmarked;
+        console.log("isBookmarked", isBookmarked);
+        dispatch(deleteBookmark(postDetail, isBookmarked));
         window.alert("북마크 취소 완료");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data.message);
       });
   };
 };
@@ -181,7 +188,8 @@ export default handleActions(
       }),
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.detail = action.payload.post;
+        console.log("action.payload.isBookmarked", action.payload.isBookmarked);
+        draft.detail = { ...action.payload.post, isBookmarked: action.payload.isBookmarked };
       }),
     [EDIT_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -206,15 +214,20 @@ export default handleActions(
       produce(state, (draft) => {
         console.log("LOAD_BOOKMARK_LIST 리듀서 실행");
         draft.bookmarkList = action.payload.bookmarkList;
-        // draft.bookmarList에 나의 북마크 리스트 담기
       }),
     [ADD_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
         console.log("ADD_BOOKMARK 리듀서 실행");
+        console.log("action.payload.postDetail", action.payload.postDetail);
+        console.log("action.payload.isBookmarked", action.payload.isBookmarked);
+        draft.detail = { ...action.payload.postDetail, isBookmarked: action.payload.isBookmarked };
       }),
-    [ADD_BOOKMARK]: (state, action) =>
+    [DELETE_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
-        console.log("ADD_BOOKMARK 리듀서 실행");
+        console.log("DELETE_BOOKMARK 리듀서 실행");
+        console.log("action.payload.postDetail", action.payload.postDetail);
+        console.log("action.payload.isBookmarked", action.payload.isBookmarked);
+        draft.detail = { ...action.payload.postDetail, isBookmarked: action.payload.isBookmarked };
       }),
   },
   initialState
