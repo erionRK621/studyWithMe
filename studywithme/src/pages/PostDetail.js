@@ -37,12 +37,6 @@ const PostDetail = (props) => {
   // const [isBookmarked, setIsBookmarked] = React.useState(bookmarkedPost ? true : false);
   // const [isBookmarked, setIsBookmarked] = React.useState(post?.isBookmarked);
 
-  console.log("post", post);
-  // console.log("isBookmarked", isBookmarked);
-  // console.log("bookmarkList", bookmarkList);
-  // console.log("bookmarkedPost", bookmarkedPost);
-  // console.log("isBookmarked", isBookmarked);
-
   const onClickLike = () => {
     console.log("좋아요 버튼 클릭");
   };
@@ -193,6 +187,9 @@ const FlexGrid = styled.div`
 const ContentGrid = styled.div`
   p {
     word-break: break-all;
+  }
+  img {
+    max-width: 750px;
   }
 `;
 
