@@ -20,15 +20,24 @@ const DELETE_BOOKMARK = "DELETE_BOOKMARK";
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const setPost = createAction(SET_POST, (post, isBookmarked) => ({ post, isBookmarked }));
+const setPost = createAction(SET_POST, (post, isBookmarked) => ({
+  post,
+  isBookmarked,
+}));
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 // 북마크
 const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({
   bookmarkList,
 }));
-const addBookmark = createAction(ADD_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
-const deleteBookmark = createAction(DELETE_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
+const addBookmark = createAction(ADD_BOOKMARK, (postDetail, isBookmarked) => ({
+  postDetail,
+  isBookmarked,
+}));
+const deleteBookmark = createAction(
+  DELETE_BOOKMARK,
+  (postDetail, isBookmarked) => ({ postDetail, isBookmarked })
+);
 
 //초기상태값
 //paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
@@ -115,6 +124,7 @@ const addPostDB = (formData) => {
       .addPost(formData)
       .then((res) => {
         console.log(res.data);
+        history.push("/");
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -122,13 +132,23 @@ const addPostDB = (formData) => {
   };
 };
 
+const deletePostMiddleware = (postId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .deletePostAxios(postId)
+      .then((res) => {
+        dispatch(deletePost(postId));
+        history.push("/")
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 // 게시물 수정
 const editPostMiddleware = (postId, formData) => {
   return function (dispatch, getState, { history }) {
-    console.log(postId);
-    for(let a of formData.entries()) {
-      console.log(a);
-    }
     apis
       .editPostAxios(postId, formData)
       .then((res) => {
@@ -206,7 +226,10 @@ export default handleActions(
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
         console.log("action.payload.isBookmarked", action.payload.isBookmarked);
-        draft.detail = { ...action.payload.post, isBookmarked: action.payload.isBookmarked };
+        draft.detail = {
+          ...action.payload.post,
+          isBookmarked: action.payload.isBookmarked,
+        };
       }),
     [EDIT_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -237,14 +260,20 @@ export default handleActions(
         console.log("ADD_BOOKMARK 리듀서 실행");
         console.log("action.payload.postDetail", action.payload.postDetail);
         console.log("action.payload.isBookmarked", action.payload.isBookmarked);
-        draft.detail = { ...action.payload.postDetail, isBookmarked: action.payload.isBookmarked };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isBookmarked: action.payload.isBookmarked,
+        };
       }),
     [DELETE_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
         console.log("DELETE_BOOKMARK 리듀서 실행");
         console.log("action.payload.postDetail", action.payload.postDetail);
         console.log("action.payload.isBookmarked", action.payload.isBookmarked);
-        draft.detail = { ...action.payload.postDetail, isBookmarked: action.payload.isBookmarked };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isBookmarked: action.payload.isBookmarked,
+        };
       }),
   },
   initialState
@@ -254,6 +283,7 @@ const actionCreators = {
   getPost,
   editPost,
   deletePost,
+  deletePostMiddleware,
   getPostDB,
   getFilterPostDB,
   getDetailPostDB,

@@ -47,6 +47,7 @@ export const apis = {
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
   editPostAxios: (postId, formData) => formInstance.put(`/api/posts/${postId}`, formData),
+  deletePostAxios : (postId) => instance.delete(`api/posts/${postId}`),
 
   // 북마크 조회
   loadBookmarkListAxios: () => instance.get("api/mypage/mybookmarks"),

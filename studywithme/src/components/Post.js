@@ -14,7 +14,7 @@ const Post = (props) => {
 
   return (
     <PostContainer>
-      <Grid padding="16px" bg="#ffffff" margin="8px 0px">
+      <Grid padding="16px" bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
         <Grid is_flex></Grid>
         <Grid>
           <Image
@@ -23,7 +23,7 @@ const Post = (props) => {
           />
         </Grid>
         <Grid is_flex>
-          <Text>{props.title}</Text>
+          <Text>{decodeURIComponent(props.title)}</Text>
         </Grid>
         <Grid is_flex>
           <Profile>
