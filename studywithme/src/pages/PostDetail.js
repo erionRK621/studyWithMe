@@ -9,7 +9,7 @@ import ReactHtmlParser, {
 
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
-import {history} from "../redux/configStore";
+import { history } from "../redux/configStore";
 // Components
 import styled from "styled-components";
 import Image from "../elements/Image";
@@ -23,33 +23,35 @@ const PostDetail = (props) => {
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
+  // const bookmark = useSelector((state) => state.post.detailIsBookmarked);
+  const isBookmarked = post.isBookmarked; // true vs. false
 
   const imageCover =
     post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
   const content = ReactHtmlParser(post?.contentEditor);
 
-  const bookmarkList = useSelector((state) => state.post.bookmarkList);
-  const bookmarkedPost = bookmarkList?.find(
-    (bookmarkedPost) => bookmarkedPost?.postId.toString() === postId
-  );
-  const [isBookmarked, setIsBookmarked] = React.useState(
-    bookmarkedPost?.postId == postId ? true : false
-  );
+  console.log("bookmark", isBookmarked);
+
+  // const bookmarkList = useSelector((state) => state.post.bookmarkList);
+  // const bookmarkedPost = bookmarkList?.find((bookmarkedPost) => bookmarkedPost?.postId.toString() === postId);
+  // const [isBookmarked, setIsBookmarked] = React.useState(bookmarkedPost ? true : false);
+  // const [isBookmarked, setIsBookmarked] = React.useState(post?.isBookmarked);
 
   const onClickLike = () => {
     console.log("좋아요 버튼 클릭");
   };
 
-  const onClickBookmark = () => {
-    console.log("북마크 버튼 클릭");
-    if (isBookmarked === false) {
-      setIsBookmarked(true);
-      dispatch(postActions.addBookmarkMiddleware(postId));
-    } else {
-      setIsBookmarked(false);
-      dispatch(postActions.deleteBookmarkMiddleware(postId));
-    }
+  const onClickAddBookmark = () => {
+    // console.log("onClickAddBookmark", "setIsBookmarked", isBookmarked);
+    // setIsBookmarked(true);
+    dispatch(postActions.addBookmarkMiddleware(postId));
   };
+
+  const onClickDeleteBookmark = () => {
+    // console.log("onClickDeleteBookmark", "setIsBookmarked", isBookmarked);
+    // setIsBookmarked(false);
+    dispatch(postActions.deleteBookmarkMiddleware(postId));
+  }
 
   const onClickShare = () => {
     console.log("공유 버튼 클릭");
@@ -58,9 +60,9 @@ const PostDetail = (props) => {
   useEffect(() => {
     dispatch(postActions.getDetailPostDB(postId));
     console.log("상세페이지 로딩");
-    dispatch(postActions.loadBookmarkListMiddleware());
-    console.log("북마크 리스트 조회");
-  }, [isBookmarked]);
+    // dispatch(postActions.loadBookmarkListMiddleware());
+    // console.log("북마크 리스트 조회");
+  }, [dispatch, postId]);
 
   return (
     <div className="ck-content">
@@ -68,7 +70,7 @@ const PostDetail = (props) => {
       <FlexGrid direction="column" margin="40px auto">
         <FlexGrid>
           <H1>{post?.title}</H1>
-          <Button _onClick={()=>{
+          <Button _onClick={() => {
             history.push(`/edit/${postId}`)
           }}>수정</Button>
         </FlexGrid>
@@ -128,22 +130,23 @@ const PostDetail = (props) => {
             _onClick={onClickLike}
           />
 
-          {isBookmarked ? (
+          {/* 북마크된 상태라면? 북마크 취소 버튼 활성화 */}
+          {/* 북마크 안 된 상태라면? 북마크 추가 버튼 활성화 */}
+          {isBookmarked ?
             <Button
-              text="북마크(YES)"
+              text="북마크 취소하기"
               width="60px"
               margin="20px"
-              _onClick={onClickBookmark}
+              _onClick={onClickDeleteBookmark}
             />
-          ) : (
+            :
             <Button
-              text="북마크(NO)"
+              text="북마크 추가하기"
               width="60px"
               margin="20px"
-              _onClick={onClickBookmark}
+              _onClick={onClickAddBookmark}
             />
-          )}
-
+          }
           <Button
             text="공유"
             width="60px"
