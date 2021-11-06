@@ -152,6 +152,7 @@ const kakaoLoginMiddleware = (code) => {
 
         // 쿠키에 user 토큰 저장
         setCookie("user", token);
+        window.localStorage.setItem('USER_TOKEN', token);
 
         // reducer에서 SET_USER 실행
         dispatch(setUser(token));
