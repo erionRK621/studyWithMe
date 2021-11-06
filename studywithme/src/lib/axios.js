@@ -1,8 +1,9 @@
 import axios from "axios";
 import { getCookie } from "../shared/cookie";
-
+import dotenv from "dotenv";
+dotenv.config();
 const instance = axios.create({
-  baseURL: "http://3.34.44.44",
+  baseURL: process.env.REACT_APP_API_URI,
   // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "application/json;charset=UTF-8",
@@ -13,7 +14,7 @@ const instance = axios.create({
 });
 
 const formInstance = axios.create({
-  baseURL: "http://3.34.44.44",
+  baseURL: process.env.REACT_APP_API_URI,
   // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "multipart/form-data",
