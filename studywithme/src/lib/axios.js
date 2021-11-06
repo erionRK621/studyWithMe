@@ -70,8 +70,12 @@ export const apis = {
   getBookMarkAxios: (userId) =>
     instance.get(`/api/mypage/mybookmarks/${userId}`, { userId }),
 
-  //회원정보 가져오기
+  //회원정보
   getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
+  editProfileAxios: (userId, nickname) =>
+    instance.put("/api/users/profileEdit", { userId, nickname }),
+  // editUserPwdAxios: (userId) =>
+  //   instance.put("/api/users/profileEdit", { userId }),
 
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>

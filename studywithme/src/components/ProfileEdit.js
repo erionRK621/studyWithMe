@@ -14,9 +14,14 @@ export const ProfileEdit = () => {
     setNickname(e.target.value);
   };
   const userInfo = useSelector((state) => state.user.userInfo);
+  const userId = useSelector((state) => state.user.userInfo.userId);
   const userPic = "http://3.34.44.44/" + userInfo.avatarUrl;
 
-  console.log("user정보받아왔니", userInfo);
+  console.log("닉네임", nickname);
+
+  const editProfile = () => {
+    dispatch(userActions.editProfileMiddleware(nickname));
+  };
 
   useEffect(() => {
     dispatch(userActions.getUserDB());
@@ -36,7 +41,7 @@ export const ProfileEdit = () => {
         <Button>닉네임 중복확인</Button>
       </InputWrap>
       <SubmitWrap>
-        <Submit>변경하기</Submit>
+        <Submit onClick={editProfile}>변경하기</Submit>
       </SubmitWrap>
     </React.Fragment>
   );
