@@ -31,12 +31,13 @@ const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({
 }));
 
 // MIDDLEWARES
-const getUserDB = () => {
+const getUserDB = (userId) => {
   return function (dispatch, getState, { history }) {
+    console.log(userId);
     apis
-      .getUser()
+      .getUser(userId)
       .then((res) => {
-        console.log(res.data.userInfo[0]);
+        console.log("미들웨어", res.data.userInfo);
         dispatch(getUser(res.data.userInfo[0]));
       })
       .catch((err) => {
@@ -151,7 +152,7 @@ export default handleActions(
     [GET_USER]: (state, action) =>
       produce(state, (draft) => {
         draft.userInfo = action.payload.userInfo;
-        console.log(action.payload.userInfo);
+        console.log("리듀서 실행되냐?", action.payload.userInfo);
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {

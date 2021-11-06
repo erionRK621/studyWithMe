@@ -19,7 +19,10 @@ export const Header = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.user);
+  const userId = useSelector((state) => state.user.user?.userId);
 
+  // const userId = useSelector((state) => state.user.user.userId);
+  // console.log(user.userId);
   const [menuState, setMenuState] = useState(false);
 
   const onClickLogOut = () => {
@@ -66,7 +69,7 @@ export const Header = () => {
               size="1.7em"
               color="grey"
               onClick={() => {
-                history.push("/mypage");
+                history.push("/mypage/" + userId);
               }}
             />
           </InfoList>

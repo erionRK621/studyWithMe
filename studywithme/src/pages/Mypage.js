@@ -11,6 +11,9 @@ import UserInfo from "../components/UserInfo";
 const Mypage = (props) => {
   const [bookMarkState, setBookMarkState] = useState(false);
   console.log(bookMarkState);
+  const userId = props.match.params.id;
+  console.log(userId);
+
   const showMyPost = () => {
     setBookMarkState(false);
     console.log("내가쓴게시물실행");
@@ -23,7 +26,7 @@ const Mypage = (props) => {
 
   return (
     <React.Fragment>
-      <UserInfo></UserInfo>
+      <UserInfo userId={userId}></UserInfo>
       <BtnWrap>
         <Mypost onClick={showMyPost}>내가쓴 게시물</Mypost>
         <MyBookMark onClick={showBookMark}>내가 북마크한 게시물</MyBookMark>

@@ -46,12 +46,14 @@ export const apis = {
     instance.get(`/api/posts?searchMode=filter${queryString}`),
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
-  editPostAxios: (postId, formData) => formInstance.put(`/api/posts/${postId}`, formData),
+  editPostAxios: (postId, formData) =>
+    formInstance.put(`/api/posts/${postId}`, formData),
   deletePostAxios: (postId) => instance.delete(`api/posts/${postId}`),
 
   // 팔로우
   followUserAxios: (userId) => instance.post("api/follows", { userId }),
-  unfollowUserAxios: (userId) => instance.delete("api/follows", { data: { userId: userId } }),
+  unfollowUserAxios: (userId) =>
+    instance.delete("api/follows", { data: { userId: userId } }),
 
   // 북마크
   loadBookmarkListAxios: () => instance.get("api/mypage/mybookmarks"),
@@ -63,15 +65,18 @@ export const apis = {
   deleteLikeAxios: (postId) => instance.delete(`api/posts/${postId}/like`),
 
   //마이페이지 게시물 가져오기
-  getMyPostAxios: (userId) => instance.get("/api/mypage/myposts", { userId }),
+  getMyPostAxios: (userId) =>
+    instance.get(`/api/mypage/myposts/${userId}`, { userId }),
   getBookMarkAxios: (userId) =>
-    instance.get("/api/mypage/mybookmarks", { userId }),
+    instance.get(`/api/mypage/mybookmarks/${userId}`, { userId }),
 
   //회원정보 가져오기
-  getUser: (userId) => instance.get("/api/mypage/myinfo", { userId }),
+  getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
 
   // 댓글 가져오기
-  addCommentAxios: (postId, comment) => instance.post(`/api/posts/${postId}/comments`, comment),
+  addCommentAxios: (postId, comment) =>
+    instance.post(`/api/posts/${postId}/comments`, comment),
   getCommentAxios: (postId) => instance.get(`/api/posts/${postId}/comments`),
-  deleteCommentAxios: (postId, commentId) => instance.delete(`api/posts/${postId}/comments/${commentId}`),
+  deleteCommentAxios: (postId, commentId) =>
+    instance.delete(`api/posts/${postId}/comments/${commentId}`),
 };

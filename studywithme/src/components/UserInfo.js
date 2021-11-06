@@ -3,22 +3,21 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { AiTwotoneSetting } from "react-icons/ai";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { history } from "../redux/configStore";
 
 import Image from "../elements/Image";
 import Text from "../elements/Text";
 
 const UserInfo = (props) => {
   const dispatch = useDispatch();
-  const { history } = props;
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
   const userPic = "http://3.34.44.44/" + userInfo.avatarUrl;
-
-  console.log("user정보받아왔니", userInfo);
+  const userId = props.userId;
 
   useEffect(() => {
-    dispatch(userActions.getUserDB());
+    dispatch(userActions.getUserDB(userId));
   }, []);
   return (
     <React.Fragment>
@@ -31,7 +30,13 @@ const UserInfo = (props) => {
 
         <RightDiv>
           <TopDiv>
-            <AiTwotoneSetting cursor="pointer" size="1.7em"></AiTwotoneSetting>
+            <AiTwotoneSetting
+              cursor="pointer"
+              size="1.7em"
+              onClick={() => {
+                history.push("/userEdit/" + userId);
+              }}
+            ></AiTwotoneSetting>
           </TopDiv>
           <MiddleDiv>
             <Nickname>{userInfo.nickname}</Nickname>
