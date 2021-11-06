@@ -41,10 +41,12 @@ import ImageToolbar from "@ckeditor/ckeditor5-image/src/imagetoolbar";
 import ImageCaption from "@ckeditor/ckeditor5-image/src/imagecaption";
 import ImageStyle from "@ckeditor/ckeditor5-image/src/imagestyle";
 import AutoImage from "@ckeditor/ckeditor5-image/src/autoimage";
-
 // import Swal from "sweetalert2";
 
 import styled from "styled-components";
+import dotenv from "dotenv";
+dotenv.config();
+
 
 class MyUploadAdapter {
   constructor(loader) {
@@ -77,14 +79,13 @@ class MyUploadAdapter {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
               const response = await axios.post(
-                "http://3.34.44.44/api/posts/ckUpload",
+                `${process.env.REACT_APP_API_URI}/api/posts/ckUpload`,
                 formData,
                 config
               );
-              console.log(response.data);
+
               if (response.statusText === "OK") {
-                const downloadURL = `http://3.34.44.44/${response.data.path}`;
-                console.log(downloadURL);
+                const downloadURL = `${process.env.REACT_APP_API_URI}/${response.data.path}`;
                 resolve({
                   default: downloadURL,
                 });
