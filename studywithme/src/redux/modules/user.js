@@ -145,10 +145,10 @@ const kakaoLoginMiddleware = (code) => {
         console.log("token", token);
 
         // 기존 user 토큰이 쿠키에 존재하면, 삭제
-        // if (getCookie("user")) {
-        //   deleteCookie("user");
-        //   console.log("쿠키에 저장된 기존 user 토큰 삭제");
-        // }
+        if (getCookie("user")) {
+          deleteCookie("user");
+          console.log("쿠키에 저장된 기존 user 토큰 삭제");
+        }
 
         // 쿠키에 user 토큰 저장
         setCookie("user", token);
