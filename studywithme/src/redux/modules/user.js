@@ -140,13 +140,22 @@ const kakaoLoginMiddleware = (code) => {
     })
       .then((response) => {
         console.log("kakaoLoginMiddleware 응답받기 성공");
-        console.log(response.data.token);
-        console.log("decoded", jwt_decode(response.data.token));
+        const { token } = response.data.token
 
-        // 프론트 서버 열면 구현할 부분들:
-        // 토큰 받아서
-        // session에 저장함
-        // 로그인 됐으니 메인페이지로 이동
+        // 기존 user 토큰이 쿠키에 존재하면, 삭제
+        if (getCookie("user")) {
+          deleteCookie("user");
+          console.log("쿠키에 저장된 기존 user 토큰 삭제");
+        }
+
+        // 쿠키에 user 토큰 저장
+        setCookie("user", token);
+
+        // reducer에서 SET_USER 실행
+        dispatch(setUser(token));
+
+        // 로그인이 완료됐으므로 메인페이지로 이동
+        window.location.href = "/";
       })
       .catch((error) => {
         console.log("카카오 로그인 에러", error);
