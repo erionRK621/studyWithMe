@@ -140,7 +140,7 @@ const kakaoLoginMiddleware = (code) => {
     })
       .then((response) => {
         console.log("kakaoLoginMiddleware 응답받기 성공");
-        const { token } = response.data.token
+        const token = response.data.token;
 
         // 기존 user 토큰이 쿠키에 존재하면, 삭제
         if (getCookie("user")) {
