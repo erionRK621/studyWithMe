@@ -4,7 +4,9 @@ import styled from "styled-components";
 import { ProfileEdit } from "../components/ProfileEdit";
 import { PasswordEdit } from "../components/PasswordEdit";
 
-const UserEdit = () => {
+const UserEdit = (props) => {
+  const userId = props.match.params.id;
+  console.log(userId);
   const [passwordEditState, setPasswordEditState] = useState(true);
 
   const showProfileEdit = () => {
