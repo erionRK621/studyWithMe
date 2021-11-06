@@ -13,7 +13,7 @@ const UserInfo = (props) => {
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userPic = "http://3.34.44.44/" + userInfo.avatarUrl;
+  const userPic = "http://3.34.44.44/" + userInfo?.avatarUrl;
   const userId = props.userId;
 
   useEffect(() => {
@@ -39,10 +39,10 @@ const UserInfo = (props) => {
             ></AiTwotoneSetting>
           </TopDiv>
           <MiddleDiv>
-            <Nickname>{userInfo.nickname}</Nickname>
+            <Nickname>{userInfo?.nickname}</Nickname>
           </MiddleDiv>
           <BottomDiv>
-            <Text>게시글 {userInfo.postCnt}개</Text>
+            <Text>게시글 {userInfo?.postCnt}개</Text>
             <Text>팔로우 2명</Text>
             <Text>팔로잉 3명</Text>
           </BottomDiv>
