@@ -47,7 +47,7 @@ export const apis = {
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
   addPost: (formData) => formInstance.post("api/posts", formData),
   editPostAxios: (postId, formData) => formInstance.put(`/api/posts/${postId}`, formData),
-  deletePostAxios : (postId) => instance.delete(`api/posts/${postId}`),
+  deletePostAxios: (postId) => instance.delete(`api/posts/${postId}`),
 
   // 팔로우
   followUserAxios: (userId) => instance.post("api/follows", { userId }),
