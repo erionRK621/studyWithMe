@@ -141,6 +141,8 @@ const kakaoLoginMiddleware = (code) => {
       .then((response) => {
         console.log("kakaoLoginMiddleware 응답받기 성공");
         const token = response.data.token;
+        console.log("response", response);
+        console.log("token", token);
 
         // 기존 user 토큰이 쿠키에 존재하면, 삭제
         if (getCookie("user")) {
@@ -155,7 +157,7 @@ const kakaoLoginMiddleware = (code) => {
         dispatch(setUser(token));
 
         // 로그인이 완료됐으므로 메인페이지로 이동
-        window.location.href = "/";
+        // window.location.href = "/";
       })
       .catch((error) => {
         console.log("카카오 로그인 에러", error);
