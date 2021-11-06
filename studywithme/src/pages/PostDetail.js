@@ -28,7 +28,7 @@ const PostDetail = (props) => {
   const isLiked = post.isLiked;
   const isFollowing = post.isFollowing;
   const imageCover =
-    post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
+    post?.imageCover && process.env.REACT_APP_API_URL + post?.imageCover;
   const content = ReactHtmlParser(post?.contentEditor);
 
   console.log("상세페이지", post);
