@@ -108,7 +108,7 @@ const loginMiddleware = (user) => {
         dispatch(setUser(token));
 
         // 로그인이 완료됐으므로 메인페이지로 이동
-        window.location.href = "/";
+        // window.location.href = "/";
       })
       .catch((error) => {
         console.log(error.response);
@@ -143,7 +143,9 @@ const kakaoLoginMiddleware = (code) => {
     })
       .then((response) => {
         console.log("kakaoLoginMiddleware 응답받기 성공");
-        const { token } = response.data.token;
+        const token = response.data.token;
+        console.log("response", response);
+        console.log("token", token);
 
         // 기존 user 토큰이 쿠키에 존재하면, 삭제
         if (getCookie("user")) {
@@ -153,12 +155,13 @@ const kakaoLoginMiddleware = (code) => {
 
         // 쿠키에 user 토큰 저장
         setCookie("user", token);
+        window.localStorage.setItem("USER_TOKEN", token);
 
         // reducer에서 SET_USER 실행
         dispatch(setUser(token));
 
         // 로그인이 완료됐으므로 메인페이지로 이동
-        window.location.href = "/";
+        // window.location.href = "/";
       })
       .catch((error) => {
         console.log("카카오 로그인 에러", error);
@@ -175,8 +178,11 @@ export default handleActions(
       produce(state, (draft) => {
         console.log("SET_USER 리듀서 실행!");
         const decodedToken = jwt_decode(action.payload.token);
+        console.log("decodedToken", decodedToken);
         draft.user = decodedToken;
+        console.log("draft.user", draft.user);
         draft.isLoggedIn = true;
+        console.log("draft.isLoggedIn", draft.isLoggedIn);
       }),
     [GET_USER]: (state, action) =>
       produce(state, (draft) => {
