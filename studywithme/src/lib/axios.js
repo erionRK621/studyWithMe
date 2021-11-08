@@ -22,7 +22,6 @@ const formInstance = axios.create({
     "content-type": "multipart/form-data",
     accept: "application/json",
     Authorization: `Bearer ${localStorage.getItem("user")}`,
-
   },
   withCredentials: true,
 });
