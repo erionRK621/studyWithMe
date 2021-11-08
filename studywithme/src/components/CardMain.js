@@ -6,6 +6,8 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Image from "../elements/Image";
+import dotenv from "dotenv";
+dotenv.config();
 
 const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
@@ -14,12 +16,17 @@ const Post = (props) => {
 
   return (
     <PostContainer>
-      <Grid padding="16px" bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
+      <Grid
+        padding="16px"
+        bg="#ffffff"
+        margin="8px 0px"
+        _onClick={props.onClick}
+      >
         <Grid is_flex></Grid>
         <Grid>
           <Image
             shape="rectangle"
-            src={`http://3.34.44.44/${props.imageCover}`}
+            src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
           />
         </Grid>
         <Grid is_flex>
