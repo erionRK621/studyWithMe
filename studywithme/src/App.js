@@ -27,18 +27,18 @@ function App() {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.user);
-  const userInCookie = getCookie("user");
+  const userTokenInLocalStorage = localStorage.getItem("user");
 
   useEffect(() => {
     // 사용자 정보가 리덕스에는 없지만 쿠키에는 있을 때? SET_USER 실행
-    if (!user && userInCookie) {
-      dispatch(userActions.setUser(getCookie("user")));
+    if (!user && userTokenInLocalStorage) {
+      dispatch(userActions.setUser(localStorage.getItem("user")));
     }
     // 사용자 정보가 리덕스에는 있지만 쿠키에는 없을 때? 로그인 정보 초기화
-    if (user && !userInCookie) {
+    if (user && !userTokenInLocalStorage) {
       dispatch(userActions.setUser(null));
     }
-  }, [dispatch, user, userInCookie]);
+  }, [dispatch, user, userTokenInLocalStorage]);
 
   return (
     <div>
