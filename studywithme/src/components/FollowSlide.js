@@ -9,7 +9,7 @@ import { history } from "../redux/configStore";
 import SlideContent from "./SliderContent";
 import CardMain from "./CardMain";
 
-const Slide = (props) => {
+const FollowSlide = (props) => {
   const post_list = useSelector((state) => state.post.list);
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
@@ -46,7 +46,7 @@ const Slide = (props) => {
 
   return (
     <React.Fragment>
-      <div>유저들의 게시물</div>
+      <div>팔로잉한 유저들의 게시물</div>
       <Wrap>
         <StyledSlider {...settings}>
           {post_list.map((p, idx) => {
@@ -100,4 +100,4 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
-export default Slide;
+export default FollowSlide;
