@@ -68,18 +68,23 @@ const editProfileMiddleware = (formData) => {
   };
 };
 const signUpMiddleware = (user) => {
-  return function ({ history }) {
+  // return function (dispatch, getState, { history }) {
+  return function (dispatch, getState, { history }) {
     console.log("회원가입 미들웨어 실행!");
     console.log("user", user);
     // 회원가입 API 실행
     apis
       .signUpAxios(user)
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
+        console.log(response.data.message);
+        window.alert(response.data.message);
+        history.push("/login");
       })
       .catch((error) => {
+        console.log("에러 발생");
         console.log(error.response);
+        console.log(error.response.data.message);
+        window.alert(error.response.data.message);
       });
   };
 };

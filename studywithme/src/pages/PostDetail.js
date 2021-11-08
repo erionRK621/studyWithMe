@@ -29,7 +29,7 @@ const PostDetail = (props) => {
   const isLiked = post.isLiked;
   const isFollowing = post.isFollowing;
   const imageCover =
-    post?.imageCover && process.env.REACT_APP_API_URI +"/"+ post?.imageCover;
+    post?.imageCover && process.env.REACT_APP_API_URI + "/" + post?.imageCover;
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
 
   console.log("상세페이지", post);

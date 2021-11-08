@@ -18,7 +18,9 @@ const SignUp = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     // *** 추가 구현 필요 ***
-    // 이메일, 닉네임, 비밀번호, 비밀번호 확인이 없는 경우를 대비한 예외처리
+    // 정규표현식으로 인풋 형식들 확인 (백엔드랑 협의)
+    // 이메일 중복 확인 여부 체크 (feat. useState)
+    // 닉네임 중복 확인 여부 체크 (feat. useState)
 
     const signUpInputs = {
         email: email,
