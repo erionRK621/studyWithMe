@@ -17,12 +17,18 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
+    // *** 추가 구현 필요 ***
+    // 이메일, 닉네임, 비밀번호, 비밀번호 확인이 없는 경우를 대비한 예외처리
+
     const signUpInputs = {
         email: email,
         nickname: nickname,
         password: password,
         confirmPassword: confirmPassword,
     };
+
+    const emailCheckInput = { email: email };
+    const nicknameCheckInput = { nickname: nickname };
 
     const onChangeEmail = (e) => {
         // console.log(e.target.value);
@@ -45,17 +51,23 @@ const SignUp = () => {
     }
 
     const onClickEmailCheck = () => {
-        console.log("이메일 중복 체크 실행");
-        console.log("email", email);
-        // 이메일 중복 체크 미들웨어 디스패치 (v)
-        dispatch(userActions.checkEmailMiddleware(email));
+        // console.log("emailCheckInput", emailCheckInput);
+        if (emailCheckInput.email === "") {
+            window.alert("이메일을 입력해주세요");
+        }
+        else {
+            dispatch(userActions.checkEmailMiddleware(emailCheckInput));
+        }
     }
 
     const onClickNicknameCheck = () => {
-        console.log("닉네임 중복 체크 실행");
-        console.log("nickname", nickname);
-        // 닉네임 중복 체크 미들웨어 디스패치 (v)
-        dispatch(userActions.checkEmailMiddleware(nickname));
+        // console.log("nicknameCheckInput", nicknameCheckInput);
+        if (nicknameCheckInput.nickname === "") {
+            window.alert("닉네임을 입력해주세요");
+        }
+        else {
+            dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
+        }
     }
 
     const onClickSignUp = () => {

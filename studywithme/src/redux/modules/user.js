@@ -114,29 +114,37 @@ const loginMiddleware = (user) => {
   };
 };
 
-const checkEmailMiddleware = (email) => {
+const checkEmailMiddleware = (emailCheckInput) => {
   return (dispatch, { history }) => {
     console.log("이메일 중복 체크 미들웨어 실행!");
-    console.log("email", email);
-    // 이메일 중복 체크 API 실행
+    console.log("emailCheckInput", emailCheckInput);
     apis
-      .checkEmailAxios(email)
+      .checkEmailAxios(emailCheckInput)
       .then((response) => {
-        console.log(response);
+        console.log(response.data.message);
+        window.alert(response.data.message);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data.message);
+        window.alert(error.response.data.message);
       })
-    // CHECK_EMAIL 디스패치
   };
 };
 
-const checkNicknameMiddleware = (nickname) => {
+const checkNicknameMiddleware = (nicknameCheckInput) => {
   return (dispatch, { history }) => {
     console.log("이메일 중복 체크 미들웨어 실행!");
-    console.log("nickname", nickname);
-    // 닉네임 중복 체크 API 실행
-    // CHECK_NICKNAME 디스패치
+    // console.log("nicknameCheckInput", nicknameCheckInput);
+    apis
+      .checkNicknameAxios(nicknameCheckInput)
+      .then((response) => {
+        console.log(response.data.message);
+        window.alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+        window.alert(error.response.data.message);
+      })
   };
 };
 
