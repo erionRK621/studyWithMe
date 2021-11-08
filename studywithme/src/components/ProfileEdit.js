@@ -41,6 +41,10 @@ export const ProfileEdit = () => {
     dispatch(userActions.editProfileMiddleware(formData));
   };
 
+  const checkNickname = () => {
+    dispatch(userActions.checkNicknameMiddleware(nickname));
+  };
+
   useEffect(() => {
     dispatch(userActions.getUserDB());
   }, []);
@@ -61,7 +65,7 @@ export const ProfileEdit = () => {
           value={nickname}
           _onChange={changeNickname}
         />
-        <Button>닉네임 중복확인</Button>
+        <Button onClick={checkNickname}>닉네임 중복확인</Button>
       </InputWrap>
       <SubmitWrap>
         <Submit onClick={editProfile}>변경하기</Submit>

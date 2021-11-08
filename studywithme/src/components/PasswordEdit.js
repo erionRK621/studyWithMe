@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import styled from "styled-components";
@@ -9,10 +9,10 @@ import Image from "../elements/Image";
 export const PasswordEdit = () => {
   const dispatch = useDispatch();
 
-  const [nickname, setNickname] = React.useState("");
+  const [password, setPassword] = useState("");
 
-  const changeNickname = (e) => {
-    setNickname(e.target.value);
+  const changePwd = (e) => {
+    setPassword(e.target.value);
   };
 
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -35,15 +35,15 @@ export const PasswordEdit = () => {
       <InputList>
         <InputWrap>
           <Label>이전 비밀번호</Label>
-          <Input value={nickname} _onChange={changeNickname} />
+          <Input value={password} _onChange={changePwd} />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호</Label>
-          <Input value={nickname} _onChange={changeNickname} />
+          <Input value={password} _onChange={changePwd} />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호 확인</Label>
-          <Input value={nickname} _onChange={changeNickname} />
+          <Input value={password} _onChange={changePwd} />
         </InputWrap>
       </InputList>
       <SubmitWrap>

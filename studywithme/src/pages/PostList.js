@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import {history} from "../redux/configStore";
+import { history } from "../redux/configStore";
 
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Image from "../elements/Image";
-import Post from "../components/Post";
+import CardPost from "../components/CardPost";
 import SelectBox from "../components/SelectBox";
 const PostList = (props) => {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const PostList = (props) => {
         {post_list.map((p, idx) => {
           return (
             <Grid key={p.postId} >
-              <Post {...p} onClick = {() => {
+              <CardPost {...p} onClick = {() => {
                 history.push(`/detail/${p.postId}`)
               }}/>
             </Grid>

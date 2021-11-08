@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { history } from "../redux/configStore";
 import SlideContent from "./SliderContent";
-import Post from "./Post";
+import CardMain from "./CardMain";
 
 const LikeSlide = (props) => {
   const post_list = useSelector((state) => state.post.list);
@@ -52,7 +52,7 @@ const LikeSlide = (props) => {
           {post_list.map((p, idx) => {
             return (
               <PostWrap key={idx}>
-                <Post
+                <CardMain
                   key={idx}
                   {...p}
                   onClick={() => {
