@@ -7,11 +7,7 @@ import { history } from "../redux/configStore";
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Image from "../elements/Image";
-<<<<<<< HEAD
 import CardPost from "../components/CardPost";
-=======
-import CardMain from "../components/CardMain";
->>>>>>> 4a9d1cca0343c01e0fc4cf625cfec6cfc04395e8
 import SelectBox from "../components/SelectBox";
 const PostList = (props) => {
   const dispatch = useDispatch();
@@ -80,20 +76,10 @@ const PostList = (props) => {
       <GridWrap>
         {post_list.map((p, idx) => {
           return (
-<<<<<<< HEAD
             <Grid key={p.postId} >
               <CardPost {...p} onClick = {() => {
                 history.push(`/detail/${p.postId}`)
               }}/>
-=======
-            <Grid key={p.postId}>
-              <CardMain
-                {...p}
-                onClick={() => {
-                  history.push(`/detail/${p.postId}`);
-                }}
-              />
->>>>>>> 4a9d1cca0343c01e0fc4cf625cfec6cfc04395e8
             </Grid>
           );
         })}
