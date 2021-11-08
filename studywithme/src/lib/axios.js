@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URI,
+  // baseURL: "http://3.34.44.44",
   // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "application/json;charset=UTF-8",
@@ -15,6 +16,7 @@ const instance = axios.create({
 
 const formInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URI,
+  // baseURL: "http://3.34.44.44",
   // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "multipart/form-data",
@@ -73,8 +75,8 @@ export const apis = {
 
   //회원정보
   getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
-  editProfileAxios: (userId, nickname) =>
-    instance.put("/api/users/profileEdit", { userId, nickname }),
+  editProfileAxios: (formData) =>
+    formInstance.put("/api/users/profileEdit", formData),
   // editUserPwdAxios: (userId) =>
   //   instance.put("/api/users/profileEdit", { userId }),
 

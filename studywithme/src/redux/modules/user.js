@@ -49,18 +49,21 @@ const getUserDB = (userId) => {
   };
 };
 
-const editProfileMiddleware = (userId) => {
+const editProfileMiddleware = (formData) => {
   return function (dispatch, getState, { history }) {
-    console.log(userId);
+    for (let a of formData.entries()) {
+      console.log(a);
+    }
     apis
-      .editProfileAxios(userId)
+      .editProfileAxios(formData)
       .then((res) => {
         console.log("미들웨어", res.data.userInfo);
-        dispatch(editUserProfile(res.data.userInfo[0]));
+        dispatch(editUserProfile(res.data.userInfo));
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
         console.log(err, "에러");
+        // console.log(err.response.data.message);
       });
   };
 };
