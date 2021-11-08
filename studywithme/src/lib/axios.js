@@ -77,8 +77,7 @@ export const apis = {
   getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
   editProfileAxios: (formData) =>
     formInstance.put("/api/users/profileEdit", formData),
-  // editUserPwdAxios: (userId) =>
-  //   instance.put("/api/users/profileEdit", { userId }),
+  editUserPwdAxios: (password) => instance.put("/api/users/edit", password),
 
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>

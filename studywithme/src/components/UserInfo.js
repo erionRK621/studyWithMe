@@ -7,13 +7,15 @@ import { history } from "../redux/configStore";
 
 import Image from "../elements/Image";
 import Text from "../elements/Text";
+import dotenv from "dotenv";
+dotenv.config();
 
 const UserInfo = (props) => {
   const dispatch = useDispatch();
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userPic = "http://3.34.44.44/" + userInfo?.avatarUrl;
+  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
   const userId = props.userId;
 
   useEffect(() => {

@@ -33,8 +33,7 @@ const PostDetail = (props) => {
   const imageCover =
     post?.imageCover && process.env.REACT_APP_API_URI + "/" + post?.imageCover;
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
-
-  console.log("상세페이지", post);
+  console.log(decodeURIComponent(post?.contentEditor));
 
   const onClickFollow = () => {
     console.log("팔로우 버튼 클릭");

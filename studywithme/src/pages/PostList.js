@@ -92,17 +92,18 @@ const Wrap = styled.div`
 `;
 const GridWrap = styled.div`
   max-width: 1300px;
+  padding: 0px 20px;
   margin: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  grid-gap: 40px;
+  grid-gap: 16px;
 `;
 
 const FlexGrid = styled.div`
   display: flex;
   margin: auto;
   padding-top: 20px;
-  padding-left: 80px;
+  padding-left: 20px;
   min-height: 30px;
   max-width: 1300px;
 `;
