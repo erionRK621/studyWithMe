@@ -3,11 +3,14 @@ import styled from "styled-components";
 
 // Image 함수형 컴포넌트를 만들어 준다.
 const Image = (props) => {
-  const { shape, src, size, _onClick, children } = props;
+  const { shape, src, size, _onClick, children, borderRadius, paddingTop } =
+    props;
 
   const styles = {
     src: src,
     size: size,
+    borderRadius: borderRadius,
+    paddingTop: paddingTop,
   };
 
   if (shape === "circle") {
@@ -60,10 +63,12 @@ const AspectOutter = styled.div`
 
 const AspectInner = styled.div`
   position: relative;
-  padding-top: 65%;
+  padding-top: ${(props) => (props.paddingTop ? props.paddingTop : "75%")};
   overflow: hidden;
   background-image: url("${(props) => props.src}");
   background-size: cover;
+  border-radius: ${(props) =>
+    props.borderRadius ? props.borderRadius : "0px"};
 `;
 
 const ImageCircle = styled.div`
