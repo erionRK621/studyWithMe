@@ -11,12 +11,7 @@ dotenv.config();
 const Post = (props) => {
   return (
     <PostContainer>
-      <Grid
-        padding="16px"
-        bg="#ffffff"
-        margin="8px 0px"
-        _onClick={props.onClick}
-      >
+      
         <Grid is_flex></Grid>
         <Grid>
           <Image
@@ -31,7 +26,6 @@ const Post = (props) => {
           <Text>{props.categorySpace}</Text>
           <Text>{props.categoryInterest}</Text>
         </Grid>
-      </Grid>
     </PostContainer>
   );
 };
@@ -57,9 +51,8 @@ const PostContainer = styled.div`
   max-width: 350px;
   margin: auto;
   margin-top: 30px;
-  margin-bottom: 30px;
   border-radius: 5px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
+  
 `;
 
 const Profile = styled.div`
