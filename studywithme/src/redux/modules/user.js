@@ -119,6 +119,14 @@ const checkEmailMiddleware = (email) => {
     console.log("이메일 중복 체크 미들웨어 실행!");
     console.log("email", email);
     // 이메일 중복 체크 API 실행
+    apis
+      .checkEmailAxios(email)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
     // CHECK_EMAIL 디스패치
   };
 };
