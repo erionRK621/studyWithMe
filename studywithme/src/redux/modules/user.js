@@ -12,12 +12,14 @@ const initialState = {
   checkEmailMsg: "", // 이메일 중복 여부 메세지
   checkNicknameMsg: "", // 닉네임 중복 여부 메세지
   userInfo: "",
+  password: "",
 };
 
 // ACTIONS
 const SET_USER = "SET_USER";
 const GET_USER = "GET_USER";
 const EDIT_PROFILE = "EDIT_PROFILE";
+const EDIT_PASSWORD = "EDIT_PASSWORD";
 const LOG_OUT = "LOG_OUT";
 const CHECK_EMAIL = "CHECK_EMAIL";
 const CHECK_NICKNAME = "CHECK_NICKNAME";
@@ -27,6 +29,9 @@ const setUser = createAction(SET_USER, (token) => ({ token }));
 const getUser = createAction(GET_USER, (userInfo) => ({ userInfo }));
 const editUserProfile = createAction(EDIT_PROFILE, (userInfo) => ({
   userInfo,
+}));
+const editPassword = createAction(EDIT_PASSWORD, (password) => ({
+  password,
 }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const checkEmail = createAction(CHECK_EMAIL, (email) => ({ email }));
@@ -67,6 +72,22 @@ const editProfileMiddleware = (formData) => {
       });
   };
 };
+
+const editPwdMiddleware = (editPwdInputs) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .editUserPwdAxios(editPwdInputs)
+      .then((res) => {
+        console.log(res);
+        window.alert(res.data.message);
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert(err.response.data.message);
+      });
+  };
+};
+
 const signUpMiddleware = (user) => {
   return function ({ history }) {
     console.log("회원가입 미들웨어 실행!");
@@ -127,7 +148,7 @@ const checkEmailMiddleware = (emailCheckInput) => {
       .catch((error) => {
         console.log(error.response.data.message);
         window.alert(error.response.data.message);
-      })
+      });
   };
 };
 
@@ -144,7 +165,7 @@ const checkNicknameMiddleware = (nicknameCheckInput) => {
       .catch((error) => {
         console.log(error.response.data.message);
         window.alert(error.response.data.message);
-      })
+      });
   };
 };
 
@@ -199,7 +220,11 @@ export default handleActions(
     [EDIT_PROFILE]: (state, action) =>
       produce(state, (draft) => {
         draft.userInfo = action.payload.userInfo;
-        console.log("리듀서 실행되냐?", action.payload.userInfo);
+      }),
+    [EDIT_PASSWORD]: (state, action) =>
+      produce(state, (draft) => {
+        draft.password = action.payload.password;
+        console.log("리듀서 실행되냐?", action.payload.password);
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
@@ -235,4 +260,5 @@ export const actionCreators = {
   checkNicknameMiddleware,
   kakaoLoginMiddleware,
   editProfileMiddleware,
+  editPwdMiddleware,
 };

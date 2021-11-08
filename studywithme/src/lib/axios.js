@@ -9,7 +9,7 @@ const instance = axios.create({
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    Authorization: `Bearer ${getCookie("user")}`,
+    Authorization: `Bearer ${localStorage.getItem("user")}`,
   },
   withCredentials: true,
 });
@@ -21,7 +21,7 @@ const formInstance = axios.create({
   headers: {
     "content-type": "multipart/form-data",
     accept: "application/json",
-    Authorization: `Bearer ${getCookie("user")}`,
+    Authorization: `Bearer ${localStorage.getItem("user")}`,
   },
   withCredentials: true,
 });
@@ -77,8 +77,7 @@ export const apis = {
   getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
   editProfileAxios: (formData) =>
     formInstance.put("/api/users/profileEdit", formData),
-  // editUserPwdAxios: (userId) =>
-  //   instance.put("/api/users/profileEdit", { userId }),
+  editUserPwdAxios: (password) => instance.put("/api/users/edit", password),
 
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>
