@@ -61,7 +61,7 @@ const getPostDB = () => {
     apis
       .getPost()
       .then((res) => {
-        // console.log(res.data.posts);
+        console.log(res.data);
         dispatch(getPost(res.data.posts));
       })
       .catch((err) => {
