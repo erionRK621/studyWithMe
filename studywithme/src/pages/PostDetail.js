@@ -24,7 +24,9 @@ const PostDetail = (props) => {
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
-  const userId = post.userId;
+  const postUserId = post.userId;
+  const user = useSelector((state) => state.user.user);
+  const userId = user?.userId;
   const isBookmarked = post.isBookmarked;
   const isLiked = post.isLiked;
   const isFollowing = post.isFollowing;
@@ -36,12 +38,12 @@ const PostDetail = (props) => {
 
   const onClickFollow = () => {
     console.log("팔로우 버튼 클릭");
-    dispatch(postActions.followUserMiddleware(userId));
+    dispatch(postActions.followUserMiddleware(postUserId));
   }
 
   const onClickUnfollow = () => {
     console.log("언팔로우 버튼 클릭");
-    dispatch(postActions.unfollowUserMiddleware(userId));
+    dispatch(postActions.unfollowUserMiddleware(postUserId));
   }
 
   const onClickAddLike = () => {
@@ -81,7 +83,7 @@ const PostDetail = (props) => {
       <FlexGrid direction="column" margin="40px auto">
         <FlexGrid>
           <H1>{decodeURIComponent(post?.title)}</H1>
-          {post.userId === userId ? (
+          {postUserId === userId ? (
             <>
               <Button
                 margin="0px 20px"
@@ -98,7 +100,7 @@ const PostDetail = (props) => {
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
             <Image />
-            <span>userNickname</span>
+            <span>{post.User?.nickname}</span>
             <span
               style={{
                 marginLeft: "20px",
