@@ -17,6 +17,7 @@ const initialState = {
 // ACTIONS
 const SET_USER = "SET_USER";
 const GET_USER = "GET_USER";
+const EDIT_PROFILE = "EDIT_PROFILE";
 const LOG_OUT = "LOG_OUT";
 const CHECK_EMAIL = "CHECK_EMAIL";
 const CHECK_NICKNAME = "CHECK_NICKNAME";
@@ -24,6 +25,9 @@ const CHECK_NICKNAME = "CHECK_NICKNAME";
 // ACTION CREATORS
 const setUser = createAction(SET_USER, (token) => ({ token }));
 const getUser = createAction(GET_USER, (userInfo) => ({ userInfo }));
+const editUserProfile = createAction(EDIT_PROFILE, (userInfo) => ({
+  userInfo,
+}));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const checkEmail = createAction(CHECK_EMAIL, (email) => ({ email }));
 const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({
@@ -33,11 +37,9 @@ const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({
 // MIDDLEWARES
 const getUserDB = (userId) => {
   return function (dispatch, getState, { history }) {
-    console.log(userId);
     apis
       .getUser(userId)
       .then((res) => {
-        console.log("미들웨어", res.data.userInfo);
         dispatch(getUser(res.data.userInfo[0]));
       })
       .catch((err) => {
@@ -47,6 +49,24 @@ const getUserDB = (userId) => {
   };
 };
 
+const editProfileMiddleware = (formData) => {
+  return function (dispatch, getState, { history }) {
+    for (let a of formData.entries()) {
+      console.log(a);
+    }
+    apis
+      .editProfileAxios(formData)
+      .then((res) => {
+        console.log("미들웨어", res.data.userInfo);
+        dispatch(editUserProfile(res.data.userInfo));
+      })
+      .catch((err) => {
+        //요청이 정상적으로 안됬을때 수행
+        console.log(err, "에러");
+        // console.log(err.response.data.message);
+      });
+  };
+};
 const signUpMiddleware = (user) => {
   return function ({ history }) {
     console.log("회원가입 미들웨어 실행!");
@@ -67,22 +87,20 @@ const signUpMiddleware = (user) => {
 const loginMiddleware = (user) => {
   return (dispatch, { history }) => {
     console.log("loginMiddleware 실행!");
-    console.log("user", user);
     // 로그인 API 실행
     apis
       .logInAxios(user)
       .then((response) => {
-        console.log(response);
         const { token } = response.data;
 
-        // 기존 user 토큰이 쿠키에 존재하면, 삭제
-        if (getCookie("user")) {
-          deleteCookie("user");
-          console.log("쿠키에 저장된 기존 user 토큰 삭제");
+        // 기존 user 토큰이 localStorage에 존재하면? 삭제
+        if (localStorage.getItem("user")) {
+          localStorage.removeItem("user");
+          console.log("localStorage에 저장된 기존 user 토큰 삭제");
         }
 
-        // 쿠키에 user 토큰 저장
-        setCookie("user", token);
+        // localStorage에 user 토큰 저장
+        localStorage.setItem("user", token);
 
         // reducer에서 SET_USER 실행
         dispatch(setUser(token));
@@ -96,21 +114,37 @@ const loginMiddleware = (user) => {
   };
 };
 
-const checkEmailMiddleware = (email) => {
+const checkEmailMiddleware = (emailCheckInput) => {
   return (dispatch, { history }) => {
     console.log("이메일 중복 체크 미들웨어 실행!");
-    console.log("email", email);
-    // 이메일 중복 체크 API 실행
-    // CHECK_EMAIL 디스패치
+    console.log("emailCheckInput", emailCheckInput);
+    apis
+      .checkEmailAxios(emailCheckInput)
+      .then((response) => {
+        console.log(response.data.message);
+        window.alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+        window.alert(error.response.data.message);
+      })
   };
 };
 
-const checkNicknameMiddleware = (nickname) => {
+const checkNicknameMiddleware = (nicknameCheckInput) => {
   return (dispatch, { history }) => {
     console.log("이메일 중복 체크 미들웨어 실행!");
-    console.log("nickname", nickname);
-    // 닉네임 중복 체크 API 실행
-    // CHECK_NICKNAME 디스패치
+    // console.log("nicknameCheckInput", nicknameCheckInput);
+    apis
+      .checkNicknameAxios(nicknameCheckInput)
+      .then((response) => {
+        console.log(response.data.message);
+        window.alert(response.data.message);
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+        window.alert(error.response.data.message);
+      })
   };
 };
 
@@ -123,18 +157,27 @@ const kakaoLoginMiddleware = (code) => {
     })
       .then((response) => {
         console.log("kakaoLoginMiddleware 응답받기 성공");
-        console.log(response.data.token);
-        console.log("decoded", jwt_decode(response.data.token));
+        const token = response.data.token;
 
-        // 프론트 서버 열면 구현할 부분들:
-        // 토큰 받아서
-        // session에 저장함
-        // 로그인 됐으니 메인페이지로 이동
+        // 기존 user 토큰이 localStorage에 존재하면? 삭제
+        if (localStorage.getItem("user")) {
+          localStorage.removeItem("user");
+          console.log("localStorage에 저장된 기존 user 토큰 삭제");
+        }
+
+        // localStorage에 user 토큰 저장
+        localStorage.setItem("user", token);
+
+        // reducer에서 SET_USER 실행
+        dispatch(setUser(token));
+
+        // 로그인이 완료됐으므로 메인페이지로 이동
+        window.location.href = "/";
       })
       .catch((error) => {
         console.log("카카오 로그인 에러", error);
         window.alert("로그인에 실패했습니다.");
-        // history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
+        history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
       });
   };
 };
@@ -152,12 +195,16 @@ export default handleActions(
     [GET_USER]: (state, action) =>
       produce(state, (draft) => {
         draft.userInfo = action.payload.userInfo;
+      }),
+    [EDIT_PROFILE]: (state, action) =>
+      produce(state, (draft) => {
+        draft.userInfo = action.payload.userInfo;
         console.log("리듀서 실행되냐?", action.payload.userInfo);
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
         console.log("LOG_OUT 리듀서 실행!");
-        deleteCookie("user");
+        localStorage.removeItem("user");
         draft.user = null;
         draft.isLoggedIn = false;
         window.location.reload();
@@ -187,4 +234,5 @@ export const actionCreators = {
   checkNickname,
   checkNicknameMiddleware,
   kakaoLoginMiddleware,
+  editProfileMiddleware,
 };

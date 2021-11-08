@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/mypage";
 
 import Grid from "../elements/Grid";
-import Post from "../components/Post";
+import CardMain from "../components/CardMain";
 
 const MyPosts = (props) => {
   const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const MyPosts = (props) => {
           {myPostList.map((p, idx) => {
             return (
               <Grid key={idx}>
-                <Post key={idx} {...p} />
+                <CardMain key={idx} {...p} />
               </Grid>
             );
           })}

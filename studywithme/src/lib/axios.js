@@ -1,8 +1,10 @@
 import axios from "axios";
 import { getCookie } from "../shared/cookie";
-
+import dotenv from "dotenv";
+dotenv.config();
 const instance = axios.create({
-  baseURL: "http://3.34.44.44",
+  baseURL: process.env.REACT_APP_API_URI,
+  // baseURL: "http://3.34.44.44",
   // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "application/json;charset=UTF-8",
@@ -13,7 +15,8 @@ const instance = axios.create({
 });
 
 const formInstance = axios.create({
-  baseURL: "http://3.34.44.44",
+  baseURL: process.env.REACT_APP_API_URI,
+  // baseURL: "http://3.34.44.44",
   // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "multipart/form-data",
@@ -70,8 +73,12 @@ export const apis = {
   getBookMarkAxios: (userId) =>
     instance.get(`/api/mypage/mybookmarks/${userId}`, { userId }),
 
-  //회원정보 가져오기
+  //회원정보
   getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
+  editProfileAxios: (formData) =>
+    formInstance.put("/api/users/profileEdit", formData),
+  // editUserPwdAxios: (userId) =>
+  //   instance.put("/api/users/profileEdit", { userId }),
 
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>

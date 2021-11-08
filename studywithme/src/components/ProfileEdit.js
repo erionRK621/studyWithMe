@@ -5,18 +5,45 @@ import styled from "styled-components";
 
 import Input from "../elements/Input";
 import Image from "../elements/Image";
+import Upload from "./Upload";
 
 export const ProfileEdit = () => {
+  const userInfo = useSelector((state) => state.user.userInfo);
+  //   const userId = useSelector((state) => state.user.userInfo.userId);
+  const userPic = "http://3.34.44.44/" + userInfo?.avatarUrl;
+
   const dispatch = useDispatch();
-  const [nickname, setNickname] = React.useState("");
+  const [nickname, setNickname] = React.useState(userInfo.nickname);
+  const [selectedFile, setSelectedFile] = React.useState(null);
+
+  console.log("닉네임", nickname);
 
   const changeNickname = (e) => {
     setNickname(e.target.value);
   };
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const userPic = "http://3.34.44.44/" + userInfo.avatarUrl;
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
-  console.log("user정보받아왔니", userInfo);
+  // formData라는 instance에 담아 보냄
+  const handleFileUpload = () => {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    for (let entry of formData.entries()) {
+      console.log(entry);
+    }
+  };
+
+  const editProfile = () => {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("nicknameNew", nickname);
+    dispatch(userActions.editProfileMiddleware(formData));
+  };
+
+  const checkNickname = () => {
+    dispatch(userActions.checkNicknameMiddleware(nickname));
+  };
 
   useEffect(() => {
     dispatch(userActions.getUserDB());
@@ -26,17 +53,22 @@ export const ProfileEdit = () => {
       <NowInfoDiv>
         <Image style={{ width: "30%" }} size="100" src={userPic}></Image>
         <NicknameWrap>
-          <UserNickname>{userInfo.nickname}</UserNickname>
-          <ChangePic>프로필사진변경</ChangePic>
+          <UserNickname>{userInfo?.nickname}</UserNickname>
+          <Upload _onChange={handleFileChange}></Upload>
+          <Button onClick={handleFileUpload}>프로필사진변경</Button>
         </NicknameWrap>
       </NowInfoDiv>
       <InputWrap>
         <Label>닉네임변경</Label>
-        <Input value={nickname} _onChange={changeNickname} />
-        <Button>닉네임 중복확인</Button>
+        <Input
+          placeholder={nickname}
+          value={nickname}
+          _onChange={changeNickname}
+        />
+        <Button onClick={checkNickname}>닉네임 중복확인</Button>
       </InputWrap>
       <SubmitWrap>
-        <Submit>변경하기</Submit>
+        <Submit onClick={editProfile}>변경하기</Submit>
       </SubmitWrap>
     </React.Fragment>
   );

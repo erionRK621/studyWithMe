@@ -17,7 +17,8 @@ import Button from "../elements/Button";
 import Text from "../elements/Text";
 import CommentWrite from "../components/CommentWrite";
 import CommentList from "../components/CommentList";
-
+import dotenv from "dotenv";
+dotenv.config();
 const PostDetail = (props) => {
   const dispatch = useDispatch();
 
@@ -28,8 +29,8 @@ const PostDetail = (props) => {
   const isLiked = post.isLiked;
   const isFollowing = post.isFollowing;
   const imageCover =
-    post?.imageCover && "http://3.34.44.44/" + post?.imageCover;
-  const content = ReactHtmlParser(post?.contentEditor);
+    post?.imageCover && process.env.REACT_APP_API_URI +"/"+ post?.imageCover;
+  const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
 
   console.log("상세페이지", post);
 
