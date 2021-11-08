@@ -4,11 +4,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators as userActions } from "../redux/modules/user";
 
-
 import Grid from "../elements/Grid";
 import Image from "../elements/Image";
 import Slide from "../components/Slide";
-import Post from "../components/Post";
+import CardMain from "../components/CardMain";
 import LikeSlide from "../components/LikeSlide";
 
 const Main = (props) => {
@@ -38,9 +37,12 @@ const Main = (props) => {
             {post_list.map((p, idx) => {
               return (
                 <Grid key={p.postId}>
-                  <Post {...p} onClick = {() => {
-                history.push(`/detail/${p.postId}`)
-              }}/>
+                  <CardMain
+                    {...p}
+                    onClick={() => {
+                      history.push(`/detail/${p.postId}`);
+                    }}
+                  />
                 </Grid>
               );
             })}
