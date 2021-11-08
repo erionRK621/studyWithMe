@@ -9,23 +9,29 @@ import Image from "../elements/Image";
 import dotenv from "dotenv";
 dotenv.config();
 const Post = (props) => {
+  const { onClick } = props;
+  console.log(props.Likes.length);
+  console.log(props.Bookmarks.length);
   return (
-    <PostContainer>
-      
-        <Grid is_flex></Grid>
-        <Grid>
-          <Image
-            shape="rectangle"
-            src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
-          />
-        </Grid>
-        <Grid is_flex>
-          <Text>{decodeURIComponent(props.title)}</Text>
-        </Grid>
-        <Grid is_flex>
-          <Text>{props.categorySpace}</Text>
-          <Text>{props.categoryInterest}</Text>
-        </Grid>
+    <PostContainer onClick={onClick}>
+      <Grid is_flex></Grid>
+      <Grid>
+        <Image
+          shape="rectangle"
+          src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
+          borderRadius="10px"
+          paddingTop="100%"
+        />
+      </Grid>
+      <Grid is_flex margin="10px 0px 0px 0px">
+        <Text size="15px" bold>
+          {decodeURIComponent(props.title)}
+        </Text>
+      </Grid>
+      <Grid is_flex justify="start">
+        <Text marginRight="20px">좋아요:{props.Likes.length}</Text>
+        <Text>스크랩:{props.Bookmarks.length}</Text>
+      </Grid>
     </PostContainer>
   );
 };
@@ -52,7 +58,6 @@ const PostContainer = styled.div`
   margin: auto;
   margin-top: 30px;
   border-radius: 5px;
-  
 `;
 
 const Profile = styled.div`
