@@ -62,20 +62,28 @@ export const Header = () => {
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
           <InfoList>
-            <FaUserAlt
-              cursor="pointer"
-              size="1.7em"
-              color="grey"
+            <List
               onClick={() => {
                 history.push("/mypage/" + userId);
               }}
-            />
-          </InfoList>
-          <InfoList onClick={onClickLogOut}>
-            <BiLogOut cursor="pointer" size="1.7em" color="grey" />
+            >
+              마이페이지
+            </List>
           </InfoList>
           <InfoList>
-            <FaBell cursor="pointer" size="1.7em" color="grey" />
+            <List onClick={onClickLogOut}>로그아웃</List>
+          </InfoList>
+          <InfoList>
+            <List>알림</List>
+          </InfoList>
+          <InfoList>
+            <List
+              onClick={() => {
+                history.push("/write");
+              }}
+            >
+              글쓰기
+            </List>
           </InfoList>
         </NavbarIcon>
         <Hamberger href="#">
@@ -131,6 +139,15 @@ export const Header = () => {
               }}
             >
               회원가입
+            </List>
+          </InfoList>
+          <InfoList>
+            <List
+              onClick={() => {
+                history.push("/login");
+              }}
+            >
+              글쓰기
             </List>
           </InfoList>
         </NavbarIcon>

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
+import { history } from "../redux/configStore";
 
 import Input from "../elements/Input";
 import Upload from "../components/Upload";
@@ -12,6 +13,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const PostWrite = (props) => {
+  if (!localStorage.getItem("user")) {
+    window.alert("로그인을 먼저 해주세요");
+    history.push("/login");
+  }
+
   const post = useSelector((state) => state.post.detail);
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
@@ -50,12 +56,11 @@ const PostWrite = (props) => {
     const reader = new FileReader();
 
     // 미리보기를 위해 file을 읽어온다
-    if(file && file.type.match('image.*')){
+    if (file && file.type.match("image.*")) {
       reader.readAsDataURL(file);
     } else {
       setPreview("");
     }
-    
 
     //file이 load 된 후
     reader.onloadend = () => {
