@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { useSelector, useDispatch } from "react-redux";
+import { TiDeleteOutline } from "react-icons/ti";
 import styled from "styled-components";
 import { history } from "../redux/configStore";
 
-import Grid from "../elements/Grid";
 import Text from "../elements/Text";
-import Image from "../elements/Image";
 import CardPost from "../components/CardPost";
 import SelectBox from "../components/SelectBox";
-const PostList = (props) => {
+const PostListTest = (props) => {
   const dispatch = useDispatch();
 
   // url에서 쿼리스트링 가져오기
@@ -17,13 +16,13 @@ const PostList = (props) => {
 
   // 쿼리스트링 파싱
   const queryInterest = getQueryString.includes("&categoryInterest=")
-    ? getQueryString.split("&categoryInterest=")[1].split("&")[0]
+    ? decodeURI(getQueryString.split("&categoryInterest=")[1].split("&")[0])
     : null;
   const querySpace = getQueryString.includes("&categorySpace=")
-    ? getQueryString.split("&categorySpace=")[1].split("&")[0]
+    ? decodeURI(getQueryString.split("&categorySpace=")[1].split("&")[0])
     : null;
   const queryStudyMate = getQueryString.includes("&categoryStudyMate=")
-    ? getQueryString.split("&categoryStudyMate=")[1]
+    ? decodeURI(getQueryString.split("&categoryStudyMate=")[1])
     : null;
 
   // 카테고리 초기화
@@ -36,6 +35,16 @@ const PostList = (props) => {
   );
 
   const post_list = useSelector((state) => state.post.list);
+  const _selectArray = [
+    { value: interestVal, func: setInterestVal },
+    { value: spaceVal, func: setSpaceVal },
+    { value: studyMateVal, func: setStudyMateVal },
+  ];
+  const selectArray = _selectArray.filter((s, idx) => {
+    if (s.value !== "") {
+      return s;
+    }
+  });
 
   // select box 이벤트
   const space = (e) => {
@@ -60,7 +69,7 @@ const PostList = (props) => {
 
   return (
     <Wrap>
-      <FlexGrid>
+      <SelectGrid>
         <SelectBox
           category="interest"
           _onChange={interest}
@@ -72,18 +81,44 @@ const PostList = (props) => {
           _onChange={studyMate}
           _value={studyMateVal}
         />
-      </FlexGrid>
+      </SelectGrid>
+      <SelectedGrid>
+        {selectArray.map((filter, idx) => {
+          return (
+            <Selected key={idx}>
+              <Text color="#aaaaaa">{filter.value}</Text>
+              <TiDeleteOutline
+                color="#aaaaaa"
+                onClick={() => {
+                  filter.func("");
+                }}
+              />
+            </Selected>
+          );
+        })}
+        {selectArray.length > 0 ? (
+          <ButtonText
+            onClick={() => {
+              setInterestVal("");
+              setSpaceVal("");
+              setStudyMateVal("");
+            }}
+          >
+            초기화
+          </ButtonText>
+        ) : null}
+      </SelectedGrid>
       <GridWrap>
         {post_list.map((p, idx) => {
           return (
-            <Grid key={p.postId}>
+            <ItemGrid key={p.postId}>
               <CardPost
                 {...p}
                 onClick={() => {
                   history.push(`/detail/${p.postId}`);
                 }}
               />
-            </Grid>
+            </ItemGrid>
           );
         })}
       </GridWrap>
@@ -91,23 +126,62 @@ const PostList = (props) => {
   );
 };
 const Wrap = styled.div`
-  width: 100%;
+  max-width: 1090px;
+  margin: auto;
+  padding:20px;
 `;
 const GridWrap = styled.div`
-  max-width: 1090px;
-  padding: 0px 20px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  grid-gap: 20px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0px;
+  justify-content: space-between;
 `;
 
-const FlexGrid = styled.div`
-  display: flex;
-  margin: auto;
-  padding-top: 20px;
-  padding-left: 40px;
-  min-height: 30px;
-  max-width: 1090px;
+const ItemGrid = styled.div`
+  width: 30%;
+  box-sizing: border-box;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-top:20px;
+  }
 `;
-export default PostList;
+
+const SelectGrid = styled.div`
+  height: 30px;
+  padding-top: 20px;
+  width: 100%;
+  display: flex;
+  
+`;
+
+const SelectedGrid = styled.div`
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const Selected = styled.div`
+  background-color: #eeeeee;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin-right: 10px;
+  border-radius: 10px;
+`;
+
+const ButtonText = styled.p`
+  color: ${(props) => props.color};
+  font-size: ${(props) => (props.size ? props.size : "14px")};
+  font-weight: ${(props) => (props.bold ? "600" : "400")};
+  line-height: ${(props) => props.lineHeight};
+  word-break: break-all;
+  overflow: hidden;
+  &:hover {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`;
+export default PostListTest;
