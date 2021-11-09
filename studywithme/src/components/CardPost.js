@@ -10,8 +10,6 @@ import dotenv from "dotenv";
 dotenv.config();
 const Post = (props) => {
   const { onClick } = props;
-  console.log(props.Likes.length);
-  console.log(props.Bookmarks.length);
   return (
     <PostContainer onClick={onClick}>
       <Grid is_flex></Grid>
@@ -29,8 +27,8 @@ const Post = (props) => {
         </Text>
       </Grid>
       <Grid is_flex justify="start">
-        <Text marginRight="20px">좋아요:{props.Likes.length}</Text>
-        <Text>스크랩:{props.Bookmarks.length}</Text>
+        <Text marginRight="20px">좋아요:{props.Likes?.length}</Text>
+        <Text>스크랩:{props.Bookmarks?.length}</Text>
       </Grid>
     </PostContainer>
   );
