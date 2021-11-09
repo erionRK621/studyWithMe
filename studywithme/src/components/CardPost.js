@@ -20,8 +20,8 @@ const Post = (props) => {
           paddingTop="100%"
         />
       </Grid>
-      <Grid is_flex margin="10px 0px 0px 0px">
-        <Text size="15px" bold>
+      <Grid is_flex margin="17px 0px 0px 0px">
+        <Text size="16px" bold>
           {decodeURIComponent(props.title)}
         </Text>
       </Grid>
