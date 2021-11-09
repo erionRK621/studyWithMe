@@ -91,20 +91,20 @@ const Wrap = styled.div`
   width: 100%;
 `;
 const GridWrap = styled.div`
-  max-width: 1300px;
+  max-width: 1090px;
   padding: 0px 20px;
   margin: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  grid-gap: 16px;
+  grid-gap: 20px;
 `;
 
 const FlexGrid = styled.div`
   display: flex;
   margin: auto;
   padding-top: 20px;
-  padding-left: 20px;
+  padding-left: 40px;
   min-height: 30px;
-  max-width: 1300px;
+  max-width: 1090px;
 `;
 export default PostList;

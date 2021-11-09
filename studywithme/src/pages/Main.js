@@ -6,9 +6,10 @@ import { actionCreators as userActions } from "../redux/modules/user";
 
 import Grid from "../elements/Grid";
 import Image from "../elements/Image";
-import Slide from "../components/Slide";
+import RandomSlide from "../components/RandomSlide";
 import CardMain from "../components/CardMain";
 import LikeSlide from "../components/LikeSlide";
+import FollowSlide from "../components/FollowSlide";
 
 const Main = (props) => {
   const dispatch = useDispatch();
@@ -25,14 +26,24 @@ const Main = (props) => {
   return (
     <React.Fragment>
       <Wrap>
+        <Image
+          shape="rectangle"
+          // src={}
+          paddingTop="40%"
+        >
+          메인배너
+        </Image>
         <div>
           <LikeSlide></LikeSlide>
         </div>
         <div>
-          <Slide></Slide>
+          <RandomSlide></RandomSlide>
+        </div>
+        <div>
+          <FollowSlide></FollowSlide>
         </div>
 
-        <Grid>
+        {/* <Grid>
           <GridWrap>
             {post_list.map((p, idx) => {
               return (
@@ -47,21 +58,22 @@ const Main = (props) => {
               );
             })}
           </GridWrap>
-        </Grid>
+        </Grid> */}
       </Wrap>
     </React.Fragment>
   );
 };
+
 const Wrap = styled.div`
   width: 100%;
 `;
 
-const GridWrap = styled.div`
-  max-width: 1300px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  grid-gap: 40px;
-`;
+// const GridWrap = styled.div`
+//   max-width: 1300px;
+//   margin: auto;
+//   display: grid;
+//   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+//   grid-gap: 40px;
+// `;
 
 export default Main;
