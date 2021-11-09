@@ -12,8 +12,6 @@ import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 // Components
-import Text from "../elements/Text";
-import Button from "../elements/Button";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -52,14 +50,14 @@ export const Header = () => {
               history.push("/");
             }}
           >
-            홈
+            메인
           </List>
           <List
             onClick={() => {
               history.push("/list");
             }}
           >
-            게시글 모아보기
+            게시글
           </List>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
@@ -72,9 +70,6 @@ export const Header = () => {
                 history.push("/mypage/" + userId);
               }}
             />
-          </InfoList>
-          <InfoList>
-            <BiLogIn cursor="pointer" size="1.7em" color="grey" />
           </InfoList>
           <InfoList onClick={onClickLogOut}>
             <BiLogOut cursor="pointer" size="1.7em" color="grey" />
@@ -99,14 +94,54 @@ export const Header = () => {
   else {
     return (
       <Navbar>
-        <Text color="white">로그인 안 됨</Text>
-        <Button
-          _onClick={() => {
-            history.push("/login");
-          }}
-        >
-          로그인
-        </Button>
+        <NavbarLogo>
+          <IMG />
+        </NavbarLogo>
+
+        <NavbarMenu menuState={menuState}>
+          <List
+            onClick={() => {
+              history.push("/");
+            }}
+          >
+            메인
+          </List>
+          <List
+            onClick={() => {
+              history.push("/list");
+            }}
+          >
+            게시글
+          </List>
+        </NavbarMenu>
+        <NavbarIcon menuState={menuState}>
+          <InfoList>
+            <List
+              onClick={() => {
+                history.push("/login");
+              }}
+            >
+              로그인
+            </List>
+          </InfoList>
+          <InfoList>
+            <List
+              onClick={() => {
+                history.push("/signup");
+              }}
+            >
+              회원가입
+            </List>
+          </InfoList>
+        </NavbarIcon>
+        <Hamberger href="#">
+          <GiHamburgerMenu
+            cursor="pointer"
+            size="1.7em"
+            color="grey"
+            onClick={menuHandler}
+          />
+        </Hamberger>
       </Navbar>
     );
   }
@@ -171,14 +206,15 @@ const NavbarIcon = styled.ul`
 `;
 
 const InfoList = styled.li`
-  padding: 8px 12px; /*마우스 클릭영역확보*/
-  :hover {
+  padding: 0 12px;
+  마우스 클릭영역확보 :hover {
     background-color: red;
     border-radius: 10px;
   }
   @media screen and (max-width: 768px) {
     text-align: center; /*로고는 현재 반대축이므로 justify-content 사용*/
     width: 100%;
+    padding-right: 35px;
   }
 `;
 
