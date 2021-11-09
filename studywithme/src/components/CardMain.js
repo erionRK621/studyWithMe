@@ -6,6 +6,8 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Image from "../elements/Image";
+import dotenv from "dotenv";
+dotenv.config();
 
 const Post = (props) => {
   const post_list = useSelector((state) => state.post.list);
@@ -14,25 +16,27 @@ const Post = (props) => {
 
   return (
     <PostContainer>
-      <Grid padding="16px" bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
+      <Grid bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
         <Grid is_flex></Grid>
         <Grid>
           <Image
             shape="rectangle"
-            src={`http://3.34.44.44/${props.imageCover}`}
+            src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
+            paddingTop="65%"
+            borderRadius="10px"
           />
         </Grid>
         <Grid is_flex>
-          <Text>{decodeURIComponent(props.title)}</Text>
+          <Title>{decodeURIComponent(props.title)}</Title>
         </Grid>
         <Grid is_flex>
           <Profile>
-            <Text bold>{props.userId}</Text>
             {/* <Text bold>{props.avatarUrl}</Text> */}
+            <Nickname bold>{props.userId}</Nickname>
           </Profile>
           <CategoryInfo>
-            <Text bold>{props.categorySpace}</Text>
-            <Text bold>{props.categoryInterest}</Text>
+            <CategoryItem bold>{props.categorySpace}</CategoryItem>
+            <CategoryItem bold>{props.categoryInterest}</CategoryItem>
           </CategoryInfo>
         </Grid>
       </Grid>
@@ -60,17 +64,33 @@ const PostContainer = styled.div`
   width: 80%;
   max-width: 350px;
   margin: auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
   border-radius: 5px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
+`;
+const Title = styled.div`
+  font-size: 16px;
+  margin-top: 10px;
 `;
 
 const Profile = styled.div`
   display: flex;
 `;
+const Nickname = styled.div`
+  font-size: 13px;
+  opacity: 0.5;
+`;
+
 const CategoryInfo = styled.div`
   display: flex;
+`;
+const CategoryItem = styled.div`
+  display: inline-block;
+  border-radius: 10px;
+  opacity: 0.5;
+  font-size: 13px;
+  background-color: #ececec;
+  margin: 0 5px;
+  padding: 2px 6px;
 `;
 
 export default Post;

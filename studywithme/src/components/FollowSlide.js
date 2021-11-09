@@ -9,7 +9,7 @@ import { history } from "../redux/configStore";
 import SlideContent from "./SliderContent";
 import CardMain from "./CardMain";
 
-const LikeSlide = (props) => {
+const FollowSlide = (props) => {
   const post_list = useSelector((state) => state.post.list);
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
@@ -27,7 +27,7 @@ const LikeSlide = (props) => {
       {
         breakpoint: 1200, // 화면 사이즈 1200px
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 4,
         },
       },
       {
@@ -49,7 +49,7 @@ const LikeSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>인기게시글</SlideTitle>
+          <SlideTitle>팔로잉 유저들의 게시물</SlideTitle>
           <More
             onClick={() => {
               history.push("/list");
@@ -159,4 +159,4 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
-export default LikeSlide;
+export default FollowSlide;

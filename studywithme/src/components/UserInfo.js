@@ -3,21 +3,30 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { AiTwotoneSetting } from "react-icons/ai";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
 import Image from "../elements/Image";
 import Text from "../elements/Text";
+import dotenv from "dotenv";
+dotenv.config();
 
 const UserInfo = (props) => {
   const dispatch = useDispatch();
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userPic = "http://3.34.44.44/" + userInfo?.avatarUrl;
+  const followerList = useSelector((state) => state.mypage?.followerIdList);
+  // console.log(followerList);
+  const followingList = useSelector((state) => state.mypage?.followingIdList);
+  console.log(followingList);
+  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
   const userId = props.userId;
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
+    dispatch(myActions.getFollowingsMiddleware(userId));
+    dispatch(myActions.getFollowersMiddleware(userId));
   }, []);
   return (
     <React.Fragment>
@@ -43,8 +52,8 @@ const UserInfo = (props) => {
           </MiddleDiv>
           <BottomDiv>
             <Text>게시글 {userInfo?.postCnt}개</Text>
-            <Text>팔로우 2명</Text>
-            <Text>팔로잉 3명</Text>
+            <Text>팔로워 {followerList?.length}명</Text>
+            <Text>팔로잉 {followingList?.length}명</Text>
           </BottomDiv>
         </RightDiv>
       </UserInfoWrap>

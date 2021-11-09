@@ -3,26 +3,41 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
+import { history } from "../redux/configStore";
 
-// import ReactHtmlParser, {
-//   processNodes,
-//   convertNodeToElement,
-//   htmlparser2,
-// } from "react-html-parser";
 import Input from "../elements/Input";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
+
+import dotenv from "dotenv";
+dotenv.config();
+
 const PostWrite = (props) => {
-  const post = useSelector(state => state.post.detail);
+  if (!localStorage.getItem("user")) {
+    window.alert("로그인을 먼저 해주세요");
+    history.push("/login");
+  }
+
+  const post = useSelector((state) => state.post.detail);
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
   const dispatch = useDispatch();
-  const [preview, setPreview] = useState(_editMode ? "http://3.34.44.44/" + post.imageCover : "");
-  const [content, setContent] = useState(_editMode ? decodeURIComponent(post.contentEditor) : "");
+  const [preview, setPreview] = useState(
+    _editMode ? `${process.env.REACT_APP_API_URI}/${post.imageCover}` : ""
+  );
+  const [content, setContent] = useState(
+    _editMode ? decodeURIComponent(post.contentEditor) : ""
+  );
   const [spaceVal, setSpaceVal] = useState(_editMode ? post.categorySpace : "");
-  const [studyMateVal, setStudyMateVal] = useState(_editMode ? post.categoryStudyMate : "");
-  const [interestVal, setInterestVal] = useState(_editMode ? post.categoryInterest : "");
-  const [title, setTitle] = useState(_editMode ? decodeURIComponent(post.title) : "");
+  const [studyMateVal, setStudyMateVal] = useState(
+    _editMode ? post.categoryStudyMate : ""
+  );
+  const [interestVal, setInterestVal] = useState(
+    _editMode ? post.categoryInterest : ""
+  );
+  const [title, setTitle] = useState(
+    _editMode ? decodeURIComponent(post.title) : ""
+  );
   const [image, setImage] = useState("");
 
   let formData = new FormData();
@@ -41,7 +56,11 @@ const PostWrite = (props) => {
     const reader = new FileReader();
 
     // 미리보기를 위해 file을 읽어온다
-    reader.readAsDataURL(file);
+    if (file && file.type.match("image.*")) {
+      reader.readAsDataURL(file);
+    } else {
+      setPreview("");
+    }
 
     //file이 load 된 후
     reader.onloadend = () => {
@@ -76,7 +95,7 @@ const PostWrite = (props) => {
     formData.append("contentEditor", content);
 
     dispatch(postActions.editPostMiddleware(postId, formData));
-  }
+  };
   const getContent = (content) => {
     setContent(content);
   };
@@ -122,7 +141,11 @@ const PostWrite = (props) => {
           />
         </FlexGrid>
         <Editor value={content} getContent={getContent} />
-        {_editMode ? <button onClick={editing}>수정</button> : <button onClick={posting}>작성</button>}
+        {_editMode ? (
+          <button onClick={editing}>수정</button>
+        ) : (
+          <button onClick={posting}>작성</button>
+        )}
       </FlexGrid>
     </>
   );

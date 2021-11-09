@@ -4,24 +4,20 @@ import dotenv from "dotenv";
 dotenv.config();
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URI,
-  // baseURL: "http://3.34.44.44",
-  // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json",
-    Authorization: `Bearer ${getCookie("user")}`,
+    Authorization: `Bearer ${localStorage.getItem("user")}`,
   },
   withCredentials: true,
 });
 
 const formInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URI,
-  // baseURL: "http://3.34.44.44",
-  // baseURL: "http://3.35.235.79",
   headers: {
     "content-type": "multipart/form-data",
     accept: "application/json",
-    Authorization: `Bearer ${getCookie("user")}`,
+    Authorization: `Bearer ${localStorage.getItem("user")}`,
   },
   withCredentials: true,
 });
@@ -73,12 +69,17 @@ export const apis = {
   getBookMarkAxios: (userId) =>
     instance.get(`/api/mypage/mybookmarks/${userId}`, { userId }),
 
+  //마이페이지 팔로워,팔로잉 정보가져오기
+  getFollowingsAxios: (userId) =>
+    instance.get(`/api/followings/${userId}`, { userId }),
+  getFollowersAxios: (userId) =>
+    instance.get(`/api/followers/${userId}`, { userId }),
+
   //회원정보
   getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
   editProfileAxios: (formData) =>
     formInstance.put("/api/users/profileEdit", formData),
-  // editUserPwdAxios: (userId) =>
-  //   instance.put("/api/users/profileEdit", { userId }),
+  editUserPwdAxios: (password) => instance.put("/api/users/edit", password),
 
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>

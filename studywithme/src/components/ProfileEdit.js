@@ -6,16 +6,19 @@ import styled from "styled-components";
 import Input from "../elements/Input";
 import Image from "../elements/Image";
 import Upload from "./Upload";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const ProfileEdit = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   //   const userId = useSelector((state) => state.user.userInfo.userId);
-  const userPic = "http://3.34.44.44/" + userInfo?.avatarUrl;
+  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`;
 
   const dispatch = useDispatch();
   const [nickname, setNickname] = React.useState(userInfo.nickname);
   const [selectedFile, setSelectedFile] = React.useState(null);
 
+  const nicknameCheckInput = { nickname: nickname };
   console.log("닉네임", nickname);
 
   const changeNickname = (e) => {
@@ -41,8 +44,13 @@ export const ProfileEdit = () => {
     dispatch(userActions.editProfileMiddleware(formData));
   };
 
-  const checkNickname = () => {
-    dispatch(userActions.checkNicknameMiddleware(nickname));
+  const onClickNicknameCheck = () => {
+    // console.log("nicknameCheckInput", nicknameCheckInput);
+    if (nicknameCheckInput.nickname === "") {
+      window.alert("닉네임을 입력해주세요");
+    } else {
+      dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
+    }
   };
 
   useEffect(() => {
@@ -65,7 +73,7 @@ export const ProfileEdit = () => {
           value={nickname}
           _onChange={changeNickname}
         />
-        <Button onClick={checkNickname}>닉네임 중복확인</Button>
+        <Button onClick={onClickNicknameCheck}>닉네임 중복확인</Button>
       </InputWrap>
       <SubmitWrap>
         <Submit onClick={editProfile}>변경하기</Submit>

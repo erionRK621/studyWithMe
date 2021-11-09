@@ -5,20 +5,40 @@ import styled from "styled-components";
 
 import Input from "../elements/Input";
 import Image from "../elements/Image";
+import dotenv from "dotenv";
+dotenv.config();
 
 export const PasswordEdit = () => {
   const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user.userInfo);
+  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`;
 
-  const [password, setPassword] = useState("");
+  const [passwordOld, setPasswordOld] = useState("");
+  const [passwordNew, setPasswordNew] = useState("");
+  const [confirmPasswordNew, setconfirmPasswordNew] = useState("");
 
-  const changePwd = (e) => {
-    setPassword(e.target.value);
+  const changePwdOld = (e) => {
+    setPasswordOld(e.target.value);
+  };
+  const changePwdNew = (e) => {
+    setPasswordNew(e.target.value);
+  };
+  const ConfirmPwdNew = (e) => {
+    setconfirmPasswordNew(e.target.value);
   };
 
-  const userInfo = useSelector((state) => state.user.userInfo);
-  const userPic = "http://3.34.44.44/" + userInfo.avatarUrl;
+  const editPwdInputs = {
+    passwordOld: passwordOld,
+    passwordNew: passwordNew,
+    confirmPasswordNew: confirmPasswordNew,
+  };
 
-  console.log("user정보받아왔니", userInfo);
+  const editPwd = () => {
+    dispatch(userActions.editPwdMiddleware(editPwdInputs));
+    setPasswordOld("");
+    setPasswordNew("");
+    setconfirmPasswordNew("");
+  };
 
   useEffect(() => {
     dispatch(userActions.getUserDB());
@@ -35,19 +55,23 @@ export const PasswordEdit = () => {
       <InputList>
         <InputWrap>
           <Label>이전 비밀번호</Label>
-          <Input value={password} _onChange={changePwd} />
+          <Input value={passwordOld} type="password" _onChange={changePwdOld} />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호</Label>
-          <Input value={password} _onChange={changePwd} />
+          <Input value={passwordNew} type="password" _onChange={changePwdNew} />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호 확인</Label>
-          <Input value={password} _onChange={changePwd} />
+          <Input
+            value={confirmPasswordNew}
+            type="password"
+            _onChange={ConfirmPwdNew}
+          />
         </InputWrap>
       </InputList>
       <SubmitWrap>
-        <Submit>변경하기</Submit>
+        <Submit onClick={editPwd}>변경하기</Submit>
       </SubmitWrap>
     </React.Fragment>
   );

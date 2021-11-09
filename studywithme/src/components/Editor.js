@@ -71,10 +71,10 @@ class MyUploadAdapter {
           const config = {
             headers: {
               "content-type": "multipart/form-data",
-              "Authorization": `Bearer ${getCookie("user")}`,
+              "Authorization": `Bearer ${localStorage.getItem("user")}`,
             },
           };
-
+          
           async function sendImg() {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
@@ -83,8 +83,8 @@ class MyUploadAdapter {
                 formData,
                 config
               );
-
-              if (response.statusText === "OK") {
+              console.log(response);
+              if (response.statusText === "Created") {
                 const downloadURL = `${process.env.REACT_APP_API_URI}/${response.data.path}`;
                 resolve({
                   default: downloadURL,
