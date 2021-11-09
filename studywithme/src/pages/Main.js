@@ -26,6 +26,13 @@ const Main = (props) => {
   return (
     <React.Fragment>
       <Wrap>
+        <Image
+          shape="rectangle"
+          // src={}
+          paddingTop="40%"
+        >
+          메인배너
+        </Image>
         <div>
           <LikeSlide></LikeSlide>
         </div>
@@ -56,16 +63,17 @@ const Main = (props) => {
     </React.Fragment>
   );
 };
+
 const Wrap = styled.div`
   width: 100%;
 `;
 
-const GridWrap = styled.div`
-  max-width: 1300px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  grid-gap: 40px;
-`;
+// const GridWrap = styled.div`
+//   max-width: 1300px;
+//   margin: auto;
+//   display: grid;
+//   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+//   grid-gap: 40px;
+// `;
 
 export default Main;

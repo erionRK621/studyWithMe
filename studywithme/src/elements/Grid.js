@@ -27,7 +27,8 @@ Grid.defaultProps = {
   padding: false,
   margin: false,
   bg: "#ffffff",
-  _onClick : ()=>{},
+  _onClick: () => { },
+
 };
 
 const GridBox = styled.div`
