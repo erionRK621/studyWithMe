@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 export default function Text(props) {
-  const { bold, color, size, lineHeight, children } = props;
+  const { bold, color, size, lineHeight, children, } = props;
 
   const styles = {
     bold: bold,
