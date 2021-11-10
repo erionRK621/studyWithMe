@@ -88,7 +88,7 @@ const PostListTest = (props) => {
             <Selected key={idx}>
               <Text color="#aaaaaa">{filter.value}</Text>
               <TiDeleteOutline
-                color="#aaaaaa"
+                className="deleteButton"
                 onClick={() => {
                   filter.func("");
                 }}

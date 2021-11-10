@@ -26,6 +26,7 @@ const PostDetail = (props) => {
   const post = useSelector((state) => state.post.detail);
   const postUserId = post.userId;
   const user = useSelector((state) => state.user.user);
+  const commentCnt = useSelector((state)=> state.comment.list?.length);
   const userId = user?.userId;
   const isBookmarked = post.isBookmarked;
   const isLiked = post.isLiked;
@@ -33,7 +34,6 @@ const PostDetail = (props) => {
   const imageCover =
     post?.imageCover && process.env.REACT_APP_API_URI + "/" + post?.imageCover;
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
-  console.log(decodeURIComponent(post?.contentEditor));
 
   const onClickFollow = () => {
     console.log("팔로우 버튼 클릭");
@@ -71,10 +71,7 @@ const PostDetail = (props) => {
 
   useEffect(() => {
     dispatch(postActions.getDetailPostDB(postId));
-    console.log("상세페이지 로딩");
-    // dispatch(postActions.loadBookmarkListMiddleware());
-    // console.log("북마크 리스트 조회");
-  }, [dispatch, postId]);
+  }, []);
 
   return (
     <div className="ck-content">
@@ -129,27 +126,28 @@ const PostDetail = (props) => {
           padding="30px"
           margin="20px 0px"
           justify="space-around"
-          color="#dddddd"
+          color="#ececec"
+          borderRadius="20px"
         >
           <FlexGrid>
             <Image />
             <FlexGrid direction="column" justify="center">
-              <Text>관심사</Text>
-              <H1 size="10px">{post?.categoryInterest}</H1>
+              <Text size="16px">관심사</Text>
+              <H1 size="20px">{post?.categoryInterest}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
             <Image />
             <FlexGrid direction="column" justify="center">
-              <Text>공간</Text>
-              <H1 size="10px">{post?.categorySpace}</H1>
+              <Text size="16px">공간</Text>
+              <H1 size="20px">{post?.categorySpace}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
             <Image />
             <FlexGrid direction="column" justify="center">
-              <Text>유형</Text>
-              <H1 size="10px">{post?.categoryStudyMate}</H1>
+              <Text size="16px">유형</Text>
+              <H1 size="20px">{post?.categoryStudyMate}</H1>
             </FlexGrid>
           </FlexGrid>
         </FlexGrid>
@@ -195,6 +193,7 @@ const PostDetail = (props) => {
             _onClick={onClickShare}
           />
         </FlexGrid>
+        <Text margin="10px 0px" size="20px">댓글: {commentCnt}</Text>
         <CommentWrite postId={postId} />
         <CommentList postId={postId} />
       </FlexGrid>
@@ -216,16 +215,20 @@ const H1 = styled.h1`
 
 const FlexGrid = styled.div`
   display: flex;
-  max-width: 750px;
+  max-width: 720px;
   ${(props) => (props.color ? `background-color:${props.color};` : null)};
   ${(props) => (props.margin ? `margin:${props.margin};` : null)};
   ${(props) => (props.direction ? `flex-direction:${props.direction};` : null)};
-  ${(props) => (props.align ? `align-items:${props.align};` : null)}
-  ${(props) => (props.justify ? `justify-content:${props.justify};` : null)}
-  ${(props) => (props.padding ? `padding:${props.padding};` : null)}
+  ${(props) => (props.align ? `align-items:${props.align};` : null)};
+  ${(props) => (props.justify ? `justify-content:${props.justify};` : null)};
+  ${(props) => (props.padding ? `padding:${props.padding};` : null)};
+  ${(props) => props.borderRadius ? `border-radius: ${props.borderRadius}` : null};
 `;
 
 const ContentGrid = styled.div`
+background-color: #ececec;
+margin-top:44px;
+margin-bottom:20px;
   p {
     word-break: break-all;
   }
