@@ -7,10 +7,10 @@ import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
 // Bootstrap
-import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "react-bootstrap/Button";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
-import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
+// import ModalFollower from "./ModalFollower";
+// import ModalFollow from "./ModalFollow";
 import Image from "../elements/Image";
 import Text from "../elements/Text";
 import dotenv from "dotenv";
@@ -28,7 +28,8 @@ const UserInfo = (props) => {
   const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
   const userId = props.userId;
 
-  const [modalShow, setModalShow] = React.useState(false);
+  const [modalFollowerShow, setModalFollowerShow] = React.useState(false);
+  const [modalFollowShow, setModalFollowShow] = React.useState(false);
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
@@ -60,16 +61,27 @@ const UserInfo = (props) => {
             <Nickname>{userInfo?.nickname}</Nickname>
           </MiddleDiv>
           <BottomDiv>
-            <Text>게시글 {userInfo?.postCnt}개</Text>
-            <Text>팔로워 {followerList?.length}명</Text>
-            <Text>팔로잉 {followingList?.length}명</Text>
-            <Button variant="primary" onClick={() => setModalShow(true)}>
-              Launch vertically centered modal
-            </Button>
-            <MyVerticallyCenteredModal
-              show={modalShow}
-              onHide={() => setModalShow(false)}
+            <Text>
+              게시글 {userInfo?.postCnt}개
+            </Text>
+            <Link
+              onClick={() => setModalFollowerShow(true)}
+            >
+              팔로워 {followerList?.length}명
+            </Link>
+            <Link
+              onClick={() => setModalFollowShow(true)}
+            >
+              팔로우 {followingList?.length}명
+            </Link>
+            {/* <ModalFollower
+              show={modalFollowerShow}
+              onHide={() => setModalFollowerShow(false)}
             />
+            <ModalFollow
+              show={modalFollowShow}
+              onHide={() => setModalFollowShow(false)}
+            /> */}
           </BottomDiv>
         </RightDiv>
       </UserInfoWrap>
@@ -77,6 +89,14 @@ const UserInfo = (props) => {
   );
 };
 
+const Link = styled.div`
+color: #222831;
+font-size: 14px;
+font-weight: 400;
+line-height: 1.2;
+word-break: break-all;
+cursor: pointer;
+`;
 
 
 const UserInfoWrap = styled.div`
