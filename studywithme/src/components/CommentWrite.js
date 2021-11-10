@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Image from "../elements/Image";
 import Input from "../elements/Input";
 import Button from "../elements/Button";
 import { actionCreators as commentActions } from "../redux/modules/comment";
 const CommentWrite = (props) => {
+  const isLoggedIn = useSelector(state=>state.user?.isLoggedIn);
   const postId = props.postId;
   const dispatch = useDispatch();
   const [comment, setComment] = useState("");
+
   const commentHandler = (e) => {
     setComment(e.target.value);
   };
@@ -16,16 +18,17 @@ const CommentWrite = (props) => {
     dispatch(commentActions.addCommentMiddleware(postId, comment));
     setComment("");
   };
+
   return (
     <React.Fragment>
-      <FlexGrid align="center" color="#eeeeee" padding="10px 0px">
+      <FlexGrid align="center" color="#eeeeee" padding="10px 0px" borderRadius="10px">
         <FlexGrid align="center" margin="0px 5px 0px 0px">
-          <Image size="36" />
+          <Image size="36" src={`${process.env.REACT_APP_API_URI}/${props.avatarUrl}`}/>
         </FlexGrid>
         <Input
           border="none"
           _onChange={commentHandler}
-          placeholder="댓글을 입력해주세요."
+          placeholder={isLoggedIn?"댓글을 입력해주세요.":"로그인 후 이용해주세요."}
           value={comment}
         />
         <Button
@@ -50,6 +53,7 @@ const FlexGrid = styled.div`
   ${(props) => (props.align ? `align-items:${props.align};` : null)}
   ${(props) => (props.justify ? `justify-content:${props.justify};` : null)}
   ${(props) => (props.padding ? `padding:${props.padding};` : null)}
+  ${(props) => (props.borderRadius? `border-radius:${props.borderRadius}` : null)}
 `;
 
 export default CommentWrite;

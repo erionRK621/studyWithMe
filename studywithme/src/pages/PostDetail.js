@@ -24,25 +24,28 @@ const PostDetail = (props) => {
 
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
+
   const postUserId = post.userId;
   const user = useSelector((state) => state.user.user);
-  const commentCnt = useSelector((state)=> state.comment.list?.length);
   const userId = user?.userId;
+
+  const commentCnt = useSelector((state) => state.comment.list?.length);
+  
   const isBookmarked = post.isBookmarked;
   const isLiked = post.isLiked;
+
   const isFollowing = post.isFollowing;
-  const imageCover =
-    post?.imageCover && process.env.REACT_APP_API_URI + "/" + post?.imageCover;
+  const imageCover = process.env.REACT_APP_API_URI + "/" + post?.imageCover;
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
   const onClickFollow = () => {
     console.log("팔로우 버튼 클릭");
     dispatch(postActions.followUserMiddleware(postUserId));
-  }
+  };
 
   const onClickUnfollow = () => {
     console.log("언팔로우 버튼 클릭");
     dispatch(postActions.unfollowUserMiddleware(postUserId));
-  }
+  };
 
   const onClickAddLike = () => {
     dispatch(postActions.addLikeMiddleware(postId));
@@ -50,7 +53,7 @@ const PostDetail = (props) => {
 
   const onClickDeleteLike = () => {
     dispatch(postActions.deleteLikeMiddleware(postId));
-  }
+  };
 
   const onClickAddBookmark = () => {
     dispatch(postActions.addBookmarkMiddleware(postId));
@@ -94,7 +97,9 @@ const PostDetail = (props) => {
         </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
-            <Image src={`${process.env.REACT_APP_API_URI}/${post.User?.avatarUrl}`}/>
+            <Image
+              src={`${process.env.REACT_APP_API_URI}/${post.User?.avatarUrl}`}
+            />
             <span>{post.User?.nickname}</span>
             <span
               style={{
@@ -105,21 +110,17 @@ const PostDetail = (props) => {
               {moment(post?.date).format("YYYY-MM-DD")}
             </span>
           </FlexGrid>
-          {isFollowing ?
-            <Button
-              radius="30px"
-              width="100px"
-              _onClick={onClickUnfollow}
-            >
-              언팔로우
-            </Button> :
-            <Button
-              radius="30px"
-              width="100px"
-              _onClick={onClickFollow}
-            >
-              팔로우
-            </Button>}
+          {userId !== postUserId ? (
+            isFollowing ? (
+              <Button radius="30px" width="100px" _onClick={onClickUnfollow}>
+                언팔로우
+              </Button>
+            ) : (
+              <Button radius="30px" width="100px" _onClick={onClickFollow}>
+                팔로우
+              </Button>
+            )
+          ) : null}
         </FlexGrid>
         <FlexGrid
           padding="30px"
@@ -154,19 +155,21 @@ const PostDetail = (props) => {
         <ContentGrid>{content}</ContentGrid>
 
         <FlexGrid justify="center">
-
-          {isLiked ? <Button
-            text="좋아요 취소하기"
-            width="60px"
-            margin="20px"
-            _onClick={onClickDeleteLike}
-          /> :
+          {isLiked ? (
+            <Button
+              text="좋아요 취소하기"
+              width="60px"
+              margin="20px"
+              _onClick={onClickDeleteLike}
+            />
+          ) : (
             <Button
               text="좋아요 추가하기"
               width="60px"
               margin="20px"
               _onClick={onClickAddLike}
-            />}
+            />
+          )}
 
           {/* 북마크된 상태라면? 북마크 취소 버튼 활성화 */}
           {/* 북마크 안 된 상태라면? 북마크 추가 버튼 활성화 */}
@@ -192,8 +195,10 @@ const PostDetail = (props) => {
             _onClick={onClickShare}
           />
         </FlexGrid>
-        <Text margin="10px 0px" size="15px">댓글: {commentCnt}</Text>
-        <CommentWrite postId={postId} />
+        <Text margin="10px 0px" size="15px">
+          댓글: {commentCnt}
+        </Text>
+        <CommentWrite postId={postId} avatarUrl={post.User?.avatarUrl} />
         <CommentList postId={postId} />
       </FlexGrid>
     </div>
@@ -221,13 +226,14 @@ const FlexGrid = styled.div`
   ${(props) => (props.align ? `align-items:${props.align};` : null)};
   ${(props) => (props.justify ? `justify-content:${props.justify};` : null)};
   ${(props) => (props.padding ? `padding:${props.padding};` : null)};
-  ${(props) => props.borderRadius ? `border-radius: ${props.borderRadius}` : null};
+  ${(props) =>
+    props.borderRadius ? `border-radius: ${props.borderRadius}` : null};
 `;
 
 const ContentGrid = styled.div`
-background-color: #ececec;
-margin-top:44px;
-margin-bottom:20px;
+  background-color: #ececec;
+  margin-top: 44px;
+  margin-bottom: 20px;
   p {
     word-break: break-all;
   }
