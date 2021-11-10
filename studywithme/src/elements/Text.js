@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 export default function Text(props) {
-  const { bold, color, size, lineHeight, children, marginRight } = props;
+  const { bold, color, size, lineHeight, children, marginRight, margin } = props;
 
   const styles = {
     bold: bold,
@@ -10,6 +10,7 @@ export default function Text(props) {
     size: size,
     lineHeight: lineHeight,
     marginRight:marginRight,
+    margin:margin,
   };
   return <P {...styles}>{children}</P>;
 }
@@ -29,5 +30,6 @@ const P = styled.p`
   line-height: ${(props) => props.lineHeight};
   word-break: break-all;
   overflow:hidden;
+  ${props=> props.margin? `margin:${props.margin}`:null};
   ${props=> props.marginRight? `margin-right:${props.marginRight}` : null};
 `;
