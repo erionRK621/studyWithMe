@@ -106,6 +106,7 @@ const getDetailPostDB = (postId) => {
         const isLiked = res.data.isLiked;
         const isFollowing = res.data.isFollowing;
         const post = res.data.post;
+        console.log(res.data, "adsfbsdfjshdjkfhsdjgfjk");
         dispatch(setPost(post, isBookmarked, isLiked, isFollowing));
       })
       .catch((err) => {

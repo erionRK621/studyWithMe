@@ -203,7 +203,7 @@ const PostDetail = (props) => {
 const ImageCover = styled.div`
   position: relative;
   overflow: hidden;
-  height: calc(100vh - 350px);
+  height: calc(100vh - 200px);
   background-image: url(${(props) => props.src});
   background-size: cover;
 `;
