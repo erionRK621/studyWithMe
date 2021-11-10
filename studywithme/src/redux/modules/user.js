@@ -54,7 +54,7 @@ const getUserDB = (userId) => {
   };
 };
 
-const editProfileMiddleware = (formData) => {
+const editProfileMiddleware = (userId,formData) => {
   return function (dispatch, getState, { history }) {
     for (let a of formData.entries()) {
       console.log(a);
@@ -62,8 +62,9 @@ const editProfileMiddleware = (formData) => {
     apis
       .editProfileAxios(formData)
       .then((res) => {
-        console.log("미들웨어", res.data.userInfo);
-        dispatch(editUserProfile(res.data.userInfo));
+        window.alert(res.data.message);
+        history.push(`/mypage/${userId}`);
+        // dispatch(editUserProfile(res.data.userInfo));
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
