@@ -69,6 +69,12 @@ export const apis = {
   getBookMarkAxios: (userId) =>
     instance.get(`/api/mypage/mybookmarks/${userId}`, { userId }),
 
+  //마이페이지 팔로워,팔로잉 정보가져오기
+  getFollowingsAxios: (userId) =>
+    instance.get(`/api/followings/${userId}`, { userId }),
+  getFollowersAxios: (userId) =>
+    instance.get(`/api/followers/${userId}`, { userId }),
+
   //회원정보
   getUser: (userId) => instance.get(`/api/mypage/myinfo/${userId}`, { userId }),
   editProfileAxios: (formData) =>

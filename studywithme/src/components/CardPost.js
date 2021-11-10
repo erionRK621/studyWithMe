@@ -12,7 +12,6 @@ const Post = (props) => {
   const { onClick } = props;
   return (
     <PostContainer onClick={onClick}>
-      <Grid is_flex></Grid>
       <Grid>
         <Image
           shape="rectangle"
@@ -21,14 +20,14 @@ const Post = (props) => {
           paddingTop="100%"
         />
       </Grid>
-      <Grid is_flex margin="10px 0px 0px 0px">
-        <Text size="15px" bold>
+      <Grid is_flex margin="17px 0px 0px 0px">
+        <Text size="16px" bold>
           {decodeURIComponent(props.title)}
         </Text>
       </Grid>
       <Grid is_flex justify="start">
-        <Text marginRight="20px">좋아요:{props.Likes?.length}</Text>
-        <Text>스크랩:{props.Bookmarks?.length}</Text>
+        <Text marginRight="20px">좋아요:{props.likeCnt}</Text>
+        <Text>스크랩:{props.bookCnt}</Text>
       </Grid>
     </PostContainer>
   );
@@ -51,18 +50,13 @@ Post.defaultProps = {
 };
 const PostContainer = styled.div`
   background-color: white;
-  width: 80%;
+  width : 100%;
   max-width: 350px;
-  margin: auto;
   margin-top: 30px;
   border-radius: 5px;
-`;
-
-const Profile = styled.div`
-  display: flex;
-`;
-const CategoryInfo = styled.div`
-  display: flex;
+  @media screen and (max-width: 768px) {
+    margin:auto;
+  }
 `;
 
 export default Post;

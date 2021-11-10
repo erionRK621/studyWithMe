@@ -168,8 +168,8 @@ const checkNicknameMiddleware = (nicknameCheckInput) => {
         window.alert(response.data.message);
       })
       .catch((error) => {
-        console.log(error.response.data.message);
-        window.alert(error.response.data.message);
+        console.log(error.response.data?.message);
+        window.alert(error.response?.data?.message);
       });
   };
 };

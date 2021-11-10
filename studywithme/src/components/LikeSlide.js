@@ -27,7 +27,7 @@ const LikeSlide = (props) => {
       {
         breakpoint: 1200, // 화면 사이즈 1200px
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
         },
       },
       {
@@ -83,6 +83,9 @@ const Wrap = styled.div`
   width: 100%;
   height: 30%;
   margin-top: 30px;
+  @media screen and (max-width: 768px) {
+    margin-top: 10px;
+  }
 `;
 
 const SlideUpLine = styled.div`
@@ -115,7 +118,7 @@ const StyledSlider = styled(Slider)`
 
   .slick-slide div {
     /* cursor: pointer; */
-    height: 20%;
+    /* height: 20%; */
   }
 
   .slick-dots {
