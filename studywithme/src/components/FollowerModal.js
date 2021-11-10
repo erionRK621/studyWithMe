@@ -1,12 +1,21 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import dotenv from "dotenv";
+
+import Image from "../elements/Image";
+import Grid from "../elements/Grid";
 
 // Modal.jsx
 
-const FollowerModal = ({ modalClose }) => {
+const FollowerModal = ({ modalClose, followerList }) => {
+  const dispatch = useDispatch();
+
+  console.log("followerList", followerList);
+
   const onCloseModal = (e) => {
-    console.log("e.target: ", e.target);
-    console.log("e.tarcurrentTargetget: ", e.currentTarget);
+    // console.log("e.target: ", e.target);
+    // console.log("e.tarcurrentTarget", e.currentTarget);
     if (e.target === e.currentTarget) {
       modalClose();
     }
@@ -18,7 +27,29 @@ const FollowerModal = ({ modalClose }) => {
           <div>팔로워 목록</div>
           {/* <ModalBtn onClick={modalClose}> X</ModalBtn> */}
         </ModalTitle>
-        <div>팔로워 사람들 맵돌리기</div>
+        <ModalBody>
+          {followerList.map((follower, idx) => {
+            return (
+              <FlexGrid
+                key={follower.userId}
+              >
+                <Grid>
+                  <Image
+                    size="60"
+                    src={`${process.env.REACT_APP_API_URI}/${follower.avatarUrl}`}
+                  />
+                </Grid>
+                <Grid>
+                  <UserName
+                    size="15px"
+                  >
+                    {follower.nickname}
+                  </UserName>
+                </Grid>
+              </FlexGrid>
+            )
+          })}
+        </ModalBody>
       </Modal>
     </Container>
   );
@@ -33,6 +64,7 @@ const Container = styled.div`
   top: 0;
   left: 0;
 `;
+
 const Modal = styled.div`
   width: 400px;
   height: 600px;
@@ -50,6 +82,20 @@ const ModalTitle = styled.div`
   justify-content: center;
   border-bottom: solid 1px black;
   padding: 10px;
+`;
+
+const ModalBody = styled.div`
+`;
+
+const FlexGrid = styled.div`
+display: flex;
+justify-content: space-evenly;
+margin-left: 5px;
+margin-bottom: 5px;
+align-items: center;
+`;
+
+const UserName = styled.p`
 `;
 
 // const ModalBtn = styled.button`

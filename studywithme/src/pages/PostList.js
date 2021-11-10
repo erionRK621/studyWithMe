@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { useSelector, useDispatch } from "react-redux";
-import { TiDeleteOutline } from "react-icons/ti";
+import { ImCross } from "react-icons/im";
 import styled from "styled-components";
 import { history } from "../redux/configStore";
 
@@ -86,9 +86,10 @@ const PostList = (props) => {
         {selectArray.map((filter, idx) => {
           return (
             <Selected key={idx}>
-              <Text color="#aaaaaa">{filter.value}</Text>
-              <TiDeleteOutline
+              <Text color="#aaaaaa" margin="0px 4px">{filter.value}</Text>
+              <ImCross
                 className="deleteButton"
+                size = "10px"
                 onClick={() => {
                   filter.func("");
                 }}
@@ -150,7 +151,6 @@ const ItemGrid = styled.div`
 
 const SelectGrid = styled.div`
   height: 30px;
-  padding-top: 20px;
   width: 100%;
   display: flex;
   padding-left: 10px;

@@ -53,4 +53,7 @@ const ElButton = styled.button`
   padding: ${(props) => props.padding};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   ${(props) => (props.radius ? `border-radius: ${props.radius}` : null)};
+  &:hover {
+    cursor: pointer;
+  }
 `;
