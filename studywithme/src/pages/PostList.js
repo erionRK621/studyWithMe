@@ -135,12 +135,13 @@ const GridWrap = styled.div`
   display: flex;
   flex-wrap: wrap;
   padding: 20px 0px;
-  justify-content: space-between;
+  justify-content: flex-start;
 `;
 
 const ItemGrid = styled.div`
-  width: 30%;
+  width: 33.33333%;
   box-sizing: border-box;
+  padding: 0px 10px;
   @media screen and (max-width: 768px) {
     width: 100%;
     margin-top:20px;
@@ -152,7 +153,7 @@ const SelectGrid = styled.div`
   padding-top: 20px;
   width: 100%;
   display: flex;
-  
+  padding-left:10px;
 `;
 
 const SelectedGrid = styled.div`
@@ -160,6 +161,7 @@ const SelectedGrid = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  padding-left:10px;
 `;
 
 const Selected = styled.div`
