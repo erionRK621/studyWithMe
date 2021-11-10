@@ -10,10 +10,6 @@ dotenv.config();
 
 const Post = (props) => {
   const dispatch = useDispatch();
-  const postInfo = useSelector((state) => state.post.list.posts);
-  console.log(postInfo);
-  // console.log("포스트의 프롭스", props.body);
-  // console.log("포스트의 이미지", props.ImageCover);
 
   return (
     <PostContainer>
@@ -32,9 +28,11 @@ const Post = (props) => {
         </Grid>
         <Grid is_flex>
           <Profile>
-            <Image shape="circle" size="26">
-              {postInfo.avatarUrl}
-            </Image>
+            <Image
+              shape="circle"
+              size="26"
+              src={`${process.env.REACT_APP_API_URI}/${props.avatarUrl}`}
+            />
             <Nickname bold>{props.nickname}</Nickname>
           </Profile>
           <CategoryInfo>
@@ -77,14 +75,11 @@ const Title = styled.div`
 
 const Profile = styled.div`
   display: flex;
+  align-items: center;
 `;
 const Nickname = styled.div`
   font-size: 13px;
   opacity: 0.5;
-  align-items: center;
-  text-align: center;
-  justify-items: center;
-  justify-content: center;
 `;
 
 const CategoryInfo = styled.div`
