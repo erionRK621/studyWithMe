@@ -11,11 +11,12 @@ dotenv.config();
 
 export const ProfileEdit = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
-  //   const userId = useSelector((state) => state.user.userInfo.userId);
-  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`;
+    const userId = useSelector((state) => state.user.user.userId);
+  // const userPic = `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`;
 
+  const [userPic, setUserPic] = React.useState("");
   const dispatch = useDispatch();
-  const [nickname, setNickname] = React.useState(userInfo.nickname);
+  const [nickname, setNickname] = React.useState(userInfo?.nickname);
   const [selectedFile, setSelectedFile] = React.useState(null);
 
   const nicknameCheckInput = { nickname: nickname };
@@ -25,23 +26,39 @@ export const ProfileEdit = () => {
     setNickname(e.target.value);
   };
   const handleFileChange = (e) => {
-    setSelectedFile(e.target.files[0]);
+    const file = e.target.files[0]
+    setSelectedFile(file);
+
+    const reader = new FileReader();
+
+    // 미리보기를 위해 file을 읽어온다
+    if (file && file.type.match("image.*")) {
+      reader.readAsDataURL(file);
+    } else {
+      setUserPic("");
+    }
+
+    reader.onloadend = () => {
+      const imagePreview = reader.result;
+      //base64로 된 이미지를 가져온다(string형태)
+      setUserPic(imagePreview);
+    };
   };
 
   // formData라는 instance에 담아 보냄
-  const handleFileUpload = () => {
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    for (let entry of formData.entries()) {
-      console.log(entry);
-    }
-  };
+  // const handleFileUpload = () => {
+  //   const formData = new FormData();
+  //   formData.append("file", selectedFile);
+  //   for (let entry of formData.entries()) {
+  //     console.log(entry);
+  //   }
+  // };
 
   const editProfile = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
     formData.append("nicknameNew", nickname);
-    dispatch(userActions.editProfileMiddleware(formData));
+    dispatch(userActions.editProfileMiddleware(userId,formData));
   };
 
   const onClickNicknameCheck = () => {
@@ -63,7 +80,7 @@ export const ProfileEdit = () => {
         <NicknameWrap>
           <UserNickname>{userInfo?.nickname}</UserNickname>
           <Upload _onChange={handleFileChange}></Upload>
-          <Button onClick={handleFileUpload}>프로필사진변경</Button>
+          {/* <Button onClick={handleFileUpload}>프로필사진변경</Button> */}
         </NicknameWrap>
       </NowInfoDiv>
       <InputWrap>

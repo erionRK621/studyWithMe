@@ -50,9 +50,9 @@ const PostWrite = (props) => {
     setImage(file);
 
     //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
-    for (let entry of Object.entries(request)) {
-      formData.append(entry[0], entry[1]);
-    }
+    // for (let entry of Object.entries(request)) {
+    //   formData.append(entry[0], entry[1]);
+    // }
     const reader = new FileReader();
 
     // 미리보기를 위해 file을 읽어온다

@@ -98,7 +98,7 @@ const PostDetail = (props) => {
         </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
-            <Image />
+            <Image src={user?.avatarUrl}/>
             <span>{post.User?.nickname}</span>
             <span
               style={{
