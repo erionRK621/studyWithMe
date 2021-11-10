@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 
 export default function Grid(props) {
-  const { is_flex, width, margin, padding, bg, children, _onClick, justify } = props;
+  const { is_flex, width, margin, padding, bg, children, _onClick, justify, position } = props;
 
   const styles = {
     is_flex: is_flex,
@@ -11,6 +11,7 @@ export default function Grid(props) {
     padding: padding,
     bg: bg,
     justify:justify,
+    position:position,
   };
   return (
     <Fragment>
@@ -43,4 +44,5 @@ const GridBox = styled.div`
       ? `display: flex; align-items: center; justify-content: space-between; `
       : ""};
   ${(props) => props.justify? `justify-content: ${props.justify}` : null};
+  ${(props)=> props.position? `position: ${props.position}` : null};
 `;

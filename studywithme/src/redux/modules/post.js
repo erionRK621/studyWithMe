@@ -16,6 +16,8 @@ const DELETE_BOOKMARK = "DELETE_BOOKMARK";
 // 좋아요
 const ADD_LIKE = "ADD_LIKE";
 const DELETE_LIKE = "DELETE_LIKE";
+const FILTER_ADD_LIKE = "FILTER_ADD_LIKE";
+const FILTER_DELETE_LIKE = "FILTER_DELETE_LIKE";
 // 팔로우
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
@@ -25,7 +27,9 @@ const UNFOLLOW_USER = "UNFOLLOW_USER";
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const getFilerPost = createAction(GET_FILTER_POST, (post_list) => ({ post_list }));
+const getFilerPost = createAction(GET_FILTER_POST, (post_list) => ({
+  post_list,
+}));
 const setPost = createAction(
   SET_POST,
   (post, isBookmarked, isLiked, isFollowing) => ({
@@ -57,6 +61,11 @@ const deleteLike = createAction(DELETE_LIKE, (postDetail, isLiked) => ({
   postDetail,
   isLiked,
 }));
+
+const filterAddLike = createAction(FILTER_ADD_LIKE, (postId) => ({ postId }));
+const filterDeleteLike = createAction(FILTER_DELETE_LIKE, (postId) => ({
+  postId,
+}));
 // 팔로우
 const followUser = createAction(FOLLOW_USER, (postDetail, isFollowing) => ({
   postDetail,
@@ -72,7 +81,7 @@ const unfollowUser = createAction(UNFOLLOW_USER, (postDetail, isFollowing) => ({
 //isLoading 로딩중이니?
 const initialState = {
   list: [], // 전체 게시물 리스트
-  filterList:[],
+  filterList: [],
   detail: [], // 현재 상세 페이지의 게시물 정보
   paging: { start: null, next: null, size: 3 },
   isLoading: false,
@@ -267,6 +276,33 @@ const deleteLikeMiddleware = (postId) => {
   };
 };
 
+// 필터페이지 좋아요
+const filterAddLikeMiddleware = (postId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .addLikeAxios(postId)
+      .then((res) => {
+        dispatch(filterAddLike(postId));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+const filterDeleteLikeMiddleware = (postId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .deleteLikeAxios(postId)
+      .then((res) => {
+        dispatch(filterDeleteLike(postId));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
 const followUserMiddleware = (userId) => {
   return function (dispatch, getState, { history }) {
     console.log("followUserMiddleware 실행");
@@ -311,8 +347,8 @@ export default handleActions(
         // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
         draft.list = action.payload.post_list;
       }),
-      [GET_FILTER_POST]:(state, action) =>
-      produce(state,(draft) => {
+    [GET_FILTER_POST]: (state, action) =>
+      produce(state, (draft) => {
         draft.filterList = action.payload.post_list;
       }),
     [SET_POST]: (state, action) =>
@@ -359,9 +395,6 @@ export default handleActions(
       }),
     [ADD_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
-        console.log("ADD_BOOKMARK 리듀서 실행");
-        console.log("action.payload.postDetail", action.payload.postDetail);
-        console.log("action.payload.isBookmarked", action.payload.isBookmarked);
         draft.detail = {
           ...action.payload.postDetail,
           isBookmarked: action.payload.isBookmarked,
@@ -369,9 +402,6 @@ export default handleActions(
       }),
     [DELETE_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
-        console.log("DELETE_BOOKMARK 리듀서 실행");
-        console.log("action.payload.postDetail", action.payload.postDetail);
-        console.log("action.payload.isBookmarked", action.payload.isBookmarked);
         draft.detail = {
           ...action.payload.postDetail,
           isBookmarked: action.payload.isBookmarked,
@@ -379,7 +409,6 @@ export default handleActions(
       }),
     [ADD_LIKE]: (state, action) =>
       produce(state, (draft) => {
-        console.log("ADD_LIKE 리듀서 실행");
         draft.detail = {
           ...action.payload.postDetail,
           isLiked: action.payload.isLiked,
@@ -387,12 +416,19 @@ export default handleActions(
       }),
     [DELETE_LIKE]: (state, action) =>
       produce(state, (draft) => {
-        console.log("DELETE_LIKE 리듀서 실행");
         draft.detail = {
           ...action.payload.postDetail,
           isLiked: action.payload.isLiked,
         };
       }),
+    [FILTER_ADD_LIKE]: (state, action) => produce(state, (draft) => {
+      const idx = draft.filterList.findIndex((f) => f.postId === action.payload.postId);
+      draft.filterList[idx] = {...draft.filterList[idx],likeCnt: draft.filterList[idx].likeCnt+1}
+    }),
+    [FILTER_DELETE_LIKE]: (state, action) => produce(state, (draft) => {
+      const idx = draft.filterList.findIndex((f) => f.postId === action.payload.postId);
+      draft.filterList[idx] = {...draft.filterList[idx],likeCnt: draft.filterList[idx].likeCnt-1}
+    }),
   },
   initialState
 );
@@ -413,6 +449,8 @@ const actionCreators = {
   deleteLikeMiddleware,
   followUserMiddleware,
   unfollowUserMiddleware,
+  filterAddLikeMiddleware,
+  filterDeleteLikeMiddleware,
 };
 
 export { actionCreators };
