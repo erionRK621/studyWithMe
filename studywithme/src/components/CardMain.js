@@ -10,7 +10,8 @@ dotenv.config();
 
 const Post = (props) => {
   const dispatch = useDispatch();
-  const post_list = useSelector((state) => state.post.list);
+  const postInfo = useSelector((state) => state.post.list.posts);
+  console.log(postInfo);
   // console.log("포스트의 프롭스", props.body);
   // console.log("포스트의 이미지", props.ImageCover);
 
@@ -31,8 +32,10 @@ const Post = (props) => {
         </Grid>
         <Grid is_flex>
           <Profile>
-            {/* <Text bold>{props.avatarUrl}</Text> */}
-            <Nickname bold>{props.userId}</Nickname>
+            <Image shape="circle" size="26">
+              {postInfo.avatarUrl}
+            </Image>
+            <Nickname bold>{props.nickname}</Nickname>
           </Profile>
           <CategoryInfo>
             <CategoryItem bold>{props.categorySpace}</CategoryItem>
@@ -78,6 +81,10 @@ const Profile = styled.div`
 const Nickname = styled.div`
   font-size: 13px;
   opacity: 0.5;
+  align-items: center;
+  text-align: center;
+  justify-items: center;
+  justify-content: center;
 `;
 
 const CategoryInfo = styled.div`

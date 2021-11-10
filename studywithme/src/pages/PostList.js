@@ -8,7 +8,7 @@ import { history } from "../redux/configStore";
 import Text from "../elements/Text";
 import CardPost from "../components/CardPost";
 import SelectBox from "../components/SelectBox";
-const PostListTest = (props) => {
+const PostList = (props) => {
   const dispatch = useDispatch();
 
   // url에서 쿼리스트링 가져오기
@@ -186,4 +186,4 @@ const ButtonText = styled.p`
     cursor: pointer;
   }
 `;
-export default PostListTest;
+export default PostList;

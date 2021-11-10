@@ -1,23 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import dotenv from "dotenv";
 import { useSelector, useDispatch } from "react-redux";
 import { AiTwotoneSetting } from "react-icons/ai";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
-// Bootstrap
-// import "bootstrap/dist/css/bootstrap.min.css";
 
-// import ModalFollower from "./ModalFollower";
-// import ModalFollow from "./ModalFollow";
 import Image from "../elements/Image";
-import Text from "../elements/Text";
-import dotenv from "dotenv";
+import FollowerModal from "./FollowerModal";
+import FollowModal from "./FollowModal";
+
+
 dotenv.config();
 
 const UserInfo = (props) => {
   const dispatch = useDispatch();
+
+  const [followerModalOpen, setFollowerModalOpen] = useState(false);
+  const [followModalOpen, setFollowModalOpen] = useState(false);
+
+  const followerModalClose = () => {
+    setFollowerModalOpen(!followerModalOpen);
+  };
+  const followModalClose = () => {
+    setFollowModalOpen(!followModalOpen);
+  };
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -28,15 +37,13 @@ const UserInfo = (props) => {
   const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
   const userId = props.userId;
 
-  const [modalFollowerShow, setModalFollowerShow] = React.useState(false);
-  const [modalFollowShow, setModalFollowShow] = React.useState(false);
+  // const [modalShow, setModalShow] = React.useState(false);
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
     dispatch(myActions.getFollowingsMiddleware(userId));
     dispatch(myActions.getFollowersMiddleware(userId));
   }, []);
-
 
   return (
     <React.Fragment>
@@ -46,7 +53,6 @@ const UserInfo = (props) => {
             <Image size="100" src={userPic}></Image>
           </ProfileImg>
         </LeftDiv>
-
         <RightDiv>
           <TopDiv>
             <AiTwotoneSetting
@@ -61,43 +67,28 @@ const UserInfo = (props) => {
             <Nickname>{userInfo?.nickname}</Nickname>
           </MiddleDiv>
           <BottomDiv>
-            <Text>
-              게시글 {userInfo?.postCnt}개
-            </Text>
-            <Link
-              onClick={() => setModalFollowerShow(true)}
+            <div style={{ fontSize: "14px" }}>게시글 {userInfo?.postCnt}개</div>
+            <Button
+              onClick={followerModalClose}
             >
               팔로워 {followerList?.length}명
-            </Link>
-            <Link
-              onClick={() => setModalFollowShow(true)}
+            </Button>
+            {followerModalOpen &&
+              <FollowerModal modalClose={followerModalClose} followerList={followerList} />
+            }
+            <Button
+              onClick={followModalClose}
             >
               팔로우 {followingList?.length}명
-            </Link>
-            {/* <ModalFollower
-              show={modalFollowerShow}
-              onHide={() => setModalFollowerShow(false)}
-            />
-            <ModalFollow
-              show={modalFollowShow}
-              onHide={() => setModalFollowShow(false)}
-            /> */}
+            </Button>
+            {followModalOpen &&
+              <FollowModal modalClose={followModalClose} followingList={followingList} />}
           </BottomDiv>
         </RightDiv>
       </UserInfoWrap>
-    </React.Fragment>
+    </React.Fragment >
   );
 };
-
-const Link = styled.div`
-color: #222831;
-font-size: 14px;
-font-weight: 400;
-line-height: 1.2;
-word-break: break-all;
-cursor: pointer;
-`;
-
 
 const UserInfoWrap = styled.div`
   width: 100%;
@@ -134,6 +125,11 @@ const MiddleDiv = styled.div`
 `;
 const Nickname = styled.div`
   font-size: 48px;
+`;
+
+const Button = styled.div`
+  font-size: 14px;
+  cursor: pointer;
 `;
 
 const BottomDiv = styled.div`
