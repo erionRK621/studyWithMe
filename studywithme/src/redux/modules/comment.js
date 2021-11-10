@@ -6,9 +6,10 @@ const ADD_COMMENT = "ADD_COMMENT";
 const GET_COMMENT = "GET_COMMENT";
 const DELETE_COMMENT = "DELETE_COMMENT";
 
-const addComment = createAction(ADD_COMMENT, (userNickname, comment) => ({
+const addComment = createAction(ADD_COMMENT, (userNickname, comment,avatarUrl) => ({
   userNickname,
   comment,
+  avatarUrl,
 }));
 
 const getComment = createAction(GET_COMMENT, (comment) => ({ comment }));
@@ -25,9 +26,11 @@ const addCommentMiddleware = (postId, textContent) => {
     apis
       .addCommentAxios(postId, { textContent })
       .then((res) => {
-        const comment = res.data.comment;
-        const nickName = res.data.userNick;
-        dispatch(addComment(nickName, comment));
+        // const comment = res.data.comment;
+        // const nickName = res.data.userNick;
+        // const avatarUrl= res.data.avatarUrl;
+        const { comment, nickName, avatarUrl} = res.data;
+        dispatch(addComment(nickName, comment,avatarUrl));
       })
       .catch((err) => {
         console.log(err);
@@ -70,6 +73,7 @@ export default handleActions(
         draft.list.push({
           ...action.payload.comment,
           userNickname: action.payload.userNickname,
+          avatarUrl: action.payload.avatarUrl,
         });
       }),
     [GET_COMMENT]: (state, action) =>
