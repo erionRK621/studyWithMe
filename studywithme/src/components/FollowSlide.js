@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useRef, useCallback } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styled from "styled-components";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import styled, { css } from "styled-components";
 import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
-
 import CardMain from "./CardMain";
 
 const FollowSlide = (props) => {
   const post_list = useSelector((state) => state.post.list.followPost);
+
+  const previous = useCallback(() => slickRef.current.slickPrev(), []);
+  const next = useCallback(() => slickRef.current.slickNext(), []);
+  const slickRef = useRef(null);
+
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
     dots: false, // 점보이게 할거니?
@@ -20,7 +25,7 @@ const FollowSlide = (props) => {
     slidesToScroll: 1, //몇 장씩 넘어갈래?
     centerMode: true,
     centerPadding: "0px",
-    arrows: true,
+    arrows: false,
 
     responsive: [
       // 반응형 웹 구현 옵션
@@ -39,7 +44,7 @@ const FollowSlide = (props) => {
       {
         breakpoint: 767,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
         },
       },
     ],
@@ -59,7 +64,7 @@ const FollowSlide = (props) => {
           </More>
         </SlideUpLine>
 
-        <StyledSlider {...settings}>
+        <StyledSlider ref={slickRef} {...settings}>
           {post_list?.map((p, idx) => {
             return (
               <PostWrap key={idx}>
@@ -74,15 +79,69 @@ const FollowSlide = (props) => {
             );
           })}
         </StyledSlider>
+        <>
+          <PrevButton onClick={previous}>
+            <PrevIcon />
+            <span className="hidden"></span>
+          </PrevButton>
+
+          <NextButton onClick={next}>
+            <NextIcon />
+            <span className="hidden"></span>
+          </NextButton>
+        </>
       </Wrap>
     </React.Fragment>
   );
 };
 
+const defaultButtonStyle = css`
+  position: absolute;
+  top: 40%;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  line-height: 1;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  outline: none;
+  cursor: pointer;
+`;
+const PrevButton = styled.button`
+  ${defaultButtonStyle}
+  left: 0;
+`;
+
+const NextButton = styled.button`
+  ${defaultButtonStyle}
+  right: 0;
+`;
+
+const defaultIconStyle = css`
+  font-size: 22px;
+  color: black;
+
+  &:focus,
+  &:hover {
+    color: #666;
+  }
+`;
+
+const PrevIcon = styled(IoIosArrowBack)`
+  ${defaultIconStyle}
+`;
+
+const NextIcon = styled(IoIosArrowForward)`
+  ${defaultIconStyle}
+`;
+
 const Wrap = styled.div`
-  width: 100%;
-  height: 30%;
+  width: 80%;
+  margin: auto;
   margin-top: 30px;
+  position: relative;
+
   @media screen and (max-width: 768px) {
     margin-top: 10px;
   }
@@ -92,6 +151,7 @@ const SlideUpLine = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0 5%;
+  align-items: center;
 `;
 
 const SlideTitle = styled.div`
@@ -143,7 +203,7 @@ const StyledSlider = styled(Slider)`
     }
     &::before {
       font-weight: 900;
-      font-size: 49px;
+      font-size: 20px;
       transition: all 0.5s;
     }
   }

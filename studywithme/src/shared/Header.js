@@ -166,7 +166,7 @@ const Navbar = styled.div`
   display: flex;
   justify-content: space-between; /*중심축 배치 (현재는 중심축이 수평축)*/
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
-  background-color: black;
+  background-color: #aed0e1;
   padding: 8px 12px;
 
   @media screen and (max-width: 768px) {
@@ -178,14 +178,14 @@ const Navbar = styled.div`
 
 const NavbarLogo = styled.div`
   font-size: 24px;
-  color: white;
+  color: black;
 `;
 
 const NavbarMenu = styled.ul`
   display: flex;
   list-style: none;
   padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
-  color: white;
+  color: black;
   @media screen and (max-width: 768px) {
     ${(props) => (props.menuState === true ? null : "display: none;")}
     flex-direction: column;
@@ -211,7 +211,7 @@ const NavbarIcon = styled.ul`
   display: flex;
   list-style: none;
   padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
-  color: white;
+  color: black;
   @media screen and (max-width: 768px) {
     ${(props) => (props.menuState === true ? null : "display: none;")}
     flex-direction: column;
