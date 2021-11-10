@@ -106,7 +106,7 @@ const SignUp = () => {
                     }}
                 >
                     <KakaoIcon
-                        src="https://cdn-icons.flaticon.com/png/512/3669/premium/3669973.png?token=exp=1636443129~hmac=61c0776298ab45ce3d13fb9b0d028e9f"
+                        src="https://cdn-icons.flaticon.com/png/512/3669/premium/3669973.png?token=exp=1636515714~hmac=ce16ff13ac78e885d49b830f58227d9f"
                         alt="카카오 아이콘"
                     />
                 </a>
