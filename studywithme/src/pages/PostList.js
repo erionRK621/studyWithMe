@@ -104,6 +104,7 @@ const PostList = (props) => {
               setSpaceVal("");
               setStudyMateVal("");
             }}
+            color="#aaaaaa"
           >
             초기화
           </ButtonText>
@@ -181,7 +182,7 @@ const ButtonText = styled.p`
   word-break: break-all;
   overflow: hidden;
   &:hover {
-    color: blue;
+    color: black;
     text-decoration: underline;
     cursor: pointer;
   }

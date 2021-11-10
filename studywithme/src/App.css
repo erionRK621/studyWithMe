@@ -11,3 +11,14 @@
   cursor: pointer;
   color: #000000;
 }
+.like {
+  position: absolute;
+  top:3%;
+  right:3%;
+  color: #ffe400;
+  opacity: .9;
+  z-index:10000;
+}
+.like:hover {
+  opacity: .5;
+}

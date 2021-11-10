@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
+import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
@@ -9,26 +11,48 @@ import Image from "../elements/Image";
 import dotenv from "dotenv";
 dotenv.config();
 const Post = (props) => {
+  const dispatch = useDispatch();
   const { onClick } = props;
+  const [likeState, setLikeState] = useState(false);
+
+  const like = () => {
+    if (likeState) {
+      setLikeState(false);
+      dispatch(postActions.filterDeleteLikeMiddleware(props.postId));
+    } else {
+      setLikeState(true);
+      dispatch(postActions.filterAddLikeMiddleware(props.postId));
+    }
+    
+  };
   return (
-    <PostContainer onClick={onClick}>
-      <Grid>
-        <Image
-          shape="rectangle"
-          src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
-          borderRadius="10px"
-          paddingTop="100%"
-        />
+    <PostContainer>
+      <Grid _onClick={onClick}>
+        <Grid>
+          <Image
+            shape="rectangle"
+            src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
+            borderRadius="10px"
+            paddingTop="100%"
+          />
+        </Grid>
+        <Grid is_flex margin="17px 0px 0px 0px">
+          <Text size="16px" bold>
+            {decodeURIComponent(props.title)}
+          </Text>
+        </Grid>
+        <Grid is_flex justify="start" margin="7px 0px 0px 0px">
+          <Text marginRight="20px" color="#aaaaaa">
+            좋아요:{props.likeCnt}
+          </Text>
+          <Text color="#aaaaaa">북마크:{props.bookCnt}</Text>
+        </Grid>
       </Grid>
-      <Grid is_flex margin="17px 0px 0px 0px">
-        <Text size="16px" bold>
-          {decodeURIComponent(props.title)}
-        </Text>
-      </Grid>
-      <Grid is_flex justify="start">
-        <Text marginRight="20px">좋아요:{props.likeCnt}</Text>
-        <Text>스크랩:{props.bookCnt}</Text>
-      </Grid>
+      {likeState? (
+        <AiFillLike className="like" size="30" onClick={like} />
+      ) : (
+        <AiOutlineLike className="like" size="30" onClick={like} />
+      )}
     </PostContainer>
   );
 };
@@ -50,16 +74,17 @@ Post.defaultProps = {
 };
 const PostContainer = styled.div`
   background-color: white;
-  width : 100%;
+  width: 100%;
   max-width: 350px;
   margin-top: 30px;
   border-radius: 5px;
+  z-index: 1;
+  position: relative;
   @media screen and (max-width: 768px) {
-    margin:auto;
+    margin: auto;
   }
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;
-
 export default Post;
