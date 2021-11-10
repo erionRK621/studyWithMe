@@ -5,6 +5,7 @@ import { apis } from "../../lib/axios";
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
 // 게시물
 const GET_POST = "GET_POST";
+const GET_FILTER_POST = "GET_FILTER_POST";
 const SET_POST = "SET_POST";
 const EDIT_POST = "EDIT_POST";
 const DELETE_POST = "DELETE_POST";
@@ -24,6 +25,7 @@ const UNFOLLOW_USER = "UNFOLLOW_USER";
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
+const getFilerPost = createAction(GET_FILTER_POST, (post_list) => ({ post_list }));
 const setPost = createAction(
   SET_POST,
   (post, isBookmarked, isLiked, isFollowing) => ({
@@ -71,6 +73,7 @@ const unfollowUser = createAction(UNFOLLOW_USER, (postDetail, isFollowing) => ({
 //isLoading 로딩중이니?
 const initialState = {
   list: [], // 전체 게시물 리스트
+  filterList:[],
   detail: [], // 현재 상세 페이지의 게시물 정보
   paging: { start: null, next: null, size: 3 },
   isLoading: false,
@@ -119,7 +122,7 @@ const getFilterPostDB = (queryString) => {
       .getFilterPost(queryString)
       .then((res) => {
         const post_list = res.data.posts;
-        dispatch(getPost(post_list));
+        dispatch(getFilerPost(post_list));
         history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
       .catch((err) => {
@@ -308,6 +311,10 @@ export default handleActions(
       produce(state, (draft) => {
         // undifined는 값이 잘넘어가고있다. 값이 나올경우 어딘가에 문제가 있는것
         draft.list = action.payload.post_list;
+      }),
+      [GET_FILTER_POST]:(state, action) =>
+      produce(state,(draft) => {
+        draft.filterList = action.payload.post_list;
       }),
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {

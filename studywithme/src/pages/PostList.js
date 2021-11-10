@@ -34,7 +34,7 @@ const PostListTest = (props) => {
     queryStudyMate ? queryStudyMate : ""
   );
 
-  const post_list = useSelector((state) => state.post.list);
+  const post_list = useSelector((state) => state.post.filterList);
   const _selectArray = [
     { value: interestVal, func: setInterestVal },
     { value: spaceVal, func: setSpaceVal },
