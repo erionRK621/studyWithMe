@@ -36,7 +36,6 @@ const setPost = createAction(
   })
 );
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
-const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 // 북마크
 const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({
   bookmarkList,
@@ -150,7 +149,6 @@ const deletePostMiddleware = (postId) => {
     apis
       .deletePostAxios(postId)
       .then((res) => {
-        dispatch(deletePost(postId));
         history.push("/");
       })
       .catch((err) => {
@@ -169,7 +167,7 @@ const editPostMiddleware = (postId, formData) => {
     apis
       .editPostAxios(postId, formData)
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
         history.push("/");
       })
       .catch((err) => {
@@ -333,17 +331,6 @@ export default handleActions(
         // 해당 위치에 넣어줍니다.
         draft.list[idx] = { ...draft.list[idx], ...action.payload.post };
       }),
-    [DELETE_POST]: (state, action) =>
-      produce(state, (draft) => {
-        // 받아온 id값과 맞지 않는 id의 데이터들을 새로운 배열에 넣어서 기존 list에 덮어쓰기
-        let new_post_list = draft.list.filter((p) => {
-          if (p.id !== action.payload.post) {
-            return p;
-          }
-        });
-        // 새롭게 바뀐 리스트를 현재의 리스트로 변경
-        draft.list = new_post_list;
-      }),
     [LOAD_BOOKMARK_LIST]: (state, action) =>
       produce(state, (draft) => {
         console.log("LOAD_BOOKMARK_LIST 리듀서 실행");
@@ -412,7 +399,6 @@ export default handleActions(
 const actionCreators = {
   getPost,
   editPost,
-  deletePost,
   deletePostMiddleware,
   getPostDB,
   getFilterPostDB,

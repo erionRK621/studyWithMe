@@ -57,6 +57,9 @@ const PostContainer = styled.div`
   @media screen and (max-width: 768px) {
     margin:auto;
   }
+  &:hover{
+    cursor: pointer;
+  }
 `;
 
 export default Post;

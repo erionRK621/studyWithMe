@@ -27,14 +27,18 @@ const SelectBox = (props) => {
     <Grid>
       <Select onChange={_onChange} value={_value}>
         {optionData.map((o, idx) => {
-          return (
+          return idx === 0 ? (
+            <Option value={o.value} key={idx} disabled defaultValue hidden>
+              {o.option}
+            </Option>
+          ) : (
             <Option value={o.value} key={idx}>
               {o.option}
             </Option>
           );
         })}
       </Select>
-     </Grid>
+    </Grid>
   );
 };
 SelectBox.defaultProps = {
@@ -44,11 +48,10 @@ SelectBox.defaultProps = {
 };
 
 const Grid = styled.div`
-  display:flex;
+  display: flex;
   margin-right: 10px;
 `;
 
-const Select = styled.select`
-`;
+const Select = styled.select``;
 const Option = styled.option``;
 export default SelectBox;
