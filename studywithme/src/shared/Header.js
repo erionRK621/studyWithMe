@@ -222,7 +222,7 @@ const NavbarIcon = styled.ul`
   }
 `;
 
-const InfoList = styled.li`
+const InfoList = styled.div`
   padding: 0 12px;
   마우스 클릭영역확보 :hover {
     background-color: red;
