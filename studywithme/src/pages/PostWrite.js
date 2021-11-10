@@ -82,7 +82,10 @@ const PostWrite = (props) => {
     // for(var a of formData.entries()) {
     //   console.log(a);
     // }
-
+    if(spaceVal===""||studyMateVal===""||interestVal==="") {
+      window.alert("카테고리를 지정해주세요");
+      return;
+    }
     dispatch(postActions.addPostDB(formData));
   };
 

@@ -34,7 +34,6 @@ const PostDetail = (props) => {
   const imageCover =
     post?.imageCover && process.env.REACT_APP_API_URI + "/" + post?.imageCover;
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
-
   const onClickFollow = () => {
     console.log("팔로우 버튼 클릭");
     dispatch(postActions.followUserMiddleware(postUserId));
@@ -95,7 +94,7 @@ const PostDetail = (props) => {
         </FlexGrid>
         <FlexGrid justify="space-between">
           <FlexGrid align="center">
-            <Image src={user?.avatarUrl}/>
+            <Image src={`${process.env.REACT_APP_API_URI}/${post.User?.avatarUrl}`}/>
             <span>{post.User?.nickname}</span>
             <span
               style={{
@@ -193,7 +192,7 @@ const PostDetail = (props) => {
             _onClick={onClickShare}
           />
         </FlexGrid>
-        <Text margin="10px 0px" size="20px">댓글: {commentCnt}</Text>
+        <Text margin="10px 0px" size="15px">댓글: {commentCnt}</Text>
         <CommentWrite postId={postId} />
         <CommentList postId={postId} />
       </FlexGrid>
