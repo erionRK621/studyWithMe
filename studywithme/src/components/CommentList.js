@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../redux/modules/comment";
-import { TiDeleteOutline } from "react-icons/ti";
+import { ImCross } from "react-icons/im";
 
 import Image from "../elements/Image";
 import Text from "../elements/Text";
@@ -12,7 +12,8 @@ const CommentList = (props) => {
   const postId = props.postId;
   const dispatch = useDispatch();
   const comment = useSelector((state) => state.comment.list);
-  const userId = useSelector((state) => state.user.user?.userId);
+  const user = useSelector((state) => state.user.user);
+  const userId = user?.userId;
   const deleteComment = (commentId) => {
     if (window.confirm("삭제하시겠습니까?") === true) {
       dispatch(commentActions.deleteCommentMiddleware(postId, commentId));
@@ -36,7 +37,7 @@ const CommentList = (props) => {
             >
               <FlexGrid align="center">
                 <FlexGrid align="center" minWidth="120px">
-                  <Image size="36" />
+                  <Image size="36" src={`${process.env.REACT_APP_API_URI}/${c.avatarUrl}`} />
                   <FlexGrid direction="column" margin="0px 5px">
                     <Text size="15px">{c.userNickname}</Text>
                     <Text size="10px" color="#cccccc">
@@ -52,7 +53,7 @@ const CommentList = (props) => {
                 </FlexGrid>
               </FlexGrid>
               {c.userId === userId ? (
-                <TiDeleteOutline
+                <ImCross
                   className="deleteButton"
                   onClick={() => {
                     deleteComment(c.commentId);
