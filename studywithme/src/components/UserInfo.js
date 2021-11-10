@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { AiTwotoneSetting } from "react-icons/ai";
@@ -7,17 +7,23 @@ import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
 // Bootstrap
-import "bootstrap/dist/css/bootstrap.min.css";
-import Button from "react-bootstrap/Button";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import Button from "react-bootstrap/Button";
 
-import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
+// import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
 import Image from "../elements/Image";
-import Text from "../elements/Text";
+import FollowModal from "./FollowModal";
+import FollowerModal from "./FollowerModal";
 import dotenv from "dotenv";
 dotenv.config();
 
 const UserInfo = (props) => {
   const dispatch = useDispatch();
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const modalClose = () => {
+    setModalOpen(!modalOpen);
+  };
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
@@ -28,14 +34,13 @@ const UserInfo = (props) => {
   const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
   const userId = props.userId;
 
-  const [modalShow, setModalShow] = React.useState(false);
+  // const [modalShow, setModalShow] = React.useState(false);
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
     dispatch(myActions.getFollowingsMiddleware(userId));
     dispatch(myActions.getFollowersMiddleware(userId));
   }, []);
-
 
   return (
     <React.Fragment>
@@ -60,24 +65,32 @@ const UserInfo = (props) => {
             <Nickname>{userInfo?.nickname}</Nickname>
           </MiddleDiv>
           <BottomDiv>
-            <Text>게시글 {userInfo?.postCnt}개</Text>
-            <Text>팔로워 {followerList?.length}명</Text>
-            <Text>팔로잉 {followingList?.length}명</Text>
-            <Button variant="primary" onClick={() => setModalShow(true)}>
+            <Button>게시글 {userInfo?.postCnt}개</Button>
+            <Button onClick={modalClose}>
+              팔로워 {followerList?.length}명
+            </Button>
+
+            {modalOpen && (
+              <FollowerModal modalClose={modalClose}></FollowerModal>
+            )}
+            <Button onClick={modalClose}>
+              팔로우 {followingList?.length}명
+            </Button>
+            {modalOpen && <FollowModal modalClose={modalClose}></FollowModal>}
+
+            {/* <Button variant="primary" onClick={() => setModalShow(true)}>
               Launch vertically centered modal
             </Button>
             <MyVerticallyCenteredModal
               show={modalShow}
               onHide={() => setModalShow(false)}
-            />
+            /> */}
           </BottomDiv>
         </RightDiv>
       </UserInfoWrap>
     </React.Fragment>
   );
 };
-
-
 
 const UserInfoWrap = styled.div`
   width: 100%;
@@ -114,6 +127,10 @@ const MiddleDiv = styled.div`
 `;
 const Nickname = styled.div`
   font-size: 48px;
+`;
+
+const Button = styled.div`
+  font-size: 14px;
 `;
 
 const BottomDiv = styled.div`

@@ -43,6 +43,9 @@ const BtnWrap = styled.div`
 `;
 const Mypost = styled.div`
   width: 50%;
+  ::active {
+    border-bottom: gray;
+  }
 `;
 
 const MyBookMark = styled.div`

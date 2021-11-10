@@ -50,16 +50,6 @@ MyPosts.defaultProps = {
     userId: 1,
   },
 };
-const PostContainer = styled.div`
-  background-color: white;
-  width: 80%;
-  max-width: 350px;
-  margin: auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  border-radius: 5px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
-`;
 
 const Wrap = styled.div`
   max-width: 1090px;
