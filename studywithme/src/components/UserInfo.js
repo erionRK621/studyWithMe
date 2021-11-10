@@ -6,6 +6,11 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
+// Bootstrap
+import "bootstrap/dist/css/bootstrap.min.css";
+import Button from "react-bootstrap/Button";
+
+import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
 import Image from "../elements/Image";
 import Text from "../elements/Text";
 import dotenv from "dotenv";
@@ -17,17 +22,21 @@ const UserInfo = (props) => {
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
   const followerList = useSelector((state) => state.mypage?.followerIdList);
-  // console.log(followerList);
+  console.log("followerList", followerList);
   const followingList = useSelector((state) => state.mypage?.followingIdList);
-  console.log(followingList);
+  console.log("followingList", followingList);
   const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
   const userId = props.userId;
+
+  const [modalShow, setModalShow] = React.useState(false);
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
     dispatch(myActions.getFollowingsMiddleware(userId));
     dispatch(myActions.getFollowersMiddleware(userId));
   }, []);
+
+
   return (
     <React.Fragment>
       <UserInfoWrap>
@@ -54,12 +63,21 @@ const UserInfo = (props) => {
             <Text>게시글 {userInfo?.postCnt}개</Text>
             <Text>팔로워 {followerList?.length}명</Text>
             <Text>팔로잉 {followingList?.length}명</Text>
+            <Button variant="primary" onClick={() => setModalShow(true)}>
+              Launch vertically centered modal
+            </Button>
+            <MyVerticallyCenteredModal
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
           </BottomDiv>
         </RightDiv>
       </UserInfoWrap>
     </React.Fragment>
   );
 };
+
+
 
 const UserInfoWrap = styled.div`
   width: 100%;
