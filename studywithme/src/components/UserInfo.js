@@ -6,11 +6,6 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
-// Bootstrap
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import Button from "react-bootstrap/Button";
-
-// import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
 import Image from "../elements/Image";
 import FollowModal from "./FollowModal";
 import FollowerModal from "./FollowerModal";
@@ -33,8 +28,6 @@ const UserInfo = (props) => {
   console.log("followingList", followingList);
   const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
   const userId = props.userId;
-
-  // const [modalShow, setModalShow] = React.useState(false);
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
@@ -77,14 +70,6 @@ const UserInfo = (props) => {
               팔로우 {followingList?.length}명
             </Button>
             {modalOpen && <FollowModal modalClose={modalClose}></FollowModal>}
-
-            {/* <Button variant="primary" onClick={() => setModalShow(true)}>
-              Launch vertically centered modal
-            </Button>
-            <MyVerticallyCenteredModal
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-            /> */}
           </BottomDiv>
         </RightDiv>
       </UserInfoWrap>
