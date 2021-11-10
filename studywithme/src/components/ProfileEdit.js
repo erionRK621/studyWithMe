@@ -11,7 +11,7 @@ dotenv.config();
 
 export const ProfileEdit = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
-    const userId = useSelector((state) => state.user.user.userId);
+  const userId = useSelector((state) => state.user.user?.userId);
   // const userPic = `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`;
 
   const [userPic, setUserPic] = React.useState("");
@@ -26,7 +26,7 @@ export const ProfileEdit = () => {
     setNickname(e.target.value);
   };
   const handleFileChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     setSelectedFile(file);
 
     const reader = new FileReader();
@@ -58,7 +58,7 @@ export const ProfileEdit = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
     formData.append("nicknameNew", nickname);
-    dispatch(userActions.editProfileMiddleware(userId,formData));
+    dispatch(userActions.editProfileMiddleware(userId, formData));
   };
 
   const onClickNicknameCheck = () => {

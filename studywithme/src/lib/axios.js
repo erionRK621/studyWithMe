@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getCookie } from "../shared/cookie";
 import dotenv from "dotenv";
 dotenv.config();
 const instance = axios.create({
@@ -40,7 +39,7 @@ export const apis = {
   deleteAccountAxios: () => instance.post("/api/users/withdrawal"),
 
   //게시물
-  getPost: () => instance.get("/api/posts", {}),
+  getPost: () => instance.get("/api/posts?searchMode=main", {}),
   getFilterPost: (queryString) =>
     instance.get(`/api/posts?searchMode=filter${queryString}`),
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),

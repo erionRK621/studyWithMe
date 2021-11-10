@@ -1,8 +1,6 @@
-import React from "react";
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { apis } from "../../lib/axios";
-import { AiFillExclamationCircle, AiFillHeart } from "react-icons/ai";
 
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
 // 게시물
@@ -26,22 +24,47 @@ const UNFOLLOW_USER = "UNFOLLOW_USER";
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const setPost = createAction(SET_POST, (post, isBookmarked, isLiked, isFollowing) => ({ post, isBookmarked, isLiked, isFollowing }));
+const setPost = createAction(
+  SET_POST,
+  (post, isBookmarked, isLiked, isFollowing) => ({
+    post,
+    isBookmarked,
+    isLiked,
+    isFollowing,
+  })
+);
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
 const deletePost = createAction(DELETE_POST, (post_id) => ({ post_id }));
 // 북마크
 const loadBookmarkList = createAction(LOAD_BOOKMARK_LIST, (bookmarkList) => ({
   bookmarkList,
 }));
-const addBookmark = createAction(ADD_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
-const deleteBookmark = createAction(DELETE_BOOKMARK, (postDetail, isBookmarked) => ({ postDetail, isBookmarked }));
+const addBookmark = createAction(ADD_BOOKMARK, (postDetail, isBookmarked) => ({
+  postDetail,
+  isBookmarked,
+}));
+const deleteBookmark = createAction(
+  DELETE_BOOKMARK,
+  (postDetail, isBookmarked) => ({ postDetail, isBookmarked })
+);
 // 좋아요
-const addLike = createAction(ADD_LIKE, (postDetail, isLiked) => ({ postDetail, isLiked }));
-const deleteLike = createAction(DELETE_LIKE, (postDetail, isLiked) => ({ postDetail, isLiked }));
+const addLike = createAction(ADD_LIKE, (postDetail, isLiked) => ({
+  postDetail,
+  isLiked,
+}));
+const deleteLike = createAction(DELETE_LIKE, (postDetail, isLiked) => ({
+  postDetail,
+  isLiked,
+}));
 // 팔로우
-const followUser = createAction(FOLLOW_USER, (postDetail, isFollowing) => ({ postDetail, isFollowing }));
-const unfollowUser = createAction(UNFOLLOW_USER, (postDetail, isFollowing) => ({ postDetail, isFollowing }));
-
+const followUser = createAction(FOLLOW_USER, (postDetail, isFollowing) => ({
+  postDetail,
+  isFollowing,
+}));
+const unfollowUser = createAction(UNFOLLOW_USER, (postDetail, isFollowing) => ({
+  postDetail,
+  isFollowing,
+}));
 
 //초기상태값
 //paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
@@ -62,7 +85,7 @@ const getPostDB = () => {
       .getPost()
       .then((res) => {
         console.log(res.data);
-        dispatch(getPost(res.data.posts));
+        dispatch(getPost(res.data));
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
@@ -125,7 +148,7 @@ const deletePostMiddleware = (postId) => {
       .deletePostAxios(postId)
       .then((res) => {
         dispatch(deletePost(postId));
-        history.push("/")
+        history.push("/");
       })
       .catch((err) => {
         console.log(err);
@@ -221,8 +244,8 @@ const addLikeMiddleware = (postId) => {
       .catch((error) => {
         console.log(error.response.data.message);
       });
-  }
-}
+  };
+};
 
 const deleteLikeMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
@@ -239,8 +262,8 @@ const deleteLikeMiddleware = (postId) => {
       .catch((error) => {
         console.log(error.response.data.message);
       });
-  }
-}
+  };
+};
 
 const followUserMiddleware = (userId) => {
   return function (dispatch, getState, { history }) {
@@ -251,14 +274,14 @@ const followUserMiddleware = (userId) => {
       .followUserAxios(userId)
       .then((response) => {
         const isFollowing = response.data.isUser;
-        console.log("isFollowing", isFollowing, typeof (isFollowing));
+        console.log("isFollowing", isFollowing, typeof isFollowing);
         dispatch(followUser(postDetail, isFollowing));
       })
       .catch((error) => {
         console.log(error.response);
       });
-  }
-}
+  };
+};
 
 const unfollowUserMiddleware = (userId) => {
   return function (dispatch, getState, { history }) {
@@ -269,15 +292,14 @@ const unfollowUserMiddleware = (userId) => {
       .unfollowUserAxios(userId)
       .then((response) => {
         const isFollowing = response.data.isUser;
-        console.log("isFollowing", isFollowing, typeof (isFollowing));
+        console.log("isFollowing", isFollowing, typeof isFollowing);
         dispatch(unfollowUser(postDetail, isFollowing));
       })
       .catch((error) => {
         console.log(error.response);
-      })
-  }
-}
-
+      });
+  };
+};
 
 // 리듀서
 export default handleActions(
@@ -325,14 +347,20 @@ export default handleActions(
         console.log("FOLLOW_USER 리듀서 실행");
         console.log("action.payload.postDetail", action.payload.postDetail);
         console.log("action.payload.isFollowing", action.payload.isFollowing);
-        draft.detail = { ...action.payload.postDetail, isFollowing: action.payload.isFollowing };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isFollowing: action.payload.isFollowing,
+        };
       }),
     [UNFOLLOW_USER]: (state, action) =>
       produce(state, (draft) => {
         console.log("UNFOLLOW_USER 리듀서 실행");
         console.log("action.payload.postDetail", action.payload.postDetail);
         console.log("action.payload.isFollowing", action.payload.isFollowing);
-        draft.detail = { ...action.payload.postDetail, isFollowing: action.payload.isFollowing };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isFollowing: action.payload.isFollowing,
+        };
       }),
     [ADD_BOOKMARK]: (state, action) =>
       produce(state, (draft) => {
@@ -357,12 +385,18 @@ export default handleActions(
     [ADD_LIKE]: (state, action) =>
       produce(state, (draft) => {
         console.log("ADD_LIKE 리듀서 실행");
-        draft.detail = { ...action.payload.postDetail, isLiked: action.payload.isLiked };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isLiked: action.payload.isLiked,
+        };
       }),
     [DELETE_LIKE]: (state, action) =>
       produce(state, (draft) => {
         console.log("DELETE_LIKE 리듀서 실행");
-        draft.detail = { ...action.payload.postDetail, isLiked: action.payload.isLiked };
+        draft.detail = {
+          ...action.payload.postDetail,
+          isLiked: action.payload.isLiked,
+        };
       }),
   },
   initialState

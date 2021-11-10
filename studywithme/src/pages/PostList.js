@@ -128,7 +128,7 @@ const PostListTest = (props) => {
 const Wrap = styled.div`
   max-width: 1090px;
   margin: auto;
-  padding:20px;
+  padding: 20px;
 `;
 const GridWrap = styled.div`
   width: 100%;
@@ -144,7 +144,7 @@ const ItemGrid = styled.div`
   padding: 0px 10px;
   @media screen and (max-width: 768px) {
     width: 100%;
-    margin-top:20px;
+    margin-top: 20px;
   }
 `;
 
@@ -153,7 +153,7 @@ const SelectGrid = styled.div`
   padding-top: 20px;
   width: 100%;
   display: flex;
-  padding-left:10px;
+  padding-left: 10px;
 `;
 
 const SelectedGrid = styled.div`
@@ -161,7 +161,7 @@ const SelectedGrid = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  padding-left:10px;
+  padding-left: 10px;
 `;
 
 const Selected = styled.div`
