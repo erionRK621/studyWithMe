@@ -18,9 +18,9 @@ const CommentWrite = (props) => {
   };
   return (
     <React.Fragment>
-      <FlexGrid align="center" color="#eeeeee" padding="10px">
-        <FlexGrid align="center" margin="0px 10px">
-          <Image size="30" />
+      <FlexGrid align="center" color="#eeeeee" padding="10px 0px">
+        <FlexGrid align="center" margin="0px 5px 0px 0px">
+          <Image size="36" />
         </FlexGrid>
         <Input
           border="none"
@@ -28,7 +28,12 @@ const CommentWrite = (props) => {
           placeholder="댓글을 입력해주세요."
           value={comment}
         />
-        <Button width="40px" _onClick={registComment}>
+        <Button
+          width="40px"
+          _onClick={registComment}
+          bgColor="transparent"
+          color="black"
+        >
           등록
         </Button>
       </FlexGrid>

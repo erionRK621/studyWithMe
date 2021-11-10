@@ -3,3 +3,11 @@
   margin: 0px;
   font-family: 'Noto Sans KR', sans-serif;
 }
+
+.deleteButton {
+  color: #aaaaaa;
+}
+.deleteButton:hover {
+  cursor: pointer;
+  color: #000000;
+}
