@@ -7,8 +7,6 @@ import { actionCreators as userActions } from "../redux/modules/user";
 
 // Design-related
 import styled from "styled-components";
-import { FaUserAlt, FaBell } from "react-icons/fa";
-import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 // Components

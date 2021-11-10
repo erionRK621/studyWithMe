@@ -3,8 +3,7 @@ import styled from "styled-components";
 
 // Image 함수형 컴포넌트를 만들어 준다.
 const Image = (props) => {
-  const { shape, src, size, _onClick, children, borderRadius, paddingTop } =
-    props;
+  const { shape, src, size, _onClick, borderRadius, paddingTop } = props;
 
   const styles = {
     src: src,

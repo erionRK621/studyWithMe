@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
-import SlideContent from "./SliderContent";
+
 import CardMain from "./CardMain";
 
 const FollowSlide = (props) => {
-  const post_list = useSelector((state) => state.post.list);
+  const post_list = useSelector((state) => state.post.list.followPost);
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
     dots: false, // 점보이게 할거니?
@@ -27,7 +27,7 @@ const FollowSlide = (props) => {
       {
         breakpoint: 1200, // 화면 사이즈 1200px
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
         },
       },
       {
@@ -60,7 +60,7 @@ const FollowSlide = (props) => {
         </SlideUpLine>
 
         <StyledSlider {...settings}>
-          {post_list.map((p, idx) => {
+          {post_list?.map((p, idx) => {
             return (
               <PostWrap key={idx}>
                 <CardMain

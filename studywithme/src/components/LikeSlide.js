@@ -1,16 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
-import SlideContent from "./SliderContent";
 import CardMain from "./CardMain";
 
 const LikeSlide = (props) => {
-  const post_list = useSelector((state) => state.post.list);
+  const post_list = useSelector((state) => state.post.list.posts);
+  const userInfo = useSelector((state) => state.user.userInfo);
+  console.log(userInfo);
+
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
     dots: false, // 점보이게 할거니?
@@ -60,7 +62,7 @@ const LikeSlide = (props) => {
         </SlideUpLine>
 
         <StyledSlider {...settings}>
-          {post_list.map((p, idx) => {
+          {post_list?.map((p, idx) => {
             return (
               <PostWrap key={idx}>
                 <CardMain

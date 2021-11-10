@@ -3,7 +3,6 @@ import { produce } from "immer";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { apis } from "../../lib/axios";
-import { setCookie, deleteCookie, getCookie } from "../../shared/cookie";
 
 // STATES
 const initialState = {
@@ -54,7 +53,7 @@ const getUserDB = (userId) => {
   };
 };
 
-const editProfileMiddleware = (userId,formData) => {
+const editProfileMiddleware = (userId, formData) => {
   return function (dispatch, getState, { history }) {
     for (let a of formData.entries()) {
       console.log(a);

@@ -4,14 +4,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
-import Text from "../elements/Text";
 import Image from "../elements/Image";
 import dotenv from "dotenv";
 dotenv.config();
 
 const Post = (props) => {
+  const dispatch = useDispatch();
   const post_list = useSelector((state) => state.post.list);
-  // console.log("포스트의 프롭스", props);
+  // console.log("포스트의 프롭스", props.body);
   // console.log("포스트의 이미지", props.ImageCover);
 
   return (
