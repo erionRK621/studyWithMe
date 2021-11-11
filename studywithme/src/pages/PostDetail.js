@@ -156,12 +156,15 @@ const PostDetail = (props) => {
 
         <FlexGrid justify="center">
           {isLiked ? (
+            <>
             <Button
               text="좋아요 취소하기"
               width="60px"
               margin="20px"
               _onClick={onClickDeleteLike}
             />
+            <img src="../../icon/detailLike.svg" /> 
+            </>
           ) : (
             <Button
               text="좋아요 추가하기"
@@ -231,9 +234,9 @@ const FlexGrid = styled.div`
 `;
 
 const ContentGrid = styled.div`
-  background-color: #ececec;
   margin-top: 44px;
   margin-bottom: 20px;
+  min-height: 300px;
   p {
     word-break: break-all;
   }
