@@ -1,3 +1,4 @@
+import { size } from "lodash";
 import React from "react";
 
 import styled from "styled-components";
@@ -13,6 +14,7 @@ export default function Button(props) {
     radius,
     bgColor,
     color,
+    fontSize,
   } = props;
 
   const styles = {
@@ -22,6 +24,7 @@ export default function Button(props) {
     radius: radius,
     bgColor: bgColor,
     color: color,
+    fontSize:fontSize,
   };
 
   return (
@@ -47,12 +50,13 @@ const ElButton = styled.button`
   width: ${(props) => props.width};
   background-color: ${(props) => (props.bgColor ? props.bgColor : "#212121")};
   color: ${(props) => (props.color ? props.color : "#ffffff")};
-  padding: 12px 0px;
+  padding: ${(props)=>props.padding? props.padding: "12px 0px"};
   box-sizing: border-box;
   border: none;
   padding: ${(props) => props.padding};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   ${(props) => (props.radius ? `border-radius: ${props.radius}` : null)};
+  ${(props) => props.fontSize? `font-size:${props.fontSize}` : null};
   &:hover {
     cursor: pointer;
   }

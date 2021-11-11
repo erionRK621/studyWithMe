@@ -8,6 +8,10 @@ import { history } from "../redux/configStore";
 import Text from "../elements/Text";
 import CardPost from "../components/CardPost";
 import SelectBox from "../components/SelectBox";
+
+//icon
+import { ReactComponent as Cross } from "../icon/cross.svg";
+
 const PostList = (props) => {
   const dispatch = useDispatch();
 
@@ -86,10 +90,9 @@ const PostList = (props) => {
         {selectArray.map((filter, idx) => {
           return (
             <Selected key={idx}>
-              <Text color="#aaaaaa" margin="0px 4px">{filter.value}</Text>
-              <ImCross
-                className="deleteButton"
-                size = "10px"
+              <Text margin="0px 4px">{filter.value}</Text>
+              <Cross
+                className="iconButton"
                 onClick={() => {
                   filter.func("");
                 }}
@@ -104,7 +107,7 @@ const PostList = (props) => {
               setSpaceVal("");
               setStudyMateVal("");
             }}
-            color="#aaaaaa"
+            color="#FFC85C"
           >
             초기화
           </ButtonText>
@@ -158,7 +161,8 @@ const SelectGrid = styled.div`
 `;
 
 const SelectedGrid = styled.div`
-  padding-top: 10px;
+  margin-top:17px;
+  /* padding-top: 10px; */
   display: flex;
   align-items: center;
   width: 100%;
@@ -166,12 +170,13 @@ const SelectedGrid = styled.div`
 `;
 
 const Selected = styled.div`
-  background-color: #eeeeee;
+  background-color: rgba(255, 200, 92, 1);
+  opacity: 50%;
   display: flex;
   align-items: center;
   padding: 5px;
   margin-right: 10px;
-  border-radius: 10px;
+  border-radius: 20px;
 `;
 
 const ButtonText = styled.p`
@@ -182,7 +187,7 @@ const ButtonText = styled.p`
   word-break: break-all;
   overflow: hidden;
   &:hover {
-    color: black;
+    opacity:50%;
     text-decoration: underline;
     cursor: pointer;
   }
