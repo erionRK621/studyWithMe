@@ -14,6 +14,8 @@ import FollowModal from "./FollowModal";
 dotenv.config();
 
 const UserInfo = (props) => {
+  console.log("props", props);
+
   const dispatch = useDispatch();
 
   const [followerModalOpen, setFollowerModalOpen] = useState(false);
@@ -29,33 +31,85 @@ const UserInfo = (props) => {
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
   const followerList = useSelector((state) => state.mypage?.followerIdList);
-  console.log("followerList", followerList);
   const followingList = useSelector((state) => state.mypage?.followingIdList);
-  console.log("followingList", followingList);
   const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
-  const userId = props.userId;
+  const myPageUserId = props.myPageUserId;
+  const isMe = props.isMe;
 
   useEffect(() => {
-    dispatch(userActions.getUserDB(userId));
-    dispatch(myActions.getFollowingsMiddleware(userId));
-    dispatch(myActions.getFollowersMiddleware(userId));
+    dispatch(userActions.getUserDB(myPageUserId));
+    dispatch(myActions.getFollowingsMiddleware(myPageUserId));
+    dispatch(myActions.getFollowersMiddleware(myPageUserId));
   }, []);
 
   return (
     <React.Fragment>
       <UserInfoWrap>
-        <LeftDiv>
-          <ProfileImg>
-            <Image size="100" src={userPic}></Image>
-          </ProfileImg>
-        </LeftDiv>
+        <UserProfilePicWrap>
+          <ProfilePic src={userPic} alt="Profile Pic" />
+        </UserProfilePicWrap>
+        <UserProfileWrap>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between"
+            }}
+          >
+            <UserNickname>{userInfo?.nickname}
+            </UserNickname>
+            {isMe ? <UserInfoEditButton
+              onClick={() => {
+                history.push("/userEdit/" + myPageUserId);
+              }}
+            >
+              회원정보 수정
+            </UserInfoEditButton> : null}
+          </div>
+          <BottomDiv>
+            <div style={{ fontSize: "14px" }}>게시물 {userInfo?.postCnt}개</div>
+            <Button onClick={followerModalClose}>
+              팔로워 {followerList?.length}명
+            </Button>
+            {followerModalOpen && (
+              <FollowerModal
+                modalClose={followerModalClose}
+                followerList={followerList}
+              />
+            )}
+            <Button onClick={followModalClose}>
+              팔로우 {followingList?.length}명
+            </Button>
+            {followModalOpen && (
+              <FollowModal
+                modalClose={followModalClose}
+                followingList={followingList}
+              />
+            )}
+          </BottomDiv>
+
+        </UserProfileWrap>
+      </UserInfoWrap>
+
+
+
+
+      {/* <UserInfoWrap>
+        <SectionLeft>
+          <div
+            style={{
+              minWidth: "185px"
+            }}
+          >
+            <ProfilePic alt="" src={userPic} />
+          </div>
+        </SectionLeft>
         <RightDiv>
           <TopDiv>
             <AiTwotoneSetting
               cursor="pointer"
               size="1.7em"
               onClick={() => {
-                history.push("/userEdit/" + userId);
+                history.push("/userEdit/" + myPageUserId);
               }}
             ></AiTwotoneSetting>
           </TopDiv>
@@ -63,7 +117,7 @@ const UserInfo = (props) => {
             <Nickname>{userInfo?.nickname}</Nickname>
           </MiddleDiv>
           <BottomDiv>
-            <div style={{ fontSize: "14px" }}>게시글 {userInfo?.postCnt}개</div>
+            <div style={{ fontSize: "14px" }}>게시물 {userInfo?.postCnt}개</div>
             <Button onClick={followerModalClose}>
               팔로워 {followerList?.length}명
             </Button>
@@ -84,47 +138,129 @@ const UserInfo = (props) => {
             )}
           </BottomDiv>
         </RightDiv>
-      </UserInfoWrap>
+      </UserInfoWrap> */}
     </React.Fragment>
   );
 };
 
 const UserInfoWrap = styled.div`
-  width: 100%;
-  height: 300px;
-  background-color: lightgray;
-  display: flex;
-  margin: auto;
-`;
-const LeftDiv = styled.div`
-  width: 30%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const ProfileImg = styled.div`
-  height: 77px;
-  width: 77px;
+margin-bottom: 44px;
+flex-direction: row;
+align-items: stretch;
+display: flex;
+flex-shrink: 0;
+padding: 0;
+position: relative;
+`
+
+const UserProfilePicWrap = styled.div`
+flex-basis: 0;
+flex-grow: 1;
+margin-right: 30px;
+flex-shrink: 0;
+align-items: stretch;
+display: flex;
+flex-direction: column;
+margin: 0;
+padding: 0;
+position: relative;
 `;
 
-const RightDiv = styled.div`
-  width: 70%;
-  height: 100%;
+const ProfilePic = styled.img`
+height: 185px;
+width: 185px;
+border-radius: 50%;
+align-items: center;
+align-self: center;
+display: block;
+flex: none;
+justify-content: center;
 `;
-const TopDiv = styled.div`
-  display: flex;
-  height: 10%;
-  flex-direction: row-reverse;
+
+const UserProfileWrap = styled.section`
+flex-basis: 30px;
+flex-grow: 2;
+flex-shrink: 1;
+min-width: 0;
+align-items: stretch;
+display: flex;
+flex-direction: column;
+margin: 0;
+padding: 0;
+position: relative;
 `;
-const MiddleDiv = styled.div`
-  display: flex;
-  height: 40%;
-  padding: 40px 40px 40px 60px;
+
+const UserNicknameWrap = styled.div`
+display: flex;
+justify-content: space-between;
 `;
-const Nickname = styled.div`
-  font-size: 48px;
+
+const UserNickname = styled.h2`
+display: block;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+font-weight: 300;
+font-size: 28px;
+line-height: 32px;
+margin: -5px 0 -6px;
 `;
+
+const UserInfoEditButton = styled.button`
+width: 120px;
+height: 32px;
+border: 0;
+border-radius: 4px;
+background: #369C8A;
+color: white;
+cursor: pointer;
+`;
+
+// const UserInfoWrap = styled.div`
+//   width: 100%;
+//   max-width: 1090px;
+//   height: 300px;
+//   display: flex;
+//   margin: auto;
+// `;
+// const SectionLeft = styled.div`
+//   width: 30%;
+//   height: 100%;
+//   display: flex;
+//   margin-right: 30px;
+//   justify-content: center;
+//   align-items: center;
+//   flex-shrink: 0;
+//   align-items: stretch;
+// `;
+
+// const ProfilePic = styled.img`
+// height: 100%;
+// width: 100%;
+// align-items: center;
+// align-self: center;
+// display: block;
+// flex: none;
+// justify-content: center;
+// `;
+
+// const RightDiv = styled.div`
+//   width: 70%;
+//   height: 100%;
+// `;
+// const TopDiv = styled.div`
+//   display: flex;
+//   height: 10%;
+//   flex-direction: row-reverse;
+// `;
+// const MiddleDiv = styled.div`
+//   display: flex;
+//   height: 40%;
+//   padding: 40px 40px 40px 60px;
+// `;
+// const Nickname = styled.div`
+//   font-size: 48px;
+// `;
 
 const Button = styled.div`
   font-size: 14px;
@@ -133,7 +269,7 @@ const Button = styled.div`
 
 const BottomDiv = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   width: 100%;
   height: 50%;
   margin: auto;

@@ -13,6 +13,7 @@ import { ReactComponent as PostLikeOn } from "../icon/postLikeOn.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
+
 const Post = (props) => {
   const dispatch = useDispatch();
   const { onClick } = props;

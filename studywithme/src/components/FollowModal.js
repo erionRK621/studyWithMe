@@ -22,6 +22,7 @@ const FollowModal = ({ modalClose, followingList }) => {
       modalClose();
     }
   };
+
   return (
     <Container onClick={onCloseModal}>
       <Modal>
