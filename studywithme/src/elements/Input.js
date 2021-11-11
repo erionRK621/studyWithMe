@@ -19,6 +19,7 @@ const Input = (props) => {
     borderBottom,
     size,
     bgColor,
+    margin,
   } = props;
 
   const styles = {
@@ -27,6 +28,7 @@ const Input = (props) => {
     borderBottom: borderBottom,
     size: size,
     bgColor:bgColor,
+    margin:margin,
   };
   if (multiLine) {
     return (
@@ -105,6 +107,7 @@ const ElInput = styled.input`
   }
   ${(props) => (props.size ? `font-size:${props.size};` : null)};
   ${(props)=>(props.bgColor? `background-color:${props.bgColor};`: null)};
+  ${(props) => props.margin? `margin:${props.margin}` : null};
 `;
 
 export default Input;

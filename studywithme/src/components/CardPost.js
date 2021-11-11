@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
@@ -17,17 +17,11 @@ dotenv.config();
 const Post = (props) => {
   const dispatch = useDispatch();
   const { onClick } = props;
-  const [likeState, setLikeState] = useState(false);
-
-  const like = () => {
-    if (likeState) {
-      setLikeState(false);
-      dispatch(postActions.filterDeleteLikeMiddleware(props.postId));
-    } else {
-      setLikeState(true);
-      dispatch(postActions.filterAddLikeMiddleware(props.postId));
-    }
-    
+  const deleteLike = () => {
+    dispatch(postActions.filterDeleteLikeMiddleware(props.postId));
+  };
+  const addLike = () => {
+    dispatch(postActions.filterAddLikeMiddleware(props.postId));
   };
   return (
     <PostContainer>
@@ -52,10 +46,10 @@ const Post = (props) => {
           <Text color="#aaaaaa">북마크:{props.bookCnt}</Text>
         </Grid>
       </Grid>
-      {likeState? (
-        <PostLikeOn className="like" size="30" onClick={like} />
+      {props.isLiked ? (
+        <PostLikeOn className="like" size="30" onClick={deleteLike} />
       ) : (
-        <PostLikeOff className="like" size="30" onClick={like} />
+        <PostLikeOff className="like" size="30" onClick={addLike} />
       )}
     </PostContainer>
   );

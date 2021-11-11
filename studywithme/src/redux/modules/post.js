@@ -64,10 +64,17 @@ const deleteLike = createAction(DELETE_LIKE, (postDetail, isLiked) => ({
   isLiked,
 }));
 
-const filterAddLike = createAction(FILTER_ADD_LIKE, (postId) => ({ postId }));
-const filterDeleteLike = createAction(FILTER_DELETE_LIKE, (postId) => ({
+const filterAddLike = createAction(FILTER_ADD_LIKE, (postId, isLiked) => ({
   postId,
+  isLiked,
 }));
+const filterDeleteLike = createAction(
+  FILTER_DELETE_LIKE,
+  (postId, isLiked) => ({
+    postId,
+    isLiked,
+  })
+);
 // 팔로우
 const followUser = createAction(FOLLOW_USER, (postDetail, isFollowing) => ({
   postDetail,
@@ -294,10 +301,13 @@ const filterAddLikeMiddleware = (postId) => {
     apis
       .addLikeAxios(postId)
       .then((res) => {
-        dispatch(filterAddLike(postId));
+        const isLiked = res.data.isLiked;
+        dispatch(filterAddLike(postId, isLiked));
       })
       .catch((err) => {
-        console.log(err);
+        if(err.response.status===401) {
+          window.alert("로그인 후 사용 가능합니다.")
+        }
       });
   };
 };
@@ -307,10 +317,11 @@ const filterDeleteLikeMiddleware = (postId) => {
     apis
       .deleteLikeAxios(postId)
       .then((res) => {
-        dispatch(filterDeleteLike(postId));
+        const isLiked = res.data.isLiked;
+        dispatch(filterDeleteLike(postId, isLiked));
       })
       .catch((err) => {
-        console.log(err);
+        window.alert(err.response.data.message);
       });
   };
 };
@@ -443,6 +454,7 @@ export default handleActions(
         draft.filterList[idx] = {
           ...draft.filterList[idx],
           likeCnt: draft.filterList[idx].likeCnt + 1,
+          isLiked: action.payload.isLiked,
         };
       }),
     [FILTER_DELETE_LIKE]: (state, action) =>
@@ -453,6 +465,7 @@ export default handleActions(
         draft.filterList[idx] = {
           ...draft.filterList[idx],
           likeCnt: draft.filterList[idx].likeCnt - 1,
+          isLiked: action.payload.isLiked,
         };
       }),
   },
