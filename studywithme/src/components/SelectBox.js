@@ -52,6 +52,17 @@ const Grid = styled.div`
   margin-right: 10px;
 `;
 
-const Select = styled.select``;
+const Select = styled.select`
+  ${(props) =>
+    props.value !== ""
+      ? "background-color:#FFC85C;"
+      : "background-color:#ECECEC;"};
+  font-size: 16px;
+  width: 68px;
+  height: 40px;
+  text-align: center;
+  border-radius: 10px;
+  border : none;
+`;
 const Option = styled.option``;
 export default SelectBox;
