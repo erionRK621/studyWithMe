@@ -5,7 +5,7 @@ const Upload = (props) => {
     const fileInput = React.useRef();
     return (
         <React.Fragment>
-            <input type="file" onChange={_onChange} ref={fileInput} />
+            <input type="file" onChange={_onChange} ref={fileInput} accept="image/*" />
         </React.Fragment>
     );
 };
