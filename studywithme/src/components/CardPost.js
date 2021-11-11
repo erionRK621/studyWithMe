@@ -10,6 +10,7 @@ import Image from "../elements/Image";
 
 import dotenv from "dotenv";
 dotenv.config();
+
 const Post = (props) => {
   const dispatch = useDispatch();
   const { onClick } = props;

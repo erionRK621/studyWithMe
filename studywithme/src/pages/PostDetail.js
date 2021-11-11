@@ -30,7 +30,7 @@ const PostDetail = (props) => {
   const userId = user?.userId;
 
   const commentCnt = useSelector((state) => state.comment.list?.length);
-  
+
   const isBookmarked = post.isBookmarked;
   const isLiked = post.isLiked;
 
