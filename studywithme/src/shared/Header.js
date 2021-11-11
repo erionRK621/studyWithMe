@@ -238,7 +238,7 @@ const Write = styled.li`
   padding: 0px 12px;
   width: 84px;
   height: 40px;
-  background-color: #ff8477;
+  background-color: #ffc85c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,7 +254,7 @@ const Write = styled.li`
 `;
 
 const NavbarIcon = styled.ul`
-  width: 65%;
+  width: 75%;
   display: flex;
   justify-content: flex-end;
   list-style: none;
