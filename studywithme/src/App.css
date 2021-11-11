@@ -22,3 +22,12 @@
 .like:hover {
   opacity: .5;
 }
+
+.detailOnOff {
+  margin:0px 24px;
+}
+
+.iconButton:hover {
+  opacity: .5;
+  cursor: pointer;
+}
