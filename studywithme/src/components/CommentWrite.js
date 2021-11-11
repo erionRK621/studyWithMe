@@ -35,7 +35,7 @@ const CommentWrite = (props) => {
           width="40px"
           _onClick={registComment}
           bgColor="transparent"
-          color="black"
+          color="#FFC85C"
         >
           등록
         </Button>

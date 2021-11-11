@@ -45,12 +45,10 @@ const PostDetail = (props) => {
   const imageCover = process.env.REACT_APP_API_URI + "/" + post?.imageCover;
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
   const onClickFollow = () => {
-    console.log("팔로우 버튼 클릭");
     dispatch(postActions.followUserMiddleware(postUserId));
   };
 
   const onClickUnfollow = () => {
-    console.log("언팔로우 버튼 클릭");
     dispatch(postActions.unfollowUserMiddleware(postUserId));
   };
 
@@ -81,13 +79,14 @@ const PostDetail = (props) => {
   return (
     <div className="ck-content">
       <ImageCover src={imageCover} />
-      <FlexGrid direction="column" margin="40px auto">
+      <FlexGrid direction="column" margin="40px auto" padding="0px 24px">
         <FlexGrid justify="space-between" align="center">
-          <H1>{decodeURIComponent(post?.title)}</H1>
+          <H1 size="32px">{decodeURIComponent(post?.title)}</H1>
           {postUserId === userId ? (
             <FlexGrid>
               <Edit
                 className="iconButton"
+                style={{ marginRight: "16px" }}
                 onClick={() => {
                   history.push(`/edit/${postId}`);
                 }}
@@ -113,11 +112,27 @@ const PostDetail = (props) => {
           </FlexGrid>
           {userId !== postUserId ? (
             isFollowing ? (
-              <Button radius="30px" width="100px" _onClick={onClickUnfollow}>
+              <Button
+                fontSize="16px"
+                bgColor="#FFC85C"
+                radius="30px"
+                width="100px"
+                color="#000000"
+                _onClick={onClickUnfollow}
+                padding="8px 0px"
+              >
                 언팔로우
               </Button>
             ) : (
-              <Button radius="30px" width="100px" _onClick={onClickFollow}>
+              <Button
+                fontSize="16px"
+                bgColor="#FFC85C"
+                radius="30px"
+                width="100px"
+                color="#000000"
+                _onClick={onClickFollow}
+                padding="8px 0px"
+              >
                 팔로우
               </Button>
             )
@@ -127,8 +142,8 @@ const PostDetail = (props) => {
           padding="30px"
           margin="20px 0px"
           justify="space-around"
-          color="#ececec"
-          borderRadius="20px"
+          color="#F4F4F4"
+          borderRadius="10px"
         >
           <FlexGrid>
             <Image />
@@ -183,9 +198,10 @@ const PostDetail = (props) => {
           )}
         </FlexGrid>
         <Text margin="10px 0px" size="15px">
-          댓글: {commentCnt}
+          댓글: <span style={{ color: "#FFC85C" }}>{commentCnt}</span>
         </Text>
-        <CommentWrite postId={postId} avatarUrl={post.User?.avatarUrl} />
+
+        <CommentWrite postId={postId} avatarUrl={post?.currentAvatar} />
         <CommentList postId={postId} />
       </FlexGrid>
     </div>
