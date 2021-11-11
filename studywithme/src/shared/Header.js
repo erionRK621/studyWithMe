@@ -71,17 +71,17 @@ export const Header = () => {
           <InfoList>
             <List onClick={onClickLogOut}>로그아웃</List>
           </InfoList>
-          <InfoList>
+          {/* <InfoList>
             <List>알림</List>
-          </InfoList>
+          </InfoList> */}
           <InfoList>
-            <List
+            <Write
               onClick={() => {
                 history.push("/write");
               }}
             >
               글쓰기
-            </List>
+            </Write>
           </InfoList>
         </NavbarIcon>
         <Hamberger href="#">
@@ -140,13 +140,13 @@ export const Header = () => {
             </List>
           </InfoList>
           <InfoList>
-            <List
+            <Write
               onClick={() => {
                 history.push("/login");
               }}
             >
               글쓰기
-            </List>
+            </Write>
           </InfoList>
         </NavbarIcon>
         <Hamberger href="#">
@@ -166,7 +166,7 @@ const Navbar = styled.div`
   display: flex;
   justify-content: space-between; /*중심축 배치 (현재는 중심축이 수평축)*/
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
-  background-color: #aed0e1;
+  background-color: white;
   padding: 8px 12px;
 
   @media screen and (max-width: 768px) {
@@ -207,6 +207,25 @@ const List = styled.li`
   }
 `;
 
+const Write = styled.li`
+  /* padding: 8px 12px; 마우스 클릭영역확보 */
+  width: 84px;
+  height: 40px;
+  background-color: #369c8a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  :hover {
+    background-color: red;
+    border-radius: 10px;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+
 const NavbarIcon = styled.ul`
   display: flex;
   list-style: none;
@@ -222,7 +241,8 @@ const NavbarIcon = styled.ul`
 
 const InfoList = styled.div`
   padding: 0 12px;
-  마우스 클릭영역확보 :hover {
+
+  :hover {
     background-color: red;
     border-radius: 10px;
   }

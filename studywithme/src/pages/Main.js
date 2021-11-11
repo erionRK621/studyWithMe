@@ -20,15 +20,13 @@ const Main = (props) => {
   return (
     <React.Fragment>
       <Wrap>
-        <div style={{ width: "75%", margin: "auto" }}>
-          <Image
-            shape="rectangle"
-            // src={}
-            paddingTop="40%"
-          >
-            메인배너
-          </Image>
-        </div>
+        <Image
+          shape="rectangle"
+          // src={}
+          paddingTop="40%"
+        >
+          메인배너
+        </Image>
 
         <div>
           <LikeSlide></LikeSlide>
