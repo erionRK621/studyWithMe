@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators as userActions } from "../redux/modules/user";
 
+import banner from "../icon/bannerImg.png";
+import kkiri from "../icon/kkiri.png";
 import Image from "../elements/Image";
 import RandomSlide from "../components/RandomSlide";
 import LikeSlide from "../components/LikeSlide";
@@ -20,15 +22,13 @@ const Main = (props) => {
   return (
     <React.Fragment>
       <Wrap>
-        <div style={{ width: "75%", margin: "auto" }}>
-          <Image
-            shape="rectangle"
-            // src={}
-            paddingTop="40%"
-          >
-            메인배너
+        <Banner>
+          <Image shape="rectangle" src={banner} paddingTop="40%">
+            <ImgContents>
+              <Image shape="rectangle" src={kkiri} paddingTop="40%" />
+            </ImgContents>
           </Image>
-        </div>
+        </Banner>
 
         <div>
           <LikeSlide></LikeSlide>
@@ -39,23 +39,6 @@ const Main = (props) => {
         <div>
           <FollowSlide></FollowSlide>
         </div>
-
-        {/* <Grid>
-          <GridWrap>
-            {post_list.map((p, idx) => {
-              return (
-                <Grid key={p.postId}>
-                  <CardMain
-                    {...p}
-                    onClick={() => {
-                      history.push(`/detail/${p.postId}`);
-                    }}
-                  />
-                </Grid>
-              );
-            })}
-          </GridWrap>
-        </Grid> */}
       </Wrap>
     </React.Fragment>
   );
@@ -65,12 +48,12 @@ const Wrap = styled.div`
   width: 100%;
 `;
 
-// const GridWrap = styled.div`
-//   max-width: 1300px;
-//   margin: auto;
-//   display: grid;
-//   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-//   grid-gap: 40px;
-// `;
+const Banner = styled.div`
+  position: relative;
+`;
+const ImgContents = styled.div`
+  position: absolute;
+  z-index: 2;
+`;
 
 export default Main;

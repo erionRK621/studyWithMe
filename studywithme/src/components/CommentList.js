@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../redux/modules/comment";
-import { ImCross } from "react-icons/im";
+//icon
+import { ReactComponent as Trash } from "../icon/trash.svg";
+import { ReactComponent as CommentLikeOff } from "../icon/commentLikeOff.svg";
+import { ReactComponent as CommentLikeOn } from "../icon/commentLikeOn.svg";
 
 import Image from "../elements/Image";
 import Text from "../elements/Text";
@@ -37,7 +40,10 @@ const CommentList = (props) => {
             >
               <FlexGrid align="center">
                 <FlexGrid align="center" minWidth="120px">
-                  <Image size="36" src={`${process.env.REACT_APP_API_URI}/${c.avatarUrl}`} />
+                  <Image
+                    size="36"
+                    src={`${process.env.REACT_APP_API_URI}/${c.avatarUrl}`}
+                  />
                   <FlexGrid direction="column" margin="0px 5px">
                     <Text size="15px">{c.userNickname}</Text>
                     <Text size="10px" color="#cccccc">
@@ -53,13 +59,16 @@ const CommentList = (props) => {
                 </FlexGrid>
               </FlexGrid>
               {c.userId === userId ? (
-                <ImCross
-                  className="deleteButton"
+                <Trash
+                  className="iconButton"
+                  style={{ width: "20px", height: "20px" }}
                   onClick={() => {
                     deleteComment(c.commentId);
                   }}
                 />
-              ) : null}
+              ) : (
+                <CommentLikeOff style={{ width: "20px", height: "20px" }} />
+              )}
             </FlexGrid>
           );
         })}

@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch,useSelector } from "react-redux";
-import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Image from "../elements/Image";
+
+// icon
+import { ReactComponent as PostLikeOff } from "../icon/postLikeOff.svg";
+import { ReactComponent as PostLikeOn } from "../icon/postLikeOn.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -50,9 +53,9 @@ const Post = (props) => {
         </Grid>
       </Grid>
       {likeState? (
-        <AiFillLike className="like" size="30" onClick={like} />
+        <PostLikeOn className="like" size="30" onClick={like} />
       ) : (
-        <AiOutlineLike className="like" size="30" onClick={like} />
+        <PostLikeOff className="like" size="30" onClick={like} />
       )}
     </PostContainer>
   );

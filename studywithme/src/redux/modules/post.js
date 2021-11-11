@@ -32,11 +32,13 @@ const getFilerPost = createAction(GET_FILTER_POST, (post_list) => ({
 }));
 const setPost = createAction(
   SET_POST,
-  (post, isBookmarked, isLiked, isFollowing) => ({
+  (post, isBookmarked, isLiked, isFollowing, currentNick, currentAvatar) => ({
     post,
     isBookmarked,
     isLiked,
     isFollowing,
+    currentNick,
+    currentAvatar,
   })
 );
 const editPost = createAction(EDIT_POST, (post_id) => ({ post_id }));
@@ -115,8 +117,18 @@ const getDetailPostDB = (postId) => {
         const isLiked = res.data.isLiked;
         const isFollowing = res.data.isFollowing;
         const post = res.data.post;
-        console.log(res.data, "adsfbsdfjshdjkfhsdjgfjk");
-        dispatch(setPost(post, isBookmarked, isLiked, isFollowing));
+        const currentNick = res.data.currentNick;
+        const currentAvatar = res.data.currentAvatar;
+        dispatch(
+          setPost(
+            post,
+            isBookmarked,
+            isLiked,
+            isFollowing,
+            currentNick,
+            currentAvatar
+          )
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -358,6 +370,8 @@ export default handleActions(
           isBookmarked: action.payload.isBookmarked,
           isLiked: action.payload.isLiked,
           isFollowing: action.payload.isFollowing,
+          currentNick: action.payload.currentNick,
+          currentAvatar: action.payload.currentAvatar,
         };
       }),
     [EDIT_POST]: (state, action) =>
@@ -421,14 +435,26 @@ export default handleActions(
           isLiked: action.payload.isLiked,
         };
       }),
-    [FILTER_ADD_LIKE]: (state, action) => produce(state, (draft) => {
-      const idx = draft.filterList.findIndex((f) => f.postId === action.payload.postId);
-      draft.filterList[idx] = {...draft.filterList[idx],likeCnt: draft.filterList[idx].likeCnt+1}
-    }),
-    [FILTER_DELETE_LIKE]: (state, action) => produce(state, (draft) => {
-      const idx = draft.filterList.findIndex((f) => f.postId === action.payload.postId);
-      draft.filterList[idx] = {...draft.filterList[idx],likeCnt: draft.filterList[idx].likeCnt-1}
-    }),
+    [FILTER_ADD_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        const idx = draft.filterList.findIndex(
+          (f) => f.postId === action.payload.postId
+        );
+        draft.filterList[idx] = {
+          ...draft.filterList[idx],
+          likeCnt: draft.filterList[idx].likeCnt + 1,
+        };
+      }),
+    [FILTER_DELETE_LIKE]: (state, action) =>
+      produce(state, (draft) => {
+        const idx = draft.filterList.findIndex(
+          (f) => f.postId === action.payload.postId
+        );
+        draft.filterList[idx] = {
+          ...draft.filterList[idx],
+          likeCnt: draft.filterList[idx].likeCnt - 1,
+        };
+      }),
   },
   initialState
 );
