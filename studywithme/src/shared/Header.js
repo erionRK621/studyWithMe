@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configStore";
+import signUpImg from "../icon/signup.svg";
+import logoImg from "../icon/logo.png";
 
 // Redux Modules
 import { actionCreators as userActions } from "../redux/modules/user";
@@ -11,7 +13,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 // Components
 
-export const Header = () => {
+const Header = () => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user.user);
@@ -20,6 +22,11 @@ export const Header = () => {
   // const userId = useSelector((state) => state.user.user.userId);
   // console.log(user.userId);
   const [menuState, setMenuState] = useState(false);
+  const [menuColorStateMain, setMenuColorStateMain] = useState(true);
+  const [menuColorStateList, setMenuColorStateList] = useState(false);
+  const [menuColorStateMyPage, setMenuColorStateMyPage] = useState(false);
+
+  const onClickMenu = () => {};
 
   const onClickLogOut = () => {
     console.log("로그아웃 버튼 클릭");
@@ -39,14 +46,16 @@ export const Header = () => {
     return (
       <Navbar>
         <NavbarLogo>
-          <IMG />
+          <img src={logoImg} />
         </NavbarLogo>
 
         <NavbarMenu menuState={menuState}>
           <List
             onClick={() => {
               history.push("/");
+              onClickMenu();
             }}
+            // menuColorState={menuColorState}
           >
             메인
           </List>
@@ -101,7 +110,7 @@ export const Header = () => {
     return (
       <Navbar>
         <NavbarLogo>
-          <IMG />
+          <img src={logoImg} />
         </NavbarLogo>
 
         <NavbarMenu menuState={menuState}>
@@ -136,6 +145,7 @@ export const Header = () => {
                 history.push("/signup");
               }}
             >
+              <img src={signUpImg} />
               회원가입
             </List>
           </InfoList>
@@ -164,7 +174,6 @@ export const Header = () => {
 
 const Navbar = styled.div`
   display: flex;
-  justify-content: space-between; /*중심축 배치 (현재는 중심축이 수평축)*/
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
   background-color: white;
   padding: 8px 12px;
@@ -178,11 +187,22 @@ const Navbar = styled.div`
 
 const NavbarLogo = styled.div`
   font-size: 24px;
+  margin: 0 10px;
   color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const NavBtnWrap = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `;
 
 const NavbarMenu = styled.ul`
+  width: 50%;
   display: flex;
+  justify-content: flex-start;
   list-style: none;
   padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
   color: black;
@@ -195,12 +215,19 @@ const NavbarMenu = styled.ul`
 `;
 
 const List = styled.li`
-  padding: 8px 12px; /*마우스 클릭영역확보*/
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(props) =>
+    props.menuColorState === true ? "color: #ff8477" : "color: black;"}
 
   :hover {
-    background-color: red;
+    color: #ffc85c;
     border-radius: 10px;
   }
+
   @media screen and (max-width: 768px) {
     width: 100%;
     text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
@@ -208,16 +235,16 @@ const List = styled.li`
 `;
 
 const Write = styled.li`
-  /* padding: 8px 12px; 마우스 클릭영역확보 */
+  padding: 0px 12px;
   width: 84px;
   height: 40px;
-  background-color: #369c8a;
+  background-color: #ff8477;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 10px;
   :hover {
-    background-color: red;
+    color: #ffc85c;
     border-radius: 10px;
   }
   @media screen and (max-width: 768px) {
@@ -227,7 +254,9 @@ const Write = styled.li`
 `;
 
 const NavbarIcon = styled.ul`
+  width: 65%;
   display: flex;
+  justify-content: flex-end;
   list-style: none;
   padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
   color: black;
@@ -243,7 +272,7 @@ const InfoList = styled.div`
   padding: 0 12px;
 
   :hover {
-    background-color: red;
+    color: #ffc85c;
     border-radius: 10px;
   }
   @media screen and (max-width: 768px) {
@@ -259,7 +288,7 @@ const Hamberger = styled.a`
   right: 15px; /*우측에서 32px 거리둠*/
   font-size: 20px;
   color: black;
-
+  margin-top: 5px;
   @media screen and (max-width: 768px) {
     display: block;
   }
