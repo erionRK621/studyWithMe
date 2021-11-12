@@ -20,7 +20,7 @@ import PostDetail from "./pages/PostDetail";
 import PostList from "./pages/PostList";
 import Header from "./shared/Header";
 import KakaoLoginRedirection from "./pages/KakaoLoginRedirection";
-import Mypage from "./pages/Mypage";
+import MyPage from "./pages/MyPage";
 import UserEdit from "./pages/UserEdit";
 
 function App() {
@@ -62,7 +62,7 @@ function App() {
         <Route path="/list" exact component={PostList} />
         <Route path="/detail/:id" exact component={PostDetail} />
         <Route path="/edit/:id" exact component={PostWrite} />
-        <Route path="/mypage/:id" exact component={Mypage} />
+        <Route path="/mypage/:id" exact component={MyPage} />
         <Route path="/userEdit/:id" exact component={UserEdit} />
       </ConnectedRouter>
     </div>

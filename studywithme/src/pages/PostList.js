@@ -63,11 +63,9 @@ const PostList = (props) => {
 
   useEffect(() => {
     // category 값이 변할때마다 쿼리스트링 수정 및 api요청
-    let setQueryString = `${
-      interestVal ? "&categoryInterest=" + interestVal : ""
-    }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
-      studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-    }`;
+    let setQueryString = `${interestVal ? "&categoryInterest=" + interestVal : ""
+      }${spaceVal ? "&categorySpace=" + spaceVal : ""}${studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
+      }`;
     dispatch(postActions.getFilterPostDB(setQueryString));
   }, [interestVal, spaceVal, studyMateVal]);
 

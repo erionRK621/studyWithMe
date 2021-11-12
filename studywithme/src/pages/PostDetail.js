@@ -44,6 +44,7 @@ const PostDetail = (props) => {
   const isFollowing = post.isFollowing;
   const imageCover = process.env.REACT_APP_API_URI + "/" + post?.imageCover;
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
+  
   const onClickFollow = () => {
     dispatch(postActions.followUserMiddleware(postUserId));
   };

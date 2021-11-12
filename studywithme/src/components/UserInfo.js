@@ -66,7 +66,7 @@ const UserInfo = (props) => {
             </UserInfoEditButton> : null}
           </div>
           <BottomDiv>
-            <div style={{ fontSize: "14px" }}>게시물 {userInfo?.postCnt}개</div>
+            <div style={{ fontSize: "20px" }}>게시물 {userInfo?.postCnt}개</div>
             <Button onClick={followerModalClose}>
               팔로워 {followerList?.length}명
             </Button>
@@ -86,59 +86,8 @@ const UserInfo = (props) => {
               />
             )}
           </BottomDiv>
-
         </UserProfileWrap>
       </UserInfoWrap>
-
-
-
-
-      {/* <UserInfoWrap>
-        <SectionLeft>
-          <div
-            style={{
-              minWidth: "185px"
-            }}
-          >
-            <ProfilePic alt="" src={userPic} />
-          </div>
-        </SectionLeft>
-        <RightDiv>
-          <TopDiv>
-            <AiTwotoneSetting
-              cursor="pointer"
-              size="1.7em"
-              onClick={() => {
-                history.push("/userEdit/" + myPageUserId);
-              }}
-            ></AiTwotoneSetting>
-          </TopDiv>
-          <MiddleDiv>
-            <Nickname>{userInfo?.nickname}</Nickname>
-          </MiddleDiv>
-          <BottomDiv>
-            <div style={{ fontSize: "14px" }}>게시물 {userInfo?.postCnt}개</div>
-            <Button onClick={followerModalClose}>
-              팔로워 {followerList?.length}명
-            </Button>
-            {followerModalOpen && (
-              <FollowerModal
-                modalClose={followerModalClose}
-                followerList={followerList}
-              />
-            )}
-            <Button onClick={followModalClose}>
-              팔로우 {followingList?.length}명
-            </Button>
-            {followModalOpen && (
-              <FollowModal
-                modalClose={followModalClose}
-                followingList={followingList}
-              />
-            )}
-          </BottomDiv>
-        </RightDiv>
-      </UserInfoWrap> */}
     </React.Fragment>
   );
 };
@@ -201,8 +150,8 @@ overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
 font-weight: 300;
-font-size: 28px;
-line-height: 32px;
+font-size: 32px;
+line-height: 45px;
 margin: -5px 0 -6px;
 `;
 
@@ -214,56 +163,11 @@ border-radius: 4px;
 background: #369C8A;
 color: white;
 cursor: pointer;
+font-size: 16px;
 `;
 
-// const UserInfoWrap = styled.div`
-//   width: 100%;
-//   max-width: 1090px;
-//   height: 300px;
-//   display: flex;
-//   margin: auto;
-// `;
-// const SectionLeft = styled.div`
-//   width: 30%;
-//   height: 100%;
-//   display: flex;
-//   margin-right: 30px;
-//   justify-content: center;
-//   align-items: center;
-//   flex-shrink: 0;
-//   align-items: stretch;
-// `;
-
-// const ProfilePic = styled.img`
-// height: 100%;
-// width: 100%;
-// align-items: center;
-// align-self: center;
-// display: block;
-// flex: none;
-// justify-content: center;
-// `;
-
-// const RightDiv = styled.div`
-//   width: 70%;
-//   height: 100%;
-// `;
-// const TopDiv = styled.div`
-//   display: flex;
-//   height: 10%;
-//   flex-direction: row-reverse;
-// `;
-// const MiddleDiv = styled.div`
-//   display: flex;
-//   height: 40%;
-//   padding: 40px 40px 40px 60px;
-// `;
-// const Nickname = styled.div`
-//   font-size: 48px;
-// `;
-
 const Button = styled.div`
-  font-size: 14px;
+  font-size: 20px;
   cursor: pointer;
 `;
 

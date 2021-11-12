@@ -26,7 +26,7 @@ const Header = () => {
   const [menuColorStateList, setMenuColorStateList] = useState(false);
   const [menuColorStateMyPage, setMenuColorStateMyPage] = useState(false);
 
-  const onClickMenu = () => {};
+  const onClickMenu = () => { };
 
   const onClickLogOut = () => {
     console.log("로그아웃 버튼 클릭");
@@ -55,7 +55,7 @@ const Header = () => {
               history.push("/");
               onClickMenu();
             }}
-            // menuColorState={menuColorState}
+          // menuColorState={menuColorState}
           >
             메인
           </List>
