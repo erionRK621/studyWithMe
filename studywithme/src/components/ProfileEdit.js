@@ -75,32 +75,41 @@ export const ProfileEdit = () => {
   }, []);
   return (
     <React.Fragment>
-      <NowInfoDiv>
-        <Image style={{ width: "30%" }} size="100" src={userPic}></Image>
-        <NicknameWrap>
-          <UserNickname>{userInfo?.nickname}</UserNickname>
-          <UploadButton>
-            <div>프로필 사진 변경</div>
-            <Upload _onChange={handleFileChange} display="none" />
-          </UploadButton>
-        </NicknameWrap>
-      </NowInfoDiv>
-      <InputWrap>
-        <Label>닉네임변경</Label>
-        <Input
-          placeholder={nickname}
-          value={nickname}
-          _onChange={changeNickname}
-          width="200px"
-        />
-        <Button onClick={onClickNicknameCheck}>닉네임 중복확인</Button>
-      </InputWrap>
-      <SubmitWrap>
-        <Submit onClick={editProfile}>확인</Submit>
-      </SubmitWrap>
+      <Wrap>
+        <NowInfoDiv>
+          <Image style={{ width: "30%" }} size="100" src={userPic}></Image>
+          <NicknameWrap>
+            <UserNickname>{userInfo?.nickname}</UserNickname>
+            <UploadButton>
+              <div>프로필 사진 변경</div>
+              <Upload _onChange={handleFileChange} display="none" />
+            </UploadButton>
+          </NicknameWrap>
+        </NowInfoDiv>
+        <InputWrap>
+          <Label>닉네임변경</Label>
+          <Line>
+            <Input
+              placeholder={nickname}
+              value={nickname}
+              _onChange={changeNickname}
+              width="200px"
+            />
+            <Button onClick={onClickNicknameCheck}>닉네임 중복확인</Button>
+          </Line>
+        </InputWrap>
+        <SubmitWrap>
+          <Submit onClick={editProfile}>확인</Submit>
+        </SubmitWrap>
+      </Wrap>
     </React.Fragment>
   );
 };
+
+const Wrap = styled.div`
+  width: 100%;
+  margin: auto;
+`;
 
 const NowInfoDiv = styled.div`
   display: flex;
@@ -130,15 +139,20 @@ const ChangePic = styled.div``;
 const InputWrap = styled.div`
   margin: 50px 0 50px 150px;
   display: flex;
-  justify-content: start;
+  flex-direction: column;
   /* @media screen and (max-width: 768px) {
     flex-direction: column;
   } */
 `;
 const Label = styled.div`
-  margin: auto;
+  /* margin: auto; */
   min-width: 80px;
 `;
+const Line = styled.div`
+  display: flex;
+  justify-content: start;
+`;
+
 const Button = styled.button`
   min-width: 130px;
   height: 45px;
