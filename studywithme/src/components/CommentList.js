@@ -47,7 +47,7 @@ const CommentList = (props) => {
               margin="5px 0px"
             >
               <FlexGrid align="center">
-                <FlexGrid align="center" minWidth="120px">
+                <FlexGrid align="center" minWidth="130px">
                   <Image
                     size="36"
                     src={`${process.env.REACT_APP_API_URI}/${c.avatarUrl}`}
