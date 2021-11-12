@@ -79,8 +79,10 @@ export const ProfileEdit = () => {
         <Image style={{ width: "30%" }} size="100" src={userPic}></Image>
         <NicknameWrap>
           <UserNickname>{userInfo?.nickname}</UserNickname>
-          <Upload _onChange={handleFileChange}></Upload>
-          {/* <Button onClick={handleFileUpload}>프로필사진변경</Button> */}
+          <UploadButton>
+            <div>프로필 사진 변경</div>
+            <Upload _onChange={handleFileChange} display="none" />
+          </UploadButton>
         </NicknameWrap>
       </NowInfoDiv>
       <InputWrap>
@@ -89,11 +91,12 @@ export const ProfileEdit = () => {
           placeholder={nickname}
           value={nickname}
           _onChange={changeNickname}
+          width="200px"
         />
         <Button onClick={onClickNicknameCheck}>닉네임 중복확인</Button>
       </InputWrap>
       <SubmitWrap>
-        <Submit onClick={editProfile}>변경하기</Submit>
+        <Submit onClick={editProfile}>확인</Submit>
       </SubmitWrap>
     </React.Fragment>
   );
@@ -110,26 +113,57 @@ const NicknameWrap = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
+const UploadButton = styled.label`
+  color: #ffc85c;
+  &:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+`;
+
 const UserNickname = styled.div`
   margin-bottom: 10px;
 `;
 const ChangePic = styled.div``;
+
 const InputWrap = styled.div`
-  margin: 50px;
+  margin: 50px 0 50px 150px;
   display: flex;
+  justify-content: start;
+  /* @media screen and (max-width: 768px) {
+    flex-direction: column;
+  } */
 `;
 const Label = styled.div`
-  min-width: 80px;
   margin: auto;
+  min-width: 80px;
 `;
 const Button = styled.button`
-  min-width: 80px;
+  min-width: 130px;
+  height: 45px;
+  font-size: 16px;
+  background-color: #ffc85c;
+  border-radius: 10px;
+  width: 180px;
+  border: none;
+  padding: 8px 0px;
+  margin-left: 10px;
 `;
 const SubmitWrap = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: start;
+  margin-left: 223px;
 `;
 
 const Submit = styled.button`
+  min-width: 80px;
+  height: 45px;
+  font-size: 16px;
+  background-color: #ffc85c;
+  border-radius: 10px;
   width: 100px;
+  border: none;
+  padding: 8px 0px;
+  margin-left: 5px;
 `;
