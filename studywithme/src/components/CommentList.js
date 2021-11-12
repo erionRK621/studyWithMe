@@ -22,7 +22,15 @@ const CommentList = (props) => {
       dispatch(commentActions.deleteCommentMiddleware(postId, commentId));
     }
   };
-
+  const deleteLike = (postId, commentId) => {
+    dispatch(commentActions.deleteCommentLikeMiddleWare(postId, commentId));
+  };
+  const addLike = (postId, commentId) => {
+    dispatch(commentActions.addCommentLikeMiddleWare(postId, commentId));
+  };
+  const changePage = (number) => {
+    console.log(number);
+  }
   useEffect(() => {
     dispatch(commentActions.getCommentMiddleware(postId));
   }, []);
@@ -55,6 +63,7 @@ const CommentList = (props) => {
                   <Text>{c.textContent}</Text>
                   <FlexGrid>
                     <Button padding="0px">좋아요</Button>
+                    <Text>{c.commentLikeCnt}</Text>
                   </FlexGrid>
                 </FlexGrid>
               </FlexGrid>
@@ -66,12 +75,31 @@ const CommentList = (props) => {
                     deleteComment(c.commentId);
                   }}
                 />
+              ) : c.isCommentLiked ? (
+                <CommentLikeOn
+                  className="iconButton"
+                  style={{ width: "20px", height: "20px" }}
+                  onClick={() => {
+                    deleteLike(postId, c.commentId);
+                  }}
+                />
               ) : (
-                <CommentLikeOff style={{ width: "20px", height: "20px" }} />
+                <CommentLikeOff
+                  className="iconButton"
+                  style={{ width: "20px", height: "20px" }}
+                  onClick={() => {
+                    addLike(postId, c.commentId);
+                  }}
+                />
               )}
             </FlexGrid>
           );
         })}
+        <FlexGrid align = "center" margin="auto">
+          <Page className="textButton" onClick={()=>{changePage(1)}}>1</Page>
+          <Page className="textButton" onClick={()=>{changePage(2)}}>2</Page>
+          <Page className="textButton" onClick={()=>{changePage(3)}}>3</Page>
+        </FlexGrid>
       </FlexGrid>
     </React.Fragment>
   );
@@ -86,5 +114,8 @@ const FlexGrid = styled.div`
   ${(props) => (props.align ? `align-items:${props.align};` : null)};
   ${(props) => (props.justify ? `justify-content:${props.justify};` : null)};
   ${(props) => (props.padding ? `padding:${props.padding};` : null)};
+`;
+const Page = styled.p`
+  margin: 5px;
 `;
 export default CommentList;

@@ -1,4 +1,4 @@
-import React, { isValidElement, useState } from "react";
+import React, { isValidElement, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
@@ -9,10 +9,14 @@ import Input from "../elements/Input";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
+// icon
+import { ReactComponent as InputFile } from "../icon/inputFile.svg";
+
 import dotenv from "dotenv";
 dotenv.config();
 
 const PostWrite = (props) => {
+  const inputFile = useRef();
   if (!localStorage.getItem("user")) {
     window.alert("로그인을 먼저 해주세요");
     history.push("/login");
@@ -49,10 +53,6 @@ const PostWrite = (props) => {
     const file = e.target.files[0];
     setImage(file);
 
-    //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
-    // for (let entry of Object.entries(request)) {
-    //   formData.append(entry[0], entry[1]);
-    // }
     const reader = new FileReader();
 
     // 미리보기를 위해 file을 읽어온다
@@ -82,7 +82,7 @@ const PostWrite = (props) => {
     // for(var a of formData.entries()) {
     //   console.log(a);
     // }
-    if(spaceVal===""||studyMateVal===""||interestVal==="") {
+    if (spaceVal === "" || studyMateVal === "" || interestVal === "") {
       window.alert("카테고리를 지정해주세요");
       return;
     }
@@ -116,19 +116,24 @@ const PostWrite = (props) => {
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
-
   return (
     <>
-      <ImageCover src={preview} alt="" />
-      <Upload _onChange={selectFile} />
+      <ImageCover src={preview} alt="">
+        <UploadButton>
+          <InputFile
+            style={{ width: "60px", height: "60px" }}
+          />
+          <Upload _onChange={selectFile} display="none" />
+        </UploadButton>
+      </ImageCover>
       <FlexGrid direction="column" justify="space-evenly">
         <Input
           _onChange={titleChange}
           value={title}
-          borderBottom
           border="0px"
-          placeholder="제목을 입력해주세요"
+          placeholder="제목"
           size="20px"
+          margin="30px 0px 0px 0px"
         />
         <FlexGrid margin="20px 0px">
           <SelectBox category="space" _onChange={space} _value={spaceVal} />
@@ -167,5 +172,15 @@ const ImageCover = styled.div`
   background-color: #eeeeee;
   background-image: url(${(props) => props.src});
   background-size: cover;
+`;
+const UploadButton = styled.label`
+  position : absolute;
+  left: calc(50% - 30px);
+  top: calc(50% - 30px);
+  opacity: .5;
+  &:hover{
+    opacity:.8;
+    cursor: pointer;
+  }
 `;
 export default PostWrite;

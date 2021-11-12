@@ -23,3 +23,9 @@
   opacity: .5;
   cursor: pointer;
 }
+
+.textButton:hover {
+  text-decoration: underline;
+  opacity: .5;
+  cursor: pointer;
+}

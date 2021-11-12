@@ -96,12 +96,15 @@ const PostDetail = (props) => {
             </FlexGrid>
           ) : null}
         </FlexGrid>
-        <FlexGrid justify="space-between">
+        <FlexGrid justify="space-between" align="center">
           <FlexGrid align="center">
             <Image
+              size="80"
               src={`${process.env.REACT_APP_API_URI}/${post.User?.avatarUrl}`}
             />
-            <span>{post.User?.nickname}</span>
+            <span style={{ marginLeft: "10px", fontSize: "30px" }}>
+              {post.User?.nickname}
+            </span>
             <span
               style={{
                 marginLeft: "20px",
@@ -114,6 +117,7 @@ const PostDetail = (props) => {
           {userId !== postUserId ? (
             isFollowing ? (
               <Button
+                height="40px"
                 fontSize="16px"
                 bgColor="#FFC85C"
                 radius="30px"
@@ -126,6 +130,7 @@ const PostDetail = (props) => {
               </Button>
             ) : (
               <Button
+                height="40px"
                 fontSize="16px"
                 bgColor="#FFC85C"
                 radius="30px"

@@ -15,6 +15,7 @@ export default function Button(props) {
     bgColor,
     color,
     fontSize,
+    height,
   } = props;
 
   const styles = {
@@ -25,6 +26,7 @@ export default function Button(props) {
     bgColor: bgColor,
     color: color,
     fontSize:fontSize,
+    height:height
   };
 
   return (
@@ -57,6 +59,7 @@ const ElButton = styled.button`
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   ${(props) => (props.radius ? `border-radius: ${props.radius}` : null)};
   ${(props) => props.fontSize? `font-size:${props.fontSize}` : null};
+  ${(props) => props.height? `height:${props.height};`:null};
   &:hover {
     cursor: pointer;
   }

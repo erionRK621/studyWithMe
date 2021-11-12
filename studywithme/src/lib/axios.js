@@ -62,6 +62,12 @@ export const apis = {
   addLikeAxios: (postId) => instance.post(`api/posts/${postId}/like`),
   deleteLikeAxios: (postId) => instance.delete(`api/posts/${postId}/like`),
 
+  // 댓글 좋아요
+  addCommentLikeAxios: (postId, commentId) =>
+    instance.post(`api/posts/${postId}/comments/${commentId}/like`),
+  deleteCommentLikeAxios: (postId, commentId) =>
+    instance.delete(`api/posts/${postId}/comments/${commentId}/like`),
+
   //마이페이지 게시물 가져오기
   getMyPostAxios: (userId) =>
     instance.get(`/api/mypage/myposts/${userId}`, { userId }),
