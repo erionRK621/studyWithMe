@@ -8,12 +8,18 @@ import { history } from "../redux/configStore";
 import Text from "../elements/Text";
 import CardPost from "../components/CardPost";
 import SelectBox from "../components/SelectBox";
+import InfinityScroll from "../shared/InfinityScroll";
 
 //icon
 import { ReactComponent as Cross } from "../icon/cross.svg";
 
 const PostList = (props) => {
   const dispatch = useDispatch();
+
+  // 무한스크롤
+  const { isLoading, totalPage, currentPage } = useSelector(
+    (state) => state.post
+  );
 
   // url에서 쿼리스트링 가져오기
   const getQueryString = props.location.search;
@@ -26,7 +32,7 @@ const PostList = (props) => {
     ? decodeURI(getQueryString.split("&categorySpace=")[1].split("&")[0])
     : null;
   const queryStudyMate = getQueryString.includes("&categoryStudyMate=")
-    ? decodeURI(getQueryString.split("&categoryStudyMate=")[1])
+    ? decodeURI(getQueryString.split("&categoryStudyMate=")[1].split("&")[0])
     : null;
 
   // 카테고리 초기화
@@ -37,7 +43,6 @@ const PostList = (props) => {
   const [studyMateVal, setStudyMateVal] = useState(
     queryStudyMate ? queryStudyMate : ""
   );
-
   const post_list = useSelector((state) => state.post.filterList);
   const _selectArray = [
     { value: interestVal, func: setInterestVal },
@@ -67,8 +72,8 @@ const PostList = (props) => {
       interestVal ? "&categoryInterest=" + interestVal : ""
     }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
       studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-    }`;
-    dispatch(postActions.getFilterPostDB(setQueryString));
+    }&page=1`;
+    dispatch(postActions.getFilterPostDB(setQueryString,0));
   }, [interestVal, spaceVal, studyMateVal]);
 
   return (
@@ -114,18 +119,38 @@ const PostList = (props) => {
         ) : null}
       </SelectedGrid>
       <GridWrap>
-        {post_list.map((p, idx) => {
-          return (
-            <ItemGrid key={p.postId}>
-              <CardPost
-                {...p}
-                onClick={() => {
-                  history.push(`/detail/${p.postId}`);
-                }}
-              />
-            </ItemGrid>
-          );
-        })}
+        <InfinityScroll
+          totalPage={totalPage}
+          loading={isLoading}
+          currentPage={currentPage}
+          interestVal={interestVal}
+          spaceVal={spaceVal}
+          studyMateVal={studyMateVal}
+          callNext={(page,interestVal,spaceVal,studyMateVal) => {
+            console.log(interestVal);
+            let setQueryString = `${
+              interestVal ? "&categoryInterest=" + interestVal : ""
+            }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
+              studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
+            }&page=${page+1}`;
+            dispatch(
+              postActions.getFilterPostDB(setQueryString, page)
+            );
+          }}
+        >
+          {post_list.map((p, idx) => {
+            return (
+              <ItemGrid key={p.postId}>
+                <CardPost
+                  {...p}
+                  onClick={() => {
+                    history.push(`/detail/${p.postId}`);
+                  }}
+                />
+              </ItemGrid>
+            );
+          })}
+        </InfinityScroll>
       </GridWrap>
     </Wrap>
   );
@@ -161,7 +186,7 @@ const SelectGrid = styled.div`
 `;
 
 const SelectedGrid = styled.div`
-  margin-top:17px;
+  margin-top: 17px;
   /* padding-top: 10px; */
   display: flex;
   align-items: center;
@@ -187,7 +212,7 @@ const ButtonText = styled.p`
   word-break: break-all;
   overflow: hidden;
   &:hover {
-    opacity:50%;
+    opacity: 50%;
     text-decoration: underline;
     cursor: pointer;
   }
