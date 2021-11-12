@@ -3,6 +3,9 @@ import { produce } from "immer";
 import { apis } from "../../lib/axios";
 
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
+// 무한스크롤 로딩
+const LODING = "LODING";
+
 // 게시물
 const GET_POST = "GET_POST";
 const GET_FILTER_POST = "GET_FILTER_POST";
@@ -25,11 +28,20 @@ const UNFOLLOW_USER = "UNFOLLOW_USER";
 //액션생성함수
 //타입이 GET_POST인 오브젝트를 반환해주는 액션으로
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
+
+// 무한스크롤 로딩
+const loading = createAction(LODING, (isLoading) => ({ isLoading }));
+
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const getFilerPost = createAction(GET_FILTER_POST, (post_list) => ({
-  post_list,
-}));
+const getFilterPost = createAction(
+  GET_FILTER_POST,
+  (post_list, totalPage, currentPage) => ({
+    post_list,
+    totalPage,
+    currentPage,
+  })
+);
 const setPost = createAction(
   SET_POST,
   (post, isBookmarked, isLiked, isFollowing, currentNick, currentAvatar) => ({
@@ -92,7 +104,8 @@ const initialState = {
   list: [], // 전체 게시물 리스트
   filterList: [],
   detail: [], // 현재 상세 페이지의 게시물 정보
-  paging: { start: null, next: null, size: 3 },
+  totalPage: 1,
+  currentPage: 0,
   isLoading: false,
   bookmarkList: [], // 현재 로그인된 유저가 북마크한 게시물 리스트
 };
@@ -143,14 +156,23 @@ const getDetailPostDB = (postId) => {
   };
 };
 
-const getFilterPostDB = (queryString) => {
+const getFilterPostDB = (queryString, currentPage) => {
   return function (dispatch, getState, { history }) {
-    console.log(queryString);
+    const totalPage = getState().post.totalPage;
+    if (currentPage >= totalPage) {
+      return;
+    }
+    if (!currentPage) {
+      currentPage = 0;
+    }
+    dispatch(loading(true));
+    currentPage++;
     apis
       .getFilterPost(queryString)
       .then((res) => {
         const post_list = res.data.posts;
-        dispatch(getFilerPost(post_list));
+        const totalPage = res.data.totalPage;
+        dispatch(getFilterPost(post_list, totalPage, currentPage));
         history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
       .catch((err) => {
@@ -189,10 +211,6 @@ const deletePostMiddleware = (postId) => {
 // 게시물 수정
 const editPostMiddleware = (postId, formData) => {
   return function (dispatch, getState, { history }) {
-    console.log(postId);
-    for (let a of formData.entries()) {
-      console.log(a);
-    }
     apis
       .editPostAxios(postId, formData)
       .then((res) => {
@@ -305,8 +323,8 @@ const filterAddLikeMiddleware = (postId) => {
         dispatch(filterAddLike(postId, isLiked));
       })
       .catch((err) => {
-        if(err.response.status===401) {
-          window.alert("로그인 후 사용 가능합니다.")
+        if (err.response.status === 401) {
+          window.alert("로그인 후 사용 가능합니다.");
         }
       });
   };
@@ -372,7 +390,14 @@ export default handleActions(
       }),
     [GET_FILTER_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.filterList = action.payload.post_list;
+        if(action.payload.currentPage===1) {
+          draft.filterList = action.payload.post_list;
+        } else {
+          draft.filterList.push(...action.payload.post_list);
+        }
+        draft.totalPage = action.payload.totalPage;
+        draft.currentPage = action.payload.currentPage;
+        draft.isLoading = false;
       }),
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -467,6 +492,10 @@ export default handleActions(
           likeCnt: draft.filterList[idx].likeCnt - 1,
           isLiked: action.payload.isLiked,
         };
+      }),
+    [LODING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isLoading = action.payload.isLoading;
       }),
   },
   initialState
