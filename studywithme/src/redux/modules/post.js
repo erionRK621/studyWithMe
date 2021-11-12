@@ -159,6 +159,7 @@ const getDetailPostDB = (postId) => {
 const getFilterPostDB = (queryString, currentPage) => {
   return function (dispatch, getState, { history }) {
     const totalPage = getState().post.totalPage;
+    console.log(queryString);
     if (currentPage >= totalPage) {
       return;
     }
@@ -172,6 +173,8 @@ const getFilterPostDB = (queryString, currentPage) => {
       .then((res) => {
         const post_list = res.data.posts;
         const totalPage = res.data.totalPage;
+        console.log("1111111 ::::: ",res.data)
+        console.log("2222222222 ::::::: ",totalPage);
         dispatch(getFilterPost(post_list, totalPage, currentPage));
         history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
