@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configStore";
 import signUpImg from "../icon/signup.svg";
 import logoImg from "../icon/logo.png";
+import logologo from "../icon/logologo.png";
 
 // Redux Modules
 import { actionCreators as userActions } from "../redux/modules/user";
@@ -62,6 +63,9 @@ const Header = (props) => {
   if (user) {
     return (
       <Navbar>
+        <NavbarLogo>
+          <img src={logologo} />
+        </NavbarLogo>
         <NavbarLogo>
           <img src={logoImg} />
         </NavbarLogo>
@@ -209,7 +213,7 @@ const Navbar = styled.div`
 
 const NavbarLogo = styled.div`
   font-size: 24px;
-  margin: 0 10px;
+  margin: 0 5px;
   color: black;
   display: flex;
   align-items: center;
