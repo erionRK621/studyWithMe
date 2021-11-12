@@ -117,7 +117,6 @@ const getPostDB = () => {
     apis
       .getPost()
       .then((res) => {
-        console.log(res.data);
         dispatch(getPost(res.data));
       })
       .catch((err) => {
@@ -189,7 +188,6 @@ const addPostDB = (formData) => {
     apis
       .addPost(formData)
       .then((res) => {
-        console.log(res.data);
         history.push("/");
       })
       .catch((err) => {
@@ -217,7 +215,6 @@ const editPostMiddleware = (postId, formData) => {
     apis
       .editPostAxios(postId, formData)
       .then((res) => {
-        console.log(res.data);
         history.push("/");
       })
       .catch((err) => {
@@ -228,11 +225,9 @@ const editPostMiddleware = (postId, formData) => {
 
 const loadBookmarkListMiddleware = () => {
   return function (dispatch, getState, { history }) {
-    console.log("loadBookmarkListMiddleware 실행");
     apis
       .loadBookmarkListAxios()
       .then((response) => {
-        // console.log("bookmarkedList", response.data.bookmarkedPosts);
         const bookmarkList = response.data.bookmarkedPosts;
         dispatch(loadBookmarkList(bookmarkList));
       })
@@ -244,14 +239,11 @@ const loadBookmarkListMiddleware = () => {
 
 const addBookmarkMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("addBookmarkMiddleware 실행");
     const postDetail = getState().post.detail;
-    console.log("postDetail", postDetail);
     apis
       .addBookmarkAxios(postId)
       .then((response) => {
         const isBookmarked = response.data.isBookmarked;
-        console.log("isBookmarked", isBookmarked);
         dispatch(addBookmark(postDetail, isBookmarked));
         // window.alert("북마크 추가 완료");
       })
@@ -263,14 +255,11 @@ const addBookmarkMiddleware = (postId) => {
 
 const deleteBookmarkMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("deleteBookmarkMiddleware 실행");
     const postDetail = getState().post.detail;
-    console.log("postDetail", postDetail);
     apis
       .deleteBookmarkAxios(postId)
       .then((response) => {
         const isBookmarked = response.data.isBookmarked;
-        console.log("isBookmarked", isBookmarked);
         dispatch(deleteBookmark(postDetail, isBookmarked));
         // window.alert("북마크 취소 완료");
       })
@@ -282,14 +271,11 @@ const deleteBookmarkMiddleware = (postId) => {
 
 const addLikeMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("addLikeMiddleware 실행");
     const postDetail = getState().post.detail;
     apis
       .addLikeAxios(postId)
       .then((response) => {
-        console.log(response);
         const isLiked = response.data.isLiked;
-        console.log("isLiked", isLiked);
         dispatch(addLike(postDetail, isLiked));
       })
       .catch((error) => {
@@ -300,14 +286,11 @@ const addLikeMiddleware = (postId) => {
 
 const deleteLikeMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("deleteLikeMiddleware 실행");
     const postDetail = getState().post.detail;
     apis
       .deleteLikeAxios(postId)
       .then((response) => {
-        console.log(response);
         const isLiked = response.data.isLiked;
-        console.log("isLiked", isLiked);
         dispatch(deleteLike(postDetail, isLiked));
       })
       .catch((error) => {
@@ -349,14 +332,11 @@ const filterDeleteLikeMiddleware = (postId) => {
 
 const followUserMiddleware = (userId) => {
   return function (dispatch, getState, { history }) {
-    console.log("followUserMiddleware 실행");
-    console.log("userId", userId);
     const postDetail = getState().post.detail;
     apis
       .followUserAxios(userId)
       .then((response) => {
         const isFollowing = response.data.isUser;
-        console.log("isFollowing", isFollowing, typeof isFollowing);
         dispatch(followUser(postDetail, isFollowing));
       })
       .catch((error) => {
@@ -367,14 +347,11 @@ const followUserMiddleware = (userId) => {
 
 const unfollowUserMiddleware = (userId) => {
   return function (dispatch, getState, { history }) {
-    console.log("unfollowUserMiddleware 실행");
-    console.log("userId", userId);
     const postDetail = getState().post.detail;
     apis
       .unfollowUserAxios(userId)
       .then((response) => {
         const isFollowing = response.data.isUser;
-        console.log("isFollowing", isFollowing, typeof isFollowing);
         dispatch(unfollowUser(postDetail, isFollowing));
       })
       .catch((error) => {
@@ -423,14 +400,10 @@ export default handleActions(
       }),
     [LOAD_BOOKMARK_LIST]: (state, action) =>
       produce(state, (draft) => {
-        console.log("LOAD_BOOKMARK_LIST 리듀서 실행");
         draft.bookmarkList = action.payload.bookmarkList;
       }),
     [FOLLOW_USER]: (state, action) =>
       produce(state, (draft) => {
-        console.log("FOLLOW_USER 리듀서 실행");
-        console.log("action.payload.postDetail", action.payload.postDetail);
-        console.log("action.payload.isFollowing", action.payload.isFollowing);
         draft.detail = {
           ...action.payload.postDetail,
           isFollowing: action.payload.isFollowing,
@@ -438,9 +411,6 @@ export default handleActions(
       }),
     [UNFOLLOW_USER]: (state, action) =>
       produce(state, (draft) => {
-        console.log("UNFOLLOW_USER 리듀서 실행");
-        console.log("action.payload.postDetail", action.payload.postDetail);
-        console.log("action.payload.isFollowing", action.payload.isFollowing);
         draft.detail = {
           ...action.payload.postDetail,
           isFollowing: action.payload.isFollowing,

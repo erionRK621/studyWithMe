@@ -127,7 +127,6 @@ const PostList = (props) => {
           spaceVal={spaceVal}
           studyMateVal={studyMateVal}
           callNext={(page,interestVal,spaceVal,studyMateVal) => {
-            console.log(interestVal);
             let setQueryString = `${
               interestVal ? "&categoryInterest=" + interestVal : ""
             }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
