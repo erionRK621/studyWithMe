@@ -77,7 +77,7 @@ const Header = (props) => {
               history.push("/");
               changeMainColor();
             }}
-            // menuColorState={menuColorState}
+          // menuColorState={menuColorState}
           >
             메인
           </List>

@@ -3,11 +3,16 @@ import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/mypage";
 
+import { ReactComponent as MyPostsTabOn } from "../icon/MyPostsTabOn.svg";
+import { ReactComponent as MyPostsTabOff } from "../icon/MyPostsTabOff.svg";
+import { ReactComponent as MyBookmarksTabOn } from "../icon/MyBookmarksTabOn.svg";
+import { ReactComponent as MyBookmarksTabOff } from "../icon/MyBookmarksTabOff.svg";
+
 import MyPosts from "../components/MyPosts";
 import BookMarks from "../components/BookMarks";
 import UserInfo from "../components/UserInfo";
 
-const Mypage = (props) => {
+const MyPage = (props) => {
   // 현재 로그인 된 사용자 아이디
   const logInUserId = useSelector((state) => state.user.user)?.userId.toString();
   // 현재 조회 중인 마이페이지의 사용자 아이디
@@ -16,18 +21,17 @@ const Mypage = (props) => {
 
   // console.log("logInUserId", logInUserId, typeof (logInUserId));
   // console.log("myPageUserId", myPageUserId, typeof (myPageUserId));
-  console.log("isMe", isMe);
+  // console.log("isMe", isMe);
 
   const [myPostsSelected, setMyPostsSelected] = useState(true);
+  console.log("myPostsSelected", myPostsSelected);
 
-  const showMyPosts = () => {
+  const selectMyPosts = () => {
     setMyPostsSelected(true);
-    console.log("게시물 탭 실행");
   };
 
-  const showMyBookMarks = () => {
+  const selectMyBookMarks = () => {
     setMyPostsSelected(false);
-    console.log("북마크 탭실행");
   };
 
   return (
@@ -35,11 +39,67 @@ const Mypage = (props) => {
       <HeaderWrap>
         <UserInfo myPageUserId={myPageUserId} isMe={isMe}></UserInfo>
       </HeaderWrap>
-      <BtnWrap>
-        <Mypost onClick={showMyPosts}>게시물</Mypost>
-        {isMe ? <MyBookMark onClick={showMyBookMarks}>북마크</MyBookMark> : null}
-      </BtnWrap>
-      {myPostsSelected === true ? <MyPosts myPageUserId={myPageUserId} /> : <BookMarks myPageUserId={myPageUserId} />}
+
+      {/* 탭 선택 섹션 */}
+      {myPostsSelected === true ?
+        // MyPostsTab 선택한 경우
+        // myPostsSelected = true
+        <BtnWrap>
+          <TabWrap>
+            <MyPostsTab
+              myPostsSelected={myPostsSelected}
+            >
+              <MyPostsTabOn />
+              게시물 ON
+            </MyPostsTab>
+          </TabWrap>
+          <TabWrap>
+            {isMe ?
+              <MyBookmarksTab
+                onClick={selectMyBookMarks}
+                myPostsSelected={myPostsSelected}
+              >
+                <MyBookmarksTabOff />
+                북마크 OFF
+              </MyBookmarksTab>
+              :
+              null
+            }
+          </TabWrap>
+        </BtnWrap>
+        :
+        // MyBookmarksTab 선택한 경우
+        // myPostsSelected = false
+        <BtnWrap>
+          <TabWrap>
+            <MyPostsTab
+              onClick={selectMyPosts}
+              myPostsSelected={myPostsSelected}
+            >
+              <MyPostsTabOff />
+              게시물 OFF
+            </MyPostsTab>
+          </TabWrap>
+          <TabWrap>
+            {isMe ?
+              <MyBookmarksTab
+                myPostsSelected={myPostsSelected}
+              >
+                <MyBookmarksTabOn />
+                북마크 ON
+              </MyBookmarksTab>
+              :
+              null
+            }
+          </TabWrap>
+        </BtnWrap>
+      }
+      {/* 포스트 카드 섹션 */}
+      {myPostsSelected === true ?
+        <MyPosts myPageUserId={myPageUserId} myPostsSelected={myPostsSelected} />
+        :
+        <BookMarks myPageUserId={myPageUserId} myPostsSelected={myPostsSelected} />
+      }
     </React.Fragment>
   );
 };
@@ -50,32 +110,62 @@ width: calc(100%-40px);
 margin-bottom: 0;
 flex-grow: 1;
 margin: 0 auto 30px;
-max-width: 935px;
+max-width: 1090px;
 align-items: stretch;
 display: flex;
 flex-direction: column;
 flex-shrink: 0;
 `
-
-
 const BtnWrap = styled.div`
+  border-top: 1px solid rgba(var(--b38,219,219,219),1);
   width: 100%;
+  max-width: 1090px;
   display: flex;
+  justify-content: center;
   text-align: center;
-  margin: 20px;
-`;
-const Mypost = styled.div`
-  width: 50%;
-  ::active {
-    border-bottom: gray;
-  }
+  margin: auto;
 `;
 
-const MyBookMark = styled.div`
-  width: 50%;
-`;
-const PostWrap = styled.div`
+const TabWrap = styled.div`
   width: 100%;
+  margin: 10px auto;
+  display: flex;
 `;
 
-export default Mypage;
+const MyPostsTab = styled.div`
+cursor: pointer;
+display: flex;
+align-items: center;
+margin: auto;
+font-size: 20px;
+color: 
+${(myPostsSelected) => {
+    console.log("myPostsSelected", myPostsSelected);
+    return (
+      myPostsSelected === true ?
+        `#ffc85c;` : `#9e9d9d;`
+    )
+  }};
+`;
+
+const MyBookmarksTab = styled.div`
+cursor: pointer;
+margin: 10px auto;
+display: flex;
+align-items: center;
+font-size: 20px;
+color: 
+${(myPostsSelected) => {
+    console.log("myPostsSelected", myPostsSelected);
+    return (
+      myPostsSelected === true ?
+        `#9e9d9d;` : `#ffc85c;`
+    )
+  }};
+`;
+
+const PostWrap = styled.div`
+width: 100 %;
+`;
+
+export default MyPage;
