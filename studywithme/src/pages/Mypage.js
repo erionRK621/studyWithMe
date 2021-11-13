@@ -140,9 +140,9 @@ margin: auto;
 font-size: 20px;
 color: 
 ${(myPostsSelected) => {
-    console.log("myPostsSelected", myPostsSelected);
+    console.log("myPostsSelected ::::: ", myPostsSelected);
     return (
-      myPostsSelected === true ?
+      myPostsSelected?
         `#ffc85c;` : `#9e9d9d;`
     )
   }};
@@ -156,16 +156,16 @@ align-items: center;
 font-size: 20px;
 color: 
 ${(myPostsSelected) => {
-    console.log("myPostsSelected", myPostsSelected);
+    console.log("myPostsSelected ::::: ", myPostsSelected);
     return (
-      myPostsSelected === true ?
+      myPostsSelected?
         `#9e9d9d;` : `#ffc85c;`
     )
   }};
 `;
 
 const PostWrap = styled.div`
-width: 100 %;
+width: 100%;
 `;
 
 export default MyPage;
