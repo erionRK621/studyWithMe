@@ -27,8 +27,8 @@ const Input = (props) => {
     border: border,
     borderBottom: borderBottom,
     size: size,
-    bgColor:bgColor,
-    margin:margin,
+    bgColor: bgColor,
+    margin: margin,
   };
   if (multiLine) {
     return (
@@ -47,7 +47,7 @@ const Input = (props) => {
 
   return (
     <React.Fragment>
-      <Grid>
+      <Grid width="200px">
         {label && <Text margin="0px">{label}</Text>}
         {/* is_Submit이 있으면 value 컨트롤하기, 없으면 value 컨트롤하지 않기 */}
         {is_Submit ? (
@@ -93,21 +93,23 @@ const ElTextarea = styled.textarea`
   width: ${(props) => (props.width ? props.width : "100%")};
   padding: 12px 4px;
   box-sizing: border-box;
-  ${(props)=>(props.bgColor? `background-color:${props.bgColor};`: null)};
+  ${(props) => (props.bgColor ? `background-color:${props.bgColor};` : null)};
 `;
 
 const ElInput = styled.input`
-  border: ${(props) => (props.border ? props.border : "1px solid #212121")};
+  border: ${(props) => (props.border ? props.border : "none")};
   ${(props) => (props.borderBottom ? `border-bottom:1px solid;` : null)};
   width: ${(props) => (props.width ? props.width : "100%")};
   padding: 12px 4px;
   box-sizing: border-box;
+  background-color: rgba(244, 244, 244, 1);
+  border-radius: 10px;
   &:focus {
     outline: none;
   }
   ${(props) => (props.size ? `font-size:${props.size};` : null)};
-  ${(props)=>(props.bgColor? `background-color:${props.bgColor};`: null)};
-  ${(props) => props.margin? `margin:${props.margin}` : null};
+  ${(props) => (props.bgColor ? `background-color:${props.bgColor};` : null)};
+  ${(props) => (props.margin ? `margin:${props.margin}` : null)};
 `;
 
 export default Input;

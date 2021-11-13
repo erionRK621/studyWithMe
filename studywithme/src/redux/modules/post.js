@@ -3,6 +3,9 @@ import { produce } from "immer";
 import { apis } from "../../lib/axios";
 
 // 액션타입생성(리듀서 작성시 재사용되기 때문에 액션타입을 지정하는것임)
+// 무한스크롤 로딩
+const LODING = "LODING";
+
 // 게시물
 const GET_POST = "GET_POST";
 const GET_FILTER_POST = "GET_FILTER_POST";
@@ -25,11 +28,20 @@ const UNFOLLOW_USER = "UNFOLLOW_USER";
 //액션생성함수
 //타입이 GET_POST인 오브젝트를 반환해주는 액션으로
 //const 무엇 = cratAction(타입, (어떤파라미터) => ({변경될파라미터}));
+
+// 무한스크롤 로딩
+const loading = createAction(LODING, (isLoading) => ({ isLoading }));
+
 // 게시물
 const getPost = createAction(GET_POST, (post_list) => ({ post_list }));
-const getFilerPost = createAction(GET_FILTER_POST, (post_list) => ({
-  post_list,
-}));
+const getFilterPost = createAction(
+  GET_FILTER_POST,
+  (post_list, totalPage, currentPage) => ({
+    post_list,
+    totalPage,
+    currentPage,
+  })
+);
 const setPost = createAction(
   SET_POST,
   (post, isBookmarked, isLiked, isFollowing, currentNick, currentAvatar) => ({
@@ -92,7 +104,8 @@ const initialState = {
   list: [], // 전체 게시물 리스트
   filterList: [],
   detail: [], // 현재 상세 페이지의 게시물 정보
-  paging: { start: null, next: null, size: 3 },
+  totalPage: 1,
+  currentPage: 0,
   isLoading: false,
   bookmarkList: [], // 현재 로그인된 유저가 북마크한 게시물 리스트
 };
@@ -104,7 +117,6 @@ const getPostDB = () => {
     apis
       .getPost()
       .then((res) => {
-        console.log(res.data);
         dispatch(getPost(res.data));
       })
       .catch((err) => {
@@ -143,14 +155,26 @@ const getDetailPostDB = (postId) => {
   };
 };
 
-const getFilterPostDB = (queryString) => {
+const getFilterPostDB = (queryString, currentPage) => {
   return function (dispatch, getState, { history }) {
+    const totalPage = getState().post.totalPage;
     console.log(queryString);
+    if (currentPage >= totalPage) {
+      return;
+    }
+    if (!currentPage) {
+      currentPage = 0;
+    }
+    dispatch(loading(true));
+    currentPage++;
     apis
       .getFilterPost(queryString)
       .then((res) => {
         const post_list = res.data.posts;
-        dispatch(getFilerPost(post_list));
+        const totalPage = res.data.totalPage;
+        console.log("1111111 ::::: ",res.data)
+        console.log("2222222222 ::::::: ",totalPage);
+        dispatch(getFilterPost(post_list, totalPage, currentPage));
         history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
       .catch((err) => {
@@ -164,7 +188,6 @@ const addPostDB = (formData) => {
     apis
       .addPost(formData)
       .then((res) => {
-        console.log(res.data);
         history.push("/");
       })
       .catch((err) => {
@@ -189,14 +212,9 @@ const deletePostMiddleware = (postId) => {
 // 게시물 수정
 const editPostMiddleware = (postId, formData) => {
   return function (dispatch, getState, { history }) {
-    console.log(postId);
-    for (let a of formData.entries()) {
-      console.log(a);
-    }
     apis
       .editPostAxios(postId, formData)
       .then((res) => {
-        console.log(res.data);
         history.push("/");
       })
       .catch((err) => {
@@ -207,11 +225,9 @@ const editPostMiddleware = (postId, formData) => {
 
 const loadBookmarkListMiddleware = () => {
   return function (dispatch, getState, { history }) {
-    console.log("loadBookmarkListMiddleware 실행");
     apis
       .loadBookmarkListAxios()
       .then((response) => {
-        // console.log("bookmarkedList", response.data.bookmarkedPosts);
         const bookmarkList = response.data.bookmarkedPosts;
         dispatch(loadBookmarkList(bookmarkList));
       })
@@ -223,14 +239,11 @@ const loadBookmarkListMiddleware = () => {
 
 const addBookmarkMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("addBookmarkMiddleware 실행");
     const postDetail = getState().post.detail;
-    console.log("postDetail", postDetail);
     apis
       .addBookmarkAxios(postId)
       .then((response) => {
         const isBookmarked = response.data.isBookmarked;
-        console.log("isBookmarked", isBookmarked);
         dispatch(addBookmark(postDetail, isBookmarked));
         // window.alert("북마크 추가 완료");
       })
@@ -242,14 +255,11 @@ const addBookmarkMiddleware = (postId) => {
 
 const deleteBookmarkMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("deleteBookmarkMiddleware 실행");
     const postDetail = getState().post.detail;
-    console.log("postDetail", postDetail);
     apis
       .deleteBookmarkAxios(postId)
       .then((response) => {
         const isBookmarked = response.data.isBookmarked;
-        console.log("isBookmarked", isBookmarked);
         dispatch(deleteBookmark(postDetail, isBookmarked));
         // window.alert("북마크 취소 완료");
       })
@@ -261,14 +271,11 @@ const deleteBookmarkMiddleware = (postId) => {
 
 const addLikeMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("addLikeMiddleware 실행");
     const postDetail = getState().post.detail;
     apis
       .addLikeAxios(postId)
       .then((response) => {
-        console.log(response);
         const isLiked = response.data.isLiked;
-        console.log("isLiked", isLiked);
         dispatch(addLike(postDetail, isLiked));
       })
       .catch((error) => {
@@ -279,14 +286,11 @@ const addLikeMiddleware = (postId) => {
 
 const deleteLikeMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
-    console.log("deleteLikeMiddleware 실행");
     const postDetail = getState().post.detail;
     apis
       .deleteLikeAxios(postId)
       .then((response) => {
-        console.log(response);
         const isLiked = response.data.isLiked;
-        console.log("isLiked", isLiked);
         dispatch(deleteLike(postDetail, isLiked));
       })
       .catch((error) => {
@@ -305,8 +309,8 @@ const filterAddLikeMiddleware = (postId) => {
         dispatch(filterAddLike(postId, isLiked));
       })
       .catch((err) => {
-        if(err.response.status===401) {
-          window.alert("로그인 후 사용 가능합니다.")
+        if (err.response.status === 401) {
+          window.alert("로그인 후 사용 가능합니다.");
         }
       });
   };
@@ -328,14 +332,11 @@ const filterDeleteLikeMiddleware = (postId) => {
 
 const followUserMiddleware = (userId) => {
   return function (dispatch, getState, { history }) {
-    console.log("followUserMiddleware 실행");
-    console.log("userId", userId);
     const postDetail = getState().post.detail;
     apis
       .followUserAxios(userId)
       .then((response) => {
         const isFollowing = response.data.isUser;
-        console.log("isFollowing", isFollowing, typeof isFollowing);
         dispatch(followUser(postDetail, isFollowing));
       })
       .catch((error) => {
@@ -346,14 +347,11 @@ const followUserMiddleware = (userId) => {
 
 const unfollowUserMiddleware = (userId) => {
   return function (dispatch, getState, { history }) {
-    console.log("unfollowUserMiddleware 실행");
-    console.log("userId", userId);
     const postDetail = getState().post.detail;
     apis
       .unfollowUserAxios(userId)
       .then((response) => {
         const isFollowing = response.data.isUser;
-        console.log("isFollowing", isFollowing, typeof isFollowing);
         dispatch(unfollowUser(postDetail, isFollowing));
       })
       .catch((error) => {
@@ -372,7 +370,14 @@ export default handleActions(
       }),
     [GET_FILTER_POST]: (state, action) =>
       produce(state, (draft) => {
-        draft.filterList = action.payload.post_list;
+        if(action.payload.currentPage===1) {
+          draft.filterList = action.payload.post_list;
+        } else {
+          draft.filterList.push(...action.payload.post_list);
+        }
+        draft.totalPage = action.payload.totalPage;
+        draft.currentPage = action.payload.currentPage;
+        draft.isLoading = false;
       }),
     [SET_POST]: (state, action) =>
       produce(state, (draft) => {
@@ -395,14 +400,10 @@ export default handleActions(
       }),
     [LOAD_BOOKMARK_LIST]: (state, action) =>
       produce(state, (draft) => {
-        console.log("LOAD_BOOKMARK_LIST 리듀서 실행");
         draft.bookmarkList = action.payload.bookmarkList;
       }),
     [FOLLOW_USER]: (state, action) =>
       produce(state, (draft) => {
-        console.log("FOLLOW_USER 리듀서 실행");
-        console.log("action.payload.postDetail", action.payload.postDetail);
-        console.log("action.payload.isFollowing", action.payload.isFollowing);
         draft.detail = {
           ...action.payload.postDetail,
           isFollowing: action.payload.isFollowing,
@@ -410,9 +411,6 @@ export default handleActions(
       }),
     [UNFOLLOW_USER]: (state, action) =>
       produce(state, (draft) => {
-        console.log("UNFOLLOW_USER 리듀서 실행");
-        console.log("action.payload.postDetail", action.payload.postDetail);
-        console.log("action.payload.isFollowing", action.payload.isFollowing);
         draft.detail = {
           ...action.payload.postDetail,
           isFollowing: action.payload.isFollowing,
@@ -467,6 +465,10 @@ export default handleActions(
           likeCnt: draft.filterList[idx].likeCnt - 1,
           isLiked: action.payload.isLiked,
         };
+      }),
+    [LODING]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isLoading = action.payload.isLoading;
       }),
   },
   initialState

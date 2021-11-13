@@ -21,18 +21,17 @@ const MyPage = (props) => {
 
   // console.log("logInUserId", logInUserId, typeof (logInUserId));
   // console.log("myPageUserId", myPageUserId, typeof (myPageUserId));
-  console.log("isMe", isMe);
+  // console.log("isMe", isMe);
 
   const [myPostsSelected, setMyPostsSelected] = useState(true);
+  console.log("myPostsSelected", myPostsSelected);
 
-  const showMyPosts = () => {
+  const selectMyPosts = () => {
     setMyPostsSelected(true);
-    console.log("게시물 탭 실행");
   };
 
-  const showMyBookMarks = () => {
+  const selectMyBookMarks = () => {
     setMyPostsSelected(false);
-    console.log("북마크 탭실행");
   };
 
   return (
@@ -40,20 +39,67 @@ const MyPage = (props) => {
       <HeaderWrap>
         <UserInfo myPageUserId={myPageUserId} isMe={isMe}></UserInfo>
       </HeaderWrap>
-      <BtnWrap>
-        <TabWrap>
-          <MyPostsTabOff />
-          <MyPostsTab onClick={showMyPosts}>게시물</MyPostsTab>
-        </TabWrap>
-        <TabWrap>
-          {isMe ?
-            <MyBookmarksTab onClick={showMyBookMarks}>북마크 </MyBookmarksTab>
-            :
-            null
-          }
-        </TabWrap>
-      </BtnWrap>
-      {myPostsSelected === true ? <MyPosts myPageUserId={myPageUserId} myPostsSelected={myPostsSelected} /> : <BookMarks myPageUserId={myPageUserId} myPostsSelected={myPostsSelected} />}
+
+      {/* 탭 선택 섹션 */}
+      {myPostsSelected === true ?
+        // MyPostsTab 선택한 경우
+        // myPostsSelected = true
+        <BtnWrap>
+          <TabWrap>
+            <MyPostsTab
+              myPostsSelected={myPostsSelected}
+            >
+              <MyPostsTabOn />
+              게시물 ON
+            </MyPostsTab>
+          </TabWrap>
+          <TabWrap>
+            {isMe ?
+              <MyBookmarksTab
+                onClick={selectMyBookMarks}
+                myPostsSelected={myPostsSelected}
+              >
+                <MyBookmarksTabOff />
+                북마크 OFF
+              </MyBookmarksTab>
+              :
+              null
+            }
+          </TabWrap>
+        </BtnWrap>
+        :
+        // MyBookmarksTab 선택한 경우
+        // myPostsSelected = false
+        <BtnWrap>
+          <TabWrap>
+            <MyPostsTab
+              onClick={selectMyPosts}
+              myPostsSelected={myPostsSelected}
+            >
+              <MyPostsTabOff />
+              게시물 OFF
+            </MyPostsTab>
+          </TabWrap>
+          <TabWrap>
+            {isMe ?
+              <MyBookmarksTab
+                myPostsSelected={myPostsSelected}
+              >
+                <MyBookmarksTabOn />
+                북마크 ON
+              </MyBookmarksTab>
+              :
+              null
+            }
+          </TabWrap>
+        </BtnWrap>
+      }
+      {/* 포스트 카드 섹션 */}
+      {myPostsSelected === true ?
+        <MyPosts myPageUserId={myPageUserId} myPostsSelected={myPostsSelected} />
+        :
+        <BookMarks myPageUserId={myPageUserId} myPostsSelected={myPostsSelected} />
+      }
     </React.Fragment>
   );
 };
@@ -87,25 +133,39 @@ const TabWrap = styled.div`
 `;
 
 const MyPostsTab = styled.div`
-  margin: auto;
-  font-size: 20px;
-  font-color: #9e9d9d;
-  :hover {
-    color: #ffc85c;
-  }
+cursor: pointer;
+display: flex;
+align-items: center;
+margin: auto;
+font-size: 20px;
+color: 
+${(myPostsSelected) => {
+    console.log("myPostsSelected", myPostsSelected);
+    return (
+      myPostsSelected === true ?
+        `#ffc85c;` : `#9e9d9d;`
+    )
+  }};
 `;
 
 const MyBookmarksTab = styled.div`
-  margin: 10px auto;
-  font-size: 20px;
-  font-color: #9e9d9d;
-  :hover {
-    color: #ffc85c;
-  }
+cursor: pointer;
+margin: 10px auto;
+display: flex;
+align-items: center;
+font-size: 20px;
+color: 
+${(myPostsSelected) => {
+    console.log("myPostsSelected", myPostsSelected);
+    return (
+      myPostsSelected === true ?
+        `#9e9d9d;` : `#ffc85c;`
+    )
+  }};
 `;
 
 const PostWrap = styled.div`
-  width: 100%;
+width: 100 %;
 `;
 
 export default MyPage;

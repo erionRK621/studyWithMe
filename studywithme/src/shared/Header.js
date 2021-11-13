@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configStore";
 import signUpImg from "../icon/signup.svg";
 import logoImg from "../icon/logo.png";
+import logologo from "../icon/logologo.png";
 
 // Redux Modules
 import { actionCreators as userActions } from "../redux/modules/user";
@@ -13,8 +14,10 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 // Components
 
-const Header = () => {
+const Header = (props) => {
   const dispatch = useDispatch();
+
+  const { value } = props;
 
   const user = useSelector((state) => state.user.user);
   const userId = useSelector((state) => state.user.user?.userId);
@@ -22,11 +25,26 @@ const Header = () => {
   // const userId = useSelector((state) => state.user.user.userId);
   // console.log(user.userId);
   const [menuState, setMenuState] = useState(false);
+
   const [menuColorStateMain, setMenuColorStateMain] = useState(true);
   const [menuColorStateList, setMenuColorStateList] = useState(false);
   const [menuColorStateMyPage, setMenuColorStateMyPage] = useState(false);
 
-  const onClickMenu = () => { };
+  const changeMainColor = () => {
+    setMenuColorStateMain(true);
+    setMenuColorStateList(false);
+    setMenuColorStateMyPage(false);
+  };
+  const changeListColor = () => {
+    setMenuColorStateMain(false);
+    setMenuColorStateList(true);
+    setMenuColorStateMyPage(false);
+  };
+  const changeMyPageColor = () => {
+    setMenuColorStateMain(false);
+    setMenuColorStateList(false);
+    setMenuColorStateMyPage(true);
+  };
 
   const onClickLogOut = () => {
     console.log("로그아웃 버튼 클릭");
@@ -46,22 +64,28 @@ const Header = () => {
     return (
       <Navbar>
         <NavbarLogo>
+          <img src={logologo} />
+        </NavbarLogo>
+        <NavbarLogo>
           <img src={logoImg} />
         </NavbarLogo>
 
         <NavbarMenu menuState={menuState}>
           <List
+            menuColorStateMain={menuColorStateMain}
             onClick={() => {
               history.push("/");
-              onClickMenu();
+              changeMainColor();
             }}
           // menuColorState={menuColorState}
           >
             메인
           </List>
           <List
+            menuColorStateList={menuColorStateList}
             onClick={() => {
               history.push("/list");
+              changeListColor();
             }}
           >
             게시글
@@ -70,8 +94,10 @@ const Header = () => {
         <NavbarIcon menuState={menuState}>
           <InfoList>
             <List
+              menuColorStateMyPage={menuColorStateMyPage}
               onClick={() => {
                 history.push("/mypage/" + userId);
+                changeMyPageColor();
               }}
             >
               마이페이지
@@ -187,7 +213,7 @@ const Navbar = styled.div`
 
 const NavbarLogo = styled.div`
   font-size: 24px;
-  margin: 0 10px;
+  margin: 0 5px;
   color: black;
   display: flex;
   align-items: center;
@@ -221,7 +247,11 @@ const List = styled.li`
   align-items: center;
   justify-content: center;
   ${(props) =>
-    props.menuColorState === true ? "color: #ff8477" : "color: black;"}
+    props.menuColorStateMain === true ? "color: #ff8477" : "color: black;"}
+  ${(props) =>
+    props.menuColorStateList === true ? "color: #ff8477" : "color: black;"}
+  ${(props) =>
+    props.menuColorStateMyPage === true ? "color: #ff8477" : "color: black;"}
 
   :hover {
     color: #ffc85c;
@@ -244,7 +274,7 @@ const Write = styled.li`
   justify-content: center;
   border-radius: 10px;
   :hover {
-    color: #ffc85c;
+    color: black;
     border-radius: 10px;
   }
   @media screen and (max-width: 768px) {

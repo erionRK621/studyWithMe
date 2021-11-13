@@ -74,6 +74,7 @@ const getFollowingsMiddleware = (userId) => {
       })
       .catch((err) => {
         console.log(err);
+        console.log(err.response.data);
       });
   };
 };
@@ -88,6 +89,7 @@ const getFollowersMiddleware = (userId) => {
       })
       .catch((err) => {
         console.log(err);
+        console.log(err.response.data);
       });
   };
 };

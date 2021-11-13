@@ -55,23 +55,34 @@ export const PasswordEdit = () => {
       <InputList>
         <InputWrap>
           <Label>이전 비밀번호</Label>
-          <Input value={passwordOld} type="password" _onChange={changePwdOld} />
+          <Input
+            value={passwordOld}
+            type="password"
+            placeholder="이전 비밀번호를 입력해주세요"
+            _onChange={changePwdOld}
+          />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호</Label>
-          <Input value={passwordNew} type="password" _onChange={changePwdNew} />
+          <Input
+            value={passwordNew}
+            type="password"
+            placeholder="새로운 비밀번호를 입력해주세요"
+            _onChange={changePwdNew}
+          />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호 확인</Label>
           <Input
             value={confirmPasswordNew}
             type="password"
+            placeholder="비밀번호를 다시 입력해주세요"
             _onChange={ConfirmPwdNew}
           />
         </InputWrap>
       </InputList>
       <SubmitWrap>
-        <Submit onClick={editPwd}>변경하기</Submit>
+        <Submit onClick={editPwd}>확인</Submit>
       </SubmitWrap>
     </React.Fragment>
   );
@@ -98,18 +109,28 @@ const InputList = styled.div`
 const InputWrap = styled.div`
   margin: 20px 0;
   display: flex;
+  width: 600px;
 `;
 const Label = styled.div`
-  min-width: 110px;
+  width: 300px;
   margin: auto;
   text-align: right;
   padding: 0 4px 0 0;
 `;
 const SubmitWrap = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: start;
+  margin-left: 396px;
 `;
 
 const Submit = styled.button`
+  min-width: 80px;
+  height: 45px;
+  font-size: 16px;
+  background-color: #ffc85c;
+  border-radius: 10px;
   width: 100px;
+  border: none;
+  padding: 8px 0px;
+  margin-left: 5px;
 `;

@@ -120,9 +120,7 @@ const PostWrite = (props) => {
     <>
       <ImageCover src={preview} alt="">
         <UploadButton>
-          <InputFile
-            style={{ width: "60px", height: "60px" }}
-          />
+          <InputFile style={{ width: "60px", height: "60px" }} />
           <Upload _onChange={selectFile} display="none" />
         </UploadButton>
       </ImageCover>
@@ -174,12 +172,12 @@ const ImageCover = styled.div`
   background-size: cover;
 `;
 const UploadButton = styled.label`
-  position : absolute;
+  position: absolute;
   left: calc(50% - 30px);
   top: calc(50% - 30px);
-  opacity: .5;
-  &:hover{
-    opacity:.8;
+  opacity: 0.5;
+  &:hover {
+    opacity: 0.8;
     cursor: pointer;
   }
 `;

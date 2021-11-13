@@ -14,7 +14,7 @@ import FollowModal from "./FollowModal";
 dotenv.config();
 
 const UserInfo = (props) => {
-  console.log("props", props);
+  // console.log("props", props);
 
   const dispatch = useDispatch();
 
@@ -160,7 +160,7 @@ width: 120px;
 height: 32px;
 border: 0;
 border-radius: 4px;
-background: #369C8A;
+background: #FFC85C;
 color: white;
 cursor: pointer;
 font-size: 16px;
