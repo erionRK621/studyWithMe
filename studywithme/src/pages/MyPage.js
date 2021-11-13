@@ -157,7 +157,7 @@ const MyBookmarksTab = styled.div`
 `;
 
 const PostWrap = styled.div`
-  width: 100 %;
+width: 100%;
 `;
 
 export default MyPage;
