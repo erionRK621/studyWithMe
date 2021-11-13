@@ -133,20 +133,6 @@ const TabWrap = styled.div`
 `;
 
 const MyPostsTab = styled.div`
-<<<<<<< HEAD:studywithme/src/pages/Mypage.js
-cursor: pointer;
-display: flex;
-align-items: center;
-margin: auto;
-font-size: 20px;
-color: 
-${(myPostsSelected) => {
-    console.log("myPostsSelected ::::: ", myPostsSelected);
-    return (
-      myPostsSelected?
-        `#ffc85c;` : `#9e9d9d;`
-    )
-=======
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -155,25 +141,10 @@ ${(myPostsSelected) => {
   color: ${(myPostsSelected) => {
     console.log("myPostsSelected", myPostsSelected);
     return myPostsSelected === true ? `#ffc85c;` : `#9e9d9d;`;
->>>>>>> 36ed35c6a45c430919bc89f279770b9af0a3f46a:studywithme/src/pages/MyPage.js
   }};
 `;
 
 const MyBookmarksTab = styled.div`
-<<<<<<< HEAD:studywithme/src/pages/Mypage.js
-cursor: pointer;
-margin: 10px auto;
-display: flex;
-align-items: center;
-font-size: 20px;
-color: 
-${(myPostsSelected) => {
-    console.log("myPostsSelected ::::: ", myPostsSelected);
-    return (
-      myPostsSelected?
-        `#9e9d9d;` : `#ffc85c;`
-    )
-=======
   cursor: pointer;
   margin: 10px auto;
   display: flex;
@@ -182,16 +153,11 @@ ${(myPostsSelected) => {
   color: ${(myPostsSelected) => {
     console.log("myPostsSelected", myPostsSelected);
     return myPostsSelected === true ? `#9e9d9d;` : `#ffc85c;`;
->>>>>>> 36ed35c6a45c430919bc89f279770b9af0a3f46a:studywithme/src/pages/MyPage.js
   }};
 `;
 
 const PostWrap = styled.div`
-<<<<<<< HEAD:studywithme/src/pages/Mypage.js
 width: 100%;
-=======
-  width: 100 %;
->>>>>>> 36ed35c6a45c430919bc89f279770b9af0a3f46a:studywithme/src/pages/MyPage.js
 `;
 
 export default MyPage;
