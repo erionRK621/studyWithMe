@@ -12,9 +12,11 @@ dotenv.config();
 export const ProfileEdit = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = useSelector((state) => state.user.user?.userId);
-  // const userPic = `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`;
+  console.log(userInfo.avatarUrl);
 
-  const [userPic, setUserPic] = React.useState("");
+  const [userPic, setUserPic] = React.useState(
+    `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`
+  );
   const dispatch = useDispatch();
   const [nickname, setNickname] = React.useState(userInfo?.nickname);
   const [selectedFile, setSelectedFile] = React.useState(null);
