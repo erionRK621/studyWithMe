@@ -68,12 +68,10 @@ const PostList = (props) => {
 
   useEffect(() => {
     // category 값이 변할때마다 쿼리스트링 수정 및 api요청
-    let setQueryString = `${
-      interestVal ? "&categoryInterest=" + interestVal : ""
-    }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
-      studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-    }&page=1`;
-    dispatch(postActions.getFilterPostDB(setQueryString,0));
+    let setQueryString = `${interestVal ? "&categoryInterest=" + interestVal : ""
+      }${spaceVal ? "&categorySpace=" + spaceVal : ""}${studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
+      }&page=1`;
+    dispatch(postActions.getFilterPostDB(setQueryString, 0));
   }, [interestVal, spaceVal, studyMateVal]);
 
   return (
@@ -126,12 +124,10 @@ const PostList = (props) => {
           interestVal={interestVal}
           spaceVal={spaceVal}
           studyMateVal={studyMateVal}
-          callNext={(page,interestVal,spaceVal,studyMateVal) => {
-            let setQueryString = `${
-              interestVal ? "&categoryInterest=" + interestVal : ""
-            }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
-              studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-            }&page=${page+1}`;
+          callNext={(page, interestVal, spaceVal, studyMateVal) => {
+            let setQueryString = `${interestVal ? "&categoryInterest=" + interestVal : ""
+              }${spaceVal ? "&categorySpace=" + spaceVal : ""}${studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
+              }&page=${page + 1}`;
             dispatch(
               postActions.getFilterPostDB(setQueryString, page)
             );

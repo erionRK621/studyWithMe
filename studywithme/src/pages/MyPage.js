@@ -48,15 +48,8 @@ const MyPage = (props) => {
         // myPostsSelected = true
         <BtnWrap>
           <TabWrap>
-<<<<<<< HEAD:studywithme/src/pages/Mypage.js
-            <MyPostsTab
-              myPostsSelected={myPostsSelected}
-            >
-              {/* <MyPostsTabOn /> */}
-=======
             <MyPostsTab myPostsSelected={myPostsSelected}>
               <MyPostsTabOn />
->>>>>>> 6ea9d5d5c2bbb399d5064a52a9b0bb97b96b0bf6:studywithme/src/pages/MyPage.js
               게시물 ON
             </MyPostsTab>
           </TabWrap>
@@ -86,17 +79,9 @@ const MyPage = (props) => {
             </MyPostsTab>
           </TabWrap>
           <TabWrap>
-<<<<<<< HEAD:studywithme/src/pages/Mypage.js
-            {isMe ?
-              <MyBookmarksTab
-                myPostsSelected={myPostsSelected}
-              >
-                {/* <MyBookmarksTabOn /> */}
-=======
             {isMe ? (
               <MyBookmarksTab myPostsSelected={myPostsSelected}>
                 <MyBookmarksTabOn />
->>>>>>> 6ea9d5d5c2bbb399d5064a52a9b0bb97b96b0bf6:studywithme/src/pages/MyPage.js
                 북마크 ON
               </MyBookmarksTab>
             ) : null}
