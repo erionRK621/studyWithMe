@@ -13,6 +13,7 @@ import Text from "../elements/Text";
 // import Input from "../elements/Input";
 import Button from "../elements/Button";
 import KakaoLoginButton from "../components/KakaoLoginButton";
+import KakaoLogo from "../icon/KakaoLogo.png";
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -88,7 +89,7 @@ const Login = () => {
                         }}
                     >
                         <KakaoIcon
-                            src="https://cdn-icons.flaticon.com/png/512/3669/premium/3669973.png?token=exp=1636515714~hmac=ce16ff13ac78e885d49b830f58227d9f"
+                            src={KakaoLogo}
                             alt="카카오 아이콘"
                         />
                     </a>
