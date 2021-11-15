@@ -23,7 +23,7 @@ const CommentWrite = (props) => {
     <React.Fragment>
       <FlexGrid align="center" color="#eeeeee" padding="10px 0px" borderRadius="10px">
         <FlexGrid align="center" margin="0px 5px 0px 0px">
-          <Image size="36" src={`${process.env.REACT_APP_API_URI}/${props.avatarUrl}`}/>
+          <Image size="36" src={`${process.env.REACT_APP_IMAGE_URI}/${props.avatarUrl}`}/>
         </FlexGrid>
         <Input
           border="none"

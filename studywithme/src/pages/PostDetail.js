@@ -17,7 +17,6 @@ import Button from "../elements/Button";
 import Text from "../elements/Text";
 import CommentWrite from "../components/CommentWrite";
 import CommentList from "../components/CommentList";
-import dotenv from "dotenv";
 
 import { ReactComponent as DetailLikeOff } from "../icon/detailLikeOff.svg";
 import { ReactComponent as DetailLikeOn } from "../icon/detailLikeOn.svg";
@@ -25,10 +24,12 @@ import { ReactComponent as BookmarkOff } from "../icon/bookmarkOff.svg";
 import { ReactComponent as BookmarkOn } from "../icon/bookmarkOn.svg";
 import { ReactComponent as Edit } from "../icon/edit.svg";
 import { ReactComponent as Trash } from "../icon/trash.svg";
+
+import dotenv from "dotenv";
 dotenv.config();
+
 const PostDetail = (props) => {
   const dispatch = useDispatch();
-
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
 
@@ -42,7 +43,7 @@ const PostDetail = (props) => {
   const isLiked = post.isLiked;
 
   const isFollowing = post.isFollowing;
-  const imageCover = process.env.REACT_APP_API_URI + "/" + post?.imageCover;
+  const imageCover = decodeURIComponent(`${process.env.REACT_APP_IMAGE_URI}/${post?.imageCover}`);
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
   
   const onClickFollow = () => {
@@ -100,7 +101,7 @@ const PostDetail = (props) => {
           <FlexGrid align="center">
             <Image
               size="80"
-              src={`${process.env.REACT_APP_API_URI}/${post.User?.avatarUrl}`}
+              src={`${process.env.REACT_APP_IMAGE_URI}/${post.User?.avatarUrl}`}
             />
             <span style={{ marginLeft: "10px", fontSize: "30px" }}>
               {post.User?.nickname}

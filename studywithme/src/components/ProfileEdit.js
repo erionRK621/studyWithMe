@@ -15,7 +15,7 @@ export const ProfileEdit = () => {
   console.log(userInfo.avatarUrl);
 
   const [userPic, setUserPic] = React.useState(
-    `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`
+    `${process.env.REACT_APP_IMAGE_URI}/${userInfo.avatarUrl}`
   );
   const dispatch = useDispatch();
   const [nickname, setNickname] = React.useState(userInfo?.nickname);

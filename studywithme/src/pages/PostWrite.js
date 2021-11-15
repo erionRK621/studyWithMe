@@ -27,7 +27,7 @@ const PostWrite = (props) => {
   const _editMode = postId ? true : false;
   const dispatch = useDispatch();
   const [preview, setPreview] = useState(
-    _editMode ? `${process.env.REACT_APP_API_URI}/${post.imageCover}` : ""
+    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${post.imageCover}` : ""
   );
   const [content, setContent] = useState(
     _editMode ? decodeURIComponent(post.contentEditor) : ""
