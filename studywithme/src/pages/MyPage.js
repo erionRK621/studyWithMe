@@ -25,15 +25,17 @@ const MyPage = (props) => {
   // console.log("myPageUserId", myPageUserId, typeof (myPageUserId));
   // console.log("isMe", isMe);
 
-  const [myPostsSelected, setMyPostsSelected] = useState(true);
-  console.log("myPostsSelected", myPostsSelected);
+  const [postsTabSelected, setPostsTabSelected] = useState(true);
+  console.log("postsSelected", postsTabSelected, typeof (postsTabSelected));
 
-  const selectMyPosts = () => {
-    setMyPostsSelected(true);
+  const selectPostsTab = () => {
+    setPostsTabSelected(true);
+    console.log("게시물 탭 선택");
   };
 
-  const selectMyBookMarks = () => {
-    setMyPostsSelected(false);
+  const selectBookMarksTab = () => {
+    setPostsTabSelected(false);
+    console.log("북마크 탭 선택");
   };
 
   return (
@@ -43,61 +45,59 @@ const MyPage = (props) => {
       </HeaderWrap>
 
       {/* 탭 선택 섹션 */}
-      {myPostsSelected === true ? (
-        // MyPostsTab 선택한 경우
-        // myPostsSelected = true
+      {postsTabSelected === true ? (
+        // MyPostsTab 선택한 경우? postsTabSelected = true
         <BtnWrap>
           <TabWrap>
-            <MyPostsTab myPostsSelected={myPostsSelected}>
+            <PostsTab postsTabSelected={postsTabSelected}>
               <MyPostsTabOn />
-              게시물 ON
-            </MyPostsTab>
+              게시물
+            </PostsTab>
           </TabWrap>
           <TabWrap>
             {isMe ? (
-              <MyBookmarksTab
-                onClick={selectMyBookMarks}
-                myPostsSelected={myPostsSelected}
+              <BookmarksTab
+                onClick={selectBookMarksTab}
+                postsTabSelected={postsTabSelected}
               >
-                {/* <MyBookmarksTabOff /> */}
-                북마크 OFF
-              </MyBookmarksTab>
+                <MyBookmarksTabOff />
+                북마크
+              </BookmarksTab>
             ) : null}
           </TabWrap>
         </BtnWrap>
       ) : (
-        // MyBookmarksTab 선택한 경우
-        // myPostsSelected = false
+        // MyBookmarksTab 선택한 경우? postsTabSelected = false
         <BtnWrap>
           <TabWrap>
-            <MyPostsTab
-              onClick={selectMyPosts}
-              myPostsSelected={myPostsSelected}
+            <PostsTab
+              onClick={selectPostsTab}
+              postsTabSelected={postsTabSelected}
             >
-              {/* <MyPostsTabOff /> */}
-              게시물 OFF
-            </MyPostsTab>
+              <MyPostsTabOff />
+              게시물
+            </PostsTab>
           </TabWrap>
           <TabWrap>
             {isMe ? (
-              <MyBookmarksTab myPostsSelected={myPostsSelected}>
+              <BookmarksTab postsTabSelected={postsTabSelected}>
                 <MyBookmarksTabOn />
-                북마크 ON
-              </MyBookmarksTab>
+                북마크
+              </BookmarksTab>
             ) : null}
           </TabWrap>
         </BtnWrap>
       )}
       {/* 포스트 카드 섹션 */}
-      {myPostsSelected === true ? (
+      {postsTabSelected === true ? (
         <MyPosts
           myPageUserId={myPageUserId}
-          myPostsSelected={myPostsSelected}
+          postsTabSelected={postsTabSelected}
         />
       ) : (
         <BookMarks
           myPageUserId={myPageUserId}
-          myPostsSelected={myPostsSelected}
+          postsTabSelected={postsTabSelected}
         />
       )}
     </React.Fragment>
@@ -132,32 +132,44 @@ const TabWrap = styled.div`
   display: flex;
 `;
 
-const MyPostsTab = styled.div`
+const PostsTab = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
   margin: auto;
   font-size: 20px;
-  color: ${(myPostsSelected) => {
-    console.log("myPostsSelected", myPostsSelected);
-    return myPostsSelected === true ? `#ffc85c;` : `#9e9d9d;`;
+  color: ${props => {
+    const postsTabSelected = props.postsTabSelected;
+
+    if (postsTabSelected === true) {
+      return '#ffc85c';
+    }
+    else {
+      return '#9e9d9d';
+    }
   }};
 `;
 
-const MyBookmarksTab = styled.div`
-  cursor: pointer;
-  margin: 10px auto;
-  display: flex;
-  align-items: center;
-  font-size: 20px;
-  color: ${(myPostsSelected) => {
-    console.log("myPostsSelected", myPostsSelected);
-    return myPostsSelected === true ? `#9e9d9d;` : `#ffc85c;`;
+const BookmarksTab = styled.div`
+cursor: pointer;
+margin: 10px auto;
+display: flex;
+align-items: center;
+font-size: 20px;
+color: ${props => {
+    const postsTabSelected = props.postsTabSelected;
+
+    if (postsTabSelected === true) {
+      return '#9e9d9d';
+    }
+    else {
+      return '#ffc85c';
+    }
   }};
 `;
 
 const PostWrap = styled.div`
-width: 100%;
+width: 100 %;
 `;
 
 export default MyPage;
