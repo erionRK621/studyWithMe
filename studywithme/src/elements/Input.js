@@ -47,7 +47,7 @@ const Input = (props) => {
 
   return (
     <React.Fragment>
-      <Grid width="200px">
+      <Grid>
         {label && <Text margin="0px">{label}</Text>}
         {/* is_Submit이 있으면 value 컨트롤하기, 없으면 value 컨트롤하지 않기 */}
         {is_Submit ? (

@@ -2,7 +2,17 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 
 export default function Grid(props) {
-  const { is_flex, width, margin, padding, bg, children, _onClick, justify, position } = props;
+  const {
+    is_flex,
+    width,
+    margin,
+    padding,
+    bg,
+    children,
+    _onClick,
+    justify,
+    position,
+  } = props;
 
   const styles = {
     is_flex: is_flex,
@@ -10,12 +20,14 @@ export default function Grid(props) {
     margin: margin,
     padding: padding,
     bg: bg,
-    justify:justify,
-    position:position,
+    justify: justify,
+    position: position,
   };
   return (
     <Fragment>
-      <GridBox {...styles} onClick={_onClick}>{children}</GridBox>
+      <GridBox {...styles} onClick={_onClick}>
+        {children}
+      </GridBox>
     </Fragment>
   );
 }
@@ -28,8 +40,7 @@ Grid.defaultProps = {
   padding: false,
   margin: false,
   bg: "#ffffff",
-  _onClick: () => { },
-
+  _onClick: () => {},
 };
 
 const GridBox = styled.div`
@@ -43,6 +54,6 @@ const GridBox = styled.div`
     props.is_flex
       ? `display: flex; align-items: center; justify-content: space-between; `
       : ""};
-  ${(props) => props.justify? `justify-content: ${props.justify}` : null};
-  ${(props)=> props.position? `position: ${props.position}` : null};
+  ${(props) => (props.justify ? `justify-content: ${props.justify}` : null)};
+  ${(props) => (props.position ? `position: ${props.position}` : null)};
 `;

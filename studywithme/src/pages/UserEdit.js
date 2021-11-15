@@ -36,15 +36,17 @@ const UserEdit = (props) => {
   );
 };
 
-const Wrap = styled.div``;
+const Wrap = styled.div`
+  display: flex;
+`;
 
 const MenuWrap = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 140px;
+  min-width: 140px;
   /* background-color: #f1f1f1; */
-  position: fixed;
+  /* position: fixed; */
   height: 100%;
   overflow: none;
 `;
@@ -61,6 +63,7 @@ const MenuItem = styled.div`
 const ContentDiv = styled.div`
   padding: 1px 16px;
   height: 700px;
+  width: 100%;
 `;
 
 export default UserEdit;
