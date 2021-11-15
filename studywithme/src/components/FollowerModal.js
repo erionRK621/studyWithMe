@@ -47,7 +47,7 @@ const FollowerModal = ({ modalClose, followerList }) => {
                 <UserWrapper>
                   <Image
                     size="56"
-                    src={`${process.env.REACT_APP_API_URI}/${follower.avatarUrl}`}
+                    src={`${process.env.REACT_APP_IMAGE_URI}/${follower.avatarUrl}`}
                   />
                   <UserName
                     size="15px"

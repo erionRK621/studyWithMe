@@ -20,7 +20,7 @@ const Post = (props) => {
         <Grid>
           <Image
             shape="rectangle"
-            src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
+            src={`${process.env.REACT_APP_IMAGE_URI}/${props.imageCover}`}
             paddingTop="65%"
             borderRadius="10px"
           />

@@ -25,6 +25,7 @@ import UserEdit from "./pages/UserEdit";
 
 function App() {
   const dispatch = useDispatch();
+  const location = useSelector(state=>state.router.location.pathname);
 
   const user = useSelector((state) => state.user.user);
   const userTokenInLocalStorage = localStorage.getItem("user");
@@ -48,7 +49,7 @@ function App() {
 
   return (
     <div>
-      <Header></Header>
+      {location!=="/write" || location.includes("/edit")? <Header/> : null}
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main} />
         <Route path="/signup" exact component={SignUp} />
