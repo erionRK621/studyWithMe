@@ -62,12 +62,14 @@ const editProfileMiddleware = (userId, formData) => {
       .editProfileAxios(formData)
       .then((res) => {
         window.alert(res.data.message);
+        console.log(res);
         history.push(`/mypage/${userId}`);
         // dispatch(editUserProfile(res.data.userInfo));
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
         console.log(err, "에러");
+
         // console.log(err.response.data.message);
       });
   };
