@@ -64,10 +64,20 @@ const Header = (props) => {
     return (
       <Navbar>
         <NavbarLogo>
-          <img src={logologo} />
+          <img
+            src={logologo}
+            onClick={() => {
+              history.push("/");
+            }}
+          />
         </NavbarLogo>
         <NavbarLogo>
-          <img src={logoImg} />
+          <img
+            src={logoImg}
+            onClick={() => {
+              history.push("/");
+            }}
+          />
         </NavbarLogo>
 
         <NavbarMenu menuState={menuState}>
@@ -77,7 +87,7 @@ const Header = (props) => {
               history.push("/");
               changeMainColor();
             }}
-          // menuColorState={menuColorState}
+            // menuColorState={menuColorState}
           >
             메인
           </List>
@@ -218,6 +228,9 @@ const NavbarLogo = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const NavBtnWrap = styled.div`
@@ -232,6 +245,7 @@ const NavbarMenu = styled.ul`
   list-style: none;
   padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
   color: black;
+
   @media screen and (max-width: 768px) {
     ${(props) => (props.menuState === true ? null : "display: none;")}
     flex-direction: column;
@@ -256,6 +270,7 @@ const List = styled.li`
   :hover {
     color: #ffc85c;
     border-radius: 10px;
+    cursor: pointer;
   }
 
   @media screen and (max-width: 768px) {
@@ -276,6 +291,7 @@ const Write = styled.li`
   :hover {
     color: black;
     border-radius: 10px;
+    cursor: pointer;
   }
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -304,6 +320,7 @@ const InfoList = styled.div`
   :hover {
     color: #ffc85c;
     border-radius: 10px;
+    cursor: pointer;
   }
   @media screen and (max-width: 768px) {
     text-align: center; /*로고는 현재 반대축이므로 justify-content 사용*/
@@ -319,6 +336,9 @@ const Hamberger = styled.a`
   font-size: 20px;
   color: black;
   margin-top: 5px;
+  &:hover {
+    cursor: pointer;
+  }
   @media screen and (max-width: 768px) {
     display: block;
   }

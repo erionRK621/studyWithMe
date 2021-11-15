@@ -159,6 +159,9 @@ const SlideTitle = styled.div`
 const More = styled.div`
   font-size: 13px;
   opacity: 50%;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const PostWrap = styled.div`
