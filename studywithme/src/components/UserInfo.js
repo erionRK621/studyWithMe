@@ -32,7 +32,7 @@ const UserInfo = (props) => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const followerList = useSelector((state) => state.mypage?.followerIdList);
   const followingList = useSelector((state) => state.mypage?.followingIdList);
-  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
+  const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo?.avatarUrl}`;
   const myPageUserId = props.myPageUserId;
   const isMe = props.isMe;
 

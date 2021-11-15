@@ -11,7 +11,7 @@ dotenv.config();
 export const PasswordEdit = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo.avatarUrl}`;
+  const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo.avatarUrl}`;
 
   const [passwordOld, setPasswordOld] = useState("");
   const [passwordNew, setPasswordNew] = useState("");
