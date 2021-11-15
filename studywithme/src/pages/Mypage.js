@@ -49,7 +49,7 @@ const MyPage = (props) => {
             <MyPostsTab
               myPostsSelected={myPostsSelected}
             >
-              <MyPostsTabOn />
+              {/* <MyPostsTabOn /> */}
               게시물 ON
             </MyPostsTab>
           </TabWrap>
@@ -59,7 +59,7 @@ const MyPage = (props) => {
                 onClick={selectMyBookMarks}
                 myPostsSelected={myPostsSelected}
               >
-                <MyBookmarksTabOff />
+                {/* <MyBookmarksTabOff /> */}
                 북마크 OFF
               </MyBookmarksTab>
               :
@@ -76,7 +76,7 @@ const MyPage = (props) => {
               onClick={selectMyPosts}
               myPostsSelected={myPostsSelected}
             >
-              <MyPostsTabOff />
+              {/* <MyPostsTabOff /> */}
               게시물 OFF
             </MyPostsTab>
           </TabWrap>
@@ -85,7 +85,7 @@ const MyPage = (props) => {
               <MyBookmarksTab
                 myPostsSelected={myPostsSelected}
               >
-                <MyBookmarksTabOn />
+                {/* <MyBookmarksTabOn /> */}
                 북마크 ON
               </MyBookmarksTab>
               :
