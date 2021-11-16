@@ -6,11 +6,14 @@ import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
 
 import Input from "../elements/Input";
+import Grid from "../elements/Grid";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
 // icon
 import { ReactComponent as InputFile } from "../icon/inputFile.svg";
+import logoImg from "../icon/logo.png";
+import logologo from "../icon/logologo.png";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -27,7 +30,7 @@ const PostWrite = (props) => {
   const _editMode = postId ? true : false;
   const dispatch = useDispatch();
   const [preview, setPreview] = useState(
-    _editMode ? `${process.env.REACT_APP_API_URI}/${post.imageCover}` : ""
+    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${post.imageCover}` : ""
   );
   const [content, setContent] = useState(
     _editMode ? decodeURIComponent(post.contentEditor) : ""
@@ -118,6 +121,27 @@ const PostWrite = (props) => {
   };
   return (
     <>
+      <Navbar>
+        <Grid
+          is_flex
+          justify="start"
+          _onClick={() => {
+            history.push("/");
+          }}
+        >
+          <NavbarLogo>
+            <img src={logologo} alt="" />
+          </NavbarLogo>
+          <NavbarLogo>
+            <img src={logoImg} alt="" />
+          </NavbarLogo>
+        </Grid>
+        {_editMode ? (
+          <Write onClick={editing}>수정</Write>
+        ) : (
+          <Write onClick={posting}>작성</Write>
+        )}
+      </Navbar>
       <ImageCover src={preview} alt="">
         <UploadButton>
           <InputFile style={{ width: "60px", height: "60px" }} />
@@ -147,11 +171,6 @@ const PostWrite = (props) => {
           />
         </FlexGrid>
         <Editor value={content} getContent={getContent} />
-        {_editMode ? (
-          <button onClick={editing}>수정</button>
-        ) : (
-          <button onClick={posting}>작성</button>
-        )}
       </FlexGrid>
     </>
   );
@@ -178,6 +197,45 @@ const UploadButton = styled.label`
   opacity: 0.5;
   &:hover {
     opacity: 0.8;
+    cursor: pointer;
+  }
+`;
+
+const Navbar = styled.div`
+  position: sticky;
+  top:0;
+  display: flex;
+  align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
+  justify-content: space-between;
+  background-color: white;
+  padding: 8px 24px 8px 12px;
+  z-index: 3;
+`;
+
+const NavbarLogo = styled.div`
+  font-size: 24px;
+  margin: 0 5px;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Write = styled.li`
+  padding: 0px 12px;
+  width: 84px;
+  height: 40px;
+  background-color: #ffc85c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  :hover {
+    color: black;
+    border-radius: 10px;
     cursor: pointer;
   }
 `;

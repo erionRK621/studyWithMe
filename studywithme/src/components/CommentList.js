@@ -50,7 +50,7 @@ const CommentList = (props) => {
                 <FlexGrid align="center" minWidth="130px">
                   <Image
                     size="36"
-                    src={`${process.env.REACT_APP_API_URI}/${c.avatarUrl}`}
+                    src={`${process.env.REACT_APP_IMAGE_URI}/${c.avatarUrl}`}
                   />
                   <FlexGrid direction="column" margin="0px 5px">
                     <Text size="15px">{c.userNickname}</Text>

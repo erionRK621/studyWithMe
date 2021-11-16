@@ -47,7 +47,7 @@ const Input = (props) => {
 
   return (
     <React.Fragment>
-      <Grid width="200px">
+      <Grid width={props.width}>
         {label && <Text margin="0px">{label}</Text>}
         {/* is_Submit이 있으면 value 컨트롤하기, 없으면 value 컨트롤하지 않기 */}
         {is_Submit ? (
@@ -102,7 +102,7 @@ const ElInput = styled.input`
   width: ${(props) => (props.width ? props.width : "100%")};
   padding: 12px 4px;
   box-sizing: border-box;
-  background-color: rgba(244, 244, 244, 1);
+  /* background-color: rgba(244, 244, 244, 1); */
   border-radius: 10px;
   &:focus {
     outline: none;

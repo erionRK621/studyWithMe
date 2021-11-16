@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { history } from "../redux/configStore";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 
@@ -10,6 +11,7 @@ dotenv.config();
 
 const Post = (props) => {
   const dispatch = useDispatch();
+  console.log(props);
 
   return (
     <PostContainer>
@@ -18,7 +20,7 @@ const Post = (props) => {
         <Grid>
           <Image
             shape="rectangle"
-            src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
+            src={`${process.env.REACT_APP_IMAGE_URI}/${props.imageCover}`}
             paddingTop="65%"
             borderRadius="10px"
           />
@@ -31,9 +33,19 @@ const Post = (props) => {
             <Image
               shape="circle"
               size="26"
+              onClick={() => {
+                history.push("/mypage/" + props.userId);
+              }}
               src={`${process.env.REACT_APP_API_URI}/${props.avatarUrl}`}
             />
-            <Nickname bold>{props.nickname}</Nickname>
+            <Nickname
+              onClick={() => {
+                history.push("/mypage/" + props.userId);
+              }}
+              bold
+            >
+              {props.nickname}
+            </Nickname>
           </Profile>
           <CategoryInfo>
             <CategoryItem bold>{props.categorySpace}</CategoryItem>
