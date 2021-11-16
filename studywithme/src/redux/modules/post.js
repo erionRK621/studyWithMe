@@ -172,8 +172,7 @@ const getFilterPostDB = (queryString, currentPage) => {
       .then((res) => {
         const post_list = res.data.posts;
         const totalPage = res.data.totalPage;
-        console.log("1111111 ::::: ",res.data)
-        console.log("2222222222 ::::::: ",totalPage);
+        console.log(res.data);
         dispatch(getFilterPost(post_list, totalPage, currentPage));
         history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
@@ -311,6 +310,7 @@ const filterAddLikeMiddleware = (postId) => {
       .catch((err) => {
         if (err.response.status === 401) {
           window.alert("로그인 후 사용 가능합니다.");
+          history.push("/login");
         }
       });
   };

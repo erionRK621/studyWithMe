@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../redux/modules/comment";
+import { history } from "../redux/configStore";
 //icon
 import { ReactComponent as Trash } from "../icon/trash.svg";
 import { ReactComponent as CommentLikeOff } from "../icon/commentLikeOff.svg";
 import { ReactComponent as CommentLikeOn } from "../icon/commentLikeOn.svg";
+import { ReactComponent as CommentLikeCnt } from "../icon/commentLikeCntIcon.svg";
 
 import Image from "../elements/Image";
 import Text from "../elements/Text";
@@ -14,6 +16,7 @@ import time from "../shared/time";
 const CommentList = (props) => {
   const postId = props.postId;
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.user?.isLoggedIn);
   const comment = useSelector((state) => state.comment.list);
   const user = useSelector((state) => state.user.user);
   const userId = user?.userId;
@@ -23,14 +26,22 @@ const CommentList = (props) => {
     }
   };
   const deleteLike = (postId, commentId) => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(commentActions.deleteCommentLikeMiddleWare(postId, commentId));
   };
   const addLike = (postId, commentId) => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(commentActions.addCommentLikeMiddleWare(postId, commentId));
   };
   const changePage = (number) => {
     console.log(number);
-  }
+  };
   useEffect(() => {
     dispatch(commentActions.getCommentMiddleware(postId));
   }, []);
@@ -50,10 +61,18 @@ const CommentList = (props) => {
                 <FlexGrid align="center" minWidth="130px">
                   <Image
                     size="36"
-                    src={`${process.env.REACT_APP_IMAGE_URI}/${c.avatarUrl}`}
+                    src={`${process.env.REACT_APP_IMAGE_URI}/${c?.avatarUrl}`}
                   />
                   <FlexGrid direction="column" margin="0px 5px">
-                    <Text size="15px">{c.userNickname}</Text>
+                    <Text
+                      size="15px"
+                      _onClick={() => {
+                        history.push(`/mypage/${c.userId}`);
+                      }}
+                      pointer
+                    >
+                      {c.userNickname}
+                    </Text>
                     <Text size="10px" color="#cccccc">
                       {time(c.date)}
                     </Text>
@@ -61,9 +80,11 @@ const CommentList = (props) => {
                 </FlexGrid>
                 <FlexGrid direction="column" maxWidth="550px">
                   <Text>{c.textContent}</Text>
-                  <FlexGrid>
-                    <Button padding="0px">좋아요</Button>
-                    <Text>{c.commentLikeCnt}</Text>
+                  <FlexGrid marginTop="5px">
+                    <CommentLikeCnt />
+                    <Text margin="0px 5px" color="#aaaaaa">
+                      {c.commentLikeCnt}
+                    </Text>
                   </FlexGrid>
                 </FlexGrid>
               </FlexGrid>
@@ -95,10 +116,31 @@ const CommentList = (props) => {
             </FlexGrid>
           );
         })}
-        <FlexGrid align = "center" margin="auto">
-          <Page className="textButton" onClick={()=>{changePage(1)}}>1</Page>
-          <Page className="textButton" onClick={()=>{changePage(2)}}>2</Page>
-          <Page className="textButton" onClick={()=>{changePage(3)}}>3</Page>
+        <FlexGrid align="center" margin="auto">
+          <Page
+            className="textButton"
+            onClick={() => {
+              changePage(1);
+            }}
+          >
+            1
+          </Page>
+          <Page
+            className="textButton"
+            onClick={() => {
+              changePage(2);
+            }}
+          >
+            2
+          </Page>
+          <Page
+            className="textButton"
+            onClick={() => {
+              changePage(3);
+            }}
+          >
+            3
+          </Page>
         </FlexGrid>
       </FlexGrid>
     </React.Fragment>
@@ -114,6 +156,7 @@ const FlexGrid = styled.div`
   ${(props) => (props.align ? `align-items:${props.align};` : null)};
   ${(props) => (props.justify ? `justify-content:${props.justify};` : null)};
   ${(props) => (props.padding ? `padding:${props.padding};` : null)};
+  margin-top: ${(props) => props.marginTop};
 `;
 const Page = styled.p`
   margin: 5px;

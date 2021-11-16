@@ -36,6 +36,7 @@ const PostDetail = (props) => {
   const dispatch = useDispatch();
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const postUserId = post.userId;
   const user = useSelector((state) => state.user.user);
@@ -47,14 +48,24 @@ const PostDetail = (props) => {
   const isLiked = post.isLiked;
 
   const isFollowing = post.isFollowing;
-  const imageCover = decodeURIComponent(`${process.env.REACT_APP_IMAGE_URI}/${post?.imageCover}`);
+  const imageCover = decodeURIComponent(
+    `${process.env.REACT_APP_IMAGE_URI}/${post?.imageCover}`
+  );
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
-  
+
   const onClickFollow = () => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(postActions.followUserMiddleware(postUserId));
   };
 
   const onClickUnfollow = () => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(postActions.unfollowUserMiddleware(postUserId));
   };
 
@@ -107,17 +118,19 @@ const PostDetail = (props) => {
               size="80"
               src={`${process.env.REACT_APP_IMAGE_URI}/${post.User?.avatarUrl}`}
             />
-            <span style={{ marginLeft: "10px", fontSize: "30px" }}>
-              {post.User?.nickname}
-            </span>
-            <span
-              style={{
-                marginLeft: "20px",
-                color: "#cccccc",
+            <Span
+              marginLeft="10px"
+              fontSize="30px"
+              onClick={() => {
+                history.push(`/mypage/${post.userId}`);
               }}
+              pointer
             >
+              {post.User?.nickname}
+            </Span>
+            <Span marginLeft="20px" color="#cccccc">
               {moment(post?.date).format("YYYY-MM-DD")}
-            </span>
+            </Span>
           </FlexGrid>
           {userId !== postUserId ? (
             isFollowing ? (
@@ -157,21 +170,21 @@ const PostDetail = (props) => {
           borderRadius="10px"
         >
           <FlexGrid>
-            <Interest/>
+            <Interest />
             <FlexGrid direction="column" justify="center">
               <Text size="16px">관심사</Text>
               <H1 size="20px">{post?.categoryInterest}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
-          <Space/>
+            <Space />
             <FlexGrid direction="column" justify="center">
               <Text size="16px">공간</Text>
               <H1 size="20px">{post?.categorySpace}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
-          <StudyMate/>
+            <StudyMate />
             <FlexGrid direction="column" justify="center">
               <Text size="16px">유형</Text>
               <H1 size="20px">{post?.categoryStudyMate}</H1>
@@ -253,6 +266,15 @@ const ContentGrid = styled.div`
   }
   img {
     max-width: 750px;
+  }
+`;
+
+const Span = styled.span`
+  margin-left: ${(props) => props.marginLeft};
+  font-size: ${(props) => props.fontSize};
+  color: ${(props) => (props.color ? props.color : "black")};
+  &:hover {
+    ${(props) => (props.pointer ? "cursor:pointer;" : null)};
   }
 `;
 
