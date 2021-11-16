@@ -21,9 +21,6 @@ const SignUp = () => {
   // 이메일 중복 확인 여부 체크 (feat. useState)
   // 닉네임 중복 확인 여부 체크 (feat. useState)
 
-  const emailCheckInput = { email: `${emailUsername}@${emailDomain}` };
-  const nicknameCheckInput = { nickname: nickname };
-
   const onChangeEmailUsername = (e) => {
     // console.log(e.target.value);
     setEmailUsername(e.target.value);
@@ -50,17 +47,19 @@ const SignUp = () => {
   };
 
   const onClickEmailCheck = () => {
-    if (emailCheckInput.email === "") {
+    if (emailUsername === "" || emailDomain === "") {
       window.alert("이메일을 입력해주세요");
     } else {
+      const emailCheckInput = { email: `${emailUsername}@${emailDomain}` };
       dispatch(userActions.checkEmailMiddleware(emailCheckInput));
     }
   };
 
   const onClickNicknameCheck = () => {
-    if (nicknameCheckInput.nickname === "") {
+    if (nickname === "") {
       window.alert("닉네임을 입력해주세요");
     } else {
+      const nicknameCheckInput = { nickname: nickname };
       dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
     }
   };
@@ -116,8 +115,7 @@ const SignUp = () => {
       return;
     }
     else {
-      window.alert("회원가입 실행");
-      // dispatch(userActions.signUpMiddleware(signUpInputs));
+      dispatch(userActions.signUpMiddleware(signUpInputs));
     }
   };
 
