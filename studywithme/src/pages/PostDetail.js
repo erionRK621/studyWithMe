@@ -25,6 +25,10 @@ import { ReactComponent as BookmarkOn } from "../icon/bookmarkOn.svg";
 import { ReactComponent as Edit } from "../icon/edit.svg";
 import { ReactComponent as Trash } from "../icon/trash.svg";
 
+import { ReactComponent as Interest } from "../icon/interest.svg";
+import { ReactComponent as Space } from "../icon/space.svg";
+import { ReactComponent as StudyMate } from "../icon/studyMate.svg";
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -153,21 +157,21 @@ const PostDetail = (props) => {
           borderRadius="10px"
         >
           <FlexGrid>
-            <Image />
+            <Interest/>
             <FlexGrid direction="column" justify="center">
               <Text size="16px">관심사</Text>
               <H1 size="20px">{post?.categoryInterest}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
-            <Image />
+          <Space/>
             <FlexGrid direction="column" justify="center">
               <Text size="16px">공간</Text>
               <H1 size="20px">{post?.categorySpace}</H1>
             </FlexGrid>
           </FlexGrid>
           <FlexGrid>
-            <Image />
+          <StudyMate/>
             <FlexGrid direction="column" justify="center">
               <Text size="16px">유형</Text>
               <H1 size="20px">{post?.categoryStudyMate}</H1>

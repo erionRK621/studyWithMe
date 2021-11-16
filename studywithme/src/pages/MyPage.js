@@ -26,16 +26,13 @@ const MyPage = (props) => {
   // console.log("isMe", isMe);
 
   const [postsTabSelected, setPostsTabSelected] = useState(true);
-  console.log("postsSelected", postsTabSelected, typeof (postsTabSelected));
 
   const selectPostsTab = () => {
     setPostsTabSelected(true);
-    console.log("게시물 탭 선택");
   };
 
   const selectBookMarksTab = () => {
     setPostsTabSelected(false);
-    console.log("북마크 탭 선택");
   };
 
   return (

@@ -9,7 +9,7 @@
   right: 3%;
   color: #ffe400;
   opacity: 0.9;
-  z-index: 10000;
+  z-index: 2;
 }
 .like:hover {
   opacity: 0.5;
@@ -34,4 +34,13 @@
   text-decoration: underline;
   opacity: 0.5;
   cursor: pointer;
+}
+
+.card .img {
+  /* transition-duration: 1s; */
+  overflow: hidden;
+}
+.card:hover .img > div {
+  transition: all 0.3s ease-in-out;
+  transform: scale(1.1);
 }

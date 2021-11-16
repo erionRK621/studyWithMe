@@ -24,10 +24,11 @@ const Post = (props) => {
     dispatch(postActions.filterAddLikeMiddleware(props.postId));
   };
   return (
-    <PostContainer>
+    <PostContainer className="card">
       <Grid _onClick={onClick}>
         <Grid>
           <Image
+            className="img"
             shape="rectangle"
             src={`${process.env.REACT_APP_IMAGE_URI}/${props.imageCover}`}
             borderRadius="10px"

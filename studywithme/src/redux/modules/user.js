@@ -137,7 +137,7 @@ const loginMiddleware = (user) => {
         window.location.href = "/";
       })
       .catch((error) => {
-        console.log(error.response);
+        window.alert(error.response.data.message);
       });
   };
 };

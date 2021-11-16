@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { KAKAO_AUTH_URL } from "../shared/kakaoOAuth";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { regExEmailTest, regExPasswordTest, regExNicknameTest } from "../shared/regEx";
 
 import Grid from "../elements/Grid";
 import KakaoLogo from "../icon/KakaoLogo.png";
@@ -17,12 +18,8 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   // *** 추가 구현 필요 ***
-  // 정규표현식으로 인풋 형식들 확인 (백엔드랑 협의)
   // 이메일 중복 확인 여부 체크 (feat. useState)
   // 닉네임 중복 확인 여부 체크 (feat. useState)
-
-  const emailCheckInput = { email: `${emailUsername}@${emailDomain}` };
-  const nicknameCheckInput = { nickname: nickname };
 
   const onChangeEmailUsername = (e) => {
     // console.log(e.target.value);
@@ -50,39 +47,76 @@ const SignUp = () => {
   };
 
   const onClickEmailCheck = () => {
-    // console.log("emailCheckInput", emailCheckInput);
-    if (emailCheckInput.email === "") {
+    if (emailUsername === "" || emailDomain === "") {
       window.alert("이메일을 입력해주세요");
     } else {
+      const emailCheckInput = { email: `${emailUsername}@${emailDomain}` };
       dispatch(userActions.checkEmailMiddleware(emailCheckInput));
     }
   };
 
   const onClickNicknameCheck = () => {
-    // console.log("nicknameCheckInput", nicknameCheckInput);
-    if (nicknameCheckInput.nickname === "") {
+    if (nickname === "") {
       window.alert("닉네임을 입력해주세요");
     } else {
+      const nicknameCheckInput = { nickname: nickname };
       dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
     }
   };
 
   const onClickSignUp = () => {
-    console.log("회원가입 실행");
-
     const signUpInputs = {
       email: `${emailUsername}@${emailDomain}`,
       nickname: nickname,
       password: password,
       confirmPassword: confirmPassword,
     };
-
     console.log("signUpInputs", signUpInputs);
-    // 이메일 정규표현식 부합 여부 확인
-    // 닉네임 입력 여부 확인
-    // 비밀번호 입력 여부 및 형식 확인
-    // 비밀번호와 비밀번호 확인 일치 여부 확인
-    dispatch(userActions.signUpMiddleware(signUpInputs));
+
+    // 이메일 규칙 확인
+    if (!regExEmailTest(signUpInputs.email)) {
+      window.alert("이메일 형식이 올바르지 않습니다.");
+      // console.log("이메일 형식이 올바르지 않습니다.");
+      return;
+    }
+    // 이메일 50자 이하 여부 확인
+    if (signUpInputs.email.length > 50) {
+      window.alert("이메일을 50자 이하로 입력해주세요.");
+    }
+    // 닉네임 규칙 확인
+    else if (!regExNicknameTest(signUpInputs.nickname)) {
+      window.alert("닉네임 형식이 올바르지 않습니다.");
+      // console.log("닉네임 형식이 올바르지 않습니다.");
+      return;
+    }
+    // 닉네임 20자 이하 여부 확인
+    else if (signUpInputs.nickname.length > 20) {
+      window.alert("닉네임을 20자 이하로 입력해주세요.");
+      // console.log("닉네임을 20자 이하로 입력해주세요.");
+      return;
+    }
+    // 비밀번호 규칙 확인
+    else if (!regExPasswordTest(signUpInputs.password)) {
+      window.alert("비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다.");
+      // console.log("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
+      return;
+    }
+    // 비밀번호 일치 여부 확인
+    else if (signUpInputs.password !== signUpInputs.confirmPassword) {
+      window.alert("비밀번호가 일치하지 않습니다.");
+      // console.log("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    // 이메일, 비밀번호간 상호간에 포함되었는지 여부 확인
+    else if (signUpInputs.email.split("@")[0].match(signUpInputs.password) !== null ||
+      signUpInputs.password.match(signUpInputs.email.split("@")[0]) !== null
+    ) {
+      window.alert("이메일이 포함된 비밀번호는 사용할 수 없습니다.");
+      return;
+    }
+    else {
+      dispatch(userActions.signUpMiddleware(signUpInputs));
+    }
   };
 
   return (
@@ -133,7 +167,7 @@ const SignUp = () => {
         <NicknameWrapper>
           <Label>닉네임</Label>
           <InputReqDescription>
-            다른 유저와 겹치지 않는 별명을 입력해주세요.
+            한글, 영문, 숫자로 이루어진 별명을 입력해주세요. (20자 이하)
           </InputReqDescription>
           <NicknameInputContainer>
             <NicknameInput
@@ -150,7 +184,7 @@ const SignUp = () => {
         <PasswordWrapper>
           <Label>비밀번호</Label>
           <InputReqDescription>
-            영문, 숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
+            특수 문자를 포함한 8자 이상의 비밀번호를 입력해주세요.
           </InputReqDescription>
           <PasswordInput
             placeholder="비밀번호"
