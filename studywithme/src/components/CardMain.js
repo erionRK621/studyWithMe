@@ -10,12 +10,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const Post = (props) => {
-  const dispatch = useDispatch();
-  console.log(props);
-
   return (
     <PostContainer>
-      <Grid bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
+      <Grid bg="#ffffff" margin="0px" _onClick={props.onClick}>
         <Grid is_flex></Grid>
         <Grid>
           <Image
@@ -74,7 +71,7 @@ Post.defaultProps = {
 };
 const PostContainer = styled.div`
   background-color: white;
-  width: 80%;
+  width: 95%;
   max-width: 350px;
   margin: auto;
   margin-bottom: 50px;

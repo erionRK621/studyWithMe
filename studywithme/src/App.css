@@ -1,31 +1,37 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap");
 * {
   margin: 0px;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
 }
 .like {
   position: absolute;
-  top:3%;
-  right:3%;
+  top: 3%;
+  right: 3%;
   color: #ffe400;
-  opacity: .9;
-  z-index:10000;
+  opacity: 0.9;
+  z-index: 10000;
 }
 .like:hover {
-  opacity: .5;
+  opacity: 0.5;
+}
+.cardImage :hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  z-index: 100;
+  display: absolute;
 }
 
 .detailOnOff {
-  margin:0px 24px;
+  margin: 0px 24px;
 }
 
 .iconButton:hover {
-  opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
 }
 
 .textButton:hover {
   text-decoration: underline;
-  opacity: .5;
+  opacity: 0.5;
   cursor: pointer;
 }

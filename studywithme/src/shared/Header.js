@@ -63,22 +63,24 @@ const Header = (props) => {
   if (user) {
     return (
       <Navbar>
-        <NavbarLogo>
-          <img
-            src={logologo}
-            onClick={() => {
-              history.push("/");
-            }}
-          />
-        </NavbarLogo>
-        <NavbarLogo>
-          <img
-            src={logoImg}
-            onClick={() => {
-              history.push("/");
-            }}
-          />
-        </NavbarLogo>
+        <LogoWrap>
+          <NavbarLogo>
+            <img
+              src={logologo}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+          <NavbarLogo>
+            <img
+              src={logoImg}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+        </LogoWrap>
 
         <NavbarMenu menuState={menuState}>
           <List
@@ -102,32 +104,32 @@ const Header = (props) => {
           </List>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
-          <InfoList>
-            <List
-              menuColorStateMyPage={menuColorStateMyPage}
-              onClick={() => {
-                history.push("/mypage/" + userId);
-                changeMyPageColor();
-              }}
-            >
-              마이페이지
-            </List>
-          </InfoList>
-          <InfoList>
-            <List onClick={onClickLogOut}>로그아웃</List>
-          </InfoList>
+          {/* <InfoList> */}
+          <List
+            menuColorStateMyPage={menuColorStateMyPage}
+            onClick={() => {
+              history.push("/mypage/" + userId);
+              changeMyPageColor();
+            }}
+          >
+            마이페이지
+          </List>
+          {/* </InfoList> */}
+          {/* <InfoList> */}
+          <List onClick={onClickLogOut}>로그아웃</List>
+          {/* </InfoList> */}
           {/* <InfoList>
             <List>알림</List>
           </InfoList> */}
-          <InfoList>
-            <Write
-              onClick={() => {
-                history.push("/write");
-              }}
-            >
-              글쓰기
-            </Write>
-          </InfoList>
+          {/* <InfoList> */}
+          <Write
+            onClick={() => {
+              history.push("/write");
+            }}
+          >
+            글쓰기
+          </Write>
+          {/* </InfoList> */}
         </NavbarIcon>
         <Hamberger href="#">
           <GiHamburgerMenu
@@ -166,34 +168,34 @@ const Header = (props) => {
           </List>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
-          <InfoList>
-            <List
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              로그인
-            </List>
-          </InfoList>
-          <InfoList>
-            <List
-              onClick={() => {
-                history.push("/signup");
-              }}
-            >
-              <img src={signUpImg} />
-              회원가입
-            </List>
-          </InfoList>
-          <InfoList>
-            <Write
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              글쓰기
-            </Write>
-          </InfoList>
+          {/* <InfoList> */}
+          <List
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            로그인
+          </List>
+          {/* </InfoList> */}
+          {/* <InfoList> */}
+          <List
+            onClick={() => {
+              history.push("/signup");
+            }}
+          >
+            <img src={signUpImg} />
+            회원가입
+          </List>
+          {/* </InfoList> */}
+          {/* <InfoList> */}
+          <Write
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            글쓰기
+          </Write>
+          {/* </InfoList> */}
         </NavbarIcon>
         <Hamberger href="#">
           <GiHamburgerMenu
@@ -219,6 +221,9 @@ const Navbar = styled.div`
     align-items: flex-start; /*로고,메뉴바 모두 왼쪽 정렬*/
     padding: 8px 24px; /*hover시 한줄 가득 색상표시 안되도록 */
   }
+`;
+const LogoWrap = styled.div`
+  display: flex;
 `;
 
 const NavbarLogo = styled.div`
@@ -261,11 +266,11 @@ const List = styled.li`
   align-items: center;
   justify-content: center;
   ${(props) =>
-    props.menuColorStateMain === true ? "color: #ff8477" : "color: black;"}
+    props.menuColorStateMain === true ? "color: #FEC85C;" : "color: black;"}
   ${(props) =>
-    props.menuColorStateList === true ? "color: #ff8477" : "color: black;"}
+    props.menuColorStateList === true ? "color: #FEC85C;" : "color: black;"}
   ${(props) =>
-    props.menuColorStateMyPage === true ? "color: #ff8477" : "color: black;"}
+    props.menuColorStateMyPage === true ? "color: #FEC85C;" : "color: red;"}
 
   :hover {
     color: #ffc85c;

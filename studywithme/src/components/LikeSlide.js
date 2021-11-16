@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,7 +10,7 @@ import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
 
 const LikeSlide = (props) => {
-  const post_list = useSelector((state) => state.post.list.posts);
+  const post_list = useSelector((state) => state.post.list?.posts);
 
   const previous = useCallback(() => slickRef.current.slickPrev(), []);
   const next = useCallback(() => slickRef.current.slickNext(), []);
@@ -18,11 +18,11 @@ const LikeSlide = (props) => {
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
     dots: false, // 점보이게 할거니?
-    infinite: true, // 무한으로 즐기게
+    infinite: post_list?.length <= 2 ? false : true,
     speed: 500,
     slidesToShow: 3, //한번에 몇 장씩 보이게 할거니?
     slidesToScroll: 1, //몇 장씩 넘어갈래?
-    centerMode: true,
+    centerMode: false,
     centerPadding: "0px",
     arrows: false,
     // prevArrow: <Arrow />,
@@ -55,41 +55,48 @@ const LikeSlide = (props) => {
       <Wrap>
         <SlideUpLine>
           <SlideTitle>인기게시글</SlideTitle>
-          <More
-            onClick={() => {
-              history.push("/list");
-            }}
-          >
-            더보기
-          </More>
+          {post_list?.length === 0 ? null : (
+            <More
+              onClick={() => {
+                history.push("/list");
+              }}
+            >
+              더보기
+            </More>
+          )}
         </SlideUpLine>
+        {post_list?.length === 0 ? (
+          <Nothing>표시할 내용이 없습니다.</Nothing>
+        ) : (
+          <StyledSlider ref={slickRef} {...settings}>
+            {post_list?.map((p, idx) => {
+              return (
+                <PostWrap key={idx}>
+                  <CardMain
+                    key={idx}
+                    {...p}
+                    onClick={() => {
+                      history.push(`/detail/${p.postId}`);
+                    }}
+                  />
+                </PostWrap>
+              );
+            })}
+          </StyledSlider>
+        )}
+        {post_list?.length === 0 ? null : (
+          <>
+            <PrevButton onClick={previous}>
+              <PrevIcon />
+              <span className="hidden"></span>
+            </PrevButton>
 
-        <StyledSlider ref={slickRef} {...settings}>
-          {post_list?.map((p, idx) => {
-            return (
-              <PostWrap key={idx}>
-                <CardMain
-                  key={idx}
-                  {...p}
-                  onClick={() => {
-                    history.push(`/detail/${p.postId}`);
-                  }}
-                />
-              </PostWrap>
-            );
-          })}
-        </StyledSlider>
-        <>
-          <PrevButton onClick={previous}>
-            <PrevIcon />
-            <span className="hidden"></span>
-          </PrevButton>
-
-          <NextButton onClick={next}>
-            <NextIcon />
-            <span className="hidden"></span>
-          </NextButton>
-        </>
+            <NextButton onClick={next}>
+              <NextIcon />
+              <span className="hidden"></span>
+            </NextButton>
+          </>
+        )}
       </Wrap>
     </React.Fragment>
   );
@@ -165,6 +172,14 @@ const More = styled.div`
   }
 `;
 
+const Nothing = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const PostWrap = styled.div`
   width: 100px;
   height: 100px;
@@ -173,13 +188,13 @@ const PostWrap = styled.div`
 //슬라이더 css부분
 const StyledSlider = styled(Slider)`
   .slick-list {
-    width: 100%;
+    width: 95%;
     height: 50%;
     margin: 0 auto;
   }
 
   .slick-slide div {
-    /* cursor: pointer; */
+    cursor: pointer;
     /* height: 20%; */
   }
 
@@ -191,7 +206,7 @@ const StyledSlider = styled(Slider)`
   .slick-track {
     /* overflow-x: hidden; */
   }
-
+  /* 
   .slick-arrow {
     z-index: 10;
     width: 50px;
@@ -218,7 +233,7 @@ const StyledSlider = styled(Slider)`
   .slick-next {
     top: 40%;
     right: 30px;
-  }
+  } */
 `;
 
 export default LikeSlide;
