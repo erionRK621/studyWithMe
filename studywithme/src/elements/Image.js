@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 // Image 함수형 컴포넌트를 만들어 준다.
 const Image = (props) => {
-  const { shape, src, size, _onClick, borderRadius, paddingTop } = props;
+  const { shape, src, size, _onClick, borderRadius, paddingTop, className} = props;
 
   const styles = {
     src: src,
@@ -22,7 +22,7 @@ const Image = (props) => {
 
   if (shape === "rectangle") {
     return (
-      <AspectOutter>
+      <AspectOutter className={className} borderRadius={borderRadius}>
         <AspectInner {...styles} onClick={_onClick}></AspectInner>
       </AspectOutter>
     );
@@ -58,6 +58,7 @@ const ImageDefault = styled.div`
 const AspectOutter = styled.div`
   width: auto;
   min-width: 100px;
+  ${(props)=>props.borderRadius ? `border-radius:${props.borderRadius};` : null}
 `;
 
 const AspectInner = styled.div`
