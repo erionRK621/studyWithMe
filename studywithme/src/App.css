@@ -29,3 +29,12 @@
   opacity: .5;
   cursor: pointer;
 }
+
+.card .img{
+  /* transition-duration: 1s; */
+  overflow: hidden;
+}
+.card:hover .img > div {
+  transition: all 0.3s ease-in-out;
+  transform: scale(1.1);
+}

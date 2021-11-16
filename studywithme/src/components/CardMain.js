@@ -10,15 +10,13 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const Post = (props) => {
-  const dispatch = useDispatch();
-  console.log(props);
-
   return (
     <PostContainer>
       <Grid bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
         <Grid is_flex></Grid>
         <Grid>
           <Image
+            className="img"
             shape="rectangle"
             src={`${process.env.REACT_APP_IMAGE_URI}/${props.imageCover}`}
             paddingTop="65%"
@@ -36,7 +34,7 @@ const Post = (props) => {
               onClick={() => {
                 history.push("/mypage/" + props.userId);
               }}
-              src={`${process.env.REACT_APP_API_URI}/${props.avatarUrl}`}
+              src={`${process.env.REACT_APP_IMAGE_URI}/${props.avatarUrl}`}
             />
             <Nickname
               onClick={() => {
