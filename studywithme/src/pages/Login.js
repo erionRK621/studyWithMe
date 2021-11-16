@@ -39,9 +39,17 @@ const Login = () => {
     const onClickLogin = () => {
         console.log("로그인 실행");
         console.log("loginInputs", loginInputs);
-        // 이메일 정규표현식 부합 여부 확인
-        // 비밀번호 입력 여부 및 형식 확인
-        dispatch(userActions.loginMiddleware(loginInputs));
+        if (loginInputs.email === '') {
+            window.alert("이메일을 입력해주세요");
+        }
+        else if (loginInputs.password === '') {
+            window.alert("비밀번호를 입력해주세요");
+        }
+        // 이메일 규칙 부합 여부 확인
+        // 비밀번호 규칙 부합 여부 확인
+        else {
+            dispatch(userActions.loginMiddleware(loginInputs));
+        }
     }
 
     const onClickToSignUpPage = () => {
