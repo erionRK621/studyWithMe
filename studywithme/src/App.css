@@ -9,7 +9,7 @@
   right:3%;
   color: #ffe400;
   opacity: .9;
-  z-index:10000;
+  z-index:2;
 }
 .like:hover {
   opacity: .5;
