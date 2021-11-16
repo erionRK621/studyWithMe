@@ -10,6 +10,8 @@ import Image from "../elements/Image";
 // icon
 import { ReactComponent as PostLikeOff } from "../icon/postLikeOff.svg";
 import { ReactComponent as PostLikeOn } from "../icon/postLikeOn.svg";
+import { ReactComponent as BookmarkCntIcon } from "../icon/cardBookmarkCntIcon.svg";
+import { ReactComponent as LikeCntIcon } from "../icon/cardLikeCntIcon.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -41,10 +43,12 @@ const Post = (props) => {
           </Text>
         </Grid>
         <Grid is_flex justify="start" margin="7px 0px 0px 0px">
-          <Text marginRight="20px" color="#aaaaaa">
-            좋아요:{props.likeCnt}
+          <LikeCntIcon />
+          <Text margin="0px 20px 0px 5px" color="#aaaaaa">
+            {props.likeCnt}
           </Text>
-          <Text color="#aaaaaa">북마크:{props.bookCnt}</Text>
+          <BookmarkCntIcon />
+          <Text margin="0px 20px 0px 5px" color="#aaaaaa">{props.bookCnt}</Text>
         </Grid>
       </Grid>
       {props.isLiked ? (
