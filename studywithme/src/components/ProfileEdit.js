@@ -12,7 +12,6 @@ dotenv.config();
 export const ProfileEdit = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const userId = useSelector((state) => state.user.user?.userId);
-  console.log(userInfo.avatarUrl);
 
   const [userPic, setUserPic] = React.useState(
     `${process.env.REACT_APP_IMAGE_URI}/${userInfo.avatarUrl}`
@@ -22,7 +21,6 @@ export const ProfileEdit = () => {
   const [selectedFile, setSelectedFile] = React.useState(null);
 
   const nicknameCheckInput = { nickname: nickname };
-  console.log("닉네임", nickname);
 
   const changeNickname = (e) => {
     setNickname(e.target.value);
@@ -73,7 +71,7 @@ export const ProfileEdit = () => {
   };
 
   useEffect(() => {
-    dispatch(userActions.getUserDB());
+    dispatch(userActions.getUserDB(userId));
   }, []);
   return (
     <React.Fragment>
@@ -154,6 +152,7 @@ const InputWrap = styled.div`
 const Label = styled.div`
   margin: auto 0;
   min-width: 80px;
+  font-size: 16px;
 `;
 const Line = styled.div`
   display: flex;

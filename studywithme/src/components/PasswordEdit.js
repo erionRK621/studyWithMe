@@ -12,6 +12,7 @@ export const PasswordEdit = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
   const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo.avatarUrl}`;
+  const userId = useSelector((state) => state.user.userInfo.userId);
 
   const [passwordOld, setPasswordOld] = useState("");
   const [passwordNew, setPasswordNew] = useState("");
@@ -41,7 +42,7 @@ export const PasswordEdit = () => {
   };
 
   useEffect(() => {
-    dispatch(userActions.getUserDB());
+    dispatch(userActions.getUserDB(userId));
   }, []);
 
   return (
