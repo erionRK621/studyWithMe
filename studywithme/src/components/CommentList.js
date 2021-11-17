@@ -13,13 +13,15 @@ import Image from "../elements/Image";
 import Text from "../elements/Text";
 import Button from "../elements/Button";
 import time from "../shared/time";
+import Pagination from "../shared/Pagination";
 const CommentList = (props) => {
   const postId = props.postId;
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user?.isLoggedIn);
-  const comment = useSelector((state) => state.comment.list);
+  const comment = useSelector((state) => state.comment);
   const user = useSelector((state) => state.user.user);
   const userId = user?.userId;
+
   const deleteComment = (commentId) => {
     if (window.confirm("삭제하시겠습니까?") === true) {
       dispatch(commentActions.deleteCommentMiddleware(postId, commentId));
@@ -39,17 +41,15 @@ const CommentList = (props) => {
     }
     dispatch(commentActions.addCommentLikeMiddleWare(postId, commentId));
   };
-  const changePage = (number) => {
-    console.log(number);
-  };
+  const [page, setPage] = React.useState(1);
   useEffect(() => {
-    dispatch(commentActions.getCommentMiddleware(postId));
-  }, []);
+    dispatch(commentActions.getCommentMiddleware(postId,page));
+  }, [page]);
 
   return (
     <React.Fragment>
       <FlexGrid direction="column" justify="center" margin="10px 0px">
-        {comment.map((c, idx) => {
+        {comment.list.map((c, idx) => {
           return (
             <FlexGrid
               key={c.commentId}
@@ -117,30 +117,7 @@ const CommentList = (props) => {
           );
         })}
         <FlexGrid align="center" margin="auto">
-          <Page
-            className="textButton"
-            onClick={() => {
-              changePage(1);
-            }}
-          >
-            1
-          </Page>
-          <Page
-            className="textButton"
-            onClick={() => {
-              changePage(2);
-            }}
-          >
-            2
-          </Page>
-          <Page
-            className="textButton"
-            onClick={() => {
-              changePage(3);
-            }}
-          >
-            3
-          </Page>
+          <Pagination pageCnt={comment.cmtsNumber}/>
         </FlexGrid>
       </FlexGrid>
     </React.Fragment>
@@ -158,7 +135,5 @@ const FlexGrid = styled.div`
   ${(props) => (props.padding ? `padding:${props.padding};` : null)};
   margin-top: ${(props) => props.marginTop};
 `;
-const Page = styled.p`
-  margin: 5px;
-`;
+
 export default CommentList;

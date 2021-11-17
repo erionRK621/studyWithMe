@@ -55,12 +55,13 @@ const addCommentMiddleware = (postId, textContent) => {
 };
 
 // 댓글 조회
-const getCommentMiddleware = (postId) => {
+const getCommentMiddleware = (postId,page) => {
   return function (dispatch, getState, { history }) {
     apis
-      .getCommentAxios(postId)
+      .getCommentAxios(postId,page)
       .then((res) => {
-        dispatch(getComment(res.data.respondComments));
+        console.log(res.data.cmtsList);
+        dispatch(getComment(res.data.cmtsList));
       })
       .catch((err) => {
         console.log(err);

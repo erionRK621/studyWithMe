@@ -5,6 +5,7 @@ import { ImCross } from "react-icons/im";
 import styled from "styled-components";
 import { history } from "../redux/configStore";
 
+import Input from "../elements/Input";
 import Text from "../elements/Text";
 import CardPost from "../components/CardPost";
 import SelectBox from "../components/SelectBox";
@@ -34,12 +35,16 @@ const PostList = (props) => {
   const queryStudyMate = getQueryString.includes("&categoryStudyMate=")
     ? decodeURI(getQueryString.split("&categoryStudyMate=")[1].split("&")[0])
     : null;
+  const queryKeyword = getQueryString.includes("&keyword=")
+    ? decodeURI(getQueryString.split("&keyword=")[1].split("&")[0])
+    : null;
 
   // 카테고리 초기화
   const [interestVal, setInterestVal] = useState(
     queryInterest ? queryInterest : ""
   );
   const [spaceVal, setSpaceVal] = useState(querySpace ? querySpace : "");
+  const [keyword, setKeyword] = useState(queryKeyword ? queryKeyword : "");
   const [studyMateVal, setStudyMateVal] = useState(
     queryStudyMate ? queryStudyMate : ""
   );
@@ -48,6 +53,7 @@ const PostList = (props) => {
     { value: interestVal, func: setInterestVal },
     { value: spaceVal, func: setSpaceVal },
     { value: studyMateVal, func: setStudyMateVal },
+    { value: keyword, func: setKeyword },
   ];
   const selectArray = _selectArray.filter((s, idx) => {
     if (s.value !== "") {
@@ -66,14 +72,29 @@ const PostList = (props) => {
     setInterestVal(e.target.value);
   };
 
+  const searchKeyword = (e) => {
+    setKeyword(e.target.value);
+  };
+
+  // 키워드 검색 이벤트
+  const onEnterKeywordInput = () => {
+    let setQueryString = `${
+      interestVal ? "&categoryInterest=" + interestVal : ""
+    }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
+      studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
+    }&page=1${keyword ? "&keyword=" + keyword : ""}`;
+    dispatch(postActions.getFilterPostDB(setQueryString, 0));
+  };
+
   useEffect(() => {
     // category 값이 변할때마다 쿼리스트링 수정 및 api요청
-    let setQueryString = `${interestVal ? "&categoryInterest=" + interestVal : ""
-      }${spaceVal ? "&categorySpace=" + spaceVal : ""}${studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-      }&page=1`;
+    let setQueryString = `${
+      interestVal ? "&categoryInterest=" + interestVal : ""
+    }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
+      studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
+    }&page=1${keyword ? "&keyword=" + keyword : ""}`;
     dispatch(postActions.getFilterPostDB(setQueryString, 0));
   }, [interestVal, spaceVal, studyMateVal]);
-
   return (
     <Wrap>
       <SelectGrid>
@@ -89,7 +110,19 @@ const PostList = (props) => {
           _value={studyMateVal}
         />
       </SelectGrid>
+
       <SelectedGrid>
+        <input
+          onSubmit={onEnterKeywordInput}
+          onChange={searchKeyword}
+          value={keyword}
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onEnterKeywordInput();
+            }
+          }}
+        />
+        <button onClick={onEnterKeywordInput}>검색</button>
         {selectArray.map((filter, idx) => {
           return (
             <Selected key={idx}>
@@ -109,6 +142,7 @@ const PostList = (props) => {
               setInterestVal("");
               setSpaceVal("");
               setStudyMateVal("");
+              setKeyword("");
             }}
             color="#FFC85C"
           >
@@ -124,13 +158,14 @@ const PostList = (props) => {
           interestVal={interestVal}
           spaceVal={spaceVal}
           studyMateVal={studyMateVal}
+          keyword={keyword}
           callNext={(page, interestVal, spaceVal, studyMateVal) => {
-            let setQueryString = `${interestVal ? "&categoryInterest=" + interestVal : ""
-              }${spaceVal ? "&categorySpace=" + spaceVal : ""}${studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-              }&page=${page + 1}`;
-            dispatch(
-              postActions.getFilterPostDB(setQueryString, page)
-            );
+            let setQueryString = `${
+              interestVal ? "&categoryInterest=" + interestVal : ""
+            }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
+              studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
+            }&page=${page + 1}${keyword ? "&keyword=" + keyword : ""}`;
+            dispatch(postActions.getFilterPostDB(setQueryString, page));
           }}
         >
           {post_list.map((p, idx) => {

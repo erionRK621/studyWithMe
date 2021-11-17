@@ -19,7 +19,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const PostWrite = (props) => {
-  const inputFile = useRef();
   if (!localStorage.getItem("user")) {
     window.alert("로그인을 먼저 해주세요");
     history.push("/login");
