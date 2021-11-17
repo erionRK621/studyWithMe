@@ -45,8 +45,8 @@ const addCommentMiddleware = (postId, textContent) => {
         // const comment = res.data.comment;
         // const nickName = res.data.userNick;
         // const avatarUrl= res.data.avatarUrl;
-        const { comment, nickName, avatarUrl } = res.data;
-        dispatch(addComment(nickName, comment, avatarUrl));
+        const { comment, userNick, avatarUrl } = res.data;
+        dispatch(addComment(userNick, comment, avatarUrl));
       })
       .catch((err) => {
         console.log(err);
@@ -117,6 +117,7 @@ export default handleActions(
           ...action.payload.comment,
           userNickname: action.payload.userNickname,
           avatarUrl: action.payload.avatarUrl,
+          commentLikeCnt:0,
         });
       }),
     [GET_COMMENT]: (state, action) =>

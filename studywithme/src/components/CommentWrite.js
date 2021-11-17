@@ -5,8 +5,9 @@ import Image from "../elements/Image";
 import Input from "../elements/Input";
 import Button from "../elements/Button";
 import { actionCreators as commentActions } from "../redux/modules/comment";
+import { history } from "../redux/configStore";
 const CommentWrite = (props) => {
-  const isLoggedIn = useSelector(state=>state.user?.isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.user?.isLoggedIn);
   const postId = props.postId;
   const dispatch = useDispatch();
   const [comment, setComment] = useState("");
@@ -15,20 +16,43 @@ const CommentWrite = (props) => {
     setComment(e.target.value);
   };
   const registComment = () => {
+    if (!isLoggedIn) {
+      return;
+    }
     dispatch(commentActions.addCommentMiddleware(postId, comment));
     setComment("");
   };
 
+  const noLogIn = () => {
+    history.push("/login");
+  };
+
   return (
     <React.Fragment>
-      <FlexGrid align="center" color="#eeeeee" padding="10px 0px" borderRadius="10px">
+      <FlexGrid
+        align="center"
+        color="#eeeeee"
+        padding="10px 0px"
+        borderRadius="10px"
+        onClick={() => {
+          if (!isLoggedIn) {
+            noLogIn();
+          }
+        }}
+        isLoggedIn={isLoggedIn}
+      >
         <FlexGrid align="center" margin="0px 5px 0px 0px">
-          <Image size="36" src={`${process.env.REACT_APP_IMAGE_URI}/${props.avatarUrl}`}/>
+          <Image
+            size="36"
+            src={`${process.env.REACT_APP_IMAGE_URI}/${props?.avatarUrl}`}
+          />
         </FlexGrid>
         <Input
           border="none"
           _onChange={commentHandler}
-          placeholder={isLoggedIn?"댓글을 입력해주세요.":"로그인 후 이용해주세요."}
+          placeholder={
+            isLoggedIn ? "댓글을 입력해주세요." : "로그인 후 이용해주세요."
+          }
           value={comment}
         />
         <Button
@@ -53,7 +77,14 @@ const FlexGrid = styled.div`
   ${(props) => (props.align ? `align-items:${props.align};` : null)}
   ${(props) => (props.justify ? `justify-content:${props.justify};` : null)}
   ${(props) => (props.padding ? `padding:${props.padding};` : null)}
-  ${(props) => (props.borderRadius? `border-radius:${props.borderRadius}` : null)}
+  ${(props) =>
+    props.borderRadius ? `border-radius:${props.borderRadius}` : null};
+  &:hover {
+    ${(props) => (!props.isLoggedIn ? ` cursor:pointer;` : null)};
+  }
+  &>div>input:hover {
+    ${(props) => (!props.isLoggedIn ? ` cursor:pointer;` : null)};
+    }
 `;
 
 export default CommentWrite;
