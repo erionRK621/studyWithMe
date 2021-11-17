@@ -83,7 +83,7 @@ const Header = (props) => {
         </LogoWrap>
 
         <NavbarMenu menuState={menuState}>
-          <List
+          <ListMain
             menuColorStateMain={menuColorStateMain}
             onClick={() => {
               history.push("/");
@@ -92,8 +92,8 @@ const Header = (props) => {
             // menuColorState={menuColorState}
           >
             메인
-          </List>
-          <List
+          </ListMain>
+          <ListPost
             menuColorStateList={menuColorStateList}
             onClick={() => {
               history.push("/list");
@@ -101,11 +101,11 @@ const Header = (props) => {
             }}
           >
             게시글
-          </List>
+          </ListPost>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
           {/* <InfoList> */}
-          <List
+          <ListMyPage
             menuColorStateMyPage={menuColorStateMyPage}
             onClick={() => {
               history.push("/mypage/" + userId);
@@ -113,7 +113,7 @@ const Header = (props) => {
             }}
           >
             마이페이지
-          </List>
+          </ListMyPage>
           {/* </InfoList> */}
           {/* <InfoList> */}
           <List onClick={onClickLogOut}>로그아웃</List>
@@ -152,20 +152,20 @@ const Header = (props) => {
         </NavbarLogo>
 
         <NavbarMenu menuState={menuState}>
-          <List
+          <ListMain
             onClick={() => {
               history.push("/");
             }}
           >
             메인
-          </List>
-          <List
+          </ListMain>
+          <ListPost
             onClick={() => {
               history.push("/list");
             }}
           >
             게시글
-          </List>
+          </ListPost>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
           {/* <InfoList> */}
@@ -265,19 +265,70 @@ const List = styled.li`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${(props) =>
-    props.menuColorStateMain === true ? "color: #FEC85C;" : "color: black;"}
-  ${(props) =>
-    props.menuColorStateList === true ? "color: #FEC85C;" : "color: black;"}
-  ${(props) =>
-    props.menuColorStateMyPage === true ? "color: #FEC85C;" : "color: red;"}
 
   :hover {
     color: #ffc85c;
     border-radius: 10px;
     cursor: pointer;
   }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+const ListMain = styled.li`
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(props) =>
+    props.menuColorStateMain === true ? "color: #FEC85C;" : "color: black;"}
 
+  :hover {
+    color: #ffc85c;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+const ListPost = styled.li`
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${(props) =>
+    props.menuColorStateList === true ? "color: #FEC85C;" : "color: black;"}
+
+  :hover {
+    color: #ffc85c;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+const ListMyPage = styled.li`
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(props) =>
+    props.menuColorStateMyPage === true ? "color: #FEC85C;" : "color: black;"}
+
+  :hover {
+    color: #ffc85c;
+    border-radius: 10px;
+    cursor: pointer;
+  }
   @media screen and (max-width: 768px) {
     width: 100%;
     text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/

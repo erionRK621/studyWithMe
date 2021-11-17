@@ -35,7 +35,8 @@ const Post = (props) => {
             />
             <Nickname
               className="goMyPage"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 history.push("/mypage/" + props.userId);
               }}
               bold
