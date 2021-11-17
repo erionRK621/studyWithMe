@@ -8,6 +8,7 @@ import User from "./modules/user";
 import Post from "./modules/post";
 import comment from "./modules/comment";
 import Mypage from "./modules/mypage";
+import pagination from "./modules/pagination";
 // import PostWrite from "./modules/postWrite";
 // import Image from "./modules/image";
 
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   post: Post,
   comment: comment,
   mypage: Mypage,
+  pagination: pagination,
   // postWrite: PostWrite,
   // image: Image,
   // image: Image,

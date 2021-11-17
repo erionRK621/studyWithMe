@@ -200,7 +200,7 @@ const deletePostMiddleware = (postId) => {
     apis
       .deletePostAxios(postId)
       .then((res) => {
-        history.push("/");
+        history.goBack();
       })
       .catch((err) => {
         console.log(err);
