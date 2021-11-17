@@ -197,7 +197,7 @@ const Header = (props) => {
           </Write>
           {/* </InfoList> */}
         </NavbarIcon>
-        <Hamberger href="#">
+        <Hamberger>
           <GiHamburgerMenu
             cursor="pointer"
             size="1.7em"
@@ -385,7 +385,7 @@ const InfoList = styled.div`
   }
 `;
 
-const Hamberger = styled.a`
+const Hamberger = styled.div`
   display: none;
   position: absolute; /*소속된 배치와 무관하게 위치 설정*/
   right: 15px; /*우측에서 32px 거리둠*/

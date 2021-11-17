@@ -79,7 +79,7 @@ export const ProfileEdit = () => {
     <React.Fragment>
       <Wrap>
         <NowInfoDiv>
-          <Image style={{ width: "30%" }} size="100" src={userPic}></Image>
+          <Image minWidth="100px" size="100" src={userPic}></Image>
           <NicknameWrap>
             <UserNickname>{userInfo?.nickname}</UserNickname>
             <UploadButton>
@@ -92,10 +92,11 @@ export const ProfileEdit = () => {
           <Label>닉네임변경</Label>
           <Line>
             <Input
+              bgColor="#E0E0E0"
               placeholder={nickname}
               value={nickname}
               _onChange={changeNickname}
-              width="200px"
+              width="150px"
             />
             <Button onClick={onClickNicknameCheck}>닉네임 중복확인</Button>
           </Line>
@@ -110,19 +111,21 @@ export const ProfileEdit = () => {
 
 const Wrap = styled.div`
   width: 100%;
-  margin: auto;
+  margin: 0 auto;
 `;
 
 const NowInfoDiv = styled.div`
   display: flex;
-  margin: 50px;
+  margin: 50px 0 30px 0;
+  justify-content: center;
 `;
 
 const NicknameWrap = styled.div`
-  width: 70%;
-  margin: auto;
+  width: 140px;
+  margin: auto 80px auto 20px;
   display: flex;
   flex-direction: column;
+  font-size: 20px;
 `;
 
 const UploadButton = styled.label`
@@ -139,15 +142,17 @@ const UserNickname = styled.div`
 const ChangePic = styled.div``;
 
 const InputWrap = styled.div`
-  margin: 50px 0 50px 150px;
+  margin: 30px 0 32px 0px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  /* flex-direction: column;
+  align-items: center; */
   /* @media screen and (max-width: 768px) {
     flex-direction: column;
   } */
 `;
 const Label = styled.div`
-  /* margin: auto; */
+  margin: auto 0;
   min-width: 80px;
 `;
 const Line = styled.div`
@@ -156,30 +161,28 @@ const Line = styled.div`
 `;
 
 const Button = styled.button`
-  min-width: 130px;
   height: 45px;
   font-size: 16px;
   background-color: #ffc85c;
   border-radius: 10px;
-  width: 180px;
+  width: 130px;
   border: none;
   padding: 8px 0px;
-  margin-left: 10px;
+  margin-left: 12px;
 `;
 const SubmitWrap = styled.div`
   display: flex;
-  justify-content: start;
-  margin-left: 223px;
+  justify-content: center;
+  /* margin-left: 223px; */
 `;
 
 const Submit = styled.button`
-  min-width: 80px;
   height: 45px;
   font-size: 16px;
   background-color: #ffc85c;
   border-radius: 10px;
-  width: 100px;
+  width: 370px;
   border: none;
-  padding: 8px 0px;
-  margin-left: 5px;
+  padding: 4px 0px;
+  margin-left: 3px;
 `;
