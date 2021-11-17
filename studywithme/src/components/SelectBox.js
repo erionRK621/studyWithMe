@@ -9,6 +9,7 @@ const SelectBox = (props) => {
       { option: "공간", value: "" },
       { option: "집", value: "집" },
       { option: "카페", value: "카페" },
+      { option: "도서관", value: "도서관" },
     ];
   } else if (category === "studyMate") {
     optionData = [
