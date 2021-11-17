@@ -11,7 +11,7 @@ dotenv.config();
 
 const Post = (props) => {
   return (
-    <PostContainer>
+    <PostContainer className="card">
       <Grid bg="#ffffff" margin="0px" _onClick={props.onClick}>
         <Grid is_flex></Grid>
         <Grid>
@@ -31,13 +31,12 @@ const Post = (props) => {
             <Image
               shape="circle"
               size="26"
-              onClick={() => {
-                history.push("/mypage/" + props.userId);
-              }}
               src={`${process.env.REACT_APP_IMAGE_URI}/${props.avatarUrl}`}
             />
             <Nickname
-              onClick={() => {
+              className="goMyPage"
+              onClick={(e) => {
+                e.stopPropagation();
                 history.push("/mypage/" + props.userId);
               }}
               bold

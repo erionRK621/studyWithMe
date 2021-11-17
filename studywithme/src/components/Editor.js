@@ -84,7 +84,7 @@ class MyUploadAdapter {
                 config
               );
               if (response.statusText === "Created") {
-                const downloadURL = `${response.data.path}`;
+                const downloadURL = `${process.env.REACT_APP_IMAGE_URI}/${response.data.path}`;
                 resolve({
                   default: downloadURL,
                 });
