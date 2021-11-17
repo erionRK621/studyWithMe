@@ -166,7 +166,7 @@ const PostDetail = (props) => {
           padding="30px"
           margin="20px 0px"
           justify="space-around"
-          color="#F4F4F4"
+          color="rgb(236, 236, 236)"
           borderRadius="10px"
         >
           <FlexGrid>

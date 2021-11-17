@@ -19,9 +19,9 @@ const CommentList = (props) => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.user?.isLoggedIn);
   const comment = useSelector((state) => state.comment);
+  const currentPage=useSelector((state)=>state.pagination.page);
   const user = useSelector((state) => state.user.user);
   const userId = user?.userId;
-
   const deleteComment = (commentId) => {
     if (window.confirm("삭제하시겠습니까?") === true) {
       dispatch(commentActions.deleteCommentMiddleware(postId, commentId));
@@ -43,8 +43,8 @@ const CommentList = (props) => {
   };
   const [page, setPage] = React.useState(1);
   useEffect(() => {
-    dispatch(commentActions.getCommentMiddleware(postId,page));
-  }, [page]);
+    dispatch(commentActions.getCommentMiddleware(postId,currentPage));
+  }, [currentPage]);
 
   return (
     <React.Fragment>
@@ -117,7 +117,7 @@ const CommentList = (props) => {
           );
         })}
         <FlexGrid align="center" margin="auto">
-          <Pagination pageCnt={comment.cmtsNumber}/>
+          <Pagination pageCnt={comment.cmtsNumber} />
         </FlexGrid>
       </FlexGrid>
     </React.Fragment>
