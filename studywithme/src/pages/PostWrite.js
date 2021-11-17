@@ -61,7 +61,8 @@ const PostWrite = (props) => {
     // 미리보기를 위해 file을 읽어온다
     if (file && file.type.match("image.*")) {
       reader.readAsDataURL(file);
-    } else {
+    }
+    else {
       setPreview("");
     }
 
@@ -175,6 +176,7 @@ const PostWrite = (props) => {
     </>
   );
 };
+
 const FlexGrid = styled.div`
   display: flex;
   max-width: 750px;
