@@ -186,9 +186,12 @@ const PostList = (props) => {
   );
 };
 const Wrap = styled.div`
-  max-width: 1090px;
+  max-width: 1136px;
   margin: auto;
   padding: 20px;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 `;
 const GridWrap = styled.div`
   width: 100%;
