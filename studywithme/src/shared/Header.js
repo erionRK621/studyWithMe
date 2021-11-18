@@ -209,7 +209,7 @@ const Navbar = styled.div`
   display: flex;
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
   background-color: white;
-  padding: 8px 12px;
+  padding: 10px 40px;
   max-width: 1256px;
   margin: auto;
 
