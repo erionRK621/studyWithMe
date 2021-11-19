@@ -132,6 +132,7 @@ const getDetailPostDB = (postId) => {
     apis
       .getDetailPost(postId)
       .then((res) => {
+        console.log("res", res);
         const isBookmarked = res.data.isBookmarked;
         const isLiked = res.data.isLiked;
         const isFollowing = res.data.isFollowing;
@@ -159,8 +160,8 @@ const getFilterPostDB = (queryString, currentPage) => {
   return function (dispatch, getState, { history }) {
     let totalPage = getState().post.totalPage;
     // totalPage가 0이면 1로 변경 (게시물이 없을때 totalPage가 0이 돼서 다음 필터가 안먹힘)
-    if(totalPage<=0) {
-      totalPage=1;
+    if (totalPage <= 0) {
+      totalPage = 1;
     }
     if (currentPage >= totalPage) {
       return;
@@ -374,7 +375,7 @@ export default handleActions(
       }),
     [GET_FILTER_POST]: (state, action) =>
       produce(state, (draft) => {
-        if(action.payload.currentPage===1) {
+        if (action.payload.currentPage === 1) {
           draft.filterList = action.payload.post_list;
         } else {
           draft.filterList.push(...action.payload.post_list);

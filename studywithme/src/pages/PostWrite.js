@@ -239,7 +239,7 @@ const PostWrite = (props) => {
                   crop={crop}
                   rotation={rotation}
                   zoom={zoom}
-                  aspect={16 / 9}
+                  aspect={2 / 1}
                   onCropChange={setCrop}
                   onZoomChange={setZoom}
                   onCropComplete={onCropComplete}
