@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
 
 import { ProfileEdit } from "../components/ProfileEdit";
 import { PasswordEdit } from "../components/PasswordEdit";
-import Header from "../shared/Header";
 
 const UserEdit = (props) => {
   const userId = props.match.params.id;
-
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
   const [passwordEditState, setPasswordEditState] = useState(true);
 
   const showProfileEdit = () => {
@@ -17,6 +18,7 @@ const UserEdit = (props) => {
   const showPasswordEdit = () => {
     setPasswordEditState(false);
   };
+
   return (
     <React.Fragment>
       {/* <HeaderMenu>
