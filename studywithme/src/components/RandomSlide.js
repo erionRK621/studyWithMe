@@ -58,6 +58,7 @@ const RandomSlide = (props) => {
             <More
               onClick={() => {
                 history.push("/list");
+                window.scrollTo(0, 0);
               }}
             >
               더보기
