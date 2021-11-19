@@ -78,7 +78,7 @@ Post.defaultProps = {
 const PostContainer = styled.div`
   background-color: white;
   width: 100%;
-  max-width: 350px;
+  max-width: 358px;
   margin-top: 30px;
   border-radius: 5px;
   z-index: 1;

@@ -17,9 +17,9 @@ const addComment = createAction(
   })
 );
 
-const getComment = createAction(GET_COMMENT, (comment, cmtsNumber) => ({
+const getComment = createAction(GET_COMMENT, (comment, totalPg) => ({
   comment,
-  cmtsNumber,
+  totalPg,
 }));
 const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
   commentId,
@@ -40,7 +40,7 @@ const DeleteCommentLike = createAction(
 );
 const initialState = {
   list: [],
-  cmtsNumber:1,
+  totalPg:1,
 };
 
 // 댓글 추가
@@ -67,8 +67,7 @@ const getCommentMiddleware = (postId, page) => {
     apis
       .getCommentAxios(postId, page)
       .then((res) => {
-        console.log(res.data.cmtsNumber);
-        dispatch(getComment(res.data.cmtsList, res.data.cmtsNumber));
+        dispatch(getComment(res.data.cmtsList, res.data.totalPg));
       })
       .catch((err) => {
         console.log(err);
@@ -131,7 +130,7 @@ export default handleActions(
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
         draft.list = action.payload.comment;
-        draft.cmtsNumber=action.payload.cmtsNumber;
+        draft.totalPg=action.payload.totalPg;
       }),
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {

@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { useSelector, useDispatch } from "react-redux";
-import { ImCross } from "react-icons/im";
 import styled from "styled-components";
 import { history } from "../redux/configStore";
 
-import Input from "../elements/Input";
 import Text from "../elements/Text";
 import CardPost from "../components/CardPost";
 import SelectBox from "../components/SelectBox";
@@ -13,6 +11,7 @@ import InfinityScroll from "../shared/InfinityScroll";
 
 //icon
 import { ReactComponent as Cross } from "../icon/cross.svg";
+import { ReactComponent as Search } from "../icon/searchIcon.svg";
 
 const PostList = (props) => {
   const dispatch = useDispatch();
@@ -38,16 +37,22 @@ const PostList = (props) => {
   const queryKeyword = getQueryString.includes("&keyword=")
     ? decodeURI(getQueryString.split("&keyword=")[1].split("&")[0])
     : null;
+  const querySort = getQueryString.includes("&sort=")
+    ? decodeURI(getQueryString.split("&sort=")[1].split("&")[0])
+    : null;
 
   // 카테고리 초기화
   const [interestVal, setInterestVal] = useState(
     queryInterest ? queryInterest : ""
   );
   const [spaceVal, setSpaceVal] = useState(querySpace ? querySpace : "");
-  const [keyword, setKeyword] = useState(queryKeyword ? queryKeyword : "");
   const [studyMateVal, setStudyMateVal] = useState(
     queryStudyMate ? queryStudyMate : ""
   );
+  const [sortVal, setSortVal] = useState(querySort ? querySort : "");
+  const [keywordInput, setKeywordInput] = useState("");
+  const [keyword, setKeyword] = useState(queryKeyword ? queryKeyword : "");
+
   const post_list = useSelector((state) => state.post.filterList);
   const _selectArray = [
     { value: interestVal, func: setInterestVal },
@@ -60,8 +65,10 @@ const PostList = (props) => {
       return s;
     }
   });
-
   // select box 이벤트
+  const sort = (e) => {
+    setSortVal(e.target.value);
+  };
   const space = (e) => {
     setSpaceVal(e.target.value);
   };
@@ -72,32 +79,44 @@ const PostList = (props) => {
     setInterestVal(e.target.value);
   };
 
-  const searchKeyword = (e) => {
-    setKeyword(e.target.value);
+  const changeKeyword = (e) => {
+    setKeywordInput(e.target.value);
   };
 
   // 키워드 검색 이벤트
   const onEnterKeywordInput = () => {
-    let setQueryString = `${
-      interestVal ? "&categoryInterest=" + interestVal : ""
-    }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
-      studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-    }&page=1${keyword ? "&keyword=" + keyword : ""}`;
-    dispatch(postActions.getFilterPostDB(setQueryString, 0));
+    setKeyword(keywordInput);
   };
 
   useEffect(() => {
-    // category 값이 변할때마다 쿼리스트링 수정 및 api요청
+    // 필터, 검색어, 정렬이 변할때마다 쿼리스트링 수정 및 api요청
     let setQueryString = `${
       interestVal ? "&categoryInterest=" + interestVal : ""
     }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
       studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-    }&page=1${keyword ? "&keyword=" + keyword : ""}`;
+    }${keyword ? "&keyword=" + keyword : ""}&page=1${
+      sortVal ? "&sort=" + sortVal : ""
+    }`;
     dispatch(postActions.getFilterPostDB(setQueryString, 0));
-  }, [interestVal, spaceVal, studyMateVal]);
+  }, [dispatch, keyword, interestVal, spaceVal, studyMateVal, sortVal]);
   return (
     <Wrap>
+      <SearchGrid>
+        <Search />
+        <SearchInput
+          onSubmit={onEnterKeywordInput}
+          onChange={changeKeyword}
+          value={keywordInput}
+          placeholder="내가 관심 있는 주제를 입력해보세요."
+          onKeyPress={(e) => {
+            if (e.key === "Enter") {
+              onEnterKeywordInput();
+            }
+          }}
+        />
+      </SearchGrid>
       <SelectGrid>
+        <SelectBox category="sort" _onChange={sort} _value={sortVal} />
         <SelectBox
           category="interest"
           _onChange={interest}
@@ -111,45 +130,37 @@ const PostList = (props) => {
         />
       </SelectGrid>
 
-      <SelectedGrid>
-        <input
-          onSubmit={onEnterKeywordInput}
-          onChange={searchKeyword}
-          value={keyword}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              onEnterKeywordInput();
-            }
-          }}
-        />
-        <button onClick={onEnterKeywordInput}>검색</button>
-        {selectArray.map((filter, idx) => {
-          return (
-            <Selected key={idx}>
-              <Text margin="0px 4px">{filter.value}</Text>
-              <Cross
-                className="iconButton"
-                onClick={() => {
-                  filter.func("");
-                }}
-              />
-            </Selected>
-          );
-        })}
-        {selectArray.length > 0 ? (
-          <ButtonText
-            onClick={() => {
-              setInterestVal("");
-              setSpaceVal("");
-              setStudyMateVal("");
-              setKeyword("");
-            }}
-            color="#FFC85C"
-          >
-            초기화
-          </ButtonText>
-        ) : null}
-      </SelectedGrid>
+      {selectArray.length > 0 ? (
+        <SelectedGrid>
+          {selectArray.map((filter, idx) => {
+            return (
+              <Selected key={idx}>
+                <Text margin="0px 4px">{filter.value}</Text>
+                <Cross
+                  className="iconButton"
+                  onClick={() => {
+                    filter.func("");
+                  }}
+                />
+              </Selected>
+            );
+          })}
+          {selectArray.length > 0 ? (
+            <ButtonText
+              onClick={() => {
+                setInterestVal("");
+                setSpaceVal("");
+                setStudyMateVal("");
+                setKeyword("");
+              }}
+              color="#FFC85C"
+            >
+              초기화
+            </ButtonText>
+          ) : null}
+        </SelectedGrid>
+      ) : null}
+
       <GridWrap>
         <InfinityScroll
           totalPage={totalPage}
@@ -164,7 +175,9 @@ const PostList = (props) => {
               interestVal ? "&categoryInterest=" + interestVal : ""
             }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
               studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-            }&page=${page + 1}${keyword ? "&keyword=" + keyword : ""}`;
+            }&page=${page + 1}${keyword ? "&keyword=" + keyword : ""}${
+              sortVal ? "&sort=" + sortVal : ""
+            }`;
             dispatch(postActions.getFilterPostDB(setQueryString, page));
           }}
         >
@@ -186,7 +199,7 @@ const PostList = (props) => {
   );
 };
 const Wrap = styled.div`
-  max-width: 1136px;
+  max-width: 1134px;
   margin: auto;
   padding: 20px;
   @media screen and (max-width: 768px) {
@@ -216,6 +229,10 @@ const SelectGrid = styled.div`
   width: 100%;
   display: flex;
   padding-left: 10px;
+  @media screen and (max-width: 768px) {
+    margin: auto;
+    max-width: 358px;
+  }
 `;
 
 const SelectedGrid = styled.div`
@@ -249,5 +266,21 @@ const ButtonText = styled.p`
     text-decoration: underline;
     cursor: pointer;
   }
+`;
+const SearchInput = styled.input`
+  margin-left: 24px;
+  border: none;
+  background-color: rgba(221, 221, 221, 0);
+  width: 100%;
+  &:focus {
+    outline: none;
+  }
+`;
+const SearchGrid = styled.div`
+  background-color: #ececec;
+  margin-bottom: 15px;
+  display: flex;
+  padding: 8px 30px;
+  border-radius: 50px;
 `;
 export default PostList;
