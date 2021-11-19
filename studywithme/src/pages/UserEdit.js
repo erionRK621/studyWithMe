@@ -7,8 +7,8 @@ import { PasswordEdit } from "../components/PasswordEdit";
 
 const UserEdit = (props) => {
   const userId = props.match.params.id;
-  const user = useSelector((state) => state.user.user);
-  console.log(user);
+  const userType = useSelector((state) => state.user.userInfo.provider);
+  console.log(userType);
   const [passwordEditState, setPasswordEditState] = useState(true);
 
   const showProfileEdit = () => {
@@ -21,22 +21,16 @@ const UserEdit = (props) => {
 
   return (
     <React.Fragment>
-      {/* <HeaderMenu>
-        <li>
-          <MenuItem onClick={showProfileEdit}>프로필 수정</MenuItem>
-        </li>
-        <li>
-          <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
-        </li>
-      </HeaderMenu> */}
       <Wrap>
         <MenuWrap>
           <li>
             <MenuItem onClick={showProfileEdit}>프로필 수정</MenuItem>
           </li>
-          <li>
-            <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
-          </li>
+          {userType === "local" ? (
+            <li>
+              <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
+            </li>
+          ) : null}
         </MenuWrap>
 
         <ContentDiv>

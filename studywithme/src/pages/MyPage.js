@@ -20,7 +20,8 @@ const MyPage = (props) => {
   // 현재 조회 중인 마이페이지의 사용자 아이디
   const myPageUserId = props.match.params.id;
   const isMe = logInUserId === myPageUserId ? true : false;
-
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
   // console.log("logInUserId", logInUserId, typeof (logInUserId));
   // console.log("myPageUserId", myPageUserId, typeof (myPageUserId));
   // console.log("isMe", isMe);
