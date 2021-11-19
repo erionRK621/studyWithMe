@@ -2,7 +2,17 @@ import React from "react";
 import _ from "lodash";
 
 const InfinityScroll = (props) => {
-  const { children, totalPage, callNext, loading, currentPage, interestVal,spaceVal,studyMateVal } = props;
+  const {
+    children,
+    totalPage,
+    callNext,
+    loading,
+    currentPage,
+    interestVal,
+    spaceVal,
+    studyMateVal,
+    keyword,
+  } = props;
   const _handleScroll = _.throttle(() => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
@@ -10,11 +20,17 @@ const InfinityScroll = (props) => {
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
     if (scrollHeight - innerHeight - scrollTop < 200) {
-      callNext(currentPage,interestVal,spaceVal,studyMateVal);
+      callNext(currentPage, interestVal, spaceVal, studyMateVal, keyword);
     }
   }, 300);
 
-  const handleScroll = React.useCallback(_handleScroll, [currentPage,interestVal,spaceVal,studyMateVal]);
+  const handleScroll = React.useCallback(_handleScroll, [
+    currentPage,
+    interestVal,
+    spaceVal,
+    studyMateVal,
+    keyword,
+  ]);
   React.useEffect(() => {
     if (loading) {
       return;

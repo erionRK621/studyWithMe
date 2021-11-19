@@ -135,38 +135,32 @@ const PostsTab = styled.div`
   align-items: center;
   margin: auto;
   font-size: 20px;
-  color: ${props => {
+  color: ${(props) => {
     const postsTabSelected = props.postsTabSelected;
 
     if (postsTabSelected === true) {
-      return '#ffc85c';
-    }
-    else {
-      return '#9e9d9d';
+      return "#ffc85c";
+    } else {
+      return "#9e9d9d";
     }
   }};
 `;
 
 const BookmarksTab = styled.div`
-cursor: pointer;
-margin: 10px auto;
-display: flex;
-align-items: center;
-font-size: 20px;
-color: ${props => {
+  cursor: pointer;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  color: ${(props) => {
     const postsTabSelected = props.postsTabSelected;
 
     if (postsTabSelected === true) {
-      return '#9e9d9d';
-    }
-    else {
-      return '#ffc85c';
+      return "#9e9d9d";
+    } else {
+      return "#ffc85c";
     }
   }};
-`;
-
-const PostWrap = styled.div`
-width: 100 %;
 `;
 
 export default MyPage;

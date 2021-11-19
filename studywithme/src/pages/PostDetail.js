@@ -33,6 +33,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const PostDetail = (props) => {
+  
   const dispatch = useDispatch();
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
@@ -51,6 +52,7 @@ const PostDetail = (props) => {
   const imageCover = decodeURIComponent(
     `${process.env.REACT_APP_IMAGE_URI}/${post?.imageCover}`
   );
+  console.log(imageCover);
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
 
   const onClickFollow = () => {
@@ -60,7 +62,6 @@ const PostDetail = (props) => {
     }
     dispatch(postActions.followUserMiddleware(postUserId));
   };
-
   const onClickUnfollow = () => {
     if (!isLoggedIn) {
       window.alert("로그인 후 사용해주세요.");
@@ -166,7 +167,7 @@ const PostDetail = (props) => {
           padding="30px"
           margin="20px 0px"
           justify="space-around"
-          color="#F4F4F4"
+          color="rgb(236, 236, 236)"
           borderRadius="10px"
         >
           <FlexGrid>

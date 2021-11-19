@@ -12,6 +12,7 @@ export const PasswordEdit = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
   const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo.avatarUrl}`;
+  const userId = useSelector((state) => state.user.userInfo.userId);
 
   const [passwordOld, setPasswordOld] = useState("");
   const [passwordNew, setPasswordNew] = useState("");
@@ -41,7 +42,7 @@ export const PasswordEdit = () => {
   };
 
   useEffect(() => {
-    dispatch(userActions.getUserDB());
+    dispatch(userActions.getUserDB(userId));
   }, []);
 
   return (
@@ -56,28 +57,34 @@ export const PasswordEdit = () => {
         <InputWrap>
           <Label>이전 비밀번호</Label>
           <Input
+            bgColor="#E0E0E0"
             value={passwordOld}
             type="password"
             placeholder="이전 비밀번호를 입력해주세요"
             _onChange={changePwdOld}
+            width="200px"
           />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호</Label>
           <Input
+            bgColor="#E0E0E0"
             value={passwordNew}
             type="password"
             placeholder="새로운 비밀번호를 입력해주세요"
             _onChange={changePwdNew}
+            width="200px"
           />
         </InputWrap>
         <InputWrap>
           <Label>새 비밀번호 확인</Label>
           <Input
+            bgColor="#E0E0E0"
             value={confirmPasswordNew}
             type="password"
             placeholder="비밀번호를 다시 입력해주세요"
             _onChange={ConfirmPwdNew}
+            width="200px"
           />
         </InputWrap>
       </InputList>
@@ -90,14 +97,16 @@ export const PasswordEdit = () => {
 
 const NowInfoDiv = styled.div`
   display: flex;
-  margin: 50px;
+  margin: 50px 0px 30px 0;
+  justify-content: center;
 `;
 
 const NicknameWrap = styled.div`
-  width: 70%;
-  margin: auto;
+  width: 120px;
+  margin: auto 80px auto 20px;
   display: flex;
   flex-direction: column;
+  font-size: 36px;
 `;
 const UserNickname = styled.div``;
 
@@ -107,20 +116,21 @@ const InputList = styled.div`
 `;
 
 const InputWrap = styled.div`
-  margin: 20px 0;
+  margin: 20px auto;
   display: flex;
-  width: 600px;
+  width: 315px;
 `;
 const Label = styled.div`
-  width: 300px;
+  width: 350px;
   margin: auto;
   text-align: right;
   padding: 0 4px 0 0;
 `;
 const SubmitWrap = styled.div`
   display: flex;
-  justify-content: start;
-  margin-left: 396px;
+  justify-content: center;
+  margin-top: 15px;
+  /* margin: auto; */
 `;
 
 const Submit = styled.button`
@@ -129,7 +139,7 @@ const Submit = styled.button`
   font-size: 16px;
   background-color: #ffc85c;
   border-radius: 10px;
-  width: 100px;
+  width: 320px;
   border: none;
   padding: 8px 0px;
   margin-left: 5px;

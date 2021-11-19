@@ -3,10 +3,11 @@ import styled from "styled-components";
 
 import { ProfileEdit } from "../components/ProfileEdit";
 import { PasswordEdit } from "../components/PasswordEdit";
+import Header from "../shared/Header";
 
 const UserEdit = (props) => {
   const userId = props.match.params.id;
-  console.log(userId);
+
   const [passwordEditState, setPasswordEditState] = useState(true);
 
   const showProfileEdit = () => {
@@ -18,6 +19,14 @@ const UserEdit = (props) => {
   };
   return (
     <React.Fragment>
+      {/* <HeaderMenu>
+        <li>
+          <MenuItem onClick={showProfileEdit}>프로필 수정</MenuItem>
+        </li>
+        <li>
+          <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
+        </li>
+      </HeaderMenu> */}
       <Wrap>
         <MenuWrap>
           <li>
@@ -36,8 +45,21 @@ const UserEdit = (props) => {
   );
 };
 
+// const HeaderMenu = styled.div`
+//   @media screen and (min-width: 768px) {
+//     display: none;
+//   }
+//   @media screen and (max-width: 768px) {
+//     display: flex;
+//     justify-content: space-evenly;
+//   }
+// `;
+
 const Wrap = styled.div`
   display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const MenuWrap = styled.ul`
@@ -45,10 +67,12 @@ const MenuWrap = styled.ul`
   margin: 0;
   padding: 0;
   min-width: 140px;
-  /* background-color: #f1f1f1; */
-  /* position: fixed; */
   height: 100%;
   overflow: none;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    justify-content: space-evenly;
+  }
 `;
 const MenuItem = styled.div`
   display: block;

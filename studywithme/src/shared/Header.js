@@ -104,7 +104,6 @@ const Header = (props) => {
           </ListPost>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
-          {/* <InfoList> */}
           <ListMyPage
             menuColorStateMyPage={menuColorStateMyPage}
             onClick={() => {
@@ -114,14 +113,11 @@ const Header = (props) => {
           >
             마이페이지
           </ListMyPage>
-          {/* </InfoList> */}
-          {/* <InfoList> */}
+
           <List onClick={onClickLogOut}>로그아웃</List>
-          {/* </InfoList> */}
-          {/* <InfoList>
-            <List>알림</List>
-          </InfoList> */}
-          {/* <InfoList> */}
+
+          {/* <List>알림</List> */}
+
           <Write
             onClick={() => {
               history.push("/write");
@@ -129,7 +125,6 @@ const Header = (props) => {
           >
             글쓰기
           </Write>
-          {/* </InfoList> */}
         </NavbarIcon>
         <Hamberger href="#">
           <GiHamburgerMenu
@@ -153,22 +148,25 @@ const Header = (props) => {
 
         <NavbarMenu menuState={menuState}>
           <ListMain
+            menuColorStateMain={menuColorStateMain}
             onClick={() => {
               history.push("/");
+              changeMainColor();
             }}
           >
             메인
           </ListMain>
           <ListPost
+            menuColorStateList={menuColorStateList}
             onClick={() => {
               history.push("/list");
+              changeListColor();
             }}
           >
             게시글
           </ListPost>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
-          {/* <InfoList> */}
           <List
             onClick={() => {
               history.push("/login");
@@ -176,8 +174,7 @@ const Header = (props) => {
           >
             로그인
           </List>
-          {/* </InfoList> */}
-          {/* <InfoList> */}
+
           <List
             onClick={() => {
               history.push("/signup");
@@ -186,8 +183,7 @@ const Header = (props) => {
             <img src={signUpImg} />
             회원가입
           </List>
-          {/* </InfoList> */}
-          {/* <InfoList> */}
+
           <Write
             onClick={() => {
               history.push("/login");
@@ -195,9 +191,8 @@ const Header = (props) => {
           >
             글쓰기
           </Write>
-          {/* </InfoList> */}
         </NavbarIcon>
-        <Hamberger href="#">
+        <Hamberger>
           <GiHamburgerMenu
             cursor="pointer"
             size="1.7em"
@@ -214,7 +209,9 @@ const Navbar = styled.div`
   display: flex;
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
   background-color: white;
-  padding: 8px 12px;
+  padding: 10px 40px;
+  max-width: 1256px;
+  margin: auto;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;
@@ -385,7 +382,7 @@ const InfoList = styled.div`
   }
 `;
 
-const Hamberger = styled.a`
+const Hamberger = styled.div`
   display: none;
   position: absolute; /*소속된 배치와 무관하게 위치 설정*/
   right: 15px; /*우측에서 32px 거리둠*/

@@ -17,23 +17,30 @@ const addComment = createAction(
   })
 );
 
-const getComment = createAction(GET_COMMENT, (comment) => ({ comment }));
+const getComment = createAction(GET_COMMENT, (comment, totalPg) => ({
+  comment,
+  totalPg,
+}));
 const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
   commentId,
 }));
-const addCommentLike = createAction(ADD_COMMENT_LIKE, (isCommentLiked,commentId) => ({
-  isCommentLiked,
-  commentId,
-}));
+const addCommentLike = createAction(
+  ADD_COMMENT_LIKE,
+  (isCommentLiked, commentId) => ({
+    isCommentLiked,
+    commentId,
+  })
+);
 const DeleteCommentLike = createAction(
   DELETE_COMMENT_LIKE,
-  (isCommentLiked,commentId) => ({
+  (isCommentLiked, commentId) => ({
     isCommentLiked,
     commentId,
   })
 );
 const initialState = {
   list: [],
+  totalPg:1,
 };
 
 // 댓글 추가
@@ -55,12 +62,12 @@ const addCommentMiddleware = (postId, textContent) => {
 };
 
 // 댓글 조회
-const getCommentMiddleware = (postId) => {
+const getCommentMiddleware = (postId, page) => {
   return function (dispatch, getState, { history }) {
     apis
-      .getCommentAxios(postId)
+      .getCommentAxios(postId, page)
       .then((res) => {
-        dispatch(getComment(res.data.respondComments));
+        dispatch(getComment(res.data.cmtsList, res.data.totalPg));
       })
       .catch((err) => {
         console.log(err);
@@ -117,12 +124,13 @@ export default handleActions(
           ...action.payload.comment,
           userNickname: action.payload.userNickname,
           avatarUrl: action.payload.avatarUrl,
-          commentLikeCnt:0,
+          commentLikeCnt: 0,
         });
       }),
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
         draft.list = action.payload.comment;
+        draft.totalPg=action.payload.totalPg;
       }),
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
@@ -139,7 +147,7 @@ export default handleActions(
         draft.list[idx] = {
           ...draft.list[idx],
           isCommentLiked: action.payload.isCommentLiked,
-          commentLikeCnt : draft.list[idx].commentLikeCnt+1,
+          commentLikeCnt: draft.list[idx].commentLikeCnt + 1,
         };
       }),
     [DELETE_COMMENT_LIKE]: (state, action) =>
@@ -150,7 +158,7 @@ export default handleActions(
         draft.list[idx] = {
           ...draft.list[idx],
           isCommentLiked: action.payload.isCommentLiked,
-          commentLikeCnt : draft.list[idx].commentLikeCnt-1,
+          commentLikeCnt: draft.list[idx].commentLikeCnt - 1,
         };
       }),
   },
