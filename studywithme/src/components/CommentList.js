@@ -117,7 +117,7 @@ const CommentList = (props) => {
           );
         })}
         <FlexGrid align="center" margin="auto">
-          <Pagination pageCnt={comment.cmtsNumber} />
+          <Pagination totalPg={comment.totalPg} />
         </FlexGrid>
       </FlexGrid>
     </React.Fragment>
