@@ -157,14 +157,18 @@ const getDetailPostDB = (postId) => {
 
 const getFilterPostDB = (queryString, currentPage) => {
   return function (dispatch, getState, { history }) {
-    const totalPage = getState().post.totalPage;
-    console.log(queryString);
+    let totalPage = getState().post.totalPage;
+    // totalPage가 0이면 1로 변경 (게시물이 없을때 totalPage가 0이 돼서 다음 필터가 안먹힘)
+    if(totalPage<=0) {
+      totalPage=1;
+    }
     if (currentPage >= totalPage) {
       return;
     }
     if (!currentPage) {
       currentPage = 0;
     }
+
     dispatch(loading(true));
     currentPage++;
     apis
