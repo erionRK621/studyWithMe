@@ -152,7 +152,8 @@ const PostWrite = (props) => {
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
-    formData.append("imageCover", imageCover);
+    formData.append("coverOriginal", imageCover);
+    formData.append("coverCropped", imageCover);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);

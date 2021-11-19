@@ -8,7 +8,6 @@ import { PasswordEdit } from "../components/PasswordEdit";
 const UserEdit = (props) => {
   const userId = props.match.params.id;
   const user = useSelector((state) => state.user.user);
-  console.log(user);
   const [passwordEditState, setPasswordEditState] = useState(true);
 
   const showProfileEdit = () => {
