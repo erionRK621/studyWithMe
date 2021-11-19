@@ -33,7 +33,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const PostDetail = (props) => {
-  
   const dispatch = useDispatch();
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
@@ -71,26 +70,45 @@ const PostDetail = (props) => {
   };
 
   const onClickAddLike = () => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(postActions.addLikeMiddleware(postId));
   };
 
   const onClickDeleteLike = () => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(postActions.deleteLikeMiddleware(postId));
   };
 
   const onClickAddBookmark = () => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(postActions.addBookmarkMiddleware(postId));
   };
 
   const onClickDeleteBookmark = () => {
+    if (!isLoggedIn) {
+      window.alert("로그인 후 사용해주세요.");
+      history.push("/login");
+    }
     dispatch(postActions.deleteBookmarkMiddleware(postId));
   };
 
   const deletePost = () => {
-    dispatch(postActions.deletePostMiddleware(postId));
+    if (window.confirm("삭제하시겠습니까?") === true) {
+      dispatch(postActions.deletePostMiddleware(postId));
+    }
   };
 
   useEffect(() => {
+    window.scrollTo(0,0);
     dispatch(postActions.getDetailPostDB(postId));
   }, []);
 

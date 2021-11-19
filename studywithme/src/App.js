@@ -35,7 +35,7 @@ function App() {
   // [백엔드] 프론트에게 토큰이 만료되었다는 신호를 보내줌
   // [프론트] 토큰이 더 이상 유효하지 않다는 알림을 유저에게 띄움
   // [프론트] 유효기간이 지난 토큰을 제거하고 자동 로그아웃 시킴
-
+  console.log(!location.includes("/edit"));
   useEffect(() => {
     // 사용자 정보가 리덕스에는 없지만 로컬 스토리지에는 있을 때? SET_USER 실행
     if (!user && userTokenInLocalStorage) {
@@ -49,7 +49,7 @@ function App() {
 
   return (
     <div>
-      {location!=="/write" || location.includes("/edit")? <Header/> : null}
+      {!location.includes("/edit") && location!=="/write" ? <Header/> : null}
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main} />
         <Route path="/signup" exact component={SignUp} />
