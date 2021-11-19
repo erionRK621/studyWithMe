@@ -1,4 +1,4 @@
-import React, { isValidElement, useState, useRef } from "react";
+import React, { isValidElement, useState, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
@@ -10,6 +10,13 @@ import Grid from "../elements/Grid";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
+// Cropper 관련 시작
+import Cropper from 'react-easy-crop'
+import { getCroppedImg } from "../shared/cropImage";
+import Slider from "@material-ui/core/Slider";
+import Button from "@material-ui/core/Button";
+// Cropper 관련 끝
+
 // icon
 import { ReactComponent as InputFile } from "../icon/inputFile.svg";
 import logoImg from "../icon/logo.png";
@@ -20,6 +27,8 @@ dotenv.config();
 
 const PostWrite = (props) => {
   const inputFile = useRef();
+  const dispatch = useDispatch();
+
   if (!localStorage.getItem("user")) {
     window.alert("로그인을 먼저 해주세요");
     history.push("/login");
@@ -28,7 +37,6 @@ const PostWrite = (props) => {
   const post = useSelector((state) => state.post.detail);
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
-  const dispatch = useDispatch();
   const [preview, setPreview] = useState(
     _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${post.imageCover}` : ""
   );
@@ -45,38 +53,106 @@ const PostWrite = (props) => {
   const [title, setTitle] = useState(
     _editMode ? decodeURIComponent(post.title) : ""
   );
-  const [image, setImage] = useState("");
+  const [imageCover, setImageCover] = useState("");
+  const [imageCoverForCrop, setImageCoverForCrop] = useState("");
+
+  // Cropper 관련 시작
+  const [rotation, setRotation] = useState(0)
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+
+  const inputRef = React.useRef();
+
+  const onSelectFile = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log("selectedFile", selectedFile);
+    setImageCover(selectedFile);
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        setImageCoverForCrop(reader.result);
+        // console.log(reader.result);
+        // console.log("image", image);
+      }
+    }
+  }
+
+  const triggerFileSelectedPopUp = () => {
+    // console.log("triggerFileSelectedPopUp 실행");
+    inputRef.current.click();
+  }
+
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }
+
+  const showCroppedImage = useCallback(async () => {
+    try {
+      const croppedImage = await getCroppedImg(
+        imageCoverForCrop,
+        croppedAreaPixels,
+        rotation
+      )
+      // console.log('done', { croppedImage })
+      setCroppedImage(croppedImage)
+      // 파일 객체로 변환
+      urltoFile(croppedImage, 'croppedImage.png', 'image/png')
+        .then(
+          function (file) {
+            // console.log(file);
+            setImageCover(file);
+          }
+        );
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }, [croppedAreaPixels, rotation])
+
+  const urltoFile = (url, filename, mimeType) => {
+    return (fetch(url)
+      .then(function (res) { return res.arrayBuffer(); })
+      .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
+    );
+  }
+  // Cropper 관련 끝
 
   let formData = new FormData();
 
-  // 커버 이미지 로드
-  const selectFile = (e) => {
-    //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-    const request = { imageCover: e.target.files[0] };
-    const file = e.target.files[0];
-    setImage(file);
+  // ----- 원래 커버 이미지 추가 모듈 코드 START -----
+  // // 커버 이미지 로드
+  // const selectFile = (e) => {
+  //   //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
+  //   const file = e.target.files[0];
+  //   // console.log("file", file);
+  //   // setImageCover(file);
+  //   const reader = new FileReader();
 
-    const reader = new FileReader();
+  //   // 미리보기를 위해 file을 읽어온다
+  //   if (file && file.type.match("image.*")) {
+  //     reader.readAsDataURL(file);
+  //   }
+  //   else {
+  //     setPreview("");
+  //   }
 
-    // 미리보기를 위해 file을 읽어온다
-    if (file && file.type.match("image.*")) {
-      reader.readAsDataURL(file);
-    }
-    else {
-      setPreview("");
-    }
+  //   //file이 load 된 후
+  //   reader.onloadend = () => {
+  //     const imagePreview = reader.result;
+  //     //base64로 된 이미지를 가져온다(string형태)
+  //     setPreview(imagePreview);
+  //   };
+  // };
+  // ----- 원래 커버 이미지 추가 모듈 코드 END -----
 
-    //file이 load 된 후
-    reader.onloadend = () => {
-      const imagePreview = reader.result;
-      //base64로 된 이미지를 가져온다(string형태)
-      setPreview(imagePreview);
-    };
-  };
+  console.log("imageCover", imageCover);
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
-    formData.append("imageCover", image);
+    formData.append("imageCover", imageCover);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
@@ -94,7 +170,7 @@ const PostWrite = (props) => {
   };
 
   const editing = () => {
-    formData.append("imageCover", image);
+    formData.append("imageCover", imageCover);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
@@ -120,6 +196,7 @@ const PostWrite = (props) => {
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
+
   return (
     <>
       <Navbar>
@@ -129,6 +206,7 @@ const PostWrite = (props) => {
           _onClick={() => {
             history.push("/");
           }}
+          width="auto"
         >
           <NavbarLogo>
             <img src={logologo} alt="" />
@@ -143,12 +221,76 @@ const PostWrite = (props) => {
           <Write onClick={posting}>작성</Write>
         )}
       </Navbar>
-      <ImageCover src={preview} alt="">
+      {/* ----- 원래 커버 이미지 추가 모듈 코드 START -----  */}
+      {/* <ImageCover src={preview} alt="">
         <UploadButton>
           <InputFile style={{ width: "60px", height: "60px" }} />
           <Upload _onChange={selectFile} display="none" />
         </UploadButton>
-      </ImageCover>
+      </ImageCover> */}
+      {/* ----- 원래 커버 이미지 추가 모듈 코드 END -----  */}
+      <Container>
+        <CropperContainer>
+          {imageCover ?
+            <>
+              <CropperWrap>
+                <Cropper
+                  image={imageCoverForCrop}
+                  crop={crop}
+                  rotation={rotation}
+                  zoom={zoom}
+                  aspect={16 / 9}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </CropperWrap>
+              <SliderWrap>
+                <Slider
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  value={zoom}
+                  onChange={(e, zoom) => {
+                    setZoom(zoom);
+                  }}
+                />
+              </SliderWrap>
+            </>
+            : null
+          }
+        </CropperContainer>
+        <ButtonsContainer>
+          <input
+            type='file'
+            accept='image/*'
+            ref={inputRef}
+            onChange={onSelectFile}
+            style={{ display: "none" }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={triggerFileSelectedPopUp}
+            style={{ marginRight: "10px" }}
+          >
+            이미지 선택
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={showCroppedImage}
+          >
+            크롭 결과 보기
+          </Button>
+        </ButtonsContainer>
+        {/* <ResultContainer>
+          <img
+            src={croppedImage}
+            alt="croppedImage"
+          />
+        </ResultContainer> */}
+      </Container>
       <FlexGrid direction="column" justify="space-evenly">
         <Input
           _onChange={titleChange}
@@ -241,4 +383,46 @@ const Write = styled.li`
     cursor: pointer;
   }
 `;
+
+// Cropper 관련 시작
+const Container = styled.div`
+  height: 100vh;
+  width: 100vw;
+`;
+
+const CropperContainer = styled.div`
+  width: 70%;
+  height: 70%;
+  margin: auto; 
+  // padding: 0px;
+`;
+
+const ButtonsContainer = styled.div`
+  border: 1px solid #f5f5f5;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CropperWrap = styled.div`
+  height: 90%;
+	position: relative;
+`;
+
+const SliderWrap = styled.div`
+  bottom: 100px;
+  width: 60%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  margin: auto;
+`;
+
+const ResultContainer = styled.div`
+  width: 500px;
+  margin: 10px auto;
+`;
+// Cropper 관련 끝
+
 export default PostWrite;
