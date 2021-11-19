@@ -142,9 +142,24 @@ const Header = (props) => {
   else {
     return (
       <Navbar>
-        <NavbarLogo>
-          <img src={logoImg} />
-        </NavbarLogo>
+        <LogoWrap>
+          <NavbarLogo>
+            <img
+              src={logologo}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+          <NavbarLogo>
+            <img
+              src={logoImg}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+        </LogoWrap>
 
         <NavbarMenu menuState={menuState}>
           <ListMain

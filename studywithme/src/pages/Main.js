@@ -12,7 +12,6 @@ import Image from "../elements/Image";
 import RandomSlide from "../components/RandomSlide";
 import LikeSlide from "../components/LikeSlide";
 import FollowSlide from "../components/FollowSlide";
-import TestSlider from "../components/TestSlider";
 
 const Main = (props) => {
   const dispatch = useDispatch();
@@ -20,6 +19,7 @@ const Main = (props) => {
 
   useEffect(() => {
     dispatch(postActions.getPostDB());
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -34,9 +34,7 @@ const Main = (props) => {
             <img src={kkiriText2} />
           </ImgContents2>
         </Banner>
-        {/* <div>
-          <TestSlider></TestSlider>
-        </div> */}
+
         <div>
           <LikeSlide></LikeSlide>
         </div>

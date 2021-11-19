@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
+import NothingSlide from "./NothingSlide";
 
 const FollowSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.followPost);
@@ -59,6 +60,7 @@ const FollowSlide = (props) => {
             <More
               onClick={() => {
                 history.push("/list");
+                window.scrollTo(0, 0);
               }}
             >
               더보기
@@ -66,7 +68,7 @@ const FollowSlide = (props) => {
           )}
         </SlideUpLine>
         {post_list?.length === 0 ? (
-          <Nothing>표시할 내용이 없습니다.</Nothing>
+          <NothingSlide></NothingSlide>
         ) : (
           <StyledSlider ref={slickRef} {...settings}>
             {post_list?.map((p, idx) => {
@@ -173,8 +175,9 @@ const More = styled.div`
   }
 `;
 const Nothing = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 769px;
+  height: 263px;
+  background-color: #9dd0d1;
   display: flex;
   justify-content: center;
   align-items: center;
