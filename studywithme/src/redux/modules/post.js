@@ -132,7 +132,7 @@ const getDetailPostDB = (postId) => {
     apis
       .getDetailPost(postId)
       .then((res) => {
-        console.log("res", res);
+        // console.log("res.data", res.data);
         const isBookmarked = res.data.isBookmarked;
         const isLiked = res.data.isLiked;
         const isFollowing = res.data.isFollowing;

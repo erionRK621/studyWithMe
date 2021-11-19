@@ -36,6 +36,7 @@ const PostDetail = (props) => {
   const dispatch = useDispatch();
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
+  console.log("post", post);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const postUserId = post.userId;
@@ -49,9 +50,8 @@ const PostDetail = (props) => {
 
   const isFollowing = post.isFollowing;
   const imageCover = decodeURIComponent(
-    `${process.env.REACT_APP_IMAGE_URI}/${post?.imageCover}`
+    `${process.env.REACT_APP_IMAGE_URI}/${post?.coverCropped}`
   );
-  console.log(imageCover);
   const content = ReactHtmlParser(decodeURIComponent(post?.contentEditor));
 
   const onClickFollow = () => {
@@ -108,7 +108,7 @@ const PostDetail = (props) => {
   };
 
   useEffect(() => {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     dispatch(postActions.getDetailPostDB(postId));
   }, []);
 
