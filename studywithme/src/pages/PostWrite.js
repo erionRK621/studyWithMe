@@ -53,7 +53,8 @@ const PostWrite = (props) => {
   const [title, setTitle] = useState(
     _editMode ? decodeURIComponent(post.title) : ""
   );
-  const [imageCover, setImageCover] = useState("");
+  const [coverOriginal, setCoverOriginal] = useState("");
+  const [coverCropped, setCoverCropped] = useState("");
   const [imageCoverForCrop, setImageCoverForCrop] = useState("");
 
   // Cropper 관련 시작
@@ -68,7 +69,7 @@ const PostWrite = (props) => {
   const onSelectFile = (e) => {
     const selectedFile = e.target.files[0];
     console.log("selectedFile", selectedFile);
-    setImageCover(selectedFile);
+    setCoverOriginal(selectedFile);
     if (selectedFile) {
       const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
@@ -96,14 +97,15 @@ const PostWrite = (props) => {
         croppedAreaPixels,
         rotation
       )
-      // console.log('done', { croppedImage })
+      console.log('done', { croppedImage })
+      // base64
       setCroppedImage(croppedImage)
       // 파일 객체로 변환
       urltoFile(croppedImage, 'croppedImage.png', 'image/png')
         .then(
           function (file) {
             // console.log(file);
-            setImageCover(file);
+            setCoverCropped(file);
           }
         );
     }
@@ -148,11 +150,10 @@ const PostWrite = (props) => {
   // };
   // ----- 원래 커버 이미지 추가 모듈 코드 END -----
 
-  console.log("imageCover", imageCover);
-
   // 작성버튼 onClick 이벤트
   const posting = () => {
-    formData.append("imageCover", imageCover);
+    formData.append("coverOriginal", coverOriginal);
+    formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
@@ -170,7 +171,8 @@ const PostWrite = (props) => {
   };
 
   const editing = () => {
-    formData.append("imageCover", imageCover);
+    formData.append("coverOriginal", coverOriginal);
+    formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
@@ -231,7 +233,7 @@ const PostWrite = (props) => {
       {/* ----- 원래 커버 이미지 추가 모듈 코드 END -----  */}
       <Container>
         <CropperContainer>
-          {imageCover ?
+          {coverOriginal ?
             <>
               <CropperWrap>
                 <Cropper
@@ -239,7 +241,7 @@ const PostWrite = (props) => {
                   crop={crop}
                   rotation={rotation}
                   zoom={zoom}
-                  aspect={16 / 9}
+                  aspect={2 / 1}
                   onCropChange={setCrop}
                   onZoomChange={setZoom}
                   onCropComplete={onCropComplete}
@@ -281,7 +283,7 @@ const PostWrite = (props) => {
             color="secondary"
             onClick={showCroppedImage}
           >
-            크롭 결과 보기
+            크롭 확정
           </Button>
         </ButtonsContainer>
         {/* <ResultContainer>
