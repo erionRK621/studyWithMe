@@ -22,7 +22,7 @@ import { ReactComponent as InputFile } from "../icon/inputFile.svg";
 import logoImg from "../icon/logo.png";
 import logologo from "../icon/logologo.png";
 
-import dotenv from "dotenv";
+import dotenv, { load } from "dotenv";
 dotenv.config();
 
 const PostWrite = (props) => {
@@ -35,11 +35,9 @@ const PostWrite = (props) => {
   }
 
   const post = useSelector((state) => state.post.detail);
+  // console.log("post", post);
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
-  const [preview, setPreview] = useState(
-    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${post.imageCover}` : ""
-  );
   const [content, setContent] = useState(
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
@@ -53,9 +51,44 @@ const PostWrite = (props) => {
   const [title, setTitle] = useState(
     _editMode ? decodeURIComponent(post.title) : ""
   );
-  const [coverOriginal, setCoverOriginal] = useState("");
-  const [coverCropped, setCoverCropped] = useState("");
-  const [imageCoverForCrop, setImageCoverForCrop] = useState("");
+  // const [coverOriginal, setCoverOriginal] = useState("");
+  const [coverOriginal, setCoverOriginal] = useState(null);
+  const [coverCropped, setCoverCropped] = useState(null);
+  // const [imageCoverForCrop, setImageCoverForCrop] = useState(_editMode ? (() => {
+  //   const reader = new FileReader();
+  //   // reader.readAsDataURL(`${process.env.REACT_APP_IMAGE_URI}/${post.coverOriginal}`);
+  //   return `${process.env.REACT_APP_IMAGE_URI}/${post.coverOriginal}`;
+  // })
+  //   :
+  //   null);
+
+  const [imageCoverForCrop, setImageCoverForCrop] = useState(_editMode ? `${process.env.REACT_APP_IMAGE_URI}/${post.coverOriginal}` : null)
+
+
+  console.log("imageCoverForCrop", imageCoverForCrop);
+
+  // function loadXHR(url) {
+
+  //   return new Promise(function (resolve, reject) {
+  //     try {
+  //       var xhr = new XMLHttpRequest();
+  //       xhr.open("GET", url);
+  //       xhr.responseType = "blob";
+  //       xhr.onerror = function () { reject("Network error.") };
+  //       xhr.onload = function () {
+  //         if (xhr.status === 200) { resolve(xhr.response) }
+  //         else { reject("Loading error:" + xhr.statusText) }
+  //       };
+  //       xhr.send();
+  //     }
+  //     catch (err) { reject(err.message) }
+  //   });
+  // }
+
+  // loadXHR('https://kkirri-images.s3.amazonaws.com/uploads/cover/1637392961734_Deskterior_press_20200224_01.jpg')
+  //   .then(function (blob) {
+  //     // here the image is a blob
+  //   });
 
   // Cropper 관련 시작
   const [rotation, setRotation] = useState(0)
@@ -68,14 +101,14 @@ const PostWrite = (props) => {
 
   const onSelectFile = (e) => {
     const selectedFile = e.target.files[0];
-    console.log("selectedFile", selectedFile);
+    console.log("selectedFile", selectedFile, typeof (selectedFile));
     setCoverOriginal(selectedFile);
     if (selectedFile) {
       const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
         setImageCoverForCrop(reader.result);
-        // console.log(reader.result);
+        console.log("reader.result", reader.result);
         // console.log("image", image);
       }
     }
@@ -120,6 +153,7 @@ const PostWrite = (props) => {
       .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
     );
   }
+
   // Cropper 관련 끝
 
   let formData = new FormData();
