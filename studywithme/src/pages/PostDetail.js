@@ -36,7 +36,6 @@ const PostDetail = (props) => {
   const dispatch = useDispatch();
   const postId = props.match.params.id;
   const post = useSelector((state) => state.post.detail);
-  console.log("post", post);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
   const postUserId = post.userId;
