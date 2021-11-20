@@ -227,6 +227,7 @@ const Navbar = styled.div`
   padding: 10px 40px;
   max-width: 1256px;
   margin: auto;
+  height: 65px;
 
   @media screen and (max-width: 768px) {
     flex-direction: column;

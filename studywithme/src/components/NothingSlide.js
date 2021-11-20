@@ -88,7 +88,7 @@ const defaultIconStyle = css`
 const ImageWrap = styled.div`
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 10px;
   display: flex;
   justify-content: end;
 `;

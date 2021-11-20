@@ -38,69 +38,75 @@ const MyPage = (props) => {
 
   return (
     <React.Fragment>
-      <HeaderWrap>
-        <UserInfo myPageUserId={myPageUserId} isMe={isMe}></UserInfo>
-      </HeaderWrap>
+      <Wrap>
+        <HeaderWrap>
+          <UserInfo myPageUserId={myPageUserId} isMe={isMe}></UserInfo>
+        </HeaderWrap>
 
-      {/* 탭 선택 섹션 */}
-      {postsTabSelected === true ? (
-        // MyPostsTab 선택한 경우? postsTabSelected = true
-        <BtnWrap>
-          <TabWrap>
-            <PostsTab postsTabSelected={postsTabSelected}>
-              <MyPostsTabOn />
-              게시물
-            </PostsTab>
-          </TabWrap>
-          <TabWrap>
-            {isMe ? (
-              <BookmarksTab
-                onClick={selectBookMarksTab}
+        {/* 탭 선택 섹션 */}
+        {postsTabSelected === true ? (
+          // MyPostsTab 선택한 경우? postsTabSelected = true
+          <BtnWrap>
+            <TabWrap>
+              <PostsTab postsTabSelected={postsTabSelected}>
+                <MyPostsTabOn />
+                게시물
+              </PostsTab>
+            </TabWrap>
+            <TabWrap>
+              {isMe ? (
+                <BookmarksTab
+                  onClick={selectBookMarksTab}
+                  postsTabSelected={postsTabSelected}
+                >
+                  <MyBookmarksTabOff />
+                  북마크
+                </BookmarksTab>
+              ) : null}
+            </TabWrap>
+          </BtnWrap>
+        ) : (
+          // MyBookmarksTab 선택한 경우? postsTabSelected = false
+          <BtnWrap>
+            <TabWrap>
+              <PostsTab
+                onClick={selectPostsTab}
                 postsTabSelected={postsTabSelected}
               >
-                <MyBookmarksTabOff />
-                북마크
-              </BookmarksTab>
-            ) : null}
-          </TabWrap>
-        </BtnWrap>
-      ) : (
-        // MyBookmarksTab 선택한 경우? postsTabSelected = false
-        <BtnWrap>
-          <TabWrap>
-            <PostsTab
-              onClick={selectPostsTab}
-              postsTabSelected={postsTabSelected}
-            >
-              <MyPostsTabOff />
-              게시물
-            </PostsTab>
-          </TabWrap>
-          <TabWrap>
-            {isMe ? (
-              <BookmarksTab postsTabSelected={postsTabSelected}>
-                <MyBookmarksTabOn />
-                북마크
-              </BookmarksTab>
-            ) : null}
-          </TabWrap>
-        </BtnWrap>
-      )}
-      {/* 포스트 카드 섹션 */}
-      {postsTabSelected === true ? (
-        <MyPosts
-          myPageUserId={myPageUserId}
-          postsTabSelected={postsTabSelected}
-        />
-      ) : (
-        <BookMarks
-          myPageUserId={myPageUserId}
-          postsTabSelected={postsTabSelected}
-        />
-      )}
+                <MyPostsTabOff />
+                게시물
+              </PostsTab>
+            </TabWrap>
+            <TabWrap>
+              {isMe ? (
+                <BookmarksTab postsTabSelected={postsTabSelected}>
+                  <MyBookmarksTabOn />
+                  북마크
+                </BookmarksTab>
+              ) : null}
+            </TabWrap>
+          </BtnWrap>
+        )}
+        {/* 포스트 카드 섹션 */}
+        {postsTabSelected === true ? (
+          <MyPosts
+            myPageUserId={myPageUserId}
+            postsTabSelected={postsTabSelected}
+          />
+        ) : (
+          <BookMarks
+            myPageUserId={myPageUserId}
+            postsTabSelected={postsTabSelected}
+          />
+        )}
+      </Wrap>
     </React.Fragment>
   );
 };
+const Wrap = styled.div`
+  height: 100%;
+  margin: 65px 0 180px 0;
+`;
 
 const HeaderWrap = styled.div`
   padding: 30px 20px 0;

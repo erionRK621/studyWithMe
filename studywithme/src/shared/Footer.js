@@ -30,6 +30,7 @@ const Footer = () => {
 const FooterWrap = styled.div`
   width: 100%;
   margin: auto;
+  height: 180px;
   color: #707070;
   background-color: #ececec;
 `;
