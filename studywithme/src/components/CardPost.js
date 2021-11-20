@@ -19,6 +19,7 @@ dotenv.config();
 const Post = (props) => {
   const dispatch = useDispatch();
   const { onClick } = props;
+  const coverImage = `${process.env.REACT_APP_IMAGE_URI}/${props.coverOriginal}`
   const deleteLike = () => {
     dispatch(postActions.filterDeleteLikeMiddleware(props.postId));
   };
@@ -32,7 +33,7 @@ const Post = (props) => {
           <Image
             className="img"
             shape="rectangle"
-            src={`${process.env.REACT_APP_IMAGE_URI}/${props.imageCover}`}
+            src={coverImage}
             borderRadius="10px"
             paddingTop="100%"
           />
