@@ -26,6 +26,7 @@ const MyPosts = (props) => {
           return (
             <ItemGrid key={p.postId}>
               <CardPost
+                page="myPost"
                 {...p}
                 onClick={() => {
                   history.push(`/detail/${p.postId}`);
