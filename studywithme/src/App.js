@@ -23,6 +23,7 @@ import Header from "./shared/Header";
 import KakaoLoginRedirection from "./pages/KakaoLoginRedirection";
 import MyPage from "./pages/MyPage";
 import UserEdit from "./pages/UserEdit";
+import Footer from "./shared/Footer";
 
 function App() {
   const dispatch = useDispatch();
@@ -70,6 +71,7 @@ function App() {
           <Route component={NotFound} />
         </Switch>
       </ConnectedRouter>
+      <Footer></Footer>
     </div>
   );
 }
