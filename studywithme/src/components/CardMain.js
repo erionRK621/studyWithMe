@@ -18,7 +18,7 @@ const Post = (props) => {
           <Image
             className="img"
             shape="rectangle"
-            src={`${process.env.REACT_APP_IMAGE_URI}/${props.imageCover}`}
+            src={`${process.env.REACT_APP_IMAGE_URI}/${props.coverOriginal}`}
             paddingTop="65%"
             borderRadius="10px"
           />
