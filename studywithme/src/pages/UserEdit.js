@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-
+import { history } from "../redux/configStore";
 import { ProfileEdit } from "../components/ProfileEdit";
 import { PasswordEdit } from "../components/PasswordEdit";
 
 const UserEdit = (props) => {
-  const userId = props.match.params.id;
   const userType = useSelector((state) => state.user.userInfo.provider);
-  console.log(userType);
   const [passwordEditState, setPasswordEditState] = useState(true);
 
   const showProfileEdit = () => {
@@ -18,7 +16,6 @@ const UserEdit = (props) => {
   const showPasswordEdit = () => {
     setPasswordEditState(false);
   };
-
   return (
     <React.Fragment>
       <Wrap>
