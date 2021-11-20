@@ -1,7 +1,7 @@
 // General
 import React, { useEffect } from "react";
 import "./App.css";
-import { Route, Switch } from "react-router";
+import { Route, Switch, Redirect } from "react-router";
 import PublicRoute from "./lib/PublicRoute";
 import PrivateRoute from "./lib/PrivateRoute";
 import { ConnectedRouter } from "connected-react-router";
@@ -27,11 +27,9 @@ import Footer from "./shared/Footer";
 
 function App() {
   const dispatch = useDispatch();
-  const location = useSelector((state) => state.router.location.pathname);
-
+  const location = useSelector((state) => state.router.location?.pathname);
   const user = useSelector((state) => state.user.user);
   const userTokenInLocalStorage = localStorage.getItem("user");
-
   // *** 추가 구현 필요 ***
   // 백엔드에서 설정한 토큰 만료기간이 지났을 경우?
   // [백엔드] 프론트에게 토큰이 만료되었다는 신호를 보내줌
@@ -53,7 +51,6 @@ function App() {
       {!location.includes("/edit") && location !== "/write" ? <Header /> : null}
       <ConnectedRouter history={history}>
         <Switch>
-          <PublicRoute restricted component={Main} path="/" exact />
           <PublicRoute restricted component={SignUp} path="/signup" exact />
           <PublicRoute restricted component={Login} path="/login" exact />
           <PublicRoute
@@ -62,12 +59,17 @@ function App() {
             path="/api/kakao/callback"
             exact
           />
-          <PrivateRoute component={PostWrite} path="/write" exact/>
-          <PublicRoute restricted component={PostList} path="/list" exact/>
-          <PublicRoute restricted component={PostDetail} path="/detail/:id" exact/>
-          <PrivateRoute component={PostWrite} path="/edit/:id" exact/>
-          <PublicRoute restricted component={MyPage} path="/mypage/:id" exact/>
-          <PrivateRoute component={UserEdit} path="/userEdit/:id" exact/>
+          <Route component={Main} path="/" exact />
+          <Route component={PostList} path="/list" exact />
+          <Route component={PostDetail} path="/detail/:id" exact />
+          <Route component={MyPage} path="/mypage/:id" exact />
+          <PrivateRoute component={PostWrite} path="/write" exact />
+          <PrivateRoute component={PostWrite} path="/edit/:id" exact />
+          {user?.userId === parseInt(location.split("/")[2]) ? (
+            <Route component={UserEdit} path="/userEdit/:id" exact />
+          ) : (
+            <Redirect to="/"/>
+          )}
           <Route component={NotFound} />
         </Switch>
       </ConnectedRouter>
