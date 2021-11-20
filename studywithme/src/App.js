@@ -66,6 +66,7 @@ function App() {
         <Route path="/mypage/:id" exact component={MyPage} />
         <Route path="/userEdit/:id" exact component={UserEdit} />
       </ConnectedRouter>
+      <Footer></Footer>
     </div>
   );
 }

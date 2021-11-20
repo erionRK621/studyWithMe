@@ -126,7 +126,7 @@ const Header = (props) => {
             글쓰기
           </Write>
         </NavbarIcon>
-        <Hamberger href="#">
+        <Hamberger>
           <GiHamburgerMenu
             cursor="pointer"
             size="1.7em"
