@@ -7,19 +7,19 @@ const Footer = () => {
       <Wrap>
         <FooterBtnList>
           <li>
-            <p>Front-end</p>
+            <Title>Front-end</Title>
             <p>권영준</p>
             <p>김준형</p>
             <p>김한준</p>
           </li>
           <li>
-            <p>Back-end</p>
+            <Title>Back-end</Title>
             <p>서연제</p>
             <p>장재원</p>
             <p>홍성현</p>
           </li>
           <li>
-            <span>Design</span>
+            <Title>Design</Title>
           </li>
         </FooterBtnList>
       </Wrap>
@@ -32,6 +32,11 @@ const FooterWrap = styled.div`
   margin: auto;
   color: #707070;
   background-color: #ececec;
+`;
+const Title = styled.p`
+  font-weight: bold;
+  margin-top: 16px;
+  margin-bottom: 4px;
 `;
 
 const Wrap = styled.div`
