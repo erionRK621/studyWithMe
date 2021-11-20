@@ -22,10 +22,11 @@ import Header from "./shared/Header";
 import KakaoLoginRedirection from "./pages/KakaoLoginRedirection";
 import MyPage from "./pages/MyPage";
 import UserEdit from "./pages/UserEdit";
+import Footer from "./shared/Footer";
 
 function App() {
   const dispatch = useDispatch();
-  const location = useSelector(state=>state.router.location.pathname);
+  const location = useSelector((state) => state.router.location.pathname);
 
   const user = useSelector((state) => state.user.user);
   const userTokenInLocalStorage = localStorage.getItem("user");
@@ -49,7 +50,7 @@ function App() {
 
   return (
     <div>
-      {!location.includes("/edit") && location!=="/write" ? <Header/> : null}
+      {!location.includes("/edit") && location !== "/write" ? <Header /> : null}
       <ConnectedRouter history={history}>
         <Route path="/" exact component={Main} />
         <Route path="/signup" exact component={SignUp} />
@@ -66,6 +67,7 @@ function App() {
         <Route path="/mypage/:id" exact component={MyPage} />
         <Route path="/userEdit/:id" exact component={UserEdit} />
       </ConnectedRouter>
+      <Footer></Footer>
     </div>
   );
 }
