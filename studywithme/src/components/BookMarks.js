@@ -25,6 +25,7 @@ const BookMarks = (props) => {
           return (
             <ItemGrid key={p.postId}>
               <CardPost
+                page="bookmark"
                 {...p}
                 onClick={() => {
                   history.push(`/detail/${p.postId}`);

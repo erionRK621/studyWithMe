@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
+import { actionCreators as myPageActions } from "../redux/modules/mypage";
 
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
@@ -18,13 +19,26 @@ dotenv.config();
 
 const Post = (props) => {
   const dispatch = useDispatch();
+  const page = props.page;
   const { onClick } = props;
-  const coverImage = `${process.env.REACT_APP_IMAGE_URI}/${props.coverOriginal}`
+  const coverImage = `${process.env.REACT_APP_IMAGE_URI}/${props.coverOriginal}`;
   const deleteLike = () => {
-    dispatch(postActions.filterDeleteLikeMiddleware(props.postId));
+    if (page === "myPost") {
+      dispatch(myPageActions.myPostDeleteLikeMiddleware(props.postId));
+    } else if (page === "bookmark") {
+      dispatch(myPageActions.bookmarkedPostDeleteLikeMiddleware(props.postId));
+    } else {
+      dispatch(postActions.filterDeleteLikeMiddleware(props.postId));
+    }
   };
   const addLike = () => {
-    dispatch(postActions.filterAddLikeMiddleware(props.postId));
+    if (page === "myPost") {
+      dispatch(myPageActions.myPostAddLikeMiddleware(props.postId));
+    } else if (page === "bookmark") {
+      dispatch(myPageActions.bookmarkedPostAddLikeMiddleware(props.postId));
+    } else {
+      dispatch(postActions.filterAddLikeMiddleware(props.postId));
+    }
   };
   return (
     <PostContainer className="card">
@@ -49,7 +63,9 @@ const Post = (props) => {
             {props.likeCnt}
           </Text>
           <BookmarkCntIcon />
-          <Text margin="0px 20px 0px 5px" color="#aaaaaa">{props.bookCnt}</Text>
+          <Text margin="0px 20px 0px 5px" color="#aaaaaa">
+            {props.bookCnt}
+          </Text>
         </Grid>
       </Grid>
       {props.isLiked ? (
