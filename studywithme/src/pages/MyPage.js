@@ -53,8 +53,9 @@ const MyPage = (props) => {
                 게시물
               </PostsTab>
             </TabWrap>
-            <TabWrap>
-              {isMe ? (
+
+            {isMe ? (
+              <TabWrap>
                 <BookmarksTab
                   onClick={selectBookMarksTab}
                   postsTabSelected={postsTabSelected}
@@ -62,8 +63,8 @@ const MyPage = (props) => {
                   <MyBookmarksTabOff />
                   북마크
                 </BookmarksTab>
-              ) : null}
-            </TabWrap>
+              </TabWrap>
+            ) : null}
           </BtnWrap>
         ) : (
           // MyBookmarksTab 선택한 경우? postsTabSelected = false
@@ -76,13 +77,14 @@ const MyPage = (props) => {
                 <MyPostsTabOff />
                 게시물
               </PostsTab>
-            </TabWrap>
-            <TabWrap>
+
               {isMe ? (
-                <BookmarksTab postsTabSelected={postsTabSelected}>
-                  <MyBookmarksTabOn />
-                  북마크
-                </BookmarksTab>
+                <TabWrap>
+                  <BookmarksTab postsTabSelected={postsTabSelected}>
+                    <MyBookmarksTabOn />
+                    북마크
+                  </BookmarksTab>
+                </TabWrap>
               ) : null}
             </TabWrap>
           </BtnWrap>
