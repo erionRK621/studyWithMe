@@ -66,12 +66,16 @@ const ImgContents = styled.div`
   bottom: 30%;
   left: 45%;
   z-index: 2;
+  @media screen and (max-width: 768px) {
+  }
 `;
 const ImgContents2 = styled.div`
   position: absolute;
   bottom: 20%;
   left: 45%;
   z-index: 2;
+  @media screen and (max-width: 768px) {
+  }
 `;
 
 export default Main;

@@ -77,16 +77,16 @@ const MyPage = (props) => {
                 <MyPostsTabOff />
                 게시물
               </PostsTab>
-
-              {isMe ? (
-                <TabWrap>
-                  <BookmarksTab postsTabSelected={postsTabSelected}>
-                    <MyBookmarksTabOn />
-                    북마크
-                  </BookmarksTab>
-                </TabWrap>
-              ) : null}
             </TabWrap>
+
+            {isMe ? (
+              <TabWrap>
+                <BookmarksTab postsTabSelected={postsTabSelected}>
+                  <MyBookmarksTabOn />
+                  북마크
+                </BookmarksTab>
+              </TabWrap>
+            ) : null}
           </BtnWrap>
         )}
         {/* 포스트 카드 섹션 */}
@@ -134,7 +134,7 @@ const BtnWrap = styled.div`
   max-width: 1134px;
 
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   text-align: center;
   margin: auto;
   @media screen and (max-width: 768px) {
@@ -143,7 +143,7 @@ const BtnWrap = styled.div`
 `;
 
 const TabWrap = styled.div`
-  width: 100%;
+  width: 50%;
   margin: 9px auto;
   display: flex;
 `;
