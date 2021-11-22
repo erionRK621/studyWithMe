@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import styled from "styled-components";
+import { regExPasswordTest } from "../shared/regEx";
 
 import Input from "../elements/Input";
 import Image from "../elements/Image";
@@ -11,6 +12,7 @@ dotenv.config();
 export const PasswordEdit = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
+  console.log(userInfo.email);
   const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo.avatarUrl}`;
   const userId = useSelector((state) => state.user.userInfo.userId);
 
@@ -35,7 +37,29 @@ export const PasswordEdit = () => {
   };
 
   const editPwd = () => {
-    dispatch(userActions.editPwdMiddleware(editPwdInputs));
+    // 비밀번호 규칙 확인
+    if (!regExPasswordTest(editPwdInputs.passwordNew)) {
+      window.alert(
+        "비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다."
+      );
+      // console.log("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
+      return;
+    }
+    // 비밀번호 일치 여부 확인
+    else if (editPwdInputs.passwordNew !== editPwdInputs.confirmPasswordNew) {
+      window.alert("비밀번호가 일치하지 않습니다.");
+      // console.log("비밀번호가 일치하지 않습니다.");
+      return;
+    } else if (
+      userInfo.email.split("@")[0].match(editPwdInputs.passwordNew) !== null ||
+      editPwdInputs.passwordNew.match(userInfo.email.split("@")[0]) !== null
+    ) {
+      window.alert("이메일이 포함된 비밀번호는 사용할 수 없습니다.");
+      return;
+    } else {
+      dispatch(userActions.editPwdMiddleware(editPwdInputs));
+    }
+
     setPasswordOld("");
     setPasswordNew("");
     setconfirmPasswordNew("");

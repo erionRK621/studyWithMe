@@ -54,7 +54,11 @@ const LikeSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>인기게시글</SlideTitle>
+          <SlideTitle>
+            추천 데스크테리어
+            <SlideSubTitle>가장 인기있는 데스크테리어에요. </SlideSubTitle>
+          </SlideTitle>
+
           {post_list?.length === 0 ? null : (
             <More
               onClick={() => {
@@ -162,7 +166,14 @@ const SlideUpLine = styled.div`
 `;
 
 const SlideTitle = styled.div`
-  font-size: 20px;
+  font-size: 28px;
+  font-weight: bold;
+`;
+
+const SlideSubTitle = styled.div`
+  font-size: 16px;
+  opacity: 0.5;
+  margin-bottom: 10px;
 `;
 
 const More = styled.div`
