@@ -41,7 +41,6 @@ const CommentList = (props) => {
     }
     dispatch(commentActions.addCommentLikeMiddleWare(postId, commentId));
   };
-  const [page, setPage] = React.useState(1);
   useEffect(() => {
     dispatch(commentActions.getCommentMiddleware(postId,currentPage));
   }, [currentPage]);
@@ -117,7 +116,7 @@ const CommentList = (props) => {
           );
         })}
         <FlexGrid align="center" margin="auto">
-          <Pagination totalPg={comment.totalPg} />
+          <Pagination totalPg={comment.totalPg} itemLength = {comment?.list.length}/>
         </FlexGrid>
       </FlexGrid>
     </React.Fragment>
