@@ -19,6 +19,11 @@ const time = (time) => {
         return `${betweenTimeDay}일전`;
     }
 
+    const betweenTimeMonth = Math.floor(betweenTime / 60 / 24 / 30);
+    if (betweenTimeMonth < 12) {
+        return `${betweenTimeMonth}달전`;
+    }
+
     return `${Math.floor(betweenTimeDay / 365)}년전`;
   }
 export default time;
