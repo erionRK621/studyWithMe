@@ -135,7 +135,7 @@ const UserProfileWrap = styled.section`
   align-items: stretch;
   display: flex;
   flex-direction: column;
-  margin: 0 50px;
+  margin: 0 0 0 50px;
   padding: 0;
   position: relative;
 `;

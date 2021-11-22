@@ -107,29 +107,39 @@ const MyPage = (props) => {
 };
 const Wrap = styled.div`
   height: 100%;
-  margin: 65px 0 180px 0;
+  margin: auto;
+  max-width: 1134px;
+  padding: 20px;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 `;
 
 const HeaderWrap = styled.div`
-  padding: 30px 20px 0;
-  width: calc(100%-40px);
   margin-bottom: 0;
   flex-grow: 1;
-  margin: 0 auto 30px;
-  max-width: 1090px;
+  margin: 0 auto 30px 0;
+  max-width: 1134px;
   align-items: stretch;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 `;
 const BtnWrap = styled.div`
   border-top: 1px solid rgba(var(--b38, 219, 219, 219), 1);
   width: 100%;
-  max-width: 1090px;
+  max-width: 1134px;
+
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   text-align: center;
   margin: auto;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 `;
 
 const TabWrap = styled.div`
@@ -157,9 +167,9 @@ const PostsTab = styled.div`
 
 const BookmarksTab = styled.div`
   cursor: pointer;
-  margin: 10px auto;
   display: flex;
   align-items: center;
+  margin: auto;
   font-size: 20px;
   color: ${(props) => {
     const postsTabSelected = props.postsTabSelected;

@@ -225,11 +225,12 @@ const Navbar = styled.div`
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
   background-color: white;
   padding: 10px 40px;
-  max-width: 1256px;
+  max-width: 1134px;
   margin: auto;
   height: 65px;
 
   @media screen and (max-width: 768px) {
+    max-width: 768px;
     flex-direction: column;
     align-items: flex-start; /*로고,메뉴바 모두 왼쪽 정렬*/
     padding: 8px 24px; /*hover시 한줄 가득 색상표시 안되도록 */
