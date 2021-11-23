@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
+import { ReactComponent as Star } from "../icon/star.svg";
 
 const RandomSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.randPosts);
@@ -53,7 +54,11 @@ const RandomSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>유저들의 게시물</SlideTitle>
+          <SlideTitle>
+            <Star />
+            유저들의 게시물
+            <Star />
+          </SlideTitle>
           {post_list?.length === 0 ? null : (
             <More
               onClick={() => {
@@ -148,8 +153,11 @@ const Wrap = styled.div`
   margin: auto;
   margin-top: 30px;
   position: relative;
+  max-width: 1134px;
+
   @media screen and (max-width: 768px) {
     margin-top: 10px;
+    max-width: 768px;
   }
 `;
 
@@ -161,7 +169,14 @@ const SlideUpLine = styled.div`
 `;
 
 const SlideTitle = styled.div`
-  font-size: 20px;
+  font-size: 28px;
+  font-weight: bold;
+`;
+
+const SlideSubTitle = styled.div`
+  font-size: 16px;
+  opacity: 0.5;
+  margin-bottom: 10px;
 `;
 
 const More = styled.div`

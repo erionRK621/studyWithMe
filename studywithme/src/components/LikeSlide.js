@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
+import { ReactComponent as Fire } from "../icon/fire.svg";
 
 const LikeSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.posts);
@@ -55,7 +56,9 @@ const LikeSlide = (props) => {
       <Wrap>
         <SlideUpLine>
           <SlideTitle>
+            <Fire />
             추천 데스크테리어
+            <Fire />
             <SlideSubTitle>가장 인기있는 데스크테리어에요. </SlideSubTitle>
           </SlideTitle>
 
@@ -152,9 +155,11 @@ const Wrap = styled.div`
   margin: auto;
   margin-top: 30px;
   position: relative;
+  max-width: 1134px;
 
   @media screen and (max-width: 768px) {
     margin-top: 10px;
+    max-width: 768px;
   }
 `;
 

@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
 import NothingSlide from "./NothingSlide";
+import { ReactComponent as Star } from "../icon/star.svg";
 
 const FollowSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.followPost);
@@ -55,7 +56,12 @@ const FollowSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>팔로잉 유저들의 게시물</SlideTitle>
+          <SlideTitle>
+            <Star />
+            내 친구들의 데스크테리어
+            <Star />
+            <SlideSubTitle>내가 팔로우한 유저들의 게시물이에요.</SlideSubTitle>
+          </SlideTitle>
           {post_list?.length === 0 ? null : (
             <More
               onClick={() => {
@@ -149,10 +155,13 @@ const Wrap = styled.div`
   width: 80%;
   margin: auto;
   margin-top: 30px;
+  margin-bottom: 40px;
   position: relative;
+  max-width: 1134px;
 
   @media screen and (max-width: 768px) {
     margin-top: 10px;
+    max-width: 768px;
   }
 `;
 
@@ -164,7 +173,14 @@ const SlideUpLine = styled.div`
 `;
 
 const SlideTitle = styled.div`
-  font-size: 20px;
+  font-size: 28px;
+  font-weight: bold;
+`;
+
+const SlideSubTitle = styled.div`
+  font-size: 14px;
+  opacity: 0.5;
+  margin-bottom: 10px;
 `;
 
 const More = styled.div`

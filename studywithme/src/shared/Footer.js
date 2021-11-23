@@ -7,7 +7,7 @@ const Footer = () => {
       <Wrap>
         <FooterBtnList>
           <li>
-            <Title>Front-end</Title>
+            <Title>Front-end & Design</Title>
             <p>권영준</p>
             <p>김준형</p>
             <p>김한준</p>
@@ -19,7 +19,7 @@ const Footer = () => {
             <p>홍성현</p>
           </li>
           <li>
-            <Title>Design</Title>
+            <Title></Title>
           </li>
         </FooterBtnList>
       </Wrap>
@@ -60,6 +60,7 @@ const FooterBtnList = styled.ul`
     list-style-type: none;
     box-sizing: border-box;
     margin: 0 0 16px 0;
+    text-align: center;
   }
   & span {
     font-size: 15px;
