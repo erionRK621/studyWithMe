@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
 import NothingSlide from "./NothingSlide";
-import { ReactComponent as Star } from "../icon/star.svg";
+import { ReactComponent as Star } from "../icon/star2.svg";
 
 const FollowSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.followPost);

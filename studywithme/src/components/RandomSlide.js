@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
-import { ReactComponent as Star } from "../icon/star.svg";
+import { ReactComponent as Star } from "../icon/star2.svg";
 
 const RandomSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.randPosts);
