@@ -1,6 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { apis } from "../../lib/axios";
+import { actionCreators as pageActions } from "./pagination";
 
 const ADD_COMMENT = "ADD_COMMENT";
 const GET_COMMENT = "GET_COMMENT";
@@ -10,10 +11,11 @@ const DELETE_COMMENT_LIKE = "DELETE_COMMENT_LIKE";
 
 const addComment = createAction(
   ADD_COMMENT,
-  (userNickname, comment, avatarUrl) => ({
+  (userNickname, comment, avatarUrl, totalPg) => ({
     userNickname,
     comment,
     avatarUrl,
+    totalPg,
   })
 );
 
@@ -49,11 +51,10 @@ const addCommentMiddleware = (postId, textContent) => {
     apis
       .addCommentAxios(postId, { textContent })
       .then((res) => {
-        // const comment = res.data.comment;
-        // const nickName = res.data.userNick;
-        // const avatarUrl= res.data.avatarUrl;
-        const { comment, userNick, avatarUrl } = res.data;
-        dispatch(addComment(userNick, comment, avatarUrl));
+        const { comment, userNick, avatarUrl, totalPg } = res.data;
+        dispatch(pageActions.setPage(1));
+        console.log(totalPg);
+        dispatch(addComment(userNick, comment, avatarUrl, totalPg));
       })
       .catch((err) => {
         console.log(err);
@@ -68,6 +69,7 @@ const getCommentMiddleware = (postId, page) => {
       .getCommentAxios(postId, page)
       .then((res) => {
         dispatch(getComment(res.data.cmtsList, res.data.totalPg));
+        dispatch(pageActions.setPage(page, res.data.totalPg));
       })
       .catch((err) => {
         console.log(err);
@@ -120,12 +122,16 @@ export default handleActions(
   {
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.list.push({
+        if(draft.list.length>=4) {
+          draft.list.pop();
+        }
+        draft.list.unshift({
           ...action.payload.comment,
           userNickname: action.payload.userNickname,
           avatarUrl: action.payload.avatarUrl,
           commentLikeCnt: 0,
         });
+        draft.totalPg=action.payload.totalPg;
       }),
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {

@@ -38,94 +38,112 @@ const MyPage = (props) => {
 
   return (
     <React.Fragment>
-      <HeaderWrap>
-        <UserInfo myPageUserId={myPageUserId} isMe={isMe}></UserInfo>
-      </HeaderWrap>
+      <Wrap>
+        <HeaderWrap>
+          <UserInfo myPageUserId={myPageUserId} isMe={isMe}></UserInfo>
+        </HeaderWrap>
 
-      {/* 탭 선택 섹션 */}
-      {postsTabSelected === true ? (
-        // MyPostsTab 선택한 경우? postsTabSelected = true
-        <BtnWrap>
-          <TabWrap>
-            <PostsTab postsTabSelected={postsTabSelected}>
-              <MyPostsTabOn />
-              게시물
-            </PostsTab>
-          </TabWrap>
-          <TabWrap>
+        {/* 탭 선택 섹션 */}
+        {postsTabSelected === true ? (
+          // MyPostsTab 선택한 경우? postsTabSelected = true
+          <BtnWrap>
+            <TabWrap>
+              <PostsTab postsTabSelected={postsTabSelected}>
+                <MyPostsTabOn />
+                게시물
+              </PostsTab>
+            </TabWrap>
+
             {isMe ? (
-              <BookmarksTab
-                onClick={selectBookMarksTab}
+              <TabWrap>
+                <BookmarksTab
+                  onClick={selectBookMarksTab}
+                  postsTabSelected={postsTabSelected}
+                >
+                  <MyBookmarksTabOff />
+                  북마크
+                </BookmarksTab>
+              </TabWrap>
+            ) : null}
+          </BtnWrap>
+        ) : (
+          // MyBookmarksTab 선택한 경우? postsTabSelected = false
+          <BtnWrap>
+            <TabWrap>
+              <PostsTab
+                onClick={selectPostsTab}
                 postsTabSelected={postsTabSelected}
               >
-                <MyBookmarksTabOff />
-                북마크
-              </BookmarksTab>
-            ) : null}
-          </TabWrap>
-        </BtnWrap>
-      ) : (
-        // MyBookmarksTab 선택한 경우? postsTabSelected = false
-        <BtnWrap>
-          <TabWrap>
-            <PostsTab
-              onClick={selectPostsTab}
-              postsTabSelected={postsTabSelected}
-            >
-              <MyPostsTabOff />
-              게시물
-            </PostsTab>
-          </TabWrap>
-          <TabWrap>
+                <MyPostsTabOff />
+                게시물
+              </PostsTab>
+            </TabWrap>
+
             {isMe ? (
-              <BookmarksTab postsTabSelected={postsTabSelected}>
-                <MyBookmarksTabOn />
-                북마크
-              </BookmarksTab>
+              <TabWrap>
+                <BookmarksTab postsTabSelected={postsTabSelected}>
+                  <MyBookmarksTabOn />
+                  북마크
+                </BookmarksTab>
+              </TabWrap>
             ) : null}
-          </TabWrap>
-        </BtnWrap>
-      )}
-      {/* 포스트 카드 섹션 */}
-      {postsTabSelected === true ? (
-        <MyPosts
-          myPageUserId={myPageUserId}
-          postsTabSelected={postsTabSelected}
-        />
-      ) : (
-        <BookMarks
-          myPageUserId={myPageUserId}
-          postsTabSelected={postsTabSelected}
-        />
-      )}
+          </BtnWrap>
+        )}
+        {/* 포스트 카드 섹션 */}
+        {postsTabSelected === true ? (
+          <MyPosts
+            myPageUserId={myPageUserId}
+            postsTabSelected={postsTabSelected}
+          />
+        ) : (
+          <BookMarks
+            myPageUserId={myPageUserId}
+            postsTabSelected={postsTabSelected}
+          />
+        )}
+      </Wrap>
     </React.Fragment>
   );
 };
+const Wrap = styled.div`
+  height: 100%;
+  margin: auto;
+  max-width: 1134px;
+  padding: 20px;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
+`;
 
 const HeaderWrap = styled.div`
-  padding: 30px 20px 0;
-  width: calc(100%-40px);
   margin-bottom: 0;
   flex-grow: 1;
-  margin: 0 auto 30px;
-  max-width: 1090px;
+  margin: 0 auto 30px 0;
+  max-width: 1134px;
   align-items: stretch;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 `;
 const BtnWrap = styled.div`
   border-top: 1px solid rgba(var(--b38, 219, 219, 219), 1);
   width: 100%;
-  max-width: 1090px;
+  max-width: 1134px;
+
   display: flex;
   justify-content: center;
   text-align: center;
   margin: auto;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 `;
 
 const TabWrap = styled.div`
-  width: 100%;
+  width: 50%;
   margin: 9px auto;
   display: flex;
 `;
@@ -149,9 +167,9 @@ const PostsTab = styled.div`
 
 const BookmarksTab = styled.div`
   cursor: pointer;
-  margin: 10px auto;
   display: flex;
   align-items: center;
+  margin: auto;
   font-size: 20px;
   color: ${(props) => {
     const postsTabSelected = props.postsTabSelected;

@@ -52,18 +52,19 @@ const UserInfo = (props) => {
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between"
+              justifyContent: "space-between",
             }}
           >
-            <UserNickname>{userInfo?.nickname}
-            </UserNickname>
-            {isMe ? <UserInfoEditButton
-              onClick={() => {
-                history.push("/userEdit/" + myPageUserId);
-              }}
-            >
-              회원정보 수정
-            </UserInfoEditButton> : null}
+            <UserNickname>{userInfo?.nickname}</UserNickname>
+            {isMe ? (
+              <UserInfoEditButton
+                onClick={() => {
+                  history.push("/userEdit/" + myPageUserId);
+                }}
+              >
+                회원정보 수정
+              </UserInfoEditButton>
+            ) : null}
           </div>
           <BottomDiv>
             <div style={{ fontSize: "20px" }}>게시물 {userInfo?.postCnt}개</div>
@@ -93,77 +94,77 @@ const UserInfo = (props) => {
 };
 
 const UserInfoWrap = styled.div`
-margin-bottom: 44px;
-flex-direction: row;
-align-items: stretch;
-display: flex;
-flex-shrink: 0;
-padding: 0;
-position: relative;
-`
+  margin-bottom: 44px;
+  flex-direction: row;
+  align-items: stretch;
+  display: flex;
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+`;
 
 const UserProfilePicWrap = styled.div`
-flex-basis: 0;
-flex-grow: 1;
-margin-right: 30px;
-flex-shrink: 0;
-align-items: stretch;
-display: flex;
-flex-direction: column;
-margin: 0;
-padding: 0;
-position: relative;
+  flex-basis: 0;
+  flex-grow: 1;
+  margin-right: 30px;
+  flex-shrink: 0;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  position: relative;
 `;
 
 const ProfilePic = styled.img`
-height: 185px;
-width: 185px;
-border-radius: 50%;
-align-items: center;
-align-self: center;
-display: block;
-flex: none;
-justify-content: center;
+  height: 185px;
+  width: 185px;
+  border-radius: 50%;
+  align-items: center;
+  align-self: center;
+  display: block;
+  flex: none;
+  justify-content: center;
 `;
 
 const UserProfileWrap = styled.section`
-flex-basis: 30px;
-flex-grow: 2;
-flex-shrink: 1;
-min-width: 0;
-align-items: stretch;
-display: flex;
-flex-direction: column;
-margin: 0;
-padding: 0;
-position: relative;
+  flex-basis: 30px;
+  flex-grow: 2;
+  flex-shrink: 1;
+  min-width: 0;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 50px;
+  padding: 0;
+  position: relative;
 `;
 
 const UserNicknameWrap = styled.div`
-display: flex;
-justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const UserNickname = styled.h2`
-display: block;
-overflow: hidden;
-text-overflow: ellipsis;
-white-space: nowrap;
-font-weight: 300;
-font-size: 32px;
-line-height: 45px;
-margin: -5px 0 -6px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 45px;
+  margin: -5px 0 -6px;
 `;
 
 const UserInfoEditButton = styled.button`
-width: 120px;
-height: 32px;
-border: 0;
-border-radius: 4px;
-background: #FFC85C;
-color: white;
-cursor: pointer;
-font-size: 16px;
+  width: 120px;
+  height: 32px;
+  border: 0;
+  border-radius: 4px;
+  background: #ffc85c;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
 `;
 
 const Button = styled.div`

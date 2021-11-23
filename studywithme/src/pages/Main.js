@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 import { actionCreators as userActions } from "../redux/modules/user";
 
-import banner from "../icon/bannerImg.png";
+// import banner from "../icon/bannerImg.png";
+import banner from "../icon/bannerNone.jpg";
 import kkiriText from "../icon/text1.png";
 import kkiriText2 from "../icon/text2.png";
 
@@ -63,14 +64,18 @@ const Banner = styled.div`
 const ImgContents = styled.div`
   position: absolute;
   bottom: 30%;
-  left: 10%;
+  left: 45%;
   z-index: 2;
+  @media screen and (max-width: 768px) {
+  }
 `;
 const ImgContents2 = styled.div`
   position: absolute;
   bottom: 20%;
-  left: 10%;
+  left: 45%;
   z-index: 2;
+  @media screen and (max-width: 768px) {
+  }
 `;
 
 export default Main;
