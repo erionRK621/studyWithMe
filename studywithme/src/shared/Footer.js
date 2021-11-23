@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import logo from "../icon/footerLogo.png";
 
 const Footer = () => {
   return (
@@ -18,8 +19,9 @@ const Footer = () => {
             <p>장재원</p>
             <p>홍성현</p>
           </li>
+          <li></li>
           <li>
-            <Title></Title>
+            <img src={logo} />
           </li>
         </FooterBtnList>
       </Wrap>
@@ -36,14 +38,17 @@ const FooterWrap = styled.div`
 `;
 const Title = styled.p`
   font-weight: bold;
-  margin-top: 16px;
   margin-bottom: 4px;
 `;
 
 const Wrap = styled.div`
-  max-width: 980px;
+  max-width: 1134px;
   background-color: #ececec;
-  margin: 0px auto;
+  padding: 0px 40px;
+  margin: auto;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
 `;
 
 const FooterBtnList = styled.ul`
@@ -52,14 +57,14 @@ const FooterBtnList = styled.ul`
   /* flex-direction:row;
     flex-wrap: wrap;
     align-items:flex-start; */
-  margin: 20px auto 0 auto;
+  margin: 30px auto 0 auto;
   padding: 50px auto;
   list-style: none;
   & li {
     display: block;
     list-style-type: none;
     box-sizing: border-box;
-    margin: 0 0 16px 0;
+    margin: 30px 0 16px 0;
     text-align: center;
   }
   & span {

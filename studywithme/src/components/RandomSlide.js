@@ -54,22 +54,20 @@ const RandomSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>
-            <Star />
-            유저들의 게시물
-            <Star />
-          </SlideTitle>
-          {post_list?.length === 0 ? null : (
-            <More
-              onClick={() => {
-                history.push("/list");
-                window.scrollTo(0, 0);
-              }}
-            >
-              더보기
-            </More>
-          )}
+          <Star />
+          새로운 게시물
+          <Star />
         </SlideUpLine>
+        {post_list?.length === 0 ? null : (
+          <More
+            onClick={() => {
+              history.push("/list");
+              window.scrollTo(0, 0);
+            }}
+          >
+            더보기
+          </More>
+        )}
         {post_list?.length === 0 ? (
           <Nothing>표시할 내용이 없습니다.</Nothing>
         ) : (
@@ -163,23 +161,18 @@ const Wrap = styled.div`
 
 const SlideUpLine = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 5%;
   align-items: center;
-`;
-
-const SlideTitle = styled.div`
   font-size: 28px;
   font-weight: bold;
-`;
-
-const SlideSubTitle = styled.div`
-  font-size: 16px;
-  opacity: 0.5;
-  margin-bottom: 10px;
+  text-align: center;
 `;
 
 const More = styled.div`
+  display: flex;
+  justify-content: end;
+  margin: 5px 5%;
   font-size: 13px;
   opacity: 50%;
   &:hover {

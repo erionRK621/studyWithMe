@@ -56,23 +56,20 @@ const FollowSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>
-            <Star />
-            내 친구들의 데스크테리어
-            <Star />
-            <SlideSubTitle>내가 팔로우한 유저들의 게시물이에요.</SlideSubTitle>
-          </SlideTitle>
-          {post_list?.length === 0 ? null : (
-            <More
-              onClick={() => {
-                history.push("/list");
-                window.scrollTo(0, 0);
-              }}
-            >
-              더보기
-            </More>
-          )}
+          <Star />
+          내 친구들의 데스크테리어
+          <Star />
         </SlideUpLine>
+        {post_list?.length === 0 ? null : (
+          <More
+            onClick={() => {
+              history.push("/list");
+              window.scrollTo(0, 0);
+            }}
+          >
+            더보기
+          </More>
+        )}
         {post_list?.length === 0 ? (
           <NothingSlide></NothingSlide>
         ) : (
@@ -167,23 +164,18 @@ const Wrap = styled.div`
 
 const SlideUpLine = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 5%;
   align-items: center;
-`;
-
-const SlideTitle = styled.div`
   font-size: 28px;
   font-weight: bold;
-`;
-
-const SlideSubTitle = styled.div`
-  font-size: 14px;
-  opacity: 0.5;
-  margin-bottom: 10px;
+  text-align: center;
 `;
 
 const More = styled.div`
+  display: flex;
+  justify-content: end;
+  margin: 5px 5%;
   font-size: 13px;
   opacity: 50%;
   &:hover {
