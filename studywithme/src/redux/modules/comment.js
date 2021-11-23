@@ -52,9 +52,10 @@ const addCommentMiddleware = (postId, textContent) => {
       .addCommentAxios(postId, { textContent })
       .then((res) => {
         const { comment, userNick, avatarUrl, totalPg } = res.data;
-        dispatch(pageActions.setPage(1));
-        console.log(totalPg);
-        dispatch(addComment(userNick, comment, avatarUrl, totalPg));
+        // 댓글 작성 시 첫페이지로 돌아간다.
+        // totalPg를 setPage인자값으로 넣는 이유는 totalPg의 값에 따라 페이지를 보여주는 방식이 다르다.
+        dispatch(pageActions.setPage(1, totalPg));
+        dispatch(addComment(userNick, comment, avatarUrl));
       })
       .catch((err) => {
         console.log(err);
@@ -131,7 +132,6 @@ export default handleActions(
           avatarUrl: action.payload.avatarUrl,
           commentLikeCnt: 0,
         });
-        draft.totalPg=action.payload.totalPg;
       }),
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
