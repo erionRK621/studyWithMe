@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
+import AWS from 'aws-sdk';
 
 import Input from "../elements/Input";
 import Grid from "../elements/Grid";
@@ -24,6 +25,8 @@ import logologo from "../icon/logologo.png";
 
 import dotenv, { load } from "dotenv";
 dotenv.config();
+
+const s3 = new AWS.S3();
 
 const PostWrite = (props) => {
   const inputFile = useRef();
@@ -64,8 +67,14 @@ const PostWrite = (props) => {
 
   const [imageCoverForCrop, setImageCoverForCrop] = useState(_editMode ? `${process.env.REACT_APP_IMAGE_URI}/${post.coverOriginal}` : null)
 
-
   console.log("imageCoverForCrop", imageCoverForCrop);
+  console.log(process.env.REACT_APP_S3_BUCKET_NAME);
+
+  // const result = s3.getObject({ Bucket: process.env.REACT_APP_S3_BUCKET_NAME, Key: "path/to/file", })
+  //   .promise()
+  //   .then(res =>
+  //     console.log(res)
+  //   );
 
   // function loadXHR(url) {
 
@@ -76,7 +85,10 @@ const PostWrite = (props) => {
   //       xhr.responseType = "blob";
   //       xhr.onerror = function () { reject("Network error.") };
   //       xhr.onload = function () {
-  //         if (xhr.status === 200) { resolve(xhr.response) }
+  //         if (xhr.status === 200) {
+  //           resolve(xhr.response)
+  //           console.log("xhr.response", xhr.response);
+  //         }
   //         else { reject("Loading error:" + xhr.statusText) }
   //       };
   //       xhr.send();
@@ -88,6 +100,7 @@ const PostWrite = (props) => {
   // loadXHR('https://kkirri-images.s3.amazonaws.com/uploads/cover/1637392961734_Deskterior_press_20200224_01.jpg')
   //   .then(function (blob) {
   //     // here the image is a blob
+  //     console.log("blob", blob);
   //   });
 
   // Cropper 관련 시작
