@@ -182,14 +182,6 @@ const More = styled.div`
     cursor: pointer;
   }
 `;
-const Nothing = styled.div`
-  width: 769px;
-  height: 263px;
-  background-color: #9dd0d1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const PostWrap = styled.div`
   width: 100px;
@@ -199,7 +191,7 @@ const PostWrap = styled.div`
 //슬라이더 css부분
 const StyledSlider = styled(Slider)`
   .slick-list {
-    width: 100%;
+    width: 95%;
     height: 50%;
     margin: 0 auto;
   }
