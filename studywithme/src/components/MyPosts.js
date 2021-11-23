@@ -18,7 +18,7 @@ const MyPosts = (props) => {
 
   useEffect(() => {
     dispatch(userActions.getMyPostMiddleware(myPageUserId));
-  }, []);
+  }, [myPageUserId]);
   return (
     <Wrap>
       <GridWrap>

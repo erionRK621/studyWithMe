@@ -42,53 +42,34 @@ const MyPage = (props) => {
         <HeaderWrap>
           <UserInfo myPageUserId={myPageUserId} isMe={isMe}></UserInfo>
         </HeaderWrap>
-
         {/* 탭 선택 섹션 */}
-        {postsTabSelected === true ? (
-          // MyPostsTab 선택한 경우? postsTabSelected = true
-          <BtnWrap>
-            <TabWrap>
-              <PostsTab postsTabSelected={postsTabSelected}>
-                <MyPostsTabOn />
-                게시물
-              </PostsTab>
-            </TabWrap>
+        <BtnWrap>
+          <TabWrap>
+            <PostsTab
+              postsTabSelected={postsTabSelected}
+              onClick={selectPostsTab}
+            >
+              {postsTabSelected ? <MyPostsTabOn /> : <MyPostsTabOff />}
+              게시물
+            </PostsTab>
+          </TabWrap>
 
-            {isMe ? (
-              <TabWrap>
-                <BookmarksTab
-                  onClick={selectBookMarksTab}
-                  postsTabSelected={postsTabSelected}
-                >
-                  <MyBookmarksTabOff />
-                  북마크
-                </BookmarksTab>
-              </TabWrap>
-            ) : null}
-          </BtnWrap>
-        ) : (
-          // MyBookmarksTab 선택한 경우? postsTabSelected = false
-          <BtnWrap>
+          {isMe ? (
             <TabWrap>
-              <PostsTab
-                onClick={selectPostsTab}
+              <BookmarksTab
+                onClick={selectBookMarksTab}
                 postsTabSelected={postsTabSelected}
               >
-                <MyPostsTabOff />
-                게시물
-              </PostsTab>
-            </TabWrap>
-
-            {isMe ? (
-              <TabWrap>
-                <BookmarksTab postsTabSelected={postsTabSelected}>
+                {postsTabSelected ? (
+                  <MyBookmarksTabOff />
+                ) : (
                   <MyBookmarksTabOn />
-                  북마크
-                </BookmarksTab>
-              </TabWrap>
-            ) : null}
-          </BtnWrap>
-        )}
+                )}
+                북마크
+              </BookmarksTab>
+            </TabWrap>
+          ) : null}
+        </BtnWrap>
         {/* 포스트 카드 섹션 */}
         {postsTabSelected === true ? (
           <MyPosts

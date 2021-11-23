@@ -17,7 +17,7 @@ const BookMarks = (props) => {
 
   useEffect(() => {
     dispatch(userActions.getBookMarkMiddleware(myPageUserId));
-  }, []);
+  }, [myPageUserId]);
   return (
     <Wrap>
       <GridWrap>
