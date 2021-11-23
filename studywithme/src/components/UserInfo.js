@@ -40,7 +40,7 @@ const UserInfo = (props) => {
     dispatch(userActions.getUserDB(myPageUserId));
     dispatch(myActions.getFollowingsMiddleware(myPageUserId));
     dispatch(myActions.getFollowersMiddleware(myPageUserId));
-  }, []);
+  }, [myPageUserId]);
 
   return (
     <React.Fragment>
