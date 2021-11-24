@@ -9,7 +9,6 @@ const Pagination = (props) => {
   // 실제로 뷰로 보여줄 페이지 리스트
   const pageList = useSelector((state) => state.pagination.pageList);
   const [currentPage, setCurrentPage] = React.useState(1);
-  console.log(pageList);
   const dispatch = useDispatch();
   const changePage = (page) => {
     setCurrentPage(page);

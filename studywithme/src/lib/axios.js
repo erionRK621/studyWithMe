@@ -89,7 +89,16 @@ export const apis = {
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>
     instance.post(`/api/posts/${postId}/comments`, comment),
-  getCommentAxios: (postId,page) => instance.get(`/api/posts/${postId}/comments?pagination=${page}`),
+  getCommentAxios: (postId, page) =>
+    instance.get(`/api/posts/${postId}/comments?pagination=${page}`),
   deleteCommentAxios: (postId, commentId) =>
     instance.delete(`api/posts/${postId}/comments/${commentId}`),
+
+  // 대댓글
+  addCommentReplyAxios: (postId, commentId, textContent) =>
+    instance.post(`/api/posts/${postId}/comments/${commentId}/childs`, {textContent}),
+  getCommentReplyAxios: (postId, commentId) =>
+    instance.get(`/api/posts/${postId}/comments/${commentId}/childs`),
+  deleteCommentReplyAxios: (postId, comment,childCommentId) =>
+    instance.delete(`/api/posts/${postId}/comments/${comment}/childs/${childCommentId}`),
 };

@@ -2,12 +2,17 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { apis } from "../../lib/axios";
 import { actionCreators as pageActions } from "./pagination";
+import { CardFooter } from "reactstrap";
 
 const ADD_COMMENT = "ADD_COMMENT";
 const GET_COMMENT = "GET_COMMENT";
 const DELETE_COMMENT = "DELETE_COMMENT";
 const ADD_COMMENT_LIKE = "ADD_COMMENT_LIKE";
 const DELETE_COMMENT_LIKE = "DELETE_COMMENT_LIKE";
+const REPLY_WRITE_STATE = "REPLY_WRITE_STATE";
+const REPLY_LIST_STATE = "REPLY_LIST_STATE";
+const ADD_REPLY = "ADD_REPLY";
+const GET_REPLY = "GET_REPLY";
 
 const addComment = createAction(
   ADD_COMMENT,
@@ -19,10 +24,12 @@ const addComment = createAction(
   })
 );
 
-const getComment = createAction(GET_COMMENT, (comment, totalPg) => ({
+const getComment = createAction(GET_COMMENT, (comment, totalPg, totCmtCount) => ({
   comment,
   totalPg,
+  totCmtCount,
 }));
+
 const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
   commentId,
 }));
@@ -40,9 +47,34 @@ const DeleteCommentLike = createAction(
     commentId,
   })
 );
+
+const replyWriteState = createAction(
+  REPLY_WRITE_STATE,
+  (writeState, commentId) => ({
+    writeState,
+    commentId,
+  })
+);
+
+const replyListState = createAction(
+  REPLY_LIST_STATE,
+  (replyListState, commentId) => ({
+    replyListState,
+    commentId,
+  })
+);
+
+const addCommentReply = createAction(ADD_REPLY, (content) => ({
+  content,
+}));
+const getCommentReply = createAction(GET_REPLY, (commentId, childComments) => ({
+  commentId,
+  childComments,
+}));
 const initialState = {
   list: [],
-  totalPg:1,
+  totalPg: 1,
+  totCmtCount:0,
 };
 
 // 댓글 추가
@@ -69,7 +101,7 @@ const getCommentMiddleware = (postId, page) => {
     apis
       .getCommentAxios(postId, page)
       .then((res) => {
-        dispatch(getComment(res.data.cmtsList, res.data.totalPg));
+        dispatch(getComment(res.data.cmtsList, res.data.totalPg, res.data.totCmtCount));
         dispatch(pageActions.setPage(page, res.data.totalPg));
       })
       .catch((err) => {
@@ -118,12 +150,46 @@ const deleteCommentLikeMiddleWare = (postId, commentId) => {
       });
   };
 };
+
+// 대댓글 작성
+const addCommentReplyMiddleware = (postId, commentId, content) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .addCommentReplyAxios(postId, commentId, content)
+      .then((res) => {
+        const addReply = res.data;
+        const user = addReply.user;
+        const child = addReply.createdChild;
+        console.log(addReply);
+        // dispatch(addCommentReply(commentId, user, child));
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
+  };
+};
+
+// 대댓글 조회
+const getCommentReplyMiddleware = (postId, commentId) => {
+  return function (dispatch, getState, { history }) {
+    console.log(postId,commentId);
+    apis
+      .getCommentReplyAxios(postId, commentId)
+      .then((res) => {
+        const childComments = res.data.childComments;
+        dispatch(getCommentReply(commentId, childComments));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+};
 // 리듀서
 export default handleActions(
   {
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        if(draft.list.length>=4) {
+        if (draft.list.length >= 4) {
           draft.list.pop();
         }
         draft.list.unshift({
@@ -132,11 +198,19 @@ export default handleActions(
           avatarUrl: action.payload.avatarUrl,
           commentLikeCnt: 0,
         });
+        draft.totCmtCount++;
       }),
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.list = action.payload.comment;
-        draft.totalPg=action.payload.totalPg;
+        let commentList = [];
+        action.payload.comment.map((c) => {
+          c.writeState = false;
+          c.replyListState = false;
+          commentList.push(c);
+        });
+        draft.list = commentList;
+        draft.totalPg = action.payload.totalPg;
+        draft.totCmtCount=action.payload.totCmtCount;
       }),
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
@@ -167,6 +241,38 @@ export default handleActions(
           commentLikeCnt: draft.list[idx].commentLikeCnt - 1,
         };
       }),
+    [REPLY_WRITE_STATE]: (state, action) =>
+      produce(state, (draft) => {
+        const idx = draft.list.findIndex(
+          (c) => c.commentId === action.payload.commentId
+        );
+        draft.list[idx] = {
+          ...draft.list[idx],
+          writeState: action.payload.writeState,
+        };
+      }),
+    [REPLY_LIST_STATE]: (state, action) =>
+      produce(state, (draft) => {
+        const idx = draft.list.findIndex(
+          (c) => c.commentId === action.payload.commentId
+        );
+        draft.list[idx] = {
+          ...draft.list[idx],
+          replyListState: action.payload.replyListState,
+        };
+      }),
+    [ADD_REPLY]: (state, action) => produce(state, (draft) => {}),
+    [GET_REPLY]: (state, action) =>
+      produce(state, (draft) => {
+        const idx = draft.list.findIndex(
+          (c) => c.commentId === action.payload.commentId
+        );
+        console.log (action.payload.childComments);
+        // draft.list[idx] = {
+        //   ...draft.list[idx],
+        //   childComments : action.payload.childComments,
+        // };
+      }),
   },
   initialState
 );
@@ -180,6 +286,10 @@ const actionCreators = {
   deleteCommentMiddleware,
   deleteCommentLikeMiddleWare,
   addCommentLikeMiddleWare,
+  replyWriteState,
+  replyListState,
+  addCommentReplyMiddleware,
+  getCommentReplyMiddleware,
 };
 
 export { actionCreators };
