@@ -81,6 +81,10 @@ const ContentDiv = styled.div`
   padding: 1px 16px;
   height: 700px;
   width: 100%;
+  @media screen and (max-width: 768px) {
+    width: 80%;
+    margin: auto;
+  }
 `;
 
 export default UserEdit;

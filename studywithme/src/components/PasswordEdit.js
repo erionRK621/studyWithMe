@@ -131,6 +131,11 @@ const NicknameWrap = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 36px;
+  @media screen and (max-width: 768px) {
+    font-size: 30px;
+    width: 100px;
+    margin: auto;
+  }
 `;
 const UserNickname = styled.div``;
 
