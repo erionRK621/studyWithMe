@@ -29,10 +29,10 @@ const Main = (props) => {
         <Banner>
           <Image shape="rectangle" src={banner} paddingTop="40%"></Image>
           <ImgContents>
-            <img src={kkiriText} />
+            <img src={kkiriText} style={{ maxWidth: "100%" }} />
           </ImgContents>
           <ImgContents2>
-            <img src={kkiriText2} />
+            <img src={kkiriText2} style={{ maxWidth: "100%" }} />
           </ImgContents2>
         </Banner>
 
@@ -54,10 +54,6 @@ const Wrap = styled.div`
   width: 100%;
 `;
 
-const BackGroundDiv = styled.div`
-  background-image: url(banner);
-`;
-
 const Banner = styled.div`
   position: relative;
 `;
@@ -67,6 +63,8 @@ const ImgContents = styled.div`
   left: 45%;
   z-index: 2;
   @media screen and (max-width: 768px) {
+    width: 80px;
+    left: 50%;
   }
 `;
 const ImgContents2 = styled.div`
@@ -75,6 +73,8 @@ const ImgContents2 = styled.div`
   left: 45%;
   z-index: 2;
   @media screen and (max-width: 768px) {
+    width: 80px;
+    left: 50%;
   }
 `;
 
