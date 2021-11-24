@@ -187,7 +187,7 @@ const CommentList = (props) => {
               ) : null}
               {c.replyListState ? (
                 <ReplyList postId={postId} commentId={c.commentId} />
-              ) : null}
+               ) : null}
             </FlexGrid>
           );
         })}

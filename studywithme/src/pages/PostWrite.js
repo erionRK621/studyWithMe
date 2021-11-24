@@ -41,7 +41,6 @@ const PostWrite = (props) => {
   }
 
   const post = useSelector((state) => state.post.detail);
-  console.log("post", post);
   // const coverOriginalObj = useSelector((state) => state.post.coverOriginalObj);
   const coverOriginalObj = post?.coverOriginal;
   // console.log("coverOriginalObj", coverOriginalObj);
