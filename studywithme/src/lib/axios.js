@@ -89,7 +89,10 @@ export const apis = {
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>
     instance.post(`/api/posts/${postId}/comments`, comment),
-  getCommentAxios: (postId,page) => instance.get(`/api/posts/${postId}/comments?pagination=${page}`),
+  getCommentAxios: (postId, page) => instance.get(`/api/posts/${postId}/comments?pagination=${page}`),
   deleteCommentAxios: (postId, commentId) =>
     instance.delete(`api/posts/${postId}/comments/${commentId}`),
+
+  // 게시물 수정시 커버 이미지 원본 파일 객체 가져오기
+  getCoverOriginalObjAxios: (postId) => instance.get(`/api/posts/${postId}/coverOriginal`),
 };
