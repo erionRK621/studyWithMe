@@ -109,6 +109,7 @@ const Header = (props) => {
             onClick={() => {
               history.push("/mypage/" + userId);
               changeMyPageColor();
+              // window.location.reload();
             }}
           >
             마이페이지

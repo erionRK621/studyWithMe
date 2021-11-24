@@ -21,7 +21,9 @@ const Footer = () => {
           </li>
           <li></li>
           <li>
-            <img src={logo} />
+            <ImgContents>
+              <img src={logo} style={{ maxWidth: "100%" }} />
+            </ImgContents>
           </li>
         </FooterBtnList>
       </Wrap>
@@ -48,6 +50,8 @@ const Wrap = styled.div`
   margin: auto;
   @media screen and (max-width: 768px) {
     max-width: 768px;
+    font-size: 8px;
+    padding: 0px;
   }
 `;
 
@@ -67,8 +71,14 @@ const FooterBtnList = styled.ul`
     margin: 30px 0 16px 0;
     text-align: center;
   }
-  & span {
-    font-size: 15px;
+`;
+const ImgContents = styled.div`
+  position: absolute;
+  z-index: 2;
+  right: 10%;
+  @media screen and (max-width: 768px) {
+    width: 100px;
+    right: 10%;
   }
 `;
 

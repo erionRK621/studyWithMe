@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/mypage";
 
 import { ReactComponent as MyPostsTabOn } from "../icon/MyPostsTabOn.svg";
 import { ReactComponent as MyPostsTabOff } from "../icon/MyPostsTabOff.svg";

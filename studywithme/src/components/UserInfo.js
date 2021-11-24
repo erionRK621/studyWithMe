@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import dotenv from "dotenv";
 import { useSelector, useDispatch } from "react-redux";
-import { AiTwotoneSetting } from "react-icons/ai";
+
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
@@ -49,12 +49,7 @@ const UserInfo = (props) => {
           <ProfilePic src={userPic} alt="Profile Pic" />
         </UserProfilePicWrap>
         <UserProfileWrap>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
+          <NicknameWrap>
             <UserNickname>{userInfo?.nickname}</UserNickname>
             {isMe ? (
               <UserInfoEditButton
@@ -65,17 +60,9 @@ const UserInfo = (props) => {
                 회원정보 수정
               </UserInfoEditButton>
             ) : null}
-          </div>
+          </NicknameWrap>
           <BottomDiv>
-            <div
-              style={{
-                fontSize: "20px",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              게시물 {userInfo?.postCnt}개
-            </div>
+            <Post>게시물 {userInfo?.postCnt}개</Post>
             <Button onClick={followerModalClose}>
               팔로워 {followerList?.length}명
             </Button>
@@ -133,6 +120,18 @@ const ProfilePic = styled.img`
   display: block;
   flex: none;
   justify-content: center;
+  @media screen and (max-width: 768px) {
+    width: 140px;
+  }
+`;
+const NicknameWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    height: 50%;
+    margin: 20px 0px;
+  }
 `;
 
 const UserProfileWrap = styled.section`
@@ -146,6 +145,10 @@ const UserProfileWrap = styled.section`
   margin: 0 0 0 50px;
   padding: 0;
   position: relative;
+  @media screen and (max-width: 768px) {
+    height: 50%;
+    margin: auto 20px;
+  }
 `;
 
 const UserNicknameWrap = styled.div`
@@ -162,6 +165,9 @@ const UserNickname = styled.h2`
   font-size: 32px;
   line-height: 45px;
   margin: -5px 0 -6px;
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 
 const UserInfoEditButton = styled.button`
@@ -173,6 +179,20 @@ const UserInfoEditButton = styled.button`
   color: black;
   cursor: pointer;
   font-size: 16px;
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    font-size: 8px;
+    height: 24px;
+  }
+`;
+const Post = styled.div`
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    margin: 4px auto;
+  }
 `;
 
 const Button = styled.div`
@@ -180,6 +200,10 @@ const Button = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    margin: 4px auto;
+  }
 `;
 
 const BottomDiv = styled.div`
@@ -188,6 +212,13 @@ const BottomDiv = styled.div`
   width: 100%;
   height: 50%;
   margin: auto;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    height: 50%;
+  }
 `;
 
 export default UserInfo;

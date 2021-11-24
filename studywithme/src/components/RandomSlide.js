@@ -121,11 +121,17 @@ const defaultButtonStyle = css`
 const PrevButton = styled.button`
   ${defaultButtonStyle}
   left: 0;
+  @media screen and (max-width: 768px) {
+    left: -10px;
+  }
 `;
 
 const NextButton = styled.button`
   ${defaultButtonStyle}
   right: 0;
+  @media screen and (max-width: 768px) {
+    right: -10px;
+  }
 `;
 
 const defaultIconStyle = css`
@@ -167,6 +173,9 @@ const SlideUpLine = styled.div`
   font-size: 28px;
   font-weight: bold;
   text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const More = styled.div`
@@ -177,6 +186,10 @@ const More = styled.div`
   opacity: 50%;
   &:hover {
     cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 8px;
+    margin: 0px 5%;
   }
 `;
 

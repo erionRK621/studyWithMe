@@ -80,6 +80,10 @@ const PostContainer = styled.div`
 const Title = styled.div`
   font-size: 16px;
   margin-top: 10px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    margin-top: 4px;
+  }
 `;
 
 const Profile = styled.div`
@@ -89,6 +93,10 @@ const Profile = styled.div`
 const Nickname = styled.div`
   font-size: 13px;
   opacity: 0.5;
+  @media screen and (max-width: 768px) {
+    font-size: 10px;
+    opacity: 0.5;
+  }
 `;
 
 const CategoryInfo = styled.div`
@@ -102,6 +110,10 @@ const CategoryItem = styled.div`
   background-color: #ececec;
   margin: 0 5px;
   padding: 2px 6px;
+  @media screen and (max-width: 768px) {
+    font-size: 10px;
+    opacity: 0.5;
+  }
 `;
 
 export default Post;
