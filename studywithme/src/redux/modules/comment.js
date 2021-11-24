@@ -13,6 +13,7 @@ const REPLY_WRITE_STATE = "REPLY_WRITE_STATE";
 const REPLY_LIST_STATE = "REPLY_LIST_STATE";
 const ADD_REPLY = "ADD_REPLY";
 const GET_REPLY = "GET_REPLY";
+const DELETE_REPLY = "DELETE_REPLY";
 
 const addComment = createAction(
   ADD_COMMENT,
@@ -67,13 +68,22 @@ const replyListState = createAction(
   })
 );
 
-const addCommentReply = createAction(ADD_REPLY, (content) => ({
-  content,
+const addCommentReply = createAction(ADD_REPLY, (commentId, user, child) => ({
+  commentId,
+  user,
+  child,
 }));
 const getCommentReply = createAction(GET_REPLY, (commentId, childComments) => ({
   commentId,
   childComments,
 }));
+const deleteCommentReply = createAction(
+  DELETE_REPLY,
+  (commentId, childCommentId) => ({
+    commentId,
+    childCommentId,
+  })
+);
 const initialState = {
   list: [],
   totalPg: 1,
@@ -159,14 +169,14 @@ const deleteCommentLikeMiddleWare = (postId, commentId) => {
 // 대댓글 작성
 const addCommentReplyMiddleware = (postId, commentId, content) => {
   return function (dispatch, getState, { history }) {
+    dispatch(replyListState(true, commentId));
     apis
       .addCommentReplyAxios(postId, commentId, content)
       .then((res) => {
         const addReply = res.data;
         const user = addReply.user;
-        const child = addReply.createdChild;
-        console.log(addReply);
-        // dispatch(addCommentReply(commentId, user, child));
+        const child = addReply.child;
+        dispatch(addCommentReply(commentId, user, child));
       })
       .catch((err) => {
         console.log(err.response.data.message);
@@ -177,7 +187,6 @@ const addCommentReplyMiddleware = (postId, commentId, content) => {
 // 대댓글 조회
 const getCommentReplyMiddleware = (postId, commentId) => {
   return function (dispatch, getState, { history }) {
-    console.log(postId, commentId);
     apis
       .getCommentReplyAxios(postId, commentId)
       .then((res) => {
@@ -185,6 +194,23 @@ const getCommentReplyMiddleware = (postId, commentId) => {
         dispatch(getCommentReply(commentId, childComments));
       })
       .catch((err) => {
+        console.log(err);
+      });
+  };
+};
+
+// 대댓글 삭제
+const deleteCommentReplyMiddleware = (postId, commentId, childCommentId) => {
+  return function (dispatch, getState, { history }) {
+    console.log("aaaa");
+    apis
+      .deleteCommentReplyAxios(postId, commentId, childCommentId)
+      .then((res) => {
+        console.log("bbbb");
+        dispatch(deleteCommentReply(commentId, childCommentId));
+      })
+      .catch((err) => {
+        console.log("cccc");
         console.log(err);
       });
   };
@@ -266,7 +292,16 @@ export default handleActions(
           replyListState: action.payload.replyListState,
         };
       }),
-    [ADD_REPLY]: (state, action) => produce(state, (draft) => {}),
+    [ADD_REPLY]: (state, action) =>
+      produce(state, (draft) => {
+        const user = action.payload.user;
+        const child = action.payload.child;
+
+        const commentIdx = draft.list.findIndex(
+          (c) => c.commentId === action.payload.commentId
+        );
+        draft.list[commentIdx].childComments.unshift({ ...user, ...child });
+      }),
     [GET_REPLY]: (state, action) =>
       produce(state, (draft) => {
         const idx = draft.list.findIndex(
@@ -275,8 +310,18 @@ export default handleActions(
         // const replyList = action.payload.childComments;
         draft.list[idx] = {
           ...draft.list[idx],
-          childComments : action.payload.childComments,
+          childComments: action.payload.childComments,
         };
+      }),
+    [DELETE_REPLY]: (state, action) =>
+      produce(state, (draft) => {
+        const commentIdx = draft.list.findIndex(
+          (c) => c.commentId === action.payload.commentId
+        );
+        const childIdx = draft.list[commentIdx].childComments.findIndex(
+          (r) => r.childCommentId === action.payload.childCommentId
+        );
+        draft.list[commentIdx].childComments.splice(childIdx, 1);
       }),
   },
   initialState
@@ -295,6 +340,7 @@ const actionCreators = {
   replyListState,
   addCommentReplyMiddleware,
   getCommentReplyMiddleware,
+  deleteCommentReplyMiddleware,
 };
 
 export { actionCreators };

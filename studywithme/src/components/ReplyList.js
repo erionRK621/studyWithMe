@@ -1,17 +1,85 @@
-import React from 'react';
-import { useDispatch} from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+
 import { actionCreators as commentActions } from "../redux/modules/comment";
+import { history } from "../redux/configStore";
+
+import Image from "../elements/Image";
+import Text from "../elements/Text";
+import time from "../shared/time";
+
+import { ReactComponent as Trash } from "../icon/trash.svg";
 
 const ReplyList = (props) => {
-    const dispatch = useDispatch();
-    const postId = props.postId;
-    const commentId = props.commentId;
-    React.useEffect(()=>{
-        dispatch(commentActions.getCommentReplyMiddleware(postId, commentId));
-    },[]);
-    return (<FlexGrid></FlexGrid>);
+  const dispatch = useDispatch();
+  const postId = props.postId;
+  const commentId = props.commentId;
+  const replyList = props.replyList;
+
+  const deleteReply = (childCommentId) => {
+    dispatch(
+      commentActions.deleteCommentReplyMiddleware(
+        postId,
+        commentId,
+        childCommentId
+      )
+    );
+  };
+  React.useEffect(() => {
+    dispatch(commentActions.getCommentReplyMiddleware(postId, commentId));
+  }, []);
+  return (
+    <React.Fragment>
+      {replyList?.map((r) => {
+        return (
+          <FlexGrid
+            key={r.childCommentId}
+            align="center"
+            paddingLeft="50px"
+            justify="space-between"
+          >
+            <FlexGrid justify="space-between" align="center" margin="5px 0px">
+              <FlexGrid align="center">
+                <FlexGrid align="center" minWidth="130px">
+                  <Image
+                    size="36"
+                    src={`${process.env.REACT_APP_IMAGE_URI}/${r?.avatarUrl}`}
+                  />
+                  <FlexGrid direction="column" margin="0px 5px">
+                    <Text
+                      size="15px"
+                      _onClick={() => {
+                        history.push(`/mypage/${r.userId}`);
+                      }}
+                      pointer
+                    >
+                      {r.nickname}
+                    </Text>
+                    <Text size="10px" color="#cccccc">
+                      {time(r.date)}
+                    </Text>
+                  </FlexGrid>
+                </FlexGrid>
+                <FlexGrid maxWidth="550px" align="start">
+                  <Text>{r.textContent}</Text>
+                </FlexGrid>
+              </FlexGrid>
+            </FlexGrid>
+            <Trash
+              className="iconButton"
+              style={{ width: "15px", height: "15px" }}
+              onClick={() => {
+                deleteReply(r.childCommentId);
+              }}
+            />
+          </FlexGrid>
+        );
+      })}
+    </React.Fragment>
+  );
 };
+
 const FlexGrid = styled.div`
   display: flex;
   max-width: ${(props) => (props.maxWidth ? props.maxWidth : "750px")};
