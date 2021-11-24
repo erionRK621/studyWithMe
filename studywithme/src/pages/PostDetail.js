@@ -42,7 +42,7 @@ const PostDetail = (props) => {
   const user = useSelector((state) => state.user.user);
   const userId = user?.userId;
 
-  const commentCnt = useSelector((state) => state.comment.list?.length);
+  const commentCnt = useSelector((state) => state.comment?.totCmtCount);
 
   const isBookmarked = post.isBookmarked;
   const isLiked = post.isLiked;
@@ -244,7 +244,7 @@ const PostDetail = (props) => {
         </Text>
 
         <CommentWrite postId={postId} avatarUrl={post?.currentAvatar} />
-        <CommentList postId={postId} />
+        <CommentList postId={postId}  avatarUrl={post?.currentAvatar} />
       </FlexGrid>
     </div>
   );

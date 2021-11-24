@@ -38,9 +38,13 @@ export default handleActions(
             } else {
               startIdx = currentPage - 5;
             }
-        } else {
+        } else if((totalPage > showPageCnt && currentPage <= 7)){
           startIdx = 1;
-          endIdx = showPageCnt;
+          if(totalPage<=10) endIdx = totalPage;
+          else endIdx=10;
+        } else {
+          startIdx=1;
+          endIdx=totalPage;
         }
         for (let i = startIdx; i <= endIdx; i++) {
           pageList.push(i);

@@ -20,6 +20,7 @@ const Input = (props) => {
     size,
     bgColor,
     margin,
+    borderRadius,
   } = props;
 
   const styles = {
@@ -29,6 +30,7 @@ const Input = (props) => {
     size: size,
     bgColor: bgColor,
     margin: margin,
+    borderRadius:borderRadius,
   };
   if (multiLine) {
     return (
@@ -97,13 +99,13 @@ const ElTextarea = styled.textarea`
 `;
 
 const ElInput = styled.input`
-  border: ${(props) => (props.border ? props.border : "none")};
+  border: ${(props) => (props.border ? props.border : "none;")};
   ${(props) => (props.borderBottom ? `border-bottom:1px solid;` : null)};
-  width: ${(props) => (props.width ? props.width : "100%")};
+  width: ${(props) => (props.width ? props.width : "100%;")};
   padding: 12px 4px;
   box-sizing: border-box;
   /* background-color: rgba(244, 244, 244, 1); */
-  border-radius: 10px;
+  border-radius: ${(props)=> (props.borderRadius ? props.borderRadius:"10px;")};
   &:focus {
     outline: none;
   }
