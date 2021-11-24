@@ -97,6 +97,10 @@ const InnerDiv = styled.div`
   margin: auto 24px auto auto;
   font-size: 18px;
   color: #282828;
+  @media screen and (max-width: 768px) {
+    font-size: 9px;
+    margin: auto;
+  }
 `;
 
 const Wrap = styled.div`
@@ -104,6 +108,7 @@ const Wrap = styled.div`
   height: 30vh;
   max-height: 263px;
   margin: auto;
+  margin-top: 10px;
   position: relative;
 
   @media screen and (max-width: 768px) {

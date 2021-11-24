@@ -109,6 +109,7 @@ const Header = (props) => {
             onClick={() => {
               history.push("/mypage/" + userId);
               changeMyPageColor();
+              // window.location.reload();
             }}
           >
             마이페이지
@@ -227,7 +228,7 @@ const Navbar = styled.div`
   padding: 10px 40px;
   max-width: 1134px;
   margin: auto;
-  height: 65px;
+  /* height: 65px; */
 
   @media screen and (max-width: 768px) {
     max-width: 768px;

@@ -1,4 +1,10 @@
-import React, { isValidElement, useState, useRef, useCallback } from "react";
+import React, {
+  isValidElement,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
@@ -11,7 +17,7 @@ import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
 // Cropper 관련 시작
-import Cropper from 'react-easy-crop'
+import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../shared/cropImage";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
@@ -35,9 +41,13 @@ const PostWrite = (props) => {
   }
 
   const post = useSelector((state) => state.post.detail);
-  // console.log("post", post);
+  console.log("post", post);
+  // const coverOriginalObj = useSelector((state) => state.post.coverOriginalObj);
+  const coverOriginalObj = post?.coverOriginal;
+  // console.log("coverOriginalObj", coverOriginalObj);
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
+  console.log("_editMode", _editMode);
   const [content, setContent] = useState(
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
@@ -51,47 +61,14 @@ const PostWrite = (props) => {
   const [title, setTitle] = useState(
     _editMode ? decodeURIComponent(post.title) : ""
   );
-  // const [coverOriginal, setCoverOriginal] = useState("");
   const [coverOriginal, setCoverOriginal] = useState(null);
   const [coverCropped, setCoverCropped] = useState(null);
-  // const [imageCoverForCrop, setImageCoverForCrop] = useState(_editMode ? (() => {
-  //   const reader = new FileReader();
-  //   // reader.readAsDataURL(`${process.env.REACT_APP_IMAGE_URI}/${post.coverOriginal}`);
-  //   return `${process.env.REACT_APP_IMAGE_URI}/${post.coverOriginal}`;
-  // })
-  //   :
-  //   null);
-
-  const [imageCoverForCrop, setImageCoverForCrop] = useState(_editMode ? `${process.env.REACT_APP_IMAGE_URI}/${post.coverOriginal}` : null)
-
-
-  console.log("imageCoverForCrop", imageCoverForCrop);
-
-  // function loadXHR(url) {
-
-  //   return new Promise(function (resolve, reject) {
-  //     try {
-  //       var xhr = new XMLHttpRequest();
-  //       xhr.open("GET", url);
-  //       xhr.responseType = "blob";
-  //       xhr.onerror = function () { reject("Network error.") };
-  //       xhr.onload = function () {
-  //         if (xhr.status === 200) { resolve(xhr.response) }
-  //         else { reject("Loading error:" + xhr.statusText) }
-  //       };
-  //       xhr.send();
-  //     }
-  //     catch (err) { reject(err.message) }
-  //   });
-  // }
-
-  // loadXHR('https://kkirri-images.s3.amazonaws.com/uploads/cover/1637392961734_Deskterior_press_20200224_01.jpg')
-  //   .then(function (blob) {
-  //     // here the image is a blob
-  //   });
+  const [imageCoverForCrop, setImageCoverForCrop] = useState(
+    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalObj}` : null
+  );
 
   // Cropper 관련 시작
-  const [rotation, setRotation] = useState(0)
+  const [rotation, setRotation] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -101,7 +78,7 @@ const PostWrite = (props) => {
 
   const onSelectFile = (e) => {
     const selectedFile = e.target.files[0];
-    console.log("selectedFile", selectedFile, typeof (selectedFile));
+    console.log("selectedFile", selectedFile, typeof selectedFile);
     setCoverOriginal(selectedFile);
     if (selectedFile) {
       const reader = new FileReader();
@@ -110,79 +87,54 @@ const PostWrite = (props) => {
         setImageCoverForCrop(reader.result);
         console.log("reader.result", reader.result);
         // console.log("image", image);
-      }
+      };
     }
-  }
+  };
 
   const triggerFileSelectedPopUp = () => {
     // console.log("triggerFileSelectedPopUp 실행");
     inputRef.current.click();
-  }
+  };
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
-  }
+  };
 
-  const showCroppedImage = useCallback(async () => {
+  // 기존: '크롭 확정' 버튼에 의해 실행
+  // 변경: '작성', '수정' 버튼에 의해 실행
+  const confirmCroppedImage = useCallback(async () => {
     try {
       const croppedImage = await getCroppedImg(
         imageCoverForCrop,
         croppedAreaPixels,
         rotation
-      )
-      console.log('done', { croppedImage })
+      );
+      console.log("done", { croppedImage });
       // base64
-      setCroppedImage(croppedImage)
+      setCroppedImage(croppedImage);
       // 파일 객체로 변환
-      urltoFile(croppedImage, 'croppedImage.png', 'image/png')
-        .then(
-          function (file) {
-            // console.log(file);
-            setCoverCropped(file);
-          }
-        );
-    }
-    catch (e) {
+      urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
+        file
+      ) {
+        // console.log(file);
+        setCoverCropped(file);
+      });
+    } catch (e) {
       console.error(e);
     }
-  }, [croppedAreaPixels, rotation])
+  }, [croppedAreaPixels, rotation]);
 
   const urltoFile = (url, filename, mimeType) => {
-    return (fetch(url)
-      .then(function (res) { return res.arrayBuffer(); })
-      .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
-    );
-  }
-
-  // Cropper 관련 끝
+    return fetch(url)
+      .then(function (res) {
+        return res.arrayBuffer();
+      })
+      .then(function (buf) {
+        return new File([buf], filename, { type: mimeType });
+      });
+  };
 
   let formData = new FormData();
-
-  // ----- 원래 커버 이미지 추가 모듈 코드 START -----
-  // // 커버 이미지 로드
-  // const selectFile = (e) => {
-  //   //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-  //   const file = e.target.files[0];
-  //   // console.log("file", file);
-  //   // setImageCover(file);
-  //   const reader = new FileReader();
-
-  //   // 미리보기를 위해 file을 읽어온다
-  //   if (file && file.type.match("image.*")) {
-  //     reader.readAsDataURL(file);
-  //   }
-  //   else {
-  //     setPreview("");
-  //   }
-
-  //   //file이 load 된 후
-  //   reader.onloadend = () => {
-  //     const imagePreview = reader.result;
-  //     //base64로 된 이미지를 가져온다(string형태)
-  //     setPreview(imagePreview);
-  //   };
-  // };
-  // ----- 원래 커버 이미지 추가 모듈 코드 END -----
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
@@ -213,6 +165,14 @@ const PostWrite = (props) => {
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
+    console.log("coverOriginal", coverOriginal);
+    console.log("coverCropped", coverCropped);
+    console.log("title", title);
+    console.log("categorySpace", spaceVal);
+    console.log("categoryStudyMate", studyMateVal);
+    console.log("categoryInterest", interestVal);
+    console.log("contentEditor", content);
+
     dispatch(postActions.editPostMiddleware(postId, formData));
   };
   const getContent = (content) => {
@@ -232,6 +192,13 @@ const PostWrite = (props) => {
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
+
+  useEffect(() => {
+    if (_editMode) {
+      console.log("useEffect 실행");
+      dispatch(postActions.getCoverOriginalObjMiddleware(postId));
+    }
+  }, []);
 
   return (
     <>
@@ -257,49 +224,43 @@ const PostWrite = (props) => {
           <Write onClick={posting}>작성</Write>
         )}
       </Navbar>
-      {/* ----- 원래 커버 이미지 추가 모듈 코드 START -----  */}
-      {/* <ImageCover src={preview} alt="">
-        <UploadButton>
-          <InputFile style={{ width: "60px", height: "60px" }} />
-          <Upload _onChange={selectFile} display="none" />
-        </UploadButton>
-      </ImageCover> */}
-      {/* ----- 원래 커버 이미지 추가 모듈 코드 END -----  */}
       <Container>
         <CropperContainer>
-          {coverOriginal ?
-            <>
-              <CropperWrap>
-                <Cropper
-                  image={imageCoverForCrop}
-                  crop={crop}
-                  rotation={rotation}
-                  zoom={zoom}
-                  aspect={2 / 1}
-                  onCropChange={setCrop}
-                  onZoomChange={setZoom}
-                  onCropComplete={onCropComplete}
-                />
-              </CropperWrap>
-              <SliderWrap>
-                <Slider
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  value={zoom}
-                  onChange={(e, zoom) => {
-                    setZoom(zoom);
-                  }}
-                />
-              </SliderWrap>
-            </>
-            : null
-          }
+          {/* {coverOriginal ? */}
+          {/* {imageCoverForCrop ? */}
+          <>
+            <CropperWrap>
+              <Cropper
+                // image="https://kkirri-images.s3.ap-northeast-2.amazonaws.com/uploads/cover/1637392961734_Deskterior_press_20200224_01.jpg"
+                image={imageCoverForCrop}
+                crop={crop}
+                rotation={rotation}
+                zoom={zoom}
+                aspect={772 / 433}
+                onCropChange={setCrop}
+                onZoomChange={setZoom}
+                onCropComplete={onCropComplete}
+              />
+            </CropperWrap>
+            <SliderWrap>
+              <Slider
+                min={1}
+                max={3}
+                step={0.1}
+                value={zoom}
+                onChange={(e, zoom) => {
+                  setZoom(zoom);
+                }}
+              />
+            </SliderWrap>
+          </>
+          {/* : null
+          } */}
         </CropperContainer>
         <ButtonsContainer>
           <input
-            type='file'
-            accept='image/*'
+            type="file"
+            accept="image/*"
             ref={inputRef}
             onChange={onSelectFile}
             style={{ display: "none" }}
@@ -315,7 +276,7 @@ const PostWrite = (props) => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={showCroppedImage}
+            onClick={confirmCroppedImage}
           >
             크롭 확정
           </Button>
@@ -383,7 +344,7 @@ const UploadButton = styled.label`
 
 const Navbar = styled.div`
   position: sticky;
-  top:0;
+  top: 0;
   display: flex;
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
   justify-content: space-between;
@@ -429,7 +390,7 @@ const Container = styled.div`
 const CropperContainer = styled.div`
   width: 70%;
   height: 70%;
-  margin: auto; 
+  margin: auto;
   // padding: 0px;
 `;
 
@@ -443,7 +404,7 @@ const ButtonsContainer = styled.div`
 
 const CropperWrap = styled.div`
   height: 90%;
-	position: relative;
+  position: relative;
 `;
 
 const SliderWrap = styled.div`

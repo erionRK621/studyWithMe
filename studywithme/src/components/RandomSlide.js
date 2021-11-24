@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
+import { ReactComponent as Star } from "../icon/star2.svg";
 
 const RandomSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.randPosts);
@@ -53,18 +54,20 @@ const RandomSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>유저들의 게시물</SlideTitle>
-          {post_list?.length === 0 ? null : (
-            <More
-              onClick={() => {
-                history.push("/list");
-                window.scrollTo(0, 0);
-              }}
-            >
-              더보기
-            </More>
-          )}
+          <Star />
+          새로운 게시물
+          <Star />
         </SlideUpLine>
+        {post_list?.length === 0 ? null : (
+          <More
+            onClick={() => {
+              history.push("/list");
+              window.scrollTo(0, 0);
+            }}
+          >
+            더보기
+          </More>
+        )}
         {post_list?.length === 0 ? (
           <Nothing>표시할 내용이 없습니다.</Nothing>
         ) : (
@@ -118,11 +121,17 @@ const defaultButtonStyle = css`
 const PrevButton = styled.button`
   ${defaultButtonStyle}
   left: 0;
+  @media screen and (max-width: 768px) {
+    left: -10px;
+  }
 `;
 
 const NextButton = styled.button`
   ${defaultButtonStyle}
   right: 0;
+  @media screen and (max-width: 768px) {
+    right: -10px;
+  }
 `;
 
 const defaultIconStyle = css`
@@ -148,27 +157,43 @@ const Wrap = styled.div`
   margin: auto;
   margin-top: 30px;
   position: relative;
+  max-width: 1134px;
+
   @media screen and (max-width: 768px) {
     margin-top: 10px;
+    max-width: 768px;
   }
 `;
 
 const SlideUpLine = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 5%;
   align-items: center;
-`;
-
-const SlideTitle = styled.div`
-  font-size: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const More = styled.div`
+  display: flex;
+  justify-content: end;
+  margin: 5px 5%;
   font-size: 13px;
   opacity: 50%;
   &:hover {
     cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 8px;
+    margin: 0px 15%;
+  }
+  @media (max-width: 500px) {
+    font-size: 8px;
+    margin: 0px 20px;
   }
 `;
 

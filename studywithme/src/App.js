@@ -68,7 +68,7 @@ function App() {
           {user?.userId === parseInt(location.split("/")[2]) ? (
             <Route component={UserEdit} path="/userEdit/:id" exact />
           ) : (
-            <Redirect to="/"/>
+            <Redirect to="/" />
           )}
           <Route component={NotFound} />
         </Switch>
