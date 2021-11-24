@@ -72,7 +72,7 @@ export const ProfileEdit = () => {
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
-  }, []);
+  }, [userId]);
   return (
     <React.Fragment>
       <Wrap>

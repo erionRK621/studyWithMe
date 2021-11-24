@@ -104,6 +104,7 @@ const Wrap = styled.div`
   height: 30vh;
   max-height: 263px;
   margin: auto;
+  margin-top: 10px;
   position: relative;
 
   @media screen and (max-width: 768px) {

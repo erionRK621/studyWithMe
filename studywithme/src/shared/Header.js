@@ -227,7 +227,7 @@ const Navbar = styled.div`
   padding: 10px 40px;
   max-width: 1134px;
   margin: auto;
-  height: 65px;
+  /* height: 65px; */
 
   @media screen and (max-width: 768px) {
     max-width: 768px;

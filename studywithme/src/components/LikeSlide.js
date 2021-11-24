@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
+import { ReactComponent as Fire } from "../icon/fire.svg";
 
 const LikeSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.posts);
@@ -54,22 +55,20 @@ const LikeSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>
-            추천 데스크테리어
-            <SlideSubTitle>가장 인기있는 데스크테리어에요. </SlideSubTitle>
-          </SlideTitle>
-
-          {post_list?.length === 0 ? null : (
-            <More
-              onClick={() => {
-                history.push("/list");
-                window.scrollTo(0, 0);
-              }}
-            >
-              더보기
-            </More>
-          )}
+          <Fire />
+          추천 데스크테리어
+          <Fire />
         </SlideUpLine>
+        {post_list?.length === 0 ? null : (
+          <More
+            onClick={() => {
+              history.push("/list");
+              window.scrollTo(0, 0);
+            }}
+          >
+            더보기
+          </More>
+        )}
         {post_list?.length === 0 ? (
           <Nothing>표시할 내용이 없습니다.</Nothing>
         ) : (
@@ -152,31 +151,28 @@ const Wrap = styled.div`
   margin: auto;
   margin-top: 30px;
   position: relative;
+  max-width: 1134px;
 
   @media screen and (max-width: 768px) {
     margin-top: 10px;
+    max-width: 768px;
   }
 `;
 
 const SlideUpLine = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 5%;
   align-items: center;
-`;
-
-const SlideTitle = styled.div`
   font-size: 28px;
   font-weight: bold;
-`;
-
-const SlideSubTitle = styled.div`
-  font-size: 16px;
-  opacity: 0.5;
-  margin-bottom: 10px;
+  text-align: center;
 `;
 
 const More = styled.div`
+  display: flex;
+  justify-content: end;
+  margin: 5px 5%;
   font-size: 13px;
   opacity: 50%;
   &:hover {

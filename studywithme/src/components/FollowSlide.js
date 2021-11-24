@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { history } from "../redux/configStore";
 import CardMain from "./CardMain";
 import NothingSlide from "./NothingSlide";
+import { ReactComponent as Star } from "../icon/star2.svg";
 
 const FollowSlide = (props) => {
   const post_list = useSelector((state) => state.post.list?.followPost);
@@ -55,18 +56,20 @@ const FollowSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>팔로잉 유저들의 게시물</SlideTitle>
-          {post_list?.length === 0 ? null : (
-            <More
-              onClick={() => {
-                history.push("/list");
-                window.scrollTo(0, 0);
-              }}
-            >
-              더보기
-            </More>
-          )}
+          <Star />
+          내 친구들의 데스크테리어
+          <Star />
         </SlideUpLine>
+        {post_list?.length === 0 ? null : (
+          <More
+            onClick={() => {
+              history.push("/list");
+              window.scrollTo(0, 0);
+            }}
+          >
+            더보기
+          </More>
+        )}
         {post_list?.length === 0 ? (
           <NothingSlide></NothingSlide>
         ) : (
@@ -149,38 +152,35 @@ const Wrap = styled.div`
   width: 80%;
   margin: auto;
   margin-top: 30px;
+  margin-bottom: 40px;
   position: relative;
+  max-width: 1134px;
 
   @media screen and (max-width: 768px) {
     margin-top: 10px;
+    max-width: 768px;
   }
 `;
 
 const SlideUpLine = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 5%;
   align-items: center;
-`;
-
-const SlideTitle = styled.div`
-  font-size: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
 `;
 
 const More = styled.div`
+  display: flex;
+  justify-content: end;
+  margin: 5px 5%;
   font-size: 13px;
   opacity: 50%;
   &:hover {
     cursor: pointer;
   }
-`;
-const Nothing = styled.div`
-  width: 769px;
-  height: 263px;
-  background-color: #9dd0d1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const PostWrap = styled.div`
@@ -191,7 +191,7 @@ const PostWrap = styled.div`
 //슬라이더 css부분
 const StyledSlider = styled(Slider)`
   .slick-list {
-    width: 100%;
+    width: 95%;
     height: 50%;
     margin: 0 auto;
   }

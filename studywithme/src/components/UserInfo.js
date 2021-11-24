@@ -40,7 +40,7 @@ const UserInfo = (props) => {
     dispatch(userActions.getUserDB(myPageUserId));
     dispatch(myActions.getFollowingsMiddleware(myPageUserId));
     dispatch(myActions.getFollowersMiddleware(myPageUserId));
-  }, []);
+  }, [myPageUserId]);
 
   return (
     <React.Fragment>
@@ -67,7 +67,15 @@ const UserInfo = (props) => {
             ) : null}
           </div>
           <BottomDiv>
-            <div style={{ fontSize: "20px" }}>게시물 {userInfo?.postCnt}개</div>
+            <div
+              style={{
+                fontSize: "20px",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              게시물 {userInfo?.postCnt}개
+            </div>
             <Button onClick={followerModalClose}>
               팔로워 {followerList?.length}명
             </Button>
@@ -170,11 +178,13 @@ const UserInfoEditButton = styled.button`
 const Button = styled.div`
   font-size: 20px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const BottomDiv = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width: 100%;
   height: 50%;
   margin: auto;
