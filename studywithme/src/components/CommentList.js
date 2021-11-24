@@ -161,7 +161,7 @@ const CommentList = (props) => {
                 )}
               </FlexGrid>
               {c.writeState ? (
-                <FlexGrid align="center" paddingLeft="50px">
+                <FlexGrid align="center" paddingLeft="50px" justify="space-between">
                   <Image
                     size="36"
                     src={`${process.env.REACT_APP_IMAGE_URI}/${props?.avatarUrl}`}
@@ -186,7 +186,7 @@ const CommentList = (props) => {
                 </FlexGrid>
               ) : null}
               {c.replyListState ? (
-                <ReplyList postId={postId} commentId={c.commentId} />
+                <ReplyList postId={postId} commentId={c.commentId} replyList = {c.childComments}/>
                ) : null}
             </FlexGrid>
           );
