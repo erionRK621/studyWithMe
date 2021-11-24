@@ -24,11 +24,14 @@ const addComment = createAction(
   })
 );
 
-const getComment = createAction(GET_COMMENT, (comment, totalPg, totCmtCount) => ({
-  comment,
-  totalPg,
-  totCmtCount,
-}));
+const getComment = createAction(
+  GET_COMMENT,
+  (comment, totalPg, totCmtCount) => ({
+    comment,
+    totalPg,
+    totCmtCount,
+  })
+);
 
 const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
   commentId,
@@ -74,7 +77,7 @@ const getCommentReply = createAction(GET_REPLY, (commentId, childComments) => ({
 const initialState = {
   list: [],
   totalPg: 1,
-  totCmtCount:0,
+  totCmtCount: 0,
 };
 
 // 댓글 추가
@@ -101,7 +104,9 @@ const getCommentMiddleware = (postId, page) => {
     apis
       .getCommentAxios(postId, page)
       .then((res) => {
-        dispatch(getComment(res.data.cmtsList, res.data.totalPg, res.data.totCmtCount));
+        dispatch(
+          getComment(res.data.cmtsList, res.data.totalPg, res.data.totCmtCount)
+        );
         dispatch(pageActions.setPage(page, res.data.totalPg));
       })
       .catch((err) => {
@@ -172,7 +177,7 @@ const addCommentReplyMiddleware = (postId, commentId, content) => {
 // 대댓글 조회
 const getCommentReplyMiddleware = (postId, commentId) => {
   return function (dispatch, getState, { history }) {
-    console.log(postId,commentId);
+    console.log(postId, commentId);
     apis
       .getCommentReplyAxios(postId, commentId)
       .then((res) => {
@@ -210,7 +215,7 @@ export default handleActions(
         });
         draft.list = commentList;
         draft.totalPg = action.payload.totalPg;
-        draft.totCmtCount=action.payload.totCmtCount;
+        draft.totCmtCount = action.payload.totCmtCount;
       }),
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
@@ -267,11 +272,11 @@ export default handleActions(
         const idx = draft.list.findIndex(
           (c) => c.commentId === action.payload.commentId
         );
-        console.log (action.payload.childComments);
-        // draft.list[idx] = {
-        //   ...draft.list[idx],
-        //   childComments : action.payload.childComments,
-        // };
+        // const replyList = action.payload.childComments;
+        draft.list[idx] = {
+          ...draft.list[idx],
+          childComments : action.payload.childComments,
+        };
       }),
   },
   initialState
