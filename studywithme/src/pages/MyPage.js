@@ -87,6 +87,7 @@ const MyPage = (props) => {
 };
 const Wrap = styled.div`
   height: 100%;
+  min-height: calc(100vh - 180px);
   margin: auto;
   max-width: 1134px;
   padding: 20px;
