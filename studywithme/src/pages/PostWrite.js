@@ -1,10 +1,15 @@
-import React, { isValidElement, useState, useRef, useCallback, useEffect } from "react";
+import React, {
+  isValidElement,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
-import AWS from 'aws-sdk';
 
 import Input from "../elements/Input";
 import Grid from "../elements/Grid";
@@ -12,7 +17,7 @@ import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
 // Cropper 관련 시작
-import Cropper from 'react-easy-crop'
+import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../shared/cropImage";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
@@ -58,10 +63,12 @@ const PostWrite = (props) => {
   );
   const [coverOriginal, setCoverOriginal] = useState(null);
   const [coverCropped, setCoverCropped] = useState(null);
-  const [imageCoverForCrop, setImageCoverForCrop] = useState(_editMode ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalObj}` : null);
+  const [imageCoverForCrop, setImageCoverForCrop] = useState(
+    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalObj}` : null
+  );
 
   // Cropper 관련 시작
-  const [rotation, setRotation] = useState(0)
+  const [rotation, setRotation] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
@@ -71,7 +78,7 @@ const PostWrite = (props) => {
 
   const onSelectFile = (e) => {
     const selectedFile = e.target.files[0];
-    console.log("selectedFile", selectedFile, typeof (selectedFile));
+    console.log("selectedFile", selectedFile, typeof selectedFile);
     setCoverOriginal(selectedFile);
     if (selectedFile) {
       const reader = new FileReader();
@@ -80,18 +87,18 @@ const PostWrite = (props) => {
         setImageCoverForCrop(reader.result);
         console.log("reader.result", reader.result);
         // console.log("image", image);
-      }
+      };
     }
-  }
+  };
 
   const triggerFileSelectedPopUp = () => {
     // console.log("triggerFileSelectedPopUp 실행");
     inputRef.current.click();
-  }
+  };
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
-  }
+  };
 
   // 기존: '크롭 확정' 버튼에 의해 실행
   // 변경: '작성', '수정' 버튼에 의해 실행
@@ -101,30 +108,31 @@ const PostWrite = (props) => {
         imageCoverForCrop,
         croppedAreaPixels,
         rotation
-      )
-      console.log('done', { croppedImage })
+      );
+      console.log("done", { croppedImage });
       // base64
-      setCroppedImage(croppedImage)
+      setCroppedImage(croppedImage);
       // 파일 객체로 변환
-      urltoFile(croppedImage, 'croppedImage.png', 'image/png')
-        .then(
-          function (file) {
-            // console.log(file);
-            setCoverCropped(file);
-          }
-        );
-    }
-    catch (e) {
+      urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
+        file
+      ) {
+        // console.log(file);
+        setCoverCropped(file);
+      });
+    } catch (e) {
       console.error(e);
     }
-  }, [croppedAreaPixels, rotation])
+  }, [croppedAreaPixels, rotation]);
 
   const urltoFile = (url, filename, mimeType) => {
-    return (fetch(url)
-      .then(function (res) { return res.arrayBuffer(); })
-      .then(function (buf) { return new File([buf], filename, { type: mimeType }); })
-    );
-  }
+    return fetch(url)
+      .then(function (res) {
+        return res.arrayBuffer();
+      })
+      .then(function (buf) {
+        return new File([buf], filename, { type: mimeType });
+      });
+  };
 
   let formData = new FormData();
 
@@ -190,7 +198,7 @@ const PostWrite = (props) => {
       console.log("useEffect 실행");
       dispatch(postActions.getCoverOriginalObjMiddleware(postId));
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -251,8 +259,8 @@ const PostWrite = (props) => {
         </CropperContainer>
         <ButtonsContainer>
           <input
-            type='file'
-            accept='image/*'
+            type="file"
+            accept="image/*"
             ref={inputRef}
             onChange={onSelectFile}
             style={{ display: "none" }}
@@ -336,7 +344,7 @@ const UploadButton = styled.label`
 
 const Navbar = styled.div`
   position: sticky;
-  top:0;
+  top: 0;
   display: flex;
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
   justify-content: space-between;
@@ -382,7 +390,7 @@ const Container = styled.div`
 const CropperContainer = styled.div`
   width: 70%;
   height: 70%;
-  margin: auto; 
+  margin: auto;
   // padding: 0px;
 `;
 
@@ -396,7 +404,7 @@ const ButtonsContainer = styled.div`
 
 const CropperWrap = styled.div`
   height: 90%;
-	position: relative;
+  position: relative;
 `;
 
 const SliderWrap = styled.div`
