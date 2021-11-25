@@ -37,9 +37,7 @@ const PostWrite = (props) => {
 
   const post = useSelector((state) => state.post.detail);
   console.log("post", post);
-  // const coverOriginalObj = useSelector((state) => state.post.coverOriginalObj);
   const coverOriginalObj = post?.coverOriginal;
-  // console.log("coverOriginalObj", coverOriginalObj);
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
   console.log("_editMode", _editMode);
@@ -223,7 +221,6 @@ const PostWrite = (props) => {
           <>
             <CropperWrap>
               <Cropper
-                // image="https://kkirri-images.s3.ap-northeast-2.amazonaws.com/uploads/cover/1637392961734_Deskterior_press_20200224_01.jpg"
                 image={imageCoverForCrop}
                 crop={crop}
                 rotation={rotation}
