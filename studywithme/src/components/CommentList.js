@@ -129,7 +129,7 @@ const CommentList = (props) => {
                           openCommentReplyList(c.replyListState, c.commentId);
                         }}
                       >
-                        답글 보기
+                        답글보기
                       </Text>
                     </FlexGrid>
                   </FlexGrid>
@@ -161,7 +161,11 @@ const CommentList = (props) => {
                 )}
               </FlexGrid>
               {c.writeState ? (
-                <FlexGrid align="center" paddingLeft="50px" justify="space-between">
+                <FlexGrid
+                  align="center"
+                  paddingLeft="50px"
+                  justify="space-between"
+                >
                   <Image
                     size="36"
                     src={`${process.env.REACT_APP_IMAGE_URI}/${props?.avatarUrl}`}
@@ -186,8 +190,13 @@ const CommentList = (props) => {
                 </FlexGrid>
               ) : null}
               {c.replyListState ? (
-                <ReplyList postId={postId} commentId={c.commentId} replyList = {c.childComments}/>
-               ) : null}
+                  <ReplyList
+                    postId={postId}
+                    commentId={c.commentId}
+                    replyList={c.childComments}
+                    currentPage = {c.currentPage}
+                  />
+              ) : null}
             </FlexGrid>
           );
         })}

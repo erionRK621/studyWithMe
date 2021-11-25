@@ -179,7 +179,6 @@ const getFilterPostDB = (queryString, currentPage) => {
       .then((res) => {
         const post_list = res.data.posts;
         const totalPage = res.data.totalPage;
-        console.log(res.data);
         dispatch(getFilterPost(post_list, totalPage, currentPage));
         history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
