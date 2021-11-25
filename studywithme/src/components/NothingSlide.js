@@ -105,6 +105,7 @@ const InnerDiv = styled.div`
 
 const Wrap = styled.div`
   width: 75vw;
+  max-width: 1070px;
   height: 30vh;
   max-height: 263px;
   margin: auto;
