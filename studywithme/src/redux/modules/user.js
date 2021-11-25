@@ -44,6 +44,7 @@ const getUserDB = (userId) => {
     apis
       .getUser(userId)
       .then((res) => {
+        console.log("마이페이지 유저 정보", res);
         dispatch(getUser(res.data.userInfo[0]));
       })
       .catch((err) => {
