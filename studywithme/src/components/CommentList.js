@@ -129,7 +129,7 @@ const CommentList = (props) => {
                           openCommentReplyList(c.replyListState, c.commentId);
                         }}
                       >
-                        답글보기
+                        {c.replyListState? "답글 숨기기" : "답글 보기"}
                       </Text>
                     </FlexGrid>
                   </FlexGrid>
