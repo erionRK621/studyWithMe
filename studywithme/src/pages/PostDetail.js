@@ -114,8 +114,8 @@ const PostDetail = (props) => {
   return (
     <div className="ck-content">
       <ImageCover src={imageCover} />
-      <FlexGrid direction="column" margin="40px auto" padding="0px 24px">
-        <FlexGrid justify="space-between" align="center">
+      <Wrap direction="column" margin="40px auto" padding="0px 24px">
+        <TitleLineWrap>
           <H1 size="32px">{decodeURIComponent(post?.title)}</H1>
           {postUserId === userId ? (
             <FlexGrid>
@@ -129,27 +129,27 @@ const PostDetail = (props) => {
               <Trash className="iconButton" onClick={deletePost} />
             </FlexGrid>
           ) : null}
-        </FlexGrid>
-        <FlexGrid justify="space-between" align="center">
-          <FlexGrid align="center">
-            <Image
-              size="80"
-              src={`${process.env.REACT_APP_IMAGE_URI}/${post.User?.avatarUrl}`}
-            />
-            <Span
-              marginLeft="10px"
-              fontSize="30px"
-              onClick={() => {
-                history.push(`/mypage/${post.userId}`);
-              }}
-              pointer
-            >
-              {post.User?.nickname}
-            </Span>
-            <Span marginLeft="20px" color="#cccccc">
-              {moment(post?.date).format("YYYY-MM-DD")}
-            </Span>
-          </FlexGrid>
+        </TitleLineWrap>
+        <ProfileLineWrap>
+          <ProfileWrap>
+            <PicDiv>
+              <Image
+                size="80"
+                src={`${process.env.REACT_APP_IMAGE_URI}/${post.User?.avatarUrl}`}
+              />
+            </PicDiv>
+
+            <NickTimeWrap>
+              <UserNick
+                onClick={() => {
+                  history.push(`/mypage/${post.userId}`);
+                }}
+              >
+                {post.User?.nickname}
+              </UserNick>
+              <Time>{moment(post?.date).format("YYYY-MM-DD")}</Time>
+            </NickTimeWrap>
+          </ProfileWrap>
           {userId !== postUserId ? (
             isFollowing ? (
               <Button
@@ -161,6 +161,7 @@ const PostDetail = (props) => {
                 color="#000000"
                 _onClick={onClickUnfollow}
                 padding="8px 0px"
+                margin="auto 0px"
               >
                 언팔로우
               </Button>
@@ -174,41 +175,36 @@ const PostDetail = (props) => {
                 color="#000000"
                 _onClick={onClickFollow}
                 padding="8px 0px"
+                margin="auto 0px"
               >
                 팔로우
               </Button>
             )
           ) : null}
-        </FlexGrid>
-        <FlexGrid
-          padding="30px"
-          margin="20px 0px"
-          justify="space-around"
-          color="rgb(236, 236, 236)"
-          borderRadius="10px"
-        >
-          <FlexGrid>
+        </ProfileLineWrap>
+        <TypeAreaWrap>
+          <TypeGrid>
             <Interest />
-            <FlexGrid direction="column" justify="center">
-              <Text size="16px">관심사</Text>
-              <H1 size="20px">{post?.categoryInterest}</H1>
-            </FlexGrid>
-          </FlexGrid>
-          <FlexGrid>
+            <TypeWrap>
+              <TypeTitle>관심사</TypeTitle>
+              <TypeElement size="20px">{post?.categoryInterest}</TypeElement>
+            </TypeWrap>
+          </TypeGrid>
+          <TypeGrid>
             <Space />
-            <FlexGrid direction="column" justify="center">
-              <Text size="16px">공간</Text>
-              <H1 size="20px">{post?.categorySpace}</H1>
-            </FlexGrid>
-          </FlexGrid>
-          <FlexGrid>
+            <TypeWrap>
+              <TypeTitle>공간</TypeTitle>
+              <TypeElement size="20px">{post?.categorySpace}</TypeElement>
+            </TypeWrap>
+          </TypeGrid>
+          <TypeGrid>
             <StudyMate />
-            <FlexGrid direction="column" justify="center">
-              <Text size="16px">유형</Text>
-              <H1 size="20px">{post?.categoryStudyMate}</H1>
-            </FlexGrid>
-          </FlexGrid>
-        </FlexGrid>
+            <TypeWrap>
+              <TypeTitle>유형</TypeTitle>
+              <TypeElement size="20px">{post?.categoryStudyMate}</TypeElement>
+            </TypeWrap>
+          </TypeGrid>
+        </TypeAreaWrap>
 
         <ContentGrid>{content}</ContentGrid>
 
@@ -244,8 +240,8 @@ const PostDetail = (props) => {
         </Text>
 
         <CommentWrite postId={postId} avatarUrl={post?.currentAvatar} />
-        <CommentList postId={postId}  avatarUrl={post?.currentAvatar} />
-      </FlexGrid>
+        <CommentList postId={postId} avatarUrl={post?.currentAvatar} />
+      </Wrap>
     </div>
   );
 };
@@ -256,10 +252,108 @@ const ImageCover = styled.div`
   height: calc(100vh - 200px);
   background-image: url(${(props) => props.src});
   background-size: cover;
+  background-position: center;
+  @media screen and (max-width: 768px) {
+    width: 100vw;
+    height: 300px;
+    margin: auto;
+  }
+`;
+
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 40px auto;
+  padding: 0 24px;
+  max-width: 720px;
+`;
+
+const TitleLineWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin-bottom: 10px;
+`;
+const ProfileLineWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  vertical-align: auto;
 `;
 
 const H1 = styled.h1`
   ${(props) => (props.size ? `font-size:${props.size}` : null)};
+  @media screen and (max-width: 768px) {
+    font-size: 24px;
+  }
+`;
+
+const ProfileWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  max-width: 720px;
+`;
+
+const NickTimeWrap = styled.div`
+  display: flex;
+  margin: auto;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+  }
+`;
+
+const PicDiv = styled.div`
+  min-width: 40px;
+`;
+
+const UserNick = styled.div`
+  margin-left: 10px;
+  font-size: 30px;
+  line-height: 30px;
+  :hover {
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
+const Time = styled.div`
+  margin-left: 20px;
+  color: #cccccc;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+  }
+`;
+const TypeWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const TypeTitle = styled.div`
+  font-size: 16px;
+  margin-bottom: 4px;
+`;
+const TypeElement = styled.div`
+  font-size: 20px;
+  font-weight: bold;
+`;
+const TypeAreaWrap = styled.div`
+  padding: 30px;
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-around;
+  background-color: rgb(236, 236, 236);
+  border-radius: 10px;
+`;
+
+const TypeGrid = styled.div`
+  display: flex;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const FlexGrid = styled.div`
@@ -276,8 +370,7 @@ const FlexGrid = styled.div`
 `;
 
 const ContentGrid = styled.div`
-  margin-top: 44px;
-  margin-bottom: 20px;
+  margin: 44px auto 20px auto;
   min-height: 300px;
   p {
     word-break: break-all;

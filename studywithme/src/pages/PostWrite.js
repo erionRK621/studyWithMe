@@ -60,7 +60,9 @@ const PostWrite = (props) => {
   const [coverOriginal, setCoverOriginal] = useState(null);
   const [coverCropped, setCoverCropped] = useState(null);
   const [imageCoverForCrop, setImageCoverForCrop] = useState(
-    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}` : null
+    _editMode
+      ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}`
+      : null
   );
 
   // console.log("coverOriginal", coverOriginal);
@@ -103,7 +105,6 @@ const PostWrite = (props) => {
   };
 
   const confirmCroppedImage = useCallback(async () => {
-
     try {
       const croppedImage = await getCroppedImg(
         imageCoverForCrop,
@@ -114,14 +115,12 @@ const PostWrite = (props) => {
       // base64 형식의 Cropped Image 상태 저장
       setCroppedImage(croppedImage);
       // 파일 객체로 변환
-      urltoFile(croppedImage, "croppedImage.png", "image/png")
-        .then(function (
-          file
-        ) {
-          setCoverCropped(file);
-        });
-    }
-    catch (e) {
+      urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
+        file
+      ) {
+        setCoverCropped(file);
+      });
+    } catch (e) {
       console.error(e);
     }
   }, [croppedAreaPixels, rotation]);
@@ -206,7 +205,7 @@ const PostWrite = (props) => {
       </Navbar>
       <CropperContainerOuter>
         <CropperContainerInner>
-          {imageCoverForCrop ?
+          {imageCoverForCrop ? (
             <>
               <CropperWrap>
                 <Cropper
@@ -232,8 +231,7 @@ const PostWrite = (props) => {
                 />
               </SliderWrap>
             </>
-            : null
-          }
+          ) : null}
         </CropperContainerInner>
         <ButtonsContainer>
           <input
@@ -260,7 +258,7 @@ const PostWrite = (props) => {
           border="0px"
           placeholder="제목"
           size="20px"
-          margin="30px 0px 0px 0px"
+          margin="0px 0px 0px 0px"
         />
         <FlexGrid margin="20px 0px">
           <SelectBox category="space" _onChange={space} _value={spaceVal} />
@@ -368,6 +366,7 @@ const ButtonsContainer = styled.div`
 `;
 
 const CropperWrap = styled.div`
+  width: 100%;
   height: 90%;
   position: relative;
 `;

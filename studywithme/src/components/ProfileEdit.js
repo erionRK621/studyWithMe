@@ -119,13 +119,14 @@ const NowInfoDiv = styled.div`
 `;
 
 const NicknameWrap = styled.div`
-  width: 140px;
+  width: 200px;
   margin: auto 80px auto 20px;
   display: flex;
   flex-direction: column;
   font-size: 20px;
   @media screen and (max-width: 768px) {
-    margin: auto;
+    margin-left: 20px;
+    width: 150px;
   }
 `;
 
@@ -142,13 +143,16 @@ const UploadButton = styled.label`
 
 const PicChange = styled.div`
   @media screen and (max-width: 768px) {
-    font-size: 16px;
+    font-size: 14px;
     width: 130px;
   }
 `;
 
 const UserNickname = styled.div`
   margin-bottom: 10px;
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 const ChangePic = styled.div``;
 

@@ -72,7 +72,10 @@ export const PasswordEdit = () => {
   return (
     <React.Fragment>
       <NowInfoDiv>
-        <Image style={{ width: "30%" }} size="100" src={userPic}></Image>
+        <PicDIv>
+          <Image style={{ width: "30%" }} size="120" src={userPic}></Image>
+        </PicDIv>
+
         <NicknameWrap>
           <UserNickname>{userInfo.nickname}</UserNickname>
         </NicknameWrap>
@@ -124,17 +127,20 @@ const NowInfoDiv = styled.div`
   margin: 50px 0px 30px 0;
   justify-content: center;
 `;
+const PicDIv = styled.div`
+  min-width: 60px;
+`;
 
 const NicknameWrap = styled.div`
-  width: 120px;
+  width: 200px;
   margin: auto 80px auto 20px;
   display: flex;
   flex-direction: column;
-  font-size: 36px;
+  font-size: 20px;
   @media screen and (max-width: 768px) {
-    font-size: 30px;
-    width: 100px;
-    margin: auto;
+    font-size: 16px;
+    width: 150px;
+    margin-left: 20px;
   }
 `;
 const UserNickname = styled.div``;
@@ -148,12 +154,21 @@ const InputWrap = styled.div`
   margin: 20px auto;
   display: flex;
   width: 315px;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 const Label = styled.div`
   width: 350px;
   margin: auto;
   text-align: right;
   padding: 0 4px 0 0;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center;
+  }
 `;
 const SubmitWrap = styled.div`
   display: flex;
