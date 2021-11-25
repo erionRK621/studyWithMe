@@ -72,9 +72,9 @@ export const PasswordEdit = () => {
   return (
     <React.Fragment>
       <NowInfoDiv>
-        <PicDIv>
-          <Image style={{ width: "30%" }} size="120" src={userPic}></Image>
-        </PicDIv>
+        {/* <PicDIv> */}
+        <Image minWidth="100px" size="100" src={userPic}></Image>
+        {/* </PicDIv> */}
 
         <NicknameWrap>
           <UserNickname>{userInfo.nickname}</UserNickname>
@@ -129,6 +129,7 @@ const NowInfoDiv = styled.div`
 `;
 const PicDIv = styled.div`
   min-width: 60px;
+  width: 15%;
 `;
 
 const NicknameWrap = styled.div`
@@ -163,7 +164,8 @@ const InputWrap = styled.div`
 const Label = styled.div`
   width: 350px;
   margin: auto;
-  text-align: right;
+  text-align: start;
+
   padding: 0 4px 0 0;
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -178,12 +180,12 @@ const SubmitWrap = styled.div`
 `;
 
 const Submit = styled.button`
-  min-width: 80px;
+  min-width: 200px;
   height: 45px;
   font-size: 16px;
   background-color: #ffc85c;
   border-radius: 10px;
-  width: 320px;
+  width: 200px;
   border: none;
   padding: 8px 0px;
   margin-left: 5px;
