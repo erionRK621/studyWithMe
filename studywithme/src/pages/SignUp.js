@@ -71,7 +71,7 @@ const SignUp = () => {
       password: password,
       confirmPassword: confirmPassword,
     };
-    console.log("signUpInputs", signUpInputs);
+    // console.log("signUpInputs", signUpInputs);
 
     // 이메일 규칙 확인
     if (!regExEmailTest(signUpInputs.email)) {
@@ -95,6 +95,12 @@ const SignUp = () => {
       // console.log("닉네임을 20자 이하로 입력해주세요.");
       return;
     }
+    // 닉네임 2자 이상 여부 확인
+    else if (signUpInputs.nickname.length < 2) {
+      window.alert("닉네임을 2자 이상 입력해주세요.");
+      return;
+    }
+
     // 비밀번호 규칙 확인
     else if (!regExPasswordTest(signUpInputs.password)) {
       window.alert("비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다.");
