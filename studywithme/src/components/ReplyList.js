@@ -16,18 +16,27 @@ const ReplyList = (props) => {
   const postId = props.postId;
   const commentId = props.commentId;
   const replyList = props.replyList;
+  const currentPage = props.currentPage;
 
   const deleteReply = (childCommentId) => {
+    if (window.confirm("삭제하시겠습니까?") === true) {
+      dispatch(
+        commentActions.deleteCommentReplyMiddleware(
+          postId,
+          commentId,
+          childCommentId
+        )
+      );
+    }
+  };
+  const moreReply = (currentPage) => {
+    currentPage++;
     dispatch(
-      commentActions.deleteCommentReplyMiddleware(
-        postId,
-        commentId,
-        childCommentId
-      )
+      commentActions.getCommentReplyMiddleware(postId, commentId, currentPage)
     );
   };
   React.useEffect(() => {
-    dispatch(commentActions.getCommentReplyMiddleware(postId, commentId));
+    dispatch(commentActions.getCommentReplyMiddleware(postId, commentId,currentPage));
   }, []);
   return (
     <React.Fragment>
@@ -76,6 +85,13 @@ const ReplyList = (props) => {
           </FlexGrid>
         );
       })}
+      <MoreButton
+        onClick={() => {
+          moreReply(currentPage);
+        }}
+      >
+        + 더 보기
+      </MoreButton>
     </React.Fragment>
   );
 };
@@ -93,5 +109,15 @@ const FlexGrid = styled.div`
   margin-top: ${(props) => props.marginTop};
   ${(props) =>
     props.paddingLeft ? `padding-left:${props.paddingLeft};` : null};
+`;
+
+const MoreButton = styled.div`
+  margin: auto;
+  color: #aaaaaa;
+  font-size: 14px;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.5;
+  }
 `;
 export default ReplyList;

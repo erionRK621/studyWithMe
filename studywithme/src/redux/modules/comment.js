@@ -73,10 +73,14 @@ const addCommentReply = createAction(ADD_REPLY, (commentId, user, child) => ({
   user,
   child,
 }));
-const getCommentReply = createAction(GET_REPLY, (commentId, childComments) => ({
-  commentId,
-  childComments,
-}));
+const getCommentReply = createAction(
+  GET_REPLY,
+  (commentId, childComments, currentPage) => ({
+    commentId,
+    childComments,
+    currentPage,
+  })
+);
 const deleteCommentReply = createAction(
   DELETE_REPLY,
   (commentId, childCommentId) => ({
@@ -117,6 +121,7 @@ const getCommentMiddleware = (postId, page) => {
         dispatch(
           getComment(res.data.cmtsList, res.data.totalPg, res.data.totCmtCount)
         );
+        console.log(res.data);
         dispatch(pageActions.setPage(page, res.data.totalPg));
       })
       .catch((err) => {
@@ -173,6 +178,7 @@ const addCommentReplyMiddleware = (postId, commentId, content) => {
     apis
       .addCommentReplyAxios(postId, commentId, content)
       .then((res) => {
+        console.log(res);
         const addReply = res.data;
         const user = addReply.user;
         const child = addReply.child;
@@ -185,13 +191,23 @@ const addCommentReplyMiddleware = (postId, commentId, content) => {
 };
 
 // 대댓글 조회
-const getCommentReplyMiddleware = (postId, commentId) => {
+const getCommentReplyMiddleware = (postId, commentId, currentPage = 1) => {
   return function (dispatch, getState, { history }) {
+    let comment = getState().comment.list;
+    const idx = comment.findIndex((c) => 
+      c.commentId === commentId
+    );
+    const beforePage = comment[idx].currentPage;
+    console.log(beforePage, currentPage);
+    if(beforePage ===currentPage) {
+      return;
+    }
     apis
-      .getCommentReplyAxios(postId, commentId)
+      .getCommentReplyAxios(postId, commentId, currentPage)
       .then((res) => {
+        console.log(res);
         const childComments = res.data.childComments;
-        dispatch(getCommentReply(commentId, childComments));
+        dispatch(getCommentReply(commentId, childComments, currentPage));
       })
       .catch((err) => {
         console.log(err);
@@ -202,15 +218,12 @@ const getCommentReplyMiddleware = (postId, commentId) => {
 // 대댓글 삭제
 const deleteCommentReplyMiddleware = (postId, commentId, childCommentId) => {
   return function (dispatch, getState, { history }) {
-    console.log("aaaa");
     apis
       .deleteCommentReplyAxios(postId, commentId, childCommentId)
       .then((res) => {
-        console.log("bbbb");
         dispatch(deleteCommentReply(commentId, childCommentId));
       })
       .catch((err) => {
-        console.log("cccc");
         console.log(err);
       });
   };
@@ -225,6 +238,7 @@ export default handleActions(
         }
         draft.list.unshift({
           ...action.payload.comment,
+          childComments: [],
           userNickname: action.payload.userNickname,
           avatarUrl: action.payload.avatarUrl,
           commentLikeCnt: 0,
@@ -236,6 +250,7 @@ export default handleActions(
         let commentList = [];
         action.payload.comment.map((c) => {
           c.writeState = false;
+          c.childComments = [];
           c.replyListState = false;
           commentList.push(c);
         });
@@ -307,10 +322,12 @@ export default handleActions(
         const idx = draft.list.findIndex(
           (c) => c.commentId === action.payload.commentId
         );
-        // const replyList = action.payload.childComments;
+        action.payload.childComments.map((c) => {
+          draft.list[idx].childComments.push(c);
+        });
         draft.list[idx] = {
           ...draft.list[idx],
-          childComments: action.payload.childComments,
+          currentPage: action.payload.currentPage,
         };
       }),
     [DELETE_REPLY]: (state, action) =>

@@ -7,8 +7,8 @@ const SelectBox = (props) => {
   if(category === "sort") {
     optionData = [
       { option: "정렬", value: "" },
-      { option: "최신순", value: "asc" },
-      { option: "오래된순", value: "desc" }
+      { option: "최신순", value: "desc" },
+      { option: "오래된순", value: "asc" }
     ]
   }
   if (category === "space") {
