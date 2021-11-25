@@ -97,10 +97,10 @@ export const apis = {
   // 대댓글
   addCommentReplyAxios: (postId, commentId, textContent) =>
     instance.post(`/api/posts/${postId}/comments/${commentId}/childs`, { textContent }),
-  getCommentReplyAxios: (postId, commentId) =>
-    instance.get(`/api/posts/${postId}/comments/${commentId}/childs`),
-  deleteCommentReplyAxios: (postId, comment, childCommentId) =>
-    instance.delete(`/api/posts/${postId}/comments/${comment}/childs/${childCommentId}`),
+  getCommentReplyAxios: (postId, commentId,currentPage) =>
+    instance.get(`/api/posts/${postId}/comments/${commentId}/childs?page=${currentPage}`),
+  deleteCommentReplyAxios: (postId, commentId, childCommentId) =>
+    instance.delete(`/api/posts/${postId}/comments/${commentId}/childs/${childCommentId}`),
 
   // 게시물 수정시 커버 이미지 원본 파일 객체 가져오기
   // getCoverOriginalObjAxios: (postId) => instance.get(`/api/posts/${postId}/coverOriginal`),
