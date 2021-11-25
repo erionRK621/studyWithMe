@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
+
 import { ReactComponent as MyPostsTabOn } from "../icon/MyPostsTabOn.svg";
 import { ReactComponent as MyPostsTabOff } from "../icon/MyPostsTabOff.svg";
 import { ReactComponent as MyBookmarksTabOn } from "../icon/MyBookmarksTabOn.svg";
@@ -167,3 +168,4 @@ const BookmarksTab = styled.div`
 `;
 
 export default MyPage;
+
