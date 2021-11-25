@@ -110,7 +110,7 @@ const PostWrite = (props) => {
         croppedAreaPixels,
         rotation
       );
-      console.log("done", { croppedImage });
+      // console.log("done", { croppedImage });
       // base64 형식의 Cropped Image 상태 저장
       setCroppedImage(croppedImage);
       // 파일 객체로 변환

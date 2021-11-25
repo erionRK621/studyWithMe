@@ -88,7 +88,6 @@ const getBookMarkMiddleware = (userId) => {
     apis
       .getBookMarkAxios(userId)
       .then((res) => {
-        // console.log("리스폰스값", res.data.bookmarkedPosts);
         dispatch(getBookMark(res.data.bookmarkedPosts));
       })
       .catch((err) => {
@@ -116,7 +115,7 @@ const getFollowersMiddleware = (userId) => {
     apis
       .getFollowersAxios(userId)
       .then((res) => {
-        // console.log("리스폰스값", res);
+        console.log("getFollowersMiddleware", res);
         dispatch(getFollowers(res.data.followerIdList));
       })
       .catch((err) => {
@@ -270,7 +269,7 @@ const actionCreators = {
   myPostDeleteLikeMiddleware,
   bookmarkedPostAddLikeMiddleware,
   bookmarkedPostDeleteLikeMiddleware,
-  
+
 };
 
 export { actionCreators };
