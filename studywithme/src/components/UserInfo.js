@@ -27,9 +27,17 @@ const UserInfo = (props) => {
   const followModalClose = () => {
     setFollowModalOpen(!followModalOpen);
   };
+  const changeFollowState = (userId, isFollowing) => {
+    if (isFollowing) {
+      dispatch(userActions.unfollowUserMiddleware(userId));
+    } else {
+      dispatch(userActions.followUserMiddleware(userId));
+    }
+  };
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
+  const isFollowing = useSelector((state) => state.user.isFollowing);
   const followerList = useSelector((state) => state.mypage?.followerIdList);
   const followingList = useSelector((state) => state.mypage?.followingIdList);
   const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo?.avatarUrl}`;
@@ -59,7 +67,15 @@ const UserInfo = (props) => {
               >
                 회원정보 수정
               </UserInfoEditButton>
-            ) : null}
+            ) : (
+              <FollowButton
+                onClick={() => {
+                  changeFollowState(userInfo.userId, isFollowing);
+                }}
+              >
+                {isFollowing ? "언팔로우" : "팔로우"}
+              </FollowButton>
+            )}
           </NicknameWrap>
           <BottomDiv>
             <Post>게시물 {userInfo?.postCnt}개</Post>
@@ -129,6 +145,7 @@ const NicknameWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   @media screen and (max-width: 768px) {
+    flex-direction: column;
     height: 50%;
     margin: 20px 0px;
   }
@@ -171,6 +188,22 @@ const UserNickname = styled.h2`
 `;
 
 const UserInfoEditButton = styled.button`
+  width: 120px;
+  height: 32px;
+  border: 0;
+  border-radius: 4px;
+  background: #ffc85c;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    font-size: 8px;
+    height: 24px;
+  }
+`;
+
+const FollowButton = styled.button`
   width: 120px;
   height: 32px;
   border: 0;
