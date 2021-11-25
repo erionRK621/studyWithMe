@@ -112,6 +112,9 @@ const UserInfoWrap = styled.div`
   flex-shrink: 0;
   padding: 0;
   position: relative;
+  @media screen and (max-width: 768px) {
+    margin:0px;
+  }
 `;
 
 const UserProfilePicWrap = styled.div`
@@ -137,7 +140,9 @@ const ProfilePic = styled.img`
   flex: none;
   justify-content: center;
   @media screen and (max-width: 768px) {
-    width: 140px;
+    height: 150px;
+    width: 150px;
+    margin:auto;
   }
 `;
 const NicknameWrap = styled.div`
@@ -183,7 +188,7 @@ const UserNickname = styled.h2`
   line-height: 45px;
   margin: -5px 0 -6px;
   @media screen and (max-width: 768px) {
-    font-size: 24px;
+    font-size: 20px;
   }
 `;
 
@@ -191,7 +196,7 @@ const UserInfoEditButton = styled.button`
   width: 120px;
   height: 32px;
   border: 0;
-  border-radius: 4px;
+  border-radius: 10px;
   background: #ffc85c;
   color: black;
   cursor: pointer;
@@ -207,7 +212,7 @@ const FollowButton = styled.button`
   width: 120px;
   height: 32px;
   border: 0;
-  border-radius: 4px;
+  border-radius: 10px;
   background: #ffc85c;
   color: black;
   cursor: pointer;
@@ -223,7 +228,7 @@ const Post = styled.div`
   display: flex;
   align-items: center;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
+    font-size: 13px;
     margin: 4px auto;
   }
 `;
@@ -234,7 +239,7 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   @media screen and (max-width: 768px) {
-    font-size: 16px;
+    font-size: 13px;
     margin: 4px auto;
   }
 `;

@@ -36,7 +36,9 @@ const ReplyList = (props) => {
     );
   };
   React.useEffect(() => {
-    dispatch(commentActions.getCommentReplyMiddleware(postId, commentId,currentPage));
+    dispatch(
+      commentActions.getCommentReplyMiddleware(postId, commentId, currentPage)
+    );
   }, []);
   return (
     <React.Fragment>
@@ -51,11 +53,13 @@ const ReplyList = (props) => {
             <FlexGrid justify="space-between" align="center" margin="5px 0px">
               <FlexGrid align="center">
                 <FlexGrid align="center" minWidth="130px">
-                  <Image
-                    size="36"
-                    src={`${process.env.REACT_APP_IMAGE_URI}/${r?.avatarUrl}`}
-                  />
-                  <FlexGrid direction="column" margin="0px 5px">
+                  <FlexGrid align="center" minWidth="30px">
+                    <Image
+                      size="30"
+                      src={`${process.env.REACT_APP_IMAGE_URI}/${r?.avatarUrl}`}
+                    />
+                  </FlexGrid>
+                  <NicknameWrap>
                     <Text
                       size="15px"
                       _onClick={() => {
@@ -68,7 +72,7 @@ const ReplyList = (props) => {
                     <Text size="10px" color="#cccccc">
                       {time(r.date)}
                     </Text>
-                  </FlexGrid>
+                  </NicknameWrap>
                 </FlexGrid>
                 <FlexGrid maxWidth="550px" align="start">
                   <Text>{r.textContent}</Text>
@@ -77,7 +81,7 @@ const ReplyList = (props) => {
             </FlexGrid>
             <Trash
               className="iconButton"
-              style={{ width: "15px", height: "15px" }}
+              style={{ width: "15px", height: "15px", minWidth: "15px"}}
               onClick={() => {
                 deleteReply(r.childCommentId);
               }}
@@ -110,7 +114,16 @@ const FlexGrid = styled.div`
   ${(props) =>
     props.paddingLeft ? `padding-left:${props.paddingLeft};` : null};
 `;
-
+const NicknameWrap = styled.div`
+  display: flex;
+  flex-direction:column;
+  margin: 0px 5px;
+  min-width: 138px;
+  @media screen and (max-width: 768px) {
+    max-width:76px;
+    min-width: 10px;
+  }
+`;
 const MoreButton = styled.div`
   margin: auto;
   color: #aaaaaa;
