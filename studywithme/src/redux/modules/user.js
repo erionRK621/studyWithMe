@@ -22,10 +22,15 @@ const EDIT_PASSWORD = "EDIT_PASSWORD";
 const LOG_OUT = "LOG_OUT";
 const CHECK_EMAIL = "CHECK_EMAIL";
 const CHECK_NICKNAME = "CHECK_NICKNAME";
+const FOLLOW_USER = "FOLLOW_USER";
+const UNFOLLOW_USER = "UNFOLLOW_USER";
 
 // ACTION CREATORS
 const setUser = createAction(SET_USER, (token) => ({ token }));
-const getUser = createAction(GET_USER, (userInfo) => ({ userInfo }));
+const getUser = createAction(GET_USER, (userInfo, isFollowing) => ({
+  userInfo,
+  isFollowing,
+}));
 const editUserProfile = createAction(EDIT_PROFILE, (userInfo) => ({
   userInfo,
 }));
@@ -37,6 +42,13 @@ const checkEmail = createAction(CHECK_EMAIL, (email) => ({ email }));
 const checkNickname = createAction(CHECK_NICKNAME, (nickname) => ({
   nickname,
 }));
+// FOLLOW
+const followUser = createAction(FOLLOW_USER, (isFollowing) => ({
+  isFollowing,
+}));
+const unfollowUser = createAction(UNFOLLOW_USER, (isFollowing) => ({
+  isFollowing,
+}));
 
 // MIDDLEWARES
 const getUserDB = (userId) => {
@@ -45,7 +57,7 @@ const getUserDB = (userId) => {
       .getUser(userId)
       .then((res) => {
         console.log("마이페이지 유저 정보", res);
-        dispatch(getUser(res.data.userInfo[0]));
+        dispatch(getUser(res.data.userInfo[0], res.data.isFollowing));
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
@@ -211,6 +223,35 @@ const kakaoLoginMiddleware = (code) => {
   };
 };
 
+// 팔로우
+const followUserMiddleware = (userId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .followUserAxios(userId)
+      .then((response) => {
+        const isFollowing = response.data.isUser;
+        dispatch(followUser(isFollowing));
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+};
+
+const unfollowUserMiddleware = (userId) => {
+  return function (dispatch, getState, { history }) {
+    apis
+      .unfollowUserAxios(userId)
+      .then((response) => {
+        const isFollowing = response.data.isUser;
+        dispatch(unfollowUser(isFollowing));
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  };
+};
+
 // REDUCER
 export default handleActions(
   {
@@ -224,6 +265,7 @@ export default handleActions(
     [GET_USER]: (state, action) =>
       produce(state, (draft) => {
         draft.userInfo = action.payload.userInfo;
+        draft.isFollowing = action.payload.isFollowing;
       }),
     [EDIT_PROFILE]: (state, action) =>
       produce(state, (draft) => {
@@ -252,6 +294,12 @@ export default handleActions(
         console.log("CHECK_NICKNAME 리듀서 실행!");
         // checkEmailMsg 새로운 상태로 업데이트
       }),
+    [FOLLOW_USER]: (state, action) => produce(state, (draft) => {
+      draft.isFollowing = action.payload.isFollowing;
+    }),
+    [UNFOLLOW_USER]: (state, action) => produce(state, (draft) => {
+      draft.isFollowing = action.payload.isFollowing;
+    }),
   },
   initialState
 );
@@ -269,4 +317,6 @@ export const actionCreators = {
   kakaoLoginMiddleware,
   editProfileMiddleware,
   editPwdMiddleware,
+  followUserMiddleware,
+  unfollowUserMiddleware,
 };

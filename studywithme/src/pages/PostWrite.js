@@ -134,6 +134,10 @@ const PostWrite = (props) => {
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
+    if(title.length>=25) {
+      window.alert("제목이 24자가 넘습니다.");
+      return;
+    }
     formData.append("coverOriginal", coverOriginal);
     formData.append("coverCropped", coverCropped);
     formData.append("title", title);
@@ -150,6 +154,10 @@ const PostWrite = (props) => {
   };
 
   const editing = () => {
+    if(title.length>=25) {
+      window.alert("제목이 24자가 넘습니다.");
+      return;
+    }
     formData.append("coverOriginal", coverOriginal);
     formData.append("coverCropped", coverCropped);
     formData.append("title", title);
