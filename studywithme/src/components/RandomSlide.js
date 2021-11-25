@@ -189,7 +189,11 @@ const More = styled.div`
   }
   @media screen and (max-width: 768px) {
     font-size: 8px;
-    margin: 0px 5%;
+    margin: 0px 15%;
+  }
+  @media (max-width: 500px) {
+    font-size: 8px;
+    margin: 0px 20px;
   }
 `;
 

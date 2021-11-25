@@ -37,6 +37,9 @@ const FooterWrap = styled.div`
   height: 180px;
   color: #707070;
   background-color: #ececec;
+  @media screen and (max-width: 768px) {
+    height: 150px;
+  }
 `;
 const Title = styled.p`
   font-weight: bold;
@@ -52,6 +55,7 @@ const Wrap = styled.div`
     max-width: 768px;
     font-size: 8px;
     padding: 0px;
+    height: 150px;
   }
 `;
 

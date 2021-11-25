@@ -81,13 +81,13 @@ export const ProfileEdit = () => {
           <NicknameWrap>
             <UserNickname>{userInfo?.nickname}</UserNickname>
             <UploadButton>
-              <div>프로필 사진 변경</div>
+              <PicChange>프로필 사진 변경</PicChange>
               <Upload _onChange={handleFileChange} display="none" />
             </UploadButton>
           </NicknameWrap>
         </NowInfoDiv>
         <InputWrap>
-          <Label>닉네임변경</Label>
+          <Label>닉네임 변경</Label>
           <Line>
             <Input
               bgColor="#E0E0E0"
@@ -96,7 +96,7 @@ export const ProfileEdit = () => {
               _onChange={changeNickname}
               width="150px"
             />
-            <Button onClick={onClickNicknameCheck}>닉네임 중복확인</Button>
+            <Button onClick={onClickNicknameCheck}>중복 확인</Button>
           </Line>
         </InputWrap>
         <SubmitWrap>
@@ -124,6 +124,9 @@ const NicknameWrap = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 20px;
+  @media screen and (max-width: 768px) {
+    margin: auto;
+  }
 `;
 
 const UploadButton = styled.label`
@@ -131,6 +134,16 @@ const UploadButton = styled.label`
   &:hover {
     opacity: 0.8;
     cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
+`;
+
+const PicChange = styled.div`
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+    width: 130px;
   }
 `;
 
@@ -143,16 +156,17 @@ const InputWrap = styled.div`
   margin: 30px 0 32px 0px;
   display: flex;
   justify-content: center;
-  /* flex-direction: column;
-  align-items: center; */
-  /* @media screen and (max-width: 768px) {
-    flex-direction: column;
-  } */
+  @media screen and (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 const Label = styled.div`
   margin: auto 0;
   min-width: 80px;
   font-size: 16px;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 const Line = styled.div`
   display: flex;
@@ -168,6 +182,10 @@ const Button = styled.button`
   border: none;
   padding: 8px 0px;
   margin-left: 12px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    width: 80px;
+  }
 `;
 const SubmitWrap = styled.div`
   display: flex;

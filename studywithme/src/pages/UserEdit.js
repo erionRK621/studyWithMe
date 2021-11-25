@@ -50,6 +50,8 @@ const UserEdit = (props) => {
 
 const Wrap = styled.div`
   display: flex;
+  min-height: calc(100vh - 180px);
+  height: 100%;
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
@@ -81,6 +83,10 @@ const ContentDiv = styled.div`
   padding: 1px 16px;
   height: 700px;
   width: 100%;
+  @media screen and (max-width: 768px) {
+    width: 80%;
+    margin: auto;
+  }
 `;
 
 export default UserEdit;
