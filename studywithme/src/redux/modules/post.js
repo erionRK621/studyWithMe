@@ -24,8 +24,6 @@ const FILTER_DELETE_LIKE = "FILTER_DELETE_LIKE";
 // 팔로우
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
-// 커버 이미지 원본 파일 객체 가져오기
-const GET_COVER_ORIGINAL_OBJ = "GET_COVER_ORIGINAL_OBJ";
 
 //액션생성함수
 //타입이 GET_POST인 오브젝트를 반환해주는 액션으로
@@ -99,8 +97,7 @@ const unfollowUser = createAction(UNFOLLOW_USER, (postDetail, isFollowing) => ({
   isFollowing,
 }));
 
-// 커버 이미지 원본 파일 객체 가져오기
-const getCoverOriginalObj = createAction(GET_COVER_ORIGINAL_OBJ, (coverOriginalObj) => ({ coverOriginalObj }));
+
 
 //초기상태값
 //paging 시작점, 다음목록정보, 사이즈 3개씩 가져옴
@@ -113,7 +110,6 @@ const initialState = {
   currentPage: 0,
   isLoading: false,
   bookmarkList: [], // 현재 로그인된 유저가 북마크한 게시물 리스트
-  coverOriginalObj: null, // 커버 이미지 파일 객체
 };
 
 // //미들웨어
@@ -309,22 +305,6 @@ const deleteLikeMiddleware = (postId) => {
   };
 };
 
-const getCoverOriginalObjMiddleware = (postId) => {
-  return function (dispatch, getState, { history }) {
-    // console.log("postId", postId);
-    apis
-      .getCoverOriginalObjAxios(postId)
-      .then((response) => {
-        // console.log(response.data.coverOriginalObj);
-        const coverOriginalObj = response.data.coverOriginalObj;
-        dispatch(getCoverOriginalObj(coverOriginalObj));
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  }
-}
-
 // 필터페이지 좋아요
 const filterAddLikeMiddleware = (postId) => {
   return function (dispatch, getState, { history }) {
@@ -497,11 +477,6 @@ export default handleActions(
       produce(state, (draft) => {
         draft.isLoading = action.payload.isLoading;
       }),
-    [GET_COVER_ORIGINAL_OBJ]: (state, action) =>
-      produce(state, (draft) => {
-        console.log("GET_COVER_ORIGINAL_OBJ 리듀서 실행");
-        draft.coverOriginalObj = action.payload.coverOriginalObj;
-      }),
   },
   initialState
 );
@@ -524,7 +499,6 @@ const actionCreators = {
   unfollowUserMiddleware,
   filterAddLikeMiddleware,
   filterDeleteLikeMiddleware,
-  getCoverOriginalObjMiddleware,
 };
 
 export { actionCreators };

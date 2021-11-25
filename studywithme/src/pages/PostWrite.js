@@ -16,12 +16,11 @@ import Grid from "../elements/Grid";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
-// Cropper 관련 시작
+// Cropper 관련
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../shared/cropImage";
 import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
-// Cropper 관련 끝
 
 // icon
 import { ReactComponent as InputFile } from "../icon/inputFile.svg";
@@ -41,11 +40,10 @@ const PostWrite = (props) => {
   }
 
   const post = useSelector((state) => state.post.detail);
-  console.log("post", post);
-  const coverOriginalObj = post?.coverOriginal;
+  const coverOriginalForEdit = post?.coverOriginal;
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
-  console.log("_editMode", _editMode);
+
   const [content, setContent] = useState(
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
@@ -62,10 +60,13 @@ const PostWrite = (props) => {
   const [coverOriginal, setCoverOriginal] = useState(null);
   const [coverCropped, setCoverCropped] = useState(null);
   const [imageCoverForCrop, setImageCoverForCrop] = useState(
-    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalObj}` : null
+    _editMode ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}` : null
   );
 
-  // Cropper 관련 시작
+  // console.log("coverOriginal", coverOriginal);
+  // console.log("imageCoverForCrop", imageCoverForCrop);
+
+  // Cropper를 위한 states
   const [rotation, setRotation] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -83,44 +84,13 @@ const PostWrite = (props) => {
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
         setImageCoverForCrop(reader.result);
-        console.log("reader.result", reader.result);
-        // console.log("image", image);
       };
     }
   };
 
   const triggerFileSelectedPopUp = () => {
-    // console.log("triggerFileSelectedPopUp 실행");
     inputRef.current.click();
   };
-
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-  };
-
-  // 기존: '크롭 확정' 버튼에 의해 실행
-  // 변경: '작성', '수정' 버튼에 의해 실행
-  const confirmCroppedImage = useCallback(async () => {
-    try {
-      const croppedImage = await getCroppedImg(
-        imageCoverForCrop,
-        croppedAreaPixels,
-        rotation
-      );
-      console.log("done", { croppedImage });
-      // base64
-      setCroppedImage(croppedImage);
-      // 파일 객체로 변환
-      urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
-        file
-      ) {
-        // console.log(file);
-        setCoverCropped(file);
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }, [croppedAreaPixels, rotation]);
 
   const urltoFile = (url, filename, mimeType) => {
     return fetch(url)
@@ -130,6 +100,35 @@ const PostWrite = (props) => {
       .then(function (buf) {
         return new File([buf], filename, { type: mimeType });
       });
+  };
+
+  const confirmCroppedImage = useCallback(async () => {
+
+    try {
+      const croppedImage = await getCroppedImg(
+        imageCoverForCrop,
+        croppedAreaPixels,
+        rotation
+      );
+      console.log("done", { croppedImage });
+      // base64 형식의 Cropped Image 상태 저장
+      setCroppedImage(croppedImage);
+      // 파일 객체로 변환
+      urltoFile(croppedImage, "croppedImage.png", "image/png")
+        .then(function (
+          file
+        ) {
+          setCoverCropped(file);
+        });
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }, [croppedAreaPixels, rotation]);
+
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+    confirmCroppedImage();
   };
 
   let formData = new FormData();
@@ -144,9 +143,6 @@ const PostWrite = (props) => {
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
-    // for(var a of formData.entries()) {
-    //   console.log(a);
-    // }
     if (spaceVal === "" || studyMateVal === "" || interestVal === "") {
       window.alert("카테고리를 지정해주세요");
       return;
@@ -163,16 +159,9 @@ const PostWrite = (props) => {
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
-    console.log("coverOriginal", coverOriginal);
-    console.log("coverCropped", coverCropped);
-    console.log("title", title);
-    console.log("categorySpace", spaceVal);
-    console.log("categoryStudyMate", studyMateVal);
-    console.log("categoryInterest", interestVal);
-    console.log("contentEditor", content);
-
     dispatch(postActions.editPostMiddleware(postId, formData));
   };
+
   const getContent = (content) => {
     setContent(content);
   };
@@ -190,13 +179,6 @@ const PostWrite = (props) => {
   const titleChange = (e) => {
     setTitle(e.target.value);
   };
-
-  useEffect(() => {
-    if (_editMode) {
-      console.log("useEffect 실행");
-      dispatch(postActions.getCoverOriginalObjMiddleware(postId));
-    }
-  }, []);
 
   return (
     <>
@@ -222,38 +204,37 @@ const PostWrite = (props) => {
           <Write onClick={posting}>작성</Write>
         )}
       </Navbar>
-      <Container>
-        <CropperContainer>
-          {/* {coverOriginal ? */}
-          {/* {imageCoverForCrop ? */}
-          <>
-            <CropperWrap>
-              <Cropper
-                image={imageCoverForCrop}
-                crop={crop}
-                rotation={rotation}
-                zoom={zoom}
-                aspect={772 / 433}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={onCropComplete}
-              />
-            </CropperWrap>
-            <SliderWrap>
-              <Slider
-                min={1}
-                max={3}
-                step={0.1}
-                value={zoom}
-                onChange={(e, zoom) => {
-                  setZoom(zoom);
-                }}
-              />
-            </SliderWrap>
-          </>
-          {/* : null
-          } */}
-        </CropperContainer>
+      <CropperContainerOuter>
+        <CropperContainerInner>
+          {imageCoverForCrop ?
+            <>
+              <CropperWrap>
+                <Cropper
+                  image={imageCoverForCrop}
+                  crop={crop}
+                  rotation={rotation}
+                  zoom={zoom}
+                  aspect={772 / 433}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </CropperWrap>
+              <SliderWrap>
+                <Slider
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  value={zoom}
+                  onChange={(e, zoom) => {
+                    setZoom(zoom);
+                  }}
+                />
+              </SliderWrap>
+            </>
+            : null
+          }
+        </CropperContainerInner>
         <ButtonsContainer>
           <input
             type="file"
@@ -270,21 +251,8 @@ const PostWrite = (props) => {
           >
             이미지 선택
           </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={confirmCroppedImage}
-          >
-            크롭 확정
-          </Button>
         </ButtonsContainer>
-        {/* <ResultContainer>
-          <img
-            src={croppedImage}
-            alt="croppedImage"
-          />
-        </ResultContainer> */}
-      </Container>
+      </CropperContainerOuter>
       <FlexGrid direction="column" justify="space-evenly">
         <Input
           _onChange={titleChange}
@@ -378,21 +346,21 @@ const Write = styled.li`
   }
 `;
 
-// Cropper 관련 시작
-const Container = styled.div`
-  height: 100vh;
-  width: 100vw;
+// Cropper 관련
+const CropperContainerOuter = styled.div`
+  height: 70vh;
+  width: 70vw;
+  margin: auto;
 `;
 
-const CropperContainer = styled.div`
+const CropperContainerInner = styled.div`
   width: 70%;
   height: 70%;
   margin: auto;
-  // padding: 0px;
+  background-color: gray;
 `;
 
 const ButtonsContainer = styled.div`
-  border: 1px solid #f5f5f5;
   height: 10%;
   display: flex;
   align-items: center;
@@ -412,11 +380,5 @@ const SliderWrap = styled.div`
   align-items: center;
   margin: auto;
 `;
-
-const ResultContainer = styled.div`
-  width: 500px;
-  margin: 10px auto;
-`;
-// Cropper 관련 끝
 
 export default PostWrite;
