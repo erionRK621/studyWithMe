@@ -4,8 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import dotenv from "dotenv";
 
 // Font Awesome-related
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes as fasTimes } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes as fasTimes } from "@fortawesome/free-solid-svg-icons";
 
 // Components
 import Image from "../elements/Image";
@@ -33,31 +33,26 @@ const FollowerModal = ({ modalClose, followerList }) => {
               style={{
                 width: "24px",
                 height: "24px",
-                color: "#9E9D9D"
+                color: "#9E9D9D",
               }}
-              icon={fasTimes} />
+              icon={fasTimes}
+            />
           </CloseButton>
         </ModalTitle>
         <ModalBody>
           {followerList.map((follower, idx) => {
             return (
-              <FlexGrid
-                key={follower.userId}
-              >
+              <FlexGrid key={follower.userId}>
                 <UserWrapper>
                   <Image
                     size="56"
                     src={`${process.env.REACT_APP_IMAGE_URI}/${follower.avatarUrl}`}
                   />
-                  <UserName
-                    size="15px"
-                  >
-                    {follower.nickname}
-                  </UserName>
+                  <UserName size="15px">{follower.nickname}</UserName>
                 </UserWrapper>
                 <DeleteButton>삭제</DeleteButton>
               </FlexGrid>
-            )
+            );
           })}
         </ModalBody>
       </Modal>
@@ -85,16 +80,20 @@ const Modal = styled.div`
   transform: translate(-50%, -50%);
   z-index: 100;
   border-radius: 20px;
+  @media screen and (max-width: 768px) {
+    width: 370px;
+    height: 600px;
+  }
 `;
 
 const CloseButton = styled.div`
-position: absolute;
-top: 26.5px;
-right: 56px;
-border: none;
-background-color: white;
-cursor: pointer;
-`
+  position: absolute;
+  top: 26.5px;
+  right: 56px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+`;
 
 const ModalTitle = styled.div`
   display: flex;
@@ -105,42 +104,41 @@ const ModalTitle = styled.div`
 `;
 
 const Title = styled.div`
-font-style: normal;
-font-weight: normal;
-font-size: 20px;
-line-height: 28px;
-color: #000000;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 28px;
+  color: #000000;
 `;
 
-const ModalBody = styled.div`
-`;
+const ModalBody = styled.div``;
 
 const FlexGrid = styled.div`
-display: flex;
-justify-content: space-between;
-margin-left: 5px;
-margin: 0px 46px 16px 46px;
-align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 5px;
+  margin: 0px 46px 16px 46px;
+  align-items: center;
 `;
 
 const UserWrapper = styled.div`
-display: flex;
-align-items: center;
+  display: flex;
+  align-items: center;
 `;
 
 const UserName = styled.p`
-margin-left: 26px;
+  margin-left: 26px;
 `;
 
 const DeleteButton = styled.button`
-width: 58px;
-height: 27px;
-color: white;
-background: #FFC85C;
-border: none;
-border-radius: 4px;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-cursor: pointer;
+  width: 58px;
+  height: 27px;
+  color: white;
+  background: #ffc85c;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 `;
 
 export default FollowerModal;
