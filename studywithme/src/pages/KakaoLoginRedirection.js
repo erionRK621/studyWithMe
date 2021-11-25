@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
-// 스피너 불러오기
+import Spinner from "../elements/Spinner";
 
 const KakaoLoginRedirection = (props) => {
     const dispatch = useDispatch();
@@ -16,8 +16,8 @@ const KakaoLoginRedirection = (props) => {
     }, []);
 
     return (
-        // 스피너 컴포넌트 삽입`
-        <h1>Kakao Login Redirected Page</h1>
+        <Spinner />
+        // <h1>Kakao Login Redirected Page</h1>
     );
 };
 

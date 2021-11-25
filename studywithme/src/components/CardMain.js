@@ -1,27 +1,24 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { history } from "../redux/configStore";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
-import Text from "../elements/Text";
 import Image from "../elements/Image";
 import dotenv from "dotenv";
 dotenv.config();
 
 const Post = (props) => {
-  const post_list = useSelector((state) => state.post.list);
-  // console.log("포스트의 프롭스", props);
-  // console.log("포스트의 이미지", props.ImageCover);
-
   return (
-    <PostContainer>
-      <Grid bg="#ffffff" margin="8px 0px" _onClick={props.onClick}>
+    <PostContainer className="card">
+      <Grid bg="#ffffff" margin="0px" _onClick={props.onClick}>
         <Grid is_flex></Grid>
         <Grid>
           <Image
+            className="img"
             shape="rectangle"
-            src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
+            src={`${process.env.REACT_APP_IMAGE_URI}/${props.coverOriginal}`}
             paddingTop="65%"
             borderRadius="10px"
           />
@@ -31,8 +28,21 @@ const Post = (props) => {
         </Grid>
         <Grid is_flex>
           <Profile>
-            {/* <Text bold>{props.avatarUrl}</Text> */}
-            <Nickname bold>{props.userId}</Nickname>
+            <Image
+              shape="circle"
+              size="26"
+              src={`${process.env.REACT_APP_IMAGE_URI}/${props.avatarUrl}`}
+            />
+            <Nickname
+              className="goMyPage"
+              onClick={(e) => {
+                e.stopPropagation();
+                history.push("/mypage/" + props.userId);
+              }}
+              bold
+            >
+              {props.nickname}
+            </Nickname>
           </Profile>
           <CategoryInfo>
             <CategoryItem bold>{props.categorySpace}</CategoryItem>
@@ -61,7 +71,7 @@ Post.defaultProps = {
 };
 const PostContainer = styled.div`
   background-color: white;
-  width: 80%;
+  width: 95%;
   max-width: 350px;
   margin: auto;
   margin-bottom: 50px;
@@ -70,14 +80,23 @@ const PostContainer = styled.div`
 const Title = styled.div`
   font-size: 16px;
   margin-top: 10px;
+  @media screen and (max-width: 768px) {
+    font-size: 12px;
+    margin-top: 4px;
+  }
 `;
 
 const Profile = styled.div`
   display: flex;
+  align-items: center;
 `;
 const Nickname = styled.div`
   font-size: 13px;
   opacity: 0.5;
+  @media screen and (max-width: 768px) {
+    font-size: 10px;
+    opacity: 0.5;
+  }
 `;
 
 const CategoryInfo = styled.div`
@@ -91,6 +110,10 @@ const CategoryItem = styled.div`
   background-color: #ececec;
   margin: 0 5px;
   padding: 2px 6px;
+  @media screen and (max-width: 768px) {
+    font-size: 10px;
+    opacity: 0.5;
+  }
 `;
 
 export default Post;

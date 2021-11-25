@@ -3,18 +3,33 @@ import styled from "styled-components";
 
 // Image 함수형 컴포넌트를 만들어 준다.
 const Image = (props) => {
-  const { shape, src, size, _onClick, children, borderRadius, paddingTop } =
-    props;
+  const {
+    shape,
+    src,
+    size,
+    _onClick,
+    borderRadius,
+    paddingTop,
+    className,
+    minWidth,
+  } = props;
 
   const styles = {
     src: src,
     size: size,
     borderRadius: borderRadius,
     paddingTop: paddingTop,
+    minWidth: minWidth,
   };
 
   if (shape === "circle") {
-    return <ImageCircle {...styles} onClick={_onClick}></ImageCircle>;
+    return (
+      <ImageCircle
+        minWidth={minWidth}
+        {...styles}
+        onClick={_onClick}
+      ></ImageCircle>
+    );
   }
 
   if (shape === "card") {
@@ -23,7 +38,7 @@ const Image = (props) => {
 
   if (shape === "rectangle") {
     return (
-      <AspectOutter>
+      <AspectOutter className={className} borderRadius={borderRadius}>
         <AspectInner {...styles} onClick={_onClick}></AspectInner>
       </AspectOutter>
     );
@@ -59,6 +74,8 @@ const ImageDefault = styled.div`
 const AspectOutter = styled.div`
   width: auto;
   min-width: 100px;
+  ${(props) =>
+    props.borderRadius ? `border-radius:${props.borderRadius};` : null}
 `;
 
 const AspectInner = styled.div`
@@ -79,6 +96,7 @@ const ImageCircle = styled.div`
   background-image: url("${(props) => props.src}");
   background-size: cover;
   margin: 4px;
+  min-width: ${(props) => (props.minWidth ? props.minWidth : "null")};
 `;
 
 const CardImage = styled.div`

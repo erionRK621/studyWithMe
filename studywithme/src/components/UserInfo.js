@@ -1,101 +1,247 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import dotenv from "dotenv";
 import { useSelector, useDispatch } from "react-redux";
-import { AiTwotoneSetting } from "react-icons/ai";
+
 import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
 import Image from "../elements/Image";
-import Text from "../elements/Text";
-import dotenv from "dotenv";
+import FollowerModal from "./FollowerModal";
+import FollowModal from "./FollowModal";
+
 dotenv.config();
 
 const UserInfo = (props) => {
+  // console.log("props", props);
+
   const dispatch = useDispatch();
+
+  const [followerModalOpen, setFollowerModalOpen] = useState(false);
+  const [followModalOpen, setFollowModalOpen] = useState(false);
+
+  const followerModalClose = () => {
+    setFollowerModalOpen(!followerModalOpen);
+  };
+  const followModalClose = () => {
+    setFollowModalOpen(!followModalOpen);
+  };
+  const changeFollowState = (userId, isFollowing) => {
+    if (isFollowing) {
+      dispatch(userActions.unfollowUserMiddleware(userId));
+    } else {
+      dispatch(userActions.followUserMiddleware(userId));
+    }
+  };
 
   //state 조회
   const userInfo = useSelector((state) => state.user.userInfo);
+  const isFollowing = useSelector((state) => state.user.isFollowing);
   const followerList = useSelector((state) => state.mypage?.followerIdList);
-  // console.log(followerList);
   const followingList = useSelector((state) => state.mypage?.followingIdList);
-  console.log(followingList);
-  const userPic = `${process.env.REACT_APP_API_URI}/${userInfo?.avatarUrl}`;
-  const userId = props.userId;
+  const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo?.avatarUrl}`;
+  const myPageUserId = props.myPageUserId;
+  const isMe = props.isMe;
 
   useEffect(() => {
-    dispatch(userActions.getUserDB(userId));
-    dispatch(myActions.getFollowingsMiddleware(userId));
-    dispatch(myActions.getFollowersMiddleware(userId));
-  }, []);
+    dispatch(userActions.getUserDB(myPageUserId));
+    dispatch(myActions.getFollowingsMiddleware(myPageUserId));
+    dispatch(myActions.getFollowersMiddleware(myPageUserId));
+  }, [myPageUserId]);
+
   return (
     <React.Fragment>
       <UserInfoWrap>
-        <LeftDiv>
-          <ProfileImg>
-            <Image size="100" src={userPic}></Image>
-          </ProfileImg>
-        </LeftDiv>
-
-        <RightDiv>
-          <TopDiv>
-            <AiTwotoneSetting
-              cursor="pointer"
-              size="1.7em"
-              onClick={() => {
-                history.push("/userEdit/" + userId);
-              }}
-            ></AiTwotoneSetting>
-          </TopDiv>
-          <MiddleDiv>
-            <Nickname>{userInfo?.nickname}</Nickname>
-          </MiddleDiv>
+        <UserProfilePicWrap>
+          <ProfilePic src={userPic} alt="Profile Pic" />
+        </UserProfilePicWrap>
+        <UserProfileWrap>
+          <NicknameWrap>
+            <UserNickname>{userInfo?.nickname}</UserNickname>
+            {isMe ? (
+              <UserInfoEditButton
+                onClick={() => {
+                  history.push("/userEdit/" + myPageUserId);
+                }}
+              >
+                회원정보 수정
+              </UserInfoEditButton>
+            ) : (
+              <FollowButton
+                onClick={() => {
+                  changeFollowState(userInfo.userId, isFollowing);
+                }}
+              >
+                {isFollowing ? "언팔로우" : "팔로우"}
+              </FollowButton>
+            )}
+          </NicknameWrap>
           <BottomDiv>
-            <Text>게시글 {userInfo?.postCnt}개</Text>
-            <Text>팔로워 {followerList?.length}명</Text>
-            <Text>팔로잉 {followingList?.length}명</Text>
+            <Post>게시물 {userInfo?.postCnt}개</Post>
+            <Button onClick={followerModalClose}>
+              팔로워 {followerList?.length}명
+            </Button>
+            {followerModalOpen && (
+              <FollowerModal
+                modalClose={followerModalClose}
+                followerList={followerList}
+              />
+            )}
+            <Button onClick={followModalClose}>
+              팔로우 {followingList?.length}명
+            </Button>
+            {followModalOpen && (
+              <FollowModal
+                modalClose={followModalClose}
+                followingList={followingList}
+              />
+            )}
           </BottomDiv>
-        </RightDiv>
+        </UserProfileWrap>
       </UserInfoWrap>
     </React.Fragment>
   );
 };
 
 const UserInfoWrap = styled.div`
-  width: 100%;
-  height: 300px;
-  background-color: lightgray;
+  margin-bottom: 44px;
+  flex-direction: row;
+  align-items: stretch;
   display: flex;
-  margin: auto;
-`;
-const LeftDiv = styled.div`
-  width: 30%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const ProfileImg = styled.div`
-  height: 77px;
-  width: 77px;
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+  @media screen and (max-width: 768px) {
+    margin:0px;
+  }
 `;
 
-const RightDiv = styled.div`
-  width: 70%;
-  height: 100%;
-`;
-const TopDiv = styled.div`
+const UserProfilePicWrap = styled.div`
+  flex-basis: 0;
+  flex-grow: 1;
+  margin-right: 30px;
+  flex-shrink: 0;
+  align-items: stretch;
   display: flex;
-  height: 10%;
-  flex-direction: row-reverse;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  position: relative;
 `;
-const MiddleDiv = styled.div`
+
+const ProfilePic = styled.img`
+  height: 185px;
+  width: 185px;
+  border-radius: 50%;
+  align-items: center;
+  align-self: center;
+  display: block;
+  flex: none;
+  justify-content: center;
+  @media screen and (max-width: 768px) {
+    height: 150px;
+    width: 150px;
+    margin:auto;
+  }
+`;
+const NicknameWrap = styled.div`
   display: flex;
-  height: 40%;
-  padding: 40px 40px 40px 60px;
+  justify-content: space-between;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    height: 50%;
+    margin: 20px 0px;
+  }
 `;
-const Nickname = styled.div`
-  font-size: 48px;
+
+const UserProfileWrap = styled.section`
+  flex-basis: 30px;
+  flex-grow: 2;
+  flex-shrink: 1;
+  min-width: 0;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 50px;
+  padding: 0;
+  position: relative;
+  @media screen and (max-width: 768px) {
+    height: 50%;
+    margin: auto 20px;
+  }
+`;
+
+const UserNicknameWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const UserNickname = styled.h2`
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 45px;
+  margin: -5px 0 -6px;
+  @media screen and (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
+
+const UserInfoEditButton = styled.button`
+  width: 120px;
+  height: 32px;
+  border: 0;
+  border-radius: 10px;
+  background: #ffc85c;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    font-size: 8px;
+    height: 24px;
+  }
+`;
+
+const FollowButton = styled.button`
+  width: 120px;
+  height: 32px;
+  border: 0;
+  border-radius: 10px;
+  background: #ffc85c;
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+  @media screen and (max-width: 768px) {
+    width: 80px;
+    font-size: 8px;
+    height: 24px;
+  }
+`;
+const Post = styled.div`
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    font-size: 13px;
+    margin: 4px auto;
+  }
+`;
+
+const Button = styled.div`
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    font-size: 13px;
+    margin: 4px auto;
+  }
 `;
 
 const BottomDiv = styled.div`
@@ -104,6 +250,13 @@ const BottomDiv = styled.div`
   width: 100%;
   height: 50%;
   margin: auto;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+    margin: auto;
+    height: 50%;
+  }
 `;
 
 export default UserInfo;

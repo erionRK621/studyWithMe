@@ -2,33 +2,41 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/mypage";
+import { history } from "../redux/configStore";
 
-import Grid from "../elements/Grid";
-import CardMain from "../components/CardMain";
+import CardPost from "../components/CardPost";
+import { GiConsoleController } from "react-icons/gi";
 
 const MyPosts = (props) => {
   const dispatch = useDispatch();
 
   const myPostList = useSelector((state) => state.mypage.myPost);
-  console.log("마이포스트 받아왔니", myPostList);
+  // console.log("myPostList", myPostList);
+
+  const myPageUserId = props.myPageUserId;
+  // console.log("myPageUserId", myPageUserId);
 
   useEffect(() => {
-    dispatch(userActions.getMyPostMiddleware());
-  }, []);
+    dispatch(userActions.getMyPostMiddleware(myPageUserId));
+  }, [myPageUserId]);
   return (
-    <PostContainer>
-      <Grid>
-        <GridWrap>
-          {myPostList.map((p, idx) => {
-            return (
-              <Grid key={idx}>
-                <CardMain key={idx} {...p} />
-              </Grid>
-            );
-          })}
-        </GridWrap>
-      </Grid>
-    </PostContainer>
+    <Wrap>
+      <GridWrap>
+        {myPostList.map((p, idx) => {
+          return (
+            <ItemGrid key={p.postId}>
+              <CardPost
+                page="myPost"
+                {...p}
+                onClick={() => {
+                  history.push(`/detail/${p.postId}`);
+                }}
+              />
+            </ItemGrid>
+          );
+        })}
+      </GridWrap>
+    </Wrap>
   );
 };
 
@@ -47,22 +55,31 @@ MyPosts.defaultProps = {
     userId: 1,
   },
 };
-const PostContainer = styled.div`
-  background-color: white;
-  width: 80%;
-  max-width: 350px;
+
+const Wrap = styled.div`
+  max-width: 1134px;
   margin: auto;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  border-radius: 5px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 2px 5px rgba(0, 0, 0, 0.24);
+  padding: 20px;
+  @media screen and (max-width: 768px) {
+    max-width: 768px;
+  }
+`;
+
+const ItemGrid = styled.div`
+  width: 33.33333%;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-top: 20px;
+  }
 `;
 
 const GridWrap = styled.div`
-  max-width: 1300px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  grid-gap: 40px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px 0px;
+  justify-content: flex-start;
 `;
 export default MyPosts;

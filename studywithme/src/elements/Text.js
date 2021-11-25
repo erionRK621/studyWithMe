@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 export default function Text(props) {
-  const { bold, color, size, lineHeight, children, marginRight } = props;
+  const { bold, color, size, lineHeight, children, marginRight, margin, _onClick, pointer } = props;
 
   const styles = {
     bold: bold,
@@ -10,8 +10,10 @@ export default function Text(props) {
     size: size,
     lineHeight: lineHeight,
     marginRight:marginRight,
+    margin:margin,
+    pointer:pointer,
   };
-  return <P {...styles}>{children}</P>;
+  return <P {...styles} onClick={_onClick} >{children}</P>;
 }
 
 Text.defaultProps = {
@@ -20,6 +22,7 @@ Text.defaultProps = {
   color: "#222831",
   size: "14px",
   lineHeight: 1.2,
+  _onClick:()=>{},
 };
 
 const P = styled.p`
@@ -29,5 +32,9 @@ const P = styled.p`
   line-height: ${(props) => props.lineHeight};
   word-break: break-all;
   overflow:hidden;
+  ${props=> props.margin? `margin:${props.margin}`:null};
   ${props=> props.marginRight? `margin-right:${props.marginRight}` : null};
+  &:hover{
+    ${props=>props.pointer?"cursor:pointer;":null};
+  }
 `;

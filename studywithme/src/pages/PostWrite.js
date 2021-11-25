@@ -1,4 +1,10 @@
-import React, { isValidElement, useState } from "react";
+import React, {
+  isValidElement,
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
@@ -6,25 +12,38 @@ import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
 
 import Input from "../elements/Input";
+import Grid from "../elements/Grid";
 import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
-import dotenv from "dotenv";
+// Cropper 관련
+import Cropper from "react-easy-crop";
+import { getCroppedImg } from "../shared/cropImage";
+import Slider from "@material-ui/core/Slider";
+import Button from "@material-ui/core/Button";
+
+// icon
+import { ReactComponent as InputFile } from "../icon/inputFile.svg";
+import logoImg from "../icon/logo.png";
+import logologo from "../icon/logologo.png";
+
+import dotenv, { load } from "dotenv";
 dotenv.config();
 
 const PostWrite = (props) => {
+  const inputFile = useRef();
+  const dispatch = useDispatch();
+
   if (!localStorage.getItem("user")) {
     window.alert("로그인을 먼저 해주세요");
     history.push("/login");
   }
 
   const post = useSelector((state) => state.post.detail);
+  const coverOriginalForEdit = post?.coverOriginal;
   const postId = props.match.params.id;
   const _editMode = postId ? true : false;
-  const dispatch = useDispatch();
-  const [preview, setPreview] = useState(
-    _editMode ? `${process.env.REACT_APP_API_URI}/${post.imageCover}` : ""
-  );
+
   const [content, setContent] = useState(
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
@@ -38,56 +57,109 @@ const PostWrite = (props) => {
   const [title, setTitle] = useState(
     _editMode ? decodeURIComponent(post.title) : ""
   );
-  const [image, setImage] = useState("");
+  const [coverOriginal, setCoverOriginal] = useState(null);
+  const [coverCropped, setCoverCropped] = useState(null);
+  const [imageCoverForCrop, setImageCoverForCrop] = useState(
+    _editMode
+      ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}`
+      : null
+  );
+
+  // console.log("coverOriginal", coverOriginal);
+  // console.log("imageCoverForCrop", imageCoverForCrop);
+
+  // Cropper를 위한 states
+  const [rotation, setRotation] = useState(0);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+
+  const inputRef = React.useRef();
+
+  const onSelectFile = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log("selectedFile", selectedFile, typeof selectedFile);
+    setCoverOriginal(selectedFile);
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        setImageCoverForCrop(reader.result);
+      };
+    }
+  };
+
+  const triggerFileSelectedPopUp = () => {
+    inputRef.current.click();
+  };
+
+  const urltoFile = (url, filename, mimeType) => {
+    return fetch(url)
+      .then(function (res) {
+        return res.arrayBuffer();
+      })
+      .then(function (buf) {
+        return new File([buf], filename, { type: mimeType });
+      });
+  };
+
+  const confirmCroppedImage = useCallback(async () => {
+    try {
+      const croppedImage = await getCroppedImg(
+        imageCoverForCrop,
+        croppedAreaPixels,
+        rotation
+      );
+      // console.log("done", { croppedImage });
+      // base64 형식의 Cropped Image 상태 저장
+      setCroppedImage(croppedImage);
+      // 파일 객체로 변환
+      urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
+        file
+      ) {
+        setCoverCropped(file);
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }, [croppedAreaPixels, rotation]);
+
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+    confirmCroppedImage();
+  };
 
   let formData = new FormData();
 
-  // 커버 이미지 로드
-  const selectFile = (e) => {
-    //----사용할 데이터를 정리하고, 서버에 데이터(이미지 객체)를 전달하고 url을 얻어서 post에 저장한다.
-    const request = { imageCover: e.target.files[0] };
-    const file = e.target.files[0];
-    setImage(file);
-
-    //multer를 사용하려면 formData 안에 request들을 넣어주어야 한다
-    for (let entry of Object.entries(request)) {
-      formData.append(entry[0], entry[1]);
-    }
-    const reader = new FileReader();
-
-    // 미리보기를 위해 file을 읽어온다
-    if (file && file.type.match("image.*")) {
-      reader.readAsDataURL(file);
-    } else {
-      setPreview("");
-    }
-
-    //file이 load 된 후
-    reader.onloadend = () => {
-      const imagePreview = reader.result;
-      //base64로 된 이미지를 가져온다(string형태)
-      setPreview(imagePreview);
-    };
-  };
-
   // 작성버튼 onClick 이벤트
   const posting = () => {
-    formData.append("imageCover", image);
+    if(title.length>=25) {
+      window.alert("제목이 24자가 넘습니다.");
+      return;
+    }
+    formData.append("coverOriginal", coverOriginal);
+    formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
-    // for(var a of formData.entries()) {
-    //   console.log(a);
-    // }
-
+    if (spaceVal === "" || studyMateVal === "" || interestVal === "") {
+      window.alert("카테고리를 지정해주세요");
+      return;
+    }
     dispatch(postActions.addPostDB(formData));
   };
 
   const editing = () => {
-    formData.append("imageCover", image);
+    if(title.length>=25) {
+      window.alert("제목이 24자가 넘습니다.");
+      return;
+    }
+    formData.append("coverOriginal", coverOriginal);
+    formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
     formData.append("categoryStudyMate", studyMateVal);
@@ -96,6 +168,7 @@ const PostWrite = (props) => {
 
     dispatch(postActions.editPostMiddleware(postId, formData));
   };
+
   const getContent = (content) => {
     setContent(content);
   };
@@ -116,16 +189,84 @@ const PostWrite = (props) => {
 
   return (
     <>
-      <ImageCover src={preview} alt="" />
-      <Upload _onChange={selectFile} />
+      <Navbar>
+        <Grid
+          is_flex
+          justify="start"
+          _onClick={() => {
+            history.push("/");
+          }}
+          width="auto"
+        >
+          <NavbarLogo>
+            <img src={logologo} alt="" />
+          </NavbarLogo>
+          <NavbarLogo>
+            <img src={logoImg} alt="" />
+          </NavbarLogo>
+        </Grid>
+        {_editMode ? (
+          <Write onClick={editing}>수정</Write>
+        ) : (
+          <Write onClick={posting}>작성</Write>
+        )}
+      </Navbar>
+      <CropperContainerOuter>
+        <CropperContainerInner>
+          {imageCoverForCrop ? (
+            <>
+              <CropperWrap>
+                <Cropper
+                  image={imageCoverForCrop}
+                  crop={crop}
+                  rotation={rotation}
+                  zoom={zoom}
+                  aspect={772 / 433}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </CropperWrap>
+              <SliderWrap>
+                <Slider
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  value={zoom}
+                  onChange={(e, zoom) => {
+                    setZoom(zoom);
+                  }}
+                />
+              </SliderWrap>
+            </>
+          ) : null}
+        </CropperContainerInner>
+        <ButtonsContainer>
+          <input
+            type="file"
+            accept="image/*"
+            ref={inputRef}
+            onChange={onSelectFile}
+            style={{ display: "none" }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={triggerFileSelectedPopUp}
+            style={{ marginRight: "10px" }}
+          >
+            이미지 선택
+          </Button>
+        </ButtonsContainer>
+      </CropperContainerOuter>
       <FlexGrid direction="column" justify="space-evenly">
         <Input
           _onChange={titleChange}
           value={title}
-          borderBottom
           border="0px"
-          placeholder="제목을 입력해주세요"
+          placeholder="제목"
           size="20px"
+          margin="0px 0px 0px 0px"
         />
         <FlexGrid margin="20px 0px">
           <SelectBox category="space" _onChange={space} _value={spaceVal} />
@@ -141,15 +282,11 @@ const PostWrite = (props) => {
           />
         </FlexGrid>
         <Editor value={content} getContent={getContent} />
-        {_editMode ? (
-          <button onClick={editing}>수정</button>
-        ) : (
-          <button onClick={posting}>작성</button>
-        )}
       </FlexGrid>
     </>
   );
 };
+
 const FlexGrid = styled.div`
   display: flex;
   max-width: 750px;
@@ -165,4 +302,90 @@ const ImageCover = styled.div`
   background-image: url(${(props) => props.src});
   background-size: cover;
 `;
+const UploadButton = styled.label`
+  position: absolute;
+  left: calc(50% - 30px);
+  top: calc(50% - 30px);
+  opacity: 0.5;
+  &:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+`;
+
+const Navbar = styled.div`
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
+  justify-content: space-between;
+  background-color: white;
+  padding: 8px 24px 8px 12px;
+  z-index: 3;
+`;
+
+const NavbarLogo = styled.div`
+  font-size: 24px;
+  margin: 0 5px;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Write = styled.li`
+  padding: 0px 12px;
+  width: 84px;
+  height: 40px;
+  background-color: #ffc85c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  :hover {
+    color: black;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+`;
+
+// Cropper 관련
+const CropperContainerOuter = styled.div`
+  height: 70vh;
+  width: 70vw;
+  margin: auto;
+`;
+
+const CropperContainerInner = styled.div`
+  width: 70%;
+  height: 70%;
+  margin: auto;
+  background-color: gray;
+`;
+
+const ButtonsContainer = styled.div`
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const CropperWrap = styled.div`
+  width: 100%;
+  height: 90%;
+  position: relative;
+`;
+
+const SliderWrap = styled.div`
+  bottom: 100px;
+  width: 60%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  margin: auto;
+`;
+
 export default PostWrite;

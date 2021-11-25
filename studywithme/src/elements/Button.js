@@ -1,10 +1,22 @@
+import { size } from "lodash";
 import React from "react";
 
-import { Grid } from "./Grid";
 import styled from "styled-components";
 
 export default function Button(props) {
-  const { text, children, _onClick, is_float, margin, width, padding, radius, bgColor, color } = props;
+  const {
+    text,
+    children,
+    _onClick,
+    margin,
+    width,
+    padding,
+    radius,
+    bgColor,
+    color,
+    fontSize,
+    height,
+  } = props;
 
   const styles = {
     margin: margin,
@@ -13,6 +25,8 @@ export default function Button(props) {
     radius: radius,
     bgColor: bgColor,
     color: color,
+    fontSize:fontSize,
+    height:height
   };
 
   return (
@@ -27,7 +41,7 @@ export default function Button(props) {
 Button.defaultProps = {
   text: false,
   children: null,
-  _onClick: () => { },
+  _onClick: () => {},
   is_float: false,
   margin: false,
   width: "",
@@ -36,12 +50,17 @@ Button.defaultProps = {
 
 const ElButton = styled.button`
   width: ${(props) => props.width};
-  background-color: ${props => props.bgColor ? props.bgColor : "#212121"};
-  color: ${props => props.color ? props.color : "#ffffff"};
-  padding: 12px 0px;
+  background-color: ${(props) => (props.bgColor ? props.bgColor : "#212121")};
+  color: ${(props) => (props.color ? props.color : "#ffffff")};
+  padding: ${(props)=>props.padding? props.padding: "12px 0px"};
   box-sizing: border-box;
   border: none;
   padding: ${(props) => props.padding};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   ${(props) => (props.radius ? `border-radius: ${props.radius}` : null)};
+  ${(props) => props.fontSize? `font-size:${props.fontSize}` : null};
+  ${(props) => props.height? `height:${props.height};`:null};
+  &:hover {
+    cursor: pointer;
+  }
 `;

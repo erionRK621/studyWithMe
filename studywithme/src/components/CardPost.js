@@ -1,34 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as postActions } from "../redux/modules/post";
+import { actionCreators as myPageActions } from "../redux/modules/mypage";
 
 import Grid from "../elements/Grid";
 import Text from "../elements/Text";
 import Image from "../elements/Image";
 
+// icon
+import { ReactComponent as PostLikeOff } from "../icon/postLikeOff.svg";
+import { ReactComponent as PostLikeOn } from "../icon/postLikeOn.svg";
+import { ReactComponent as BookmarkCntIcon } from "../icon/cardBookmarkCntIcon.svg";
+import { ReactComponent as LikeCntIcon } from "../icon/cardLikeCntIcon.svg";
+
 import dotenv from "dotenv";
 dotenv.config();
+
 const Post = (props) => {
+  const dispatch = useDispatch();
+  const page = props.page;
   const { onClick } = props;
+  const coverImage = `${process.env.REACT_APP_IMAGE_URI}/${props.coverOriginal}`;
+  const deleteLike = () => {
+    if (page === "myPost") {
+      dispatch(myPageActions.myPostDeleteLikeMiddleware(props.postId));
+    } else if (page === "bookmark") {
+      dispatch(myPageActions.bookmarkedPostDeleteLikeMiddleware(props.postId));
+    } else {
+      dispatch(postActions.filterDeleteLikeMiddleware(props.postId));
+    }
+  };
+  const addLike = () => {
+    if (page === "myPost") {
+      dispatch(myPageActions.myPostAddLikeMiddleware(props.postId));
+    } else if (page === "bookmark") {
+      dispatch(myPageActions.bookmarkedPostAddLikeMiddleware(props.postId));
+    } else {
+      dispatch(postActions.filterAddLikeMiddleware(props.postId));
+    }
+  };
   return (
-    <PostContainer onClick={onClick}>
-      <Grid>
-        <Image
-          shape="rectangle"
-          src={`${process.env.REACT_APP_API_URI}/${props.imageCover}`}
-          borderRadius="10px"
-          paddingTop="100%"
-        />
+    <PostContainer className="card">
+      <Grid _onClick={onClick}>
+        <Grid>
+          <Image
+            className="img"
+            shape="rectangle"
+            src={coverImage}
+            borderRadius="10px"
+            paddingTop="100%"
+          />
+        </Grid>
+        <Grid is_flex margin="17px 0px 0px 0px">
+          <Text size="16px" bold>
+            {decodeURIComponent(props.title)}
+          </Text>
+        </Grid>
+        <Grid is_flex justify="start" margin="7px 0px 0px 0px">
+          <LikeCntIcon />
+          <Text margin="0px 20px 0px 5px" color="#aaaaaa">
+            {props.likeCnt}
+          </Text>
+          <BookmarkCntIcon />
+          <Text margin="0px 20px 0px 5px" color="#aaaaaa">
+            {props.bookCnt}
+          </Text>
+        </Grid>
       </Grid>
-      <Grid is_flex margin="10px 0px 0px 0px">
-        <Text size="15px" bold>
-          {decodeURIComponent(props.title)}
-        </Text>
-      </Grid>
-      <Grid is_flex justify="start">
-        <Text marginRight="20px">좋아요:{props.likeCnt}</Text>
-        <Text>스크랩:{props.bookCnt}</Text>
-      </Grid>
+      {props.isLiked ? (
+        <PostLikeOn className="like" size="30" onClick={deleteLike} />
+      ) : (
+        <PostLikeOff className="like" size="30" onClick={addLike} />
+      )}
     </PostContainer>
   );
 };
@@ -50,13 +94,17 @@ Post.defaultProps = {
 };
 const PostContainer = styled.div`
   background-color: white;
-  width : 100%;
-  max-width: 350px;
+  width: 100%;
+  max-width: 358px;
   margin-top: 30px;
   border-radius: 5px;
+  z-index: 1;
+  position: relative;
   @media screen and (max-width: 768px) {
-    margin:auto;
+    margin: auto;
+  }
+  &:hover {
+    cursor: pointer;
   }
 `;
-
 export default Post;

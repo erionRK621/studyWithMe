@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-
+import { useSelector, useDispatch } from "react-redux";
+import { history } from "../redux/configStore";
 import { ProfileEdit } from "../components/ProfileEdit";
 import { PasswordEdit } from "../components/PasswordEdit";
 
 const UserEdit = (props) => {
-  const userId = props.match.params.id;
-  console.log(userId);
+  const userType = useSelector((state) => state.user.userInfo.provider);
   const [passwordEditState, setPasswordEditState] = useState(true);
 
   const showProfileEdit = () => {
@@ -18,31 +18,56 @@ const UserEdit = (props) => {
   };
   return (
     <React.Fragment>
-      <MenuWrap>
-        <li>
-          <MenuItem onClick={showProfileEdit}>프로필 수정</MenuItem>
-        </li>
-        <li>
-          <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
-        </li>
-      </MenuWrap>
+      <Wrap>
+        <MenuWrap>
+          <li>
+            <MenuItem onClick={showProfileEdit}>프로필 수정</MenuItem>
+          </li>
+          {userType === "local" ? (
+            <li>
+              <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
+            </li>
+          ) : null}
+        </MenuWrap>
 
-      <ContentDiv>
-        {passwordEditState === true ? <ProfileEdit /> : <PasswordEdit />}
-      </ContentDiv>
+        <ContentDiv>
+          {passwordEditState === true ? <ProfileEdit /> : <PasswordEdit />}
+        </ContentDiv>
+      </Wrap>
     </React.Fragment>
   );
 };
+
+// const HeaderMenu = styled.div`
+//   @media screen and (min-width: 768px) {
+//     display: none;
+//   }
+//   @media screen and (max-width: 768px) {
+//     display: flex;
+//     justify-content: space-evenly;
+//   }
+// `;
+
+const Wrap = styled.div`
+  display: flex;
+  min-height: calc(100vh - 180px);
+  height: 100%;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 
 const MenuWrap = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
-  width: 25%;
-  background-color: #f1f1f1;
-  position: fixed;
+  min-width: 140px;
   height: 100%;
   overflow: none;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    justify-content: space-evenly;
+  }
 `;
 const MenuItem = styled.div`
   display: block;
@@ -50,14 +75,18 @@ const MenuItem = styled.div`
   padding: 8px 16px;
   text-decoration: none;
   :hover {
-    background-color: red;
+    color: #ffc85c;
   }
 `;
 
 const ContentDiv = styled.div`
-  margin-left: 25%;
   padding: 1px 16px;
-  height: 1000px;
+  height: 700px;
+  width: 100%;
+  @media screen and (max-width: 768px) {
+    width: 80%;
+    margin: auto;
+  }
 `;
 
 export default UserEdit;

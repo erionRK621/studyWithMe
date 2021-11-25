@@ -1,26 +1,32 @@
-import React, { Component } from "react";
+import React, { useRef, useCallback, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import styled, { css } from "styled-components";
+import { useSelector } from "react-redux";
 
 import { history } from "../redux/configStore";
-import SlideContent from "./SliderContent";
 import CardMain from "./CardMain";
+import { ReactComponent as Fire } from "../icon/fire.svg";
 
 const LikeSlide = (props) => {
-  const post_list = useSelector((state) => state.post.list);
+  const post_list = useSelector((state) => state.post.list?.posts);
+
+  const previous = useCallback(() => slickRef.current.slickPrev(), []);
+  const next = useCallback(() => slickRef.current.slickNext(), []);
+  const slickRef = useRef(null);
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
     dots: false, // 점보이게 할거니?
-    infinite: true, // 무한으로 즐기게
+    infinite: post_list?.length <= 2 ? false : true,
     speed: 500,
     slidesToShow: 3, //한번에 몇 장씩 보이게 할거니?
     slidesToScroll: 1, //몇 장씩 넘어갈래?
-    centerMode: true,
+    centerMode: false,
     centerPadding: "0px",
-    arrows: true,
+    arrows: false,
+    // prevArrow: <Arrow />,
 
     responsive: [
       // 반응형 웹 구현 옵션
@@ -39,7 +45,7 @@ const LikeSlide = (props) => {
       {
         breakpoint: 767,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
         },
       },
     ],
@@ -49,58 +55,155 @@ const LikeSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <SlideTitle>인기게시글</SlideTitle>
+          <Fire />
+          추천 데스크테리어
+          <Fire />
+        </SlideUpLine>
+        {post_list?.length === 0 ? null : (
           <More
             onClick={() => {
               history.push("/list");
+              window.scrollTo(0, 0);
             }}
           >
             더보기
           </More>
-        </SlideUpLine>
+        )}
+        {post_list?.length === 0 ? (
+          <Nothing>표시할 내용이 없습니다.</Nothing>
+        ) : (
+          <StyledSlider ref={slickRef} {...settings}>
+            {post_list?.map((p, idx) => {
+              return (
+                <PostWrap key={idx}>
+                  <CardMain
+                    key={idx}
+                    {...p}
+                    onClick={() => {
+                      history.push(`/detail/${p.postId}`);
+                    }}
+                  />
+                </PostWrap>
+              );
+            })}
+          </StyledSlider>
+        )}
+        {post_list?.length === 0 ? null : (
+          <>
+            <PrevButton onClick={previous}>
+              <PrevIcon />
+              <span className="hidden"></span>
+            </PrevButton>
 
-        <StyledSlider {...settings}>
-          {post_list.map((p, idx) => {
-            return (
-              <PostWrap key={idx}>
-                <CardMain
-                  key={idx}
-                  {...p}
-                  onClick={() => {
-                    history.push(`/detail/${p.postId}`);
-                  }}
-                />
-              </PostWrap>
-            );
-          })}
-        </StyledSlider>
+            <NextButton onClick={next}>
+              <NextIcon />
+              <span className="hidden"></span>
+            </NextButton>
+          </>
+        )}
       </Wrap>
     </React.Fragment>
   );
 };
 
+const defaultButtonStyle = css`
+  position: absolute;
+  top: 40%;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  line-height: 1;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  outline: none;
+  cursor: pointer;
+`;
+const PrevButton = styled.button`
+  ${defaultButtonStyle}
+  left: 0;
+  @media screen and (max-width: 768px) {
+    left: -10px;
+  }
+`;
+
+const NextButton = styled.button`
+  ${defaultButtonStyle}
+  right: 0;
+  @media screen and (max-width: 768px) {
+    right: -10px;
+  }
+`;
+
+const defaultIconStyle = css`
+  font-size: 22px;
+  color: black;
+
+  &:focus,
+  &:hover {
+    color: #666;
+  }
+`;
+
+const PrevIcon = styled(IoIosArrowBack)`
+  ${defaultIconStyle}
+`;
+
+const NextIcon = styled(IoIosArrowForward)`
+  ${defaultIconStyle}
+`;
 const Wrap = styled.div`
-  width: 100%;
-  height: 30%;
+  width: 80%;
+  margin: auto;
   margin-top: 30px;
+  position: relative;
+  max-width: 1134px;
+
   @media screen and (max-width: 768px) {
     margin-top: 10px;
+    max-width: 768px;
   }
 `;
 
 const SlideUpLine = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0 5%;
-`;
-
-const SlideTitle = styled.div`
-  font-size: 20px;
+  align-items: center;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+  @media screen and (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const More = styled.div`
+  display: flex;
+  justify-content: end;
+  margin: 5px 5%;
   font-size: 13px;
   opacity: 50%;
+  &:hover {
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 768px) {
+    font-size: 8px;
+    margin: 0px 15%;
+  }
+  @media (max-width: 500px) {
+    font-size: 8px;
+    margin: 0px 20px;
+  }
+`;
+
+const Nothing = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const PostWrap = styled.div`
@@ -111,13 +214,13 @@ const PostWrap = styled.div`
 //슬라이더 css부분
 const StyledSlider = styled(Slider)`
   .slick-list {
-    width: 100%;
+    width: 95%;
     height: 50%;
     margin: 0 auto;
   }
 
   .slick-slide div {
-    /* cursor: pointer; */
+    cursor: pointer;
     /* height: 20%; */
   }
 
@@ -129,7 +232,7 @@ const StyledSlider = styled(Slider)`
   .slick-track {
     /* overflow-x: hidden; */
   }
-
+  /* 
   .slick-arrow {
     z-index: 10;
     width: 50px;
@@ -143,7 +246,7 @@ const StyledSlider = styled(Slider)`
     }
     &::before {
       font-weight: 900;
-      font-size: 49px;
+      font-size: 20px;
       transition: all 0.5s;
     }
   }
@@ -156,7 +259,7 @@ const StyledSlider = styled(Slider)`
   .slick-next {
     top: 40%;
     right: 30px;
-  }
+  } */
 `;
 
 export default LikeSlide;

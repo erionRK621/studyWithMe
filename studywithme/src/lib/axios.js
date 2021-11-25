@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getCookie } from "../shared/cookie";
 import dotenv from "dotenv";
 dotenv.config();
 const instance = axios.create({
@@ -40,7 +39,7 @@ export const apis = {
   deleteAccountAxios: () => instance.post("/api/users/withdrawal"),
 
   //게시물
-  getPost: () => instance.get("/api/posts", {}),
+  getPost: () => instance.get("/api/posts?searchMode=main", {}),
   getFilterPost: (queryString) =>
     instance.get(`/api/posts?searchMode=filter${queryString}`),
   getDetailPost: (postId) => instance.get(`/api/posts/${postId}`),
@@ -63,6 +62,12 @@ export const apis = {
   addLikeAxios: (postId) => instance.post(`api/posts/${postId}/like`),
   deleteLikeAxios: (postId) => instance.delete(`api/posts/${postId}/like`),
 
+  // 댓글 좋아요
+  addCommentLikeAxios: (postId, commentId) =>
+    instance.post(`api/posts/${postId}/comments/${commentId}/like`),
+  deleteCommentLikeAxios: (postId, commentId) =>
+    instance.delete(`api/posts/${postId}/comments/${commentId}/like`),
+
   //마이페이지 게시물 가져오기
   getMyPostAxios: (userId) =>
     instance.get(`/api/mypage/myposts/${userId}`, { userId }),
@@ -84,7 +89,19 @@ export const apis = {
   // 댓글 가져오기
   addCommentAxios: (postId, comment) =>
     instance.post(`/api/posts/${postId}/comments`, comment),
-  getCommentAxios: (postId) => instance.get(`/api/posts/${postId}/comments`),
+  getCommentAxios: (postId, page) =>
+    instance.get(`/api/posts/${postId}/comments?pagination=${page}`),
   deleteCommentAxios: (postId, commentId) =>
     instance.delete(`api/posts/${postId}/comments/${commentId}`),
+
+  // 대댓글
+  addCommentReplyAxios: (postId, commentId, textContent) =>
+    instance.post(`/api/posts/${postId}/comments/${commentId}/childs`, { textContent }),
+  getCommentReplyAxios: (postId, commentId,currentPage) =>
+    instance.get(`/api/posts/${postId}/comments/${commentId}/childs?page=${currentPage}`),
+  deleteCommentReplyAxios: (postId, commentId, childCommentId) =>
+    instance.delete(`/api/posts/${postId}/comments/${commentId}/childs/${childCommentId}`),
+
+  // 게시물 수정시 커버 이미지 원본 파일 객체 가져오기
+  // getCoverOriginalObjAxios: (postId) => instance.get(`/api/posts/${postId}/coverOriginal`),
 };

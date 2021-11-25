@@ -1,20 +1,23 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "../redux/configStore";
+import signUpImg from "../icon/signup.svg";
+import logoImg from "../icon/logo.png";
+import logologo from "../icon/logologo.png";
 
 // Redux Modules
 import { actionCreators as userActions } from "../redux/modules/user";
 
 // Design-related
 import styled from "styled-components";
-import { FaUserAlt, FaBell } from "react-icons/fa";
-import { BiLogIn, BiLogOut } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 // Components
 
-export const Header = () => {
+const Header = (props) => {
   const dispatch = useDispatch();
+
+  const { value } = props;
 
   const user = useSelector((state) => state.user.user);
   const userId = useSelector((state) => state.user.user?.userId);
@@ -22,6 +25,26 @@ export const Header = () => {
   // const userId = useSelector((state) => state.user.user.userId);
   // console.log(user.userId);
   const [menuState, setMenuState] = useState(false);
+
+  const [menuColorStateMain, setMenuColorStateMain] = useState(true);
+  const [menuColorStateList, setMenuColorStateList] = useState(false);
+  const [menuColorStateMyPage, setMenuColorStateMyPage] = useState(false);
+
+  const changeMainColor = () => {
+    setMenuColorStateMain(true);
+    setMenuColorStateList(false);
+    setMenuColorStateMyPage(false);
+  };
+  const changeListColor = () => {
+    setMenuColorStateMain(false);
+    setMenuColorStateList(true);
+    setMenuColorStateMyPage(false);
+  };
+  const changeMyPageColor = () => {
+    setMenuColorStateMain(false);
+    setMenuColorStateList(false);
+    setMenuColorStateMyPage(true);
+  };
 
   const onClickLogOut = () => {
     console.log("로그아웃 버튼 클릭");
@@ -40,53 +63,71 @@ export const Header = () => {
   if (user) {
     return (
       <Navbar>
-        <NavbarLogo>
-          <IMG />
-        </NavbarLogo>
+        <LogoWrap>
+          <NavbarLogo>
+            <img
+              src={logologo}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+          <NavbarLogo>
+            <img
+              src={logoImg}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+        </LogoWrap>
 
         <NavbarMenu menuState={menuState}>
-          <List
+          <ListMain
+            menuColorStateMain={menuColorStateMain}
             onClick={() => {
               history.push("/");
+              changeMainColor();
             }}
+            // menuColorState={menuColorState}
           >
             메인
-          </List>
-          <List
+          </ListMain>
+          <ListPost
+            menuColorStateList={menuColorStateList}
             onClick={() => {
               history.push("/list");
+              changeListColor();
             }}
           >
             게시글
-          </List>
+          </ListPost>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
-          <InfoList>
-            <List
-              onClick={() => {
-                history.push("/mypage/" + userId);
-              }}
-            >
-              마이페이지
-            </List>
-          </InfoList>
-          <InfoList>
-            <List onClick={onClickLogOut}>로그아웃</List>
-          </InfoList>
-          <InfoList>
-            <List>알림</List>
-          </InfoList>
-          <InfoList>
-            <List
-              onClick={() => {
-                history.push("/write");
-              }}
-            >
-              글쓰기
-            </List>
-          </InfoList>
+          <ListMyPage
+            menuColorStateMyPage={menuColorStateMyPage}
+            onClick={() => {
+              history.push("/mypage/" + userId);
+              changeMyPageColor();
+              // window.location.reload();
+            }}
+          >
+            마이페이지
+          </ListMyPage>
+
+          <List onClick={onClickLogOut}>로그아웃</List>
+
+          {/* <List>알림</List> */}
+
+          <Write
+            onClick={() => {
+              history.push("/write");
+            }}
+          >
+            글쓰기
+          </Write>
         </NavbarIcon>
-        <Hamberger href="#">
+        <Hamberger>
           <GiHamburgerMenu
             cursor="pointer"
             size="1.7em"
@@ -102,56 +143,72 @@ export const Header = () => {
   else {
     return (
       <Navbar>
-        <NavbarLogo>
-          <IMG />
-        </NavbarLogo>
+        <LogoWrap>
+          <NavbarLogo>
+            <img
+              src={logologo}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+          <NavbarLogo>
+            <img
+              src={logoImg}
+              onClick={() => {
+                history.push("/");
+              }}
+            />
+          </NavbarLogo>
+        </LogoWrap>
 
         <NavbarMenu menuState={menuState}>
-          <List
+          <ListMain
+            menuColorStateMain={menuColorStateMain}
             onClick={() => {
               history.push("/");
+              changeMainColor();
             }}
           >
             메인
-          </List>
-          <List
+          </ListMain>
+          <ListPost
+            menuColorStateList={menuColorStateList}
             onClick={() => {
               history.push("/list");
+              changeListColor();
             }}
           >
             게시글
-          </List>
+          </ListPost>
         </NavbarMenu>
         <NavbarIcon menuState={menuState}>
-          <InfoList>
-            <List
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              로그인
-            </List>
-          </InfoList>
-          <InfoList>
-            <List
-              onClick={() => {
-                history.push("/signup");
-              }}
-            >
-              회원가입
-            </List>
-          </InfoList>
-          <InfoList>
-            <List
-              onClick={() => {
-                history.push("/login");
-              }}
-            >
-              글쓰기
-            </List>
-          </InfoList>
+          <List
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            로그인
+          </List>
+
+          <List
+            onClick={() => {
+              history.push("/signup");
+            }}
+          >
+            <img src={signUpImg} />
+            회원가입
+          </List>
+
+          <Write
+            onClick={() => {
+              history.push("/login");
+            }}
+          >
+            글쓰기
+          </Write>
         </NavbarIcon>
-        <Hamberger href="#">
+        <Hamberger>
           <GiHamburgerMenu
             cursor="pointer"
             size="1.7em"
@@ -166,28 +223,49 @@ export const Header = () => {
 
 const Navbar = styled.div`
   display: flex;
-  justify-content: space-between; /*중심축 배치 (현재는 중심축이 수평축)*/
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
-  background-color: black;
-  padding: 8px 12px;
+  background-color: white;
+  padding: 10px 40px;
+  max-width: 1134px;
+  margin: auto;
+  /* height: 65px; */
 
   @media screen and (max-width: 768px) {
+    max-width: 768px;
     flex-direction: column;
     align-items: flex-start; /*로고,메뉴바 모두 왼쪽 정렬*/
     padding: 8px 24px; /*hover시 한줄 가득 색상표시 안되도록 */
   }
 `;
+const LogoWrap = styled.div`
+  display: flex;
+`;
 
 const NavbarLogo = styled.div`
   font-size: 24px;
-  color: white;
+  margin: 0 5px;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const NavBtnWrap = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `;
 
 const NavbarMenu = styled.ul`
+  width: 50%;
   display: flex;
+  justify-content: flex-start;
   list-style: none;
   padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
-  color: white;
+  color: black;
+
   @media screen and (max-width: 768px) {
     ${(props) => (props.menuState === true ? null : "display: none;")}
     flex-direction: column;
@@ -197,11 +275,94 @@ const NavbarMenu = styled.ul`
 `;
 
 const List = styled.li`
-  padding: 8px 12px; /*마우스 클릭영역확보*/
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   :hover {
-    background-color: red;
+    color: #ffc85c;
     border-radius: 10px;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+const ListMain = styled.li`
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(props) =>
+    props.menuColorStateMain === true ? "color: #FEC85C;" : "color: black;"}
+
+  :hover {
+    color: #ffc85c;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+const ListPost = styled.li`
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${(props) =>
+    props.menuColorStateList === true ? "color: #FEC85C;" : "color: black;"}
+
+  :hover {
+    color: #ffc85c;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+const ListMyPage = styled.li`
+  height: 24px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${(props) =>
+    props.menuColorStateMyPage === true ? "color: #FEC85C;" : "color: black;"}
+
+  :hover {
+    color: #ffc85c;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    text-align: center; /*text는 왼쪽 정렬이 기본값이므로 center로 수정*/
+  }
+`;
+
+const Write = styled.li`
+  padding: 0px 12px;
+  width: 84px;
+  height: 40px;
+  background-color: #ffc85c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  :hover {
+    color: black;
+    border-radius: 10px;
+    cursor: pointer;
   }
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -210,10 +371,12 @@ const List = styled.li`
 `;
 
 const NavbarIcon = styled.ul`
+  width: 75%;
   display: flex;
+  justify-content: flex-end;
   list-style: none;
   padding-left: 0; /*패딩때문에 우측으로 치우쳐있는것을 되돌림*/
-  color: white;
+  color: black;
   @media screen and (max-width: 768px) {
     ${(props) => (props.menuState === true ? null : "display: none;")}
     flex-direction: column;
@@ -222,11 +385,13 @@ const NavbarIcon = styled.ul`
   }
 `;
 
-const InfoList = styled.li`
+const InfoList = styled.div`
   padding: 0 12px;
-  마우스 클릭영역확보 :hover {
-    background-color: red;
+
+  :hover {
+    color: #ffc85c;
     border-radius: 10px;
+    cursor: pointer;
   }
   @media screen and (max-width: 768px) {
     text-align: center; /*로고는 현재 반대축이므로 justify-content 사용*/
@@ -235,13 +400,16 @@ const InfoList = styled.li`
   }
 `;
 
-const Hamberger = styled.a`
+const Hamberger = styled.div`
   display: none;
   position: absolute; /*소속된 배치와 무관하게 위치 설정*/
   right: 15px; /*우측에서 32px 거리둠*/
   font-size: 20px;
   color: black;
-
+  margin-top: 5px;
+  &:hover {
+    cursor: pointer;
+  }
   @media screen and (max-width: 768px) {
     display: block;
   }
