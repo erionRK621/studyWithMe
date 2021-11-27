@@ -22,7 +22,7 @@ const Footer = () => {
           <li></li>
           <li>
             <ImgContents>
-              <img src={logo} style={{ maxWidth: "100%" }} />
+              <img src={logo} style={{ maxWidth: "100%" }} alt=""/>
             </ImgContents>
           </li>
         </FooterBtnList>

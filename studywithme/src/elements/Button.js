@@ -1,4 +1,3 @@
-import { size } from "lodash";
 import React from "react";
 
 import styled from "styled-components";

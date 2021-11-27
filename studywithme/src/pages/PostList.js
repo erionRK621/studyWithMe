@@ -60,7 +60,7 @@ const PostList = (props) => {
     { value: studyMateVal, func: setStudyMateVal },
     { value: keyword, func: setKeyword },
   ];
-  const selectArray = _selectArray.filter((s, idx) => {
+  const selectArray = _selectArray.filter((s) => {
     if (s.value !== "") {
       return s;
     }

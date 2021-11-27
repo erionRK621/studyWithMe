@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { history } from "../redux/configStore";
-import { useSelector, useDispatch } from "react-redux";
-import { actionCreators as postActions } from "../redux/modules/post";
 
 import Grid from "../elements/Grid";
 import Image from "../elements/Image";

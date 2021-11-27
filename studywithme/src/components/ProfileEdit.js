@@ -62,7 +62,6 @@ export const ProfileEdit = () => {
   };
 
   const onClickNicknameCheck = () => {
-    // console.log("nicknameCheckInput", nicknameCheckInput);
     if (nicknameCheckInput.nickname === "") {
       window.alert("닉네임을 입력해주세요");
     } else {
@@ -72,7 +71,7 @@ export const ProfileEdit = () => {
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
-  }, [userId]);
+  }, [dispatch,userId]);
   return (
     <React.Fragment>
       <Wrap>
@@ -154,7 +153,6 @@ const UserNickname = styled.div`
     font-size: 16px;
   }
 `;
-const ChangePic = styled.div``;
 
 const InputWrap = styled.div`
   margin: 30px 0 32px 0px;

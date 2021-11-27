@@ -8,7 +8,6 @@ const KakaoLoginRedirection = (props) => {
 
     // 인가 코드
     let code = new URL(window.location.href).searchParams.get("code");
-    console.log("인가 코드", code);
 
     // 렌더링되며 인가 코드 백엔드로 넘겨주기
     React.useEffect(async () => {

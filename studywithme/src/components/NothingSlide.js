@@ -5,7 +5,6 @@ import "slick-carousel/slick/slick-theme.css";
 import styled, { css } from "styled-components";
 
 import bgImg from "../icon/Component.png";
-import { style } from "@material-ui/system";
 
 const NothingSlide = (props) => {
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.

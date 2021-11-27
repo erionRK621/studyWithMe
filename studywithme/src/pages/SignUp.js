@@ -17,32 +17,23 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // *** 추가 구현 필요 ***
-  // 이메일 중복 확인 여부 체크 (feat. useState)
-  // 닉네임 중복 확인 여부 체크 (feat. useState)
-
   const onChangeEmailUsername = (e) => {
-    // console.log(e.target.value);
     setEmailUsername(e.target.value);
   };
 
   const onChangeEmailDomain = (e) => {
-    // console.log(e.target.value);
     setEmailDomain(e.target.value);
   };
 
   const onChangeNickName = (e) => {
-    // console.log(e.target.value);
     setNickname(e.target.value);
   };
 
   const onChangePassword = (e) => {
-    // console.log(e.target.value);
     setPassword(e.target.value);
   };
 
   const onChangeConfirmPassword = (e) => {
-    // console.log(e.target.value);
     setConfirmPassword(e.target.value);
   };
 
@@ -71,12 +62,10 @@ const SignUp = () => {
       password: password,
       confirmPassword: confirmPassword,
     };
-    // console.log("signUpInputs", signUpInputs);
 
     // 이메일 규칙 확인
     if (!regExEmailTest(signUpInputs.email)) {
       window.alert("이메일 형식이 올바르지 않습니다.");
-      // console.log("이메일 형식이 올바르지 않습니다.");
       return;
     }
     // 이메일 50자 이하 여부 확인
@@ -86,13 +75,11 @@ const SignUp = () => {
     // 닉네임 규칙 확인
     else if (!regExNicknameTest(signUpInputs.nickname)) {
       window.alert("닉네임 형식이 올바르지 않습니다.");
-      // console.log("닉네임 형식이 올바르지 않습니다.");
       return;
     }
     // 닉네임 20자 이하 여부 확인
     else if (signUpInputs.nickname.length > 20) {
       window.alert("닉네임을 20자 이하로 입력해주세요.");
-      // console.log("닉네임을 20자 이하로 입력해주세요.");
       return;
     }
     // 닉네임 2자 이상 여부 확인
@@ -104,13 +91,11 @@ const SignUp = () => {
     // 비밀번호 규칙 확인
     else if (!regExPasswordTest(signUpInputs.password)) {
       window.alert("비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다.");
-      // console.log("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
       return;
     }
     // 비밀번호 일치 여부 확인
     else if (signUpInputs.password !== signUpInputs.confirmPassword) {
       window.alert("비밀번호가 일치하지 않습니다.");
-      // console.log("비밀번호가 일치하지 않습니다.");
       return;
     }
     // 이메일, 비밀번호간 상호간에 포함되었는지 여부 확인
@@ -336,7 +321,6 @@ const NicknameInput = styled.input`
   min-height: 40px;
   margin: 0;
   border: 1px solid #dbdbdb;
-  backrgound-color: #fff;
   color: #000;
   border-radius: 4px;
   box-sizing: border-box;
@@ -384,7 +368,6 @@ const PasswordInput = styled.input`
   min-height: 40px;
   margin: 0;
   border: 1px solid #dbdbdb;
-  backrgound-color: #fff;
   color: #000;
   border-radius: 4px;
   box-sizing: border-box;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { getCookie } from "../shared/cookie";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";

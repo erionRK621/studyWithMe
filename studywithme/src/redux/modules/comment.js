@@ -2,7 +2,6 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { apis } from "../../lib/axios";
 import { actionCreators as pageActions } from "./pagination";
-import { CardFooter } from "reactstrap";
 
 const ADD_COMMENT = "ADD_COMMENT";
 const GET_COMMENT = "GET_COMMENT";
@@ -107,7 +106,7 @@ const addCommentMiddleware = (postId, textContent) => {
         dispatch(addComment(userNick, comment, avatarUrl));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -124,7 +123,7 @@ const getCommentMiddleware = (postId, page) => {
         dispatch(pageActions.setPage(page, res.data.totalPg));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -137,7 +136,7 @@ const deleteCommentMiddleware = (postId, commentId) => {
         dispatch(deleteComment(commentId));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -152,7 +151,7 @@ const addCommentLikeMiddleWare = (postId, commentId) => {
         dispatch(addCommentLike(isCommentLiked, commentId));
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -165,7 +164,7 @@ const deleteCommentLikeMiddleWare = (postId, commentId) => {
         dispatch(DeleteCommentLike(isCommentLiked, commentId));
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -183,7 +182,7 @@ const addCommentReplyMiddleware = (postId, commentId, content) => {
         dispatch(addCommentReply(commentId, user, child));
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -206,7 +205,7 @@ const getCommentReplyMiddleware = (postId, commentId, currentPage = 1) => {
         dispatch(getCommentReply(commentId, childComments, currentPage));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -220,7 +219,7 @@ const deleteCommentReplyMiddleware = (postId, commentId, childCommentId) => {
         dispatch(deleteCommentReply(commentId, childCommentId));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };

@@ -11,7 +11,6 @@ const GET_POST = "GET_POST";
 const GET_FILTER_POST = "GET_FILTER_POST";
 const SET_POST = "SET_POST";
 const EDIT_POST = "EDIT_POST";
-const DELETE_POST = "DELETE_POST";
 //북마크
 const LOAD_BOOKMARK_LIST = "LOAD_BOOKMARK_LIST";
 const ADD_BOOKMARK = "ADD_BOOKMARK";
@@ -123,7 +122,7 @@ const getPostDB = () => {
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
-        console.log(err, "에러");
+        console.error(err.response.data.message);
       });
   };
 };
@@ -134,7 +133,6 @@ const getDetailPostDB = (postId) => {
     apis
       .getDetailPost(postId)
       .then((res) => {
-        console.log("getDetailPostDB", res.data);
         const isBookmarked = res.data.isBookmarked;
         const isLiked = res.data.isLiked;
         const isFollowing = res.data.isFollowing;
@@ -153,7 +151,7 @@ const getDetailPostDB = (postId) => {
         );
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -183,7 +181,7 @@ const getFilterPostDB = (queryString, currentPage) => {
         history.push(`list?searchMode=filter${queryString ? queryString : ""}`);
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -196,7 +194,7 @@ const addPostDB = (formData) => {
         history.push("/");
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -209,7 +207,7 @@ const deletePostMiddleware = (postId) => {
         history.goBack();
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -223,7 +221,7 @@ const editPostMiddleware = (postId, formData) => {
         history.push("/");
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -236,8 +234,8 @@ const loadBookmarkListMiddleware = () => {
         const bookmarkList = response.data.bookmarkedPosts;
         dispatch(loadBookmarkList(bookmarkList));
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -252,8 +250,8 @@ const addBookmarkMiddleware = (postId) => {
         dispatch(addBookmark(postDetail, isBookmarked));
         // window.alert("북마크 추가 완료");
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -268,8 +266,8 @@ const deleteBookmarkMiddleware = (postId) => {
         dispatch(deleteBookmark(postDetail, isBookmarked));
         // window.alert("북마크 취소 완료");
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -283,8 +281,8 @@ const addLikeMiddleware = (postId) => {
         const isLiked = response.data.isLiked;
         dispatch(addLike(postDetail, isLiked));
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -298,8 +296,8 @@ const deleteLikeMiddleware = (postId) => {
         const isLiked = response.data.isLiked;
         dispatch(deleteLike(postDetail, isLiked));
       })
-      .catch((error) => {
-        console.log(error.response.data.message);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -331,7 +329,7 @@ const filterDeleteLikeMiddleware = (postId) => {
         dispatch(filterDeleteLike(postId, isLiked));
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -345,8 +343,8 @@ const followUserMiddleware = (userId) => {
         const isFollowing = response.data.isUser;
         dispatch(followUser(postDetail, isFollowing));
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -360,8 +358,8 @@ const unfollowUserMiddleware = (userId) => {
         const isFollowing = response.data.isUser;
         dispatch(unfollowUser(postDetail, isFollowing));
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };

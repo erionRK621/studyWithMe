@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-
+import { useSelector } from "react-redux";
 
 import { ReactComponent as MyPostsTabOn } from "../icon/MyPostsTabOn.svg";
 import { ReactComponent as MyPostsTabOff } from "../icon/MyPostsTabOff.svg";
@@ -20,11 +19,6 @@ const MyPage = (props) => {
   // 현재 조회 중인 마이페이지의 사용자 아이디
   const myPageUserId = props.match.params.id;
   const isMe = logInUserId === myPageUserId ? true : false;
-  const user = useSelector((state) => state.user.user);
-  console.log(user);
-  // console.log("logInUserId", logInUserId, typeof (logInUserId));
-  // console.log("myPageUserId", myPageUserId, typeof (myPageUserId));
-  // console.log("isMe", isMe);
 
   const [postsTabSelected, setPostsTabSelected] = useState(true);
 
@@ -168,4 +162,3 @@ const BookmarksTab = styled.div`
 `;
 
 export default MyPage;
-
