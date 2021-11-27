@@ -121,7 +121,6 @@ const getCommentMiddleware = (postId, page) => {
         dispatch(
           getComment(res.data.cmtsList, res.data.totalPg, res.data.totCmtCount)
         );
-        console.log(res.data);
         dispatch(pageActions.setPage(page, res.data.totalPg));
       })
       .catch((err) => {
@@ -178,7 +177,6 @@ const addCommentReplyMiddleware = (postId, commentId, content) => {
     apis
       .addCommentReplyAxios(postId, commentId, content)
       .then((res) => {
-        console.log(res);
         const addReply = res.data;
         const user = addReply.user;
         const child = addReply.child;
@@ -198,14 +196,12 @@ const getCommentReplyMiddleware = (postId, commentId, currentPage = 1) => {
       c.commentId === commentId
     );
     const beforePage = comment[idx].currentPage;
-    console.log(beforePage, currentPage);
     if(beforePage ===currentPage) {
       return;
     }
     apis
       .getCommentReplyAxios(postId, commentId, currentPage)
       .then((res) => {
-        console.log(res);
         const childComments = res.data.childComments;
         dispatch(getCommentReply(commentId, childComments, currentPage));
       })
