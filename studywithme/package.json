@@ -38,6 +38,7 @@
     "connected-react-router": "6.8.0",
     "craco": "0.0.3",
     "dotenv": "^10.0.0",
+    "env-cmd": "^10.1.0",
     "history": "4.10.1",
     "immer": "^9.0.6",
     "jsonwebtoken": "^8.5.1",
@@ -67,7 +68,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "env-cmd -f .env craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
