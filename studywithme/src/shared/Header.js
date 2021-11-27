@@ -69,6 +69,7 @@ const Header = (props) => {
               src={logologo}
               onClick={() => {
                 history.push("/");
+                changeMainColor();
               }}
             />
           </NavbarLogo>
@@ -77,6 +78,7 @@ const Header = (props) => {
               src={logoImg}
               onClick={() => {
                 history.push("/");
+                changeMainColor();
               }}
             />
           </NavbarLogo>

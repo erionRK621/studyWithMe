@@ -50,7 +50,7 @@ const FollowerModal = ({ modalClose, followerList }) => {
                   />
                   <UserName size="15px">{follower.nickname}</UserName>
                 </UserWrapper>
-                <DeleteButton>삭제</DeleteButton>
+                {/* <DeleteButton>삭제</DeleteButton> */}
               </FlexGrid>
             );
           })}
@@ -124,6 +124,10 @@ const FlexGrid = styled.div`
 const UserWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 120px;
+  @media screen and (max-width: 768px) {
+    margin-left: 20px;
+  }
 `;
 
 const UserName = styled.p`

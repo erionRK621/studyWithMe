@@ -51,7 +51,7 @@ const FollowModal = ({ modalClose, followingList }) => {
                   />
                   <UserName size="15px">{following.nickname}</UserName>
                 </UserWrapper>
-                <UnfollowButton>언팔로우</UnfollowButton>
+                {/* <UnfollowButton>언팔로우</UnfollowButton> */}
               </FlexGrid>
             );
           })}
@@ -125,6 +125,10 @@ const FlexGrid = styled.div`
 const UserWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 120px;
+  @media screen and (max-width: 768px) {
+    margin-left: 20px;
+  }
 `;
 
 const UserName = styled.p`
