@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { actionCreators as postActions } from "../redux/modules/post";
-import { actionCreators as userActions } from "../redux/modules/user";
 
 // import banner from "../icon/bannerImg.png";
 import banner from "../icon/bannerNone.jpg";
@@ -16,12 +15,11 @@ import FollowSlide from "../components/FollowSlide";
 
 const Main = (props) => {
   const dispatch = useDispatch();
-  const { history } = props;
 
   useEffect(() => {
     dispatch(postActions.getPostDB());
     window.scrollTo(0, 0);
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>
@@ -29,10 +27,10 @@ const Main = (props) => {
         <Banner>
           <Image shape="rectangle" src={banner} paddingTop="40%"></Image>
           <ImgContents>
-            <img src={kkiriText} style={{ maxWidth: "100%" }} />
+            <img src={kkiriText} style={{ maxWidth: "100%" }} alt=""/>
           </ImgContents>
           <ImgContents2>
-            <img src={kkiriText2} style={{ maxWidth: "100%" }} />
+            <img src={kkiriText2} style={{ maxWidth: "100%" }} alt=""/>
           </ImgContents2>
         </Banner>
 

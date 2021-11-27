@@ -10,14 +10,11 @@ const BookMarks = (props) => {
   const dispatch = useDispatch();
 
   const myBookmarkList = useSelector((state) => state.mypage.bookmarkedPosts);
-  // console.log("마이북마크 받아왔니", myBookmarkList);
-
   const myPageUserId = props.myPageUserId;
-  // console.log("myPageUserId", myPageUserId);
 
   useEffect(() => {
     dispatch(userActions.getBookMarkMiddleware(myPageUserId));
-  }, [myPageUserId]);
+  }, [dispatch, myPageUserId]);
   return (
     <Wrap>
       <GridWrap>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "../elements/Image";
@@ -82,9 +82,9 @@ const FlexGrid = styled.div`
   &:hover {
     ${(props) => (!props.isLoggedIn ? ` cursor:pointer;` : null)};
   }
-  &>div>input:hover {
+  & > div > input:hover {
     ${(props) => (!props.isLoggedIn ? ` cursor:pointer;` : null)};
-    }
+  }
 `;
 
 export default CommentWrite;

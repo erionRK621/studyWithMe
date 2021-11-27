@@ -1,7 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import dotenv from "dotenv";
 
 // Font Awesome-related
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,13 +9,10 @@ import { faTimes as fasTimes } from "@fortawesome/free-solid-svg-icons";
 import Image from "../elements/Image";
 
 const FollowerModal = ({ modalClose, followerList }) => {
-  const dispatch = useDispatch();
 
   console.log("followerList", followerList);
 
   const onCloseModal = (e) => {
-    // console.log("e.target: ", e.target);
-    // console.log("e.tarcurrentTarget", e.currentTarget);
     if (e.target === e.currentTarget) {
       modalClose();
     }
@@ -134,15 +129,15 @@ const UserName = styled.p`
   margin-left: 26px;
 `;
 
-const DeleteButton = styled.button`
-  width: 58px;
-  height: 27px;
-  color: white;
-  background: #ffc85c;
-  border: none;
-  border-radius: 4px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-`;
+// const DeleteButton = styled.button`
+//   width: 58px;
+//   height: 27px;
+//   color: white;
+//   background: #ffc85c;
+//   border: none;
+//   border-radius: 4px;
+//   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+//   cursor: pointer;
+// `;
 
 export default FollowerModal;

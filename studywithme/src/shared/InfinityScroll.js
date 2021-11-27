@@ -3,7 +3,6 @@ import _ from "lodash";
 
 const InfinityScroll = (props) => {
   const {
-    children,
     totalPage,
     callNext,
     loading,

@@ -12,7 +12,6 @@ dotenv.config();
 export const PasswordEdit = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  console.log(userInfo.email);
   const userPic = `${process.env.REACT_APP_IMAGE_URI}/${userInfo.avatarUrl}`;
   const userId = useSelector((state) => state.user.userInfo.userId);
 
@@ -42,13 +41,11 @@ export const PasswordEdit = () => {
       window.alert(
         "비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다."
       );
-      // console.log("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
       return;
     }
     // 비밀번호 일치 여부 확인
     else if (editPwdInputs.passwordNew !== editPwdInputs.confirmPasswordNew) {
       window.alert("비밀번호가 일치하지 않습니다.");
-      // console.log("비밀번호가 일치하지 않습니다.");
       return;
     } else if (
       userInfo.email.split("@")[0].match(editPwdInputs.passwordNew) !== null ||
@@ -67,7 +64,7 @@ export const PasswordEdit = () => {
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
-  }, []);
+  }, [dispatch,userId]);
 
   return (
     <React.Fragment>
@@ -126,10 +123,6 @@ const NowInfoDiv = styled.div`
   display: flex;
   margin: 50px 0px 30px 0;
   justify-content: center;
-`;
-const PicDIv = styled.div`
-  min-width: 60px;
-  width: 15%;
 `;
 
 const NicknameWrap = styled.div`

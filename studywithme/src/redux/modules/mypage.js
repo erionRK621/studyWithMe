@@ -77,7 +77,7 @@ const getMyPostMiddleware = (userId) => {
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
-        console.log(err, "에러");
+        console.error(err.response.data.message);
       });
   };
 };
@@ -91,7 +91,7 @@ const getBookMarkMiddleware = (userId) => {
         dispatch(getBookMark(res.data.bookmarkedPosts));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -104,8 +104,7 @@ const getFollowingsMiddleware = (userId) => {
         dispatch(getFollowings(res.data.followingIdList));
       })
       .catch((err) => {
-        console.log(err);
-        console.log(err.response.data);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -115,12 +114,10 @@ const getFollowersMiddleware = (userId) => {
     apis
       .getFollowersAxios(userId)
       .then((res) => {
-        console.log("getFollowersMiddleware", res);
         dispatch(getFollowers(res.data.followerIdList));
       })
       .catch((err) => {
-        console.log(err);
-        console.log(err.response.data);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -152,7 +149,7 @@ const myPostDeleteLikeMiddleware = (postId) => {
         dispatch(myPostDeleteLike(postId, isLiked));
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -184,7 +181,7 @@ const bookmarkedPostDeleteLikeMiddleware = (postId) => {
         dispatch(bookmarkedPostDeleteLike(postId, isLiked));
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };

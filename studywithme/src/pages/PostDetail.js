@@ -1,11 +1,7 @@
 // Packages
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2,
-} from "react-html-parser";
+import ReactHtmlParser from "react-html-parser";
 import moment from "moment";
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
@@ -109,7 +105,7 @@ const PostDetail = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(postActions.getDetailPostDB(postId));
-  }, []);
+  }, [dispatch, postId]);
 
   return (
     <div className="ck-content">
@@ -377,15 +373,6 @@ const ContentGrid = styled.div`
   }
   img {
     max-width: 750px;
-  }
-`;
-
-const Span = styled.span`
-  margin-left: ${(props) => props.marginLeft};
-  font-size: ${(props) => props.fontSize};
-  color: ${(props) => (props.color ? props.color : "black")};
-  &:hover {
-    ${(props) => (props.pointer ? "cursor:pointer;" : null)};
   }
 `;
 

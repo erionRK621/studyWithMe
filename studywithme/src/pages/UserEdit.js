@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
-import { history } from "../redux/configStore";
+import { useSelector} from "react-redux";
 import { ProfileEdit } from "../components/ProfileEdit";
 import { PasswordEdit } from "../components/PasswordEdit";
 

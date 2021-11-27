@@ -1,9 +1,6 @@
 import React, {
-  isValidElement,
   useState,
-  useRef,
   useCallback,
-  useEffect,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -13,7 +10,6 @@ import { history } from "../redux/configStore";
 
 import Input from "../elements/Input";
 import Grid from "../elements/Grid";
-import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
 // Cropper 관련
@@ -23,15 +19,13 @@ import Slider from "@material-ui/core/Slider";
 import Button from "@material-ui/core/Button";
 
 // icon
-import { ReactComponent as InputFile } from "../icon/inputFile.svg";
 import logoImg from "../icon/logo.png";
 import logologo from "../icon/logologo.png";
 
-import dotenv, { load } from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 const PostWrite = (props) => {
-  const inputFile = useRef();
   const dispatch = useDispatch();
 
   if (!localStorage.getItem("user")) {
@@ -65,10 +59,6 @@ const PostWrite = (props) => {
       : null
   );
 
-  // console.log("coverOriginal", coverOriginal);
-  // console.log("imageCoverForCrop", imageCoverForCrop);
-
-  // Cropper를 위한 states
   const [rotation, setRotation] = useState(0);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -292,25 +282,6 @@ const FlexGrid = styled.div`
   max-width: 750px;
   margin: ${(props) => (props.margin ? props.margin : "auto")};
   ${(props) => (props.direction ? `flex-direction:${props.direction};` : null)};
-`;
-
-const ImageCover = styled.div`
-  position: relative;
-  overflow: hidden;
-  height: calc(100vh - 350px);
-  background-color: #eeeeee;
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-`;
-const UploadButton = styled.label`
-  position: absolute;
-  left: calc(50% - 30px);
-  top: calc(50% - 30px);
-  opacity: 0.5;
-  &:hover {
-    opacity: 0.8;
-    cursor: pointer;
-  }
 `;
 
 const Navbar = styled.div`

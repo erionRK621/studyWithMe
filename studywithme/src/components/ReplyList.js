@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import { actionCreators as commentActions } from "../redux/modules/comment";
@@ -39,7 +39,7 @@ const ReplyList = (props) => {
     dispatch(
       commentActions.getCommentReplyMiddleware(postId, commentId, currentPage)
     );
-  }, []);
+  }, [dispatch]);
   return (
     <React.Fragment>
       {replyList?.map((r) => {

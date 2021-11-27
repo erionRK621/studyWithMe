@@ -74,7 +74,7 @@ const CommentList = (props) => {
   };
   useEffect(() => {
     dispatch(commentActions.getCommentMiddleware(postId, currentPage));
-  }, [currentPage]);
+  }, [dispatch, postId, currentPage]);
 
   return (
     <React.Fragment>
@@ -85,11 +85,11 @@ const CommentList = (props) => {
               <FlexGrid justify="space-between" align="center" margin="5px 0px">
                 <FlexGrid align="center">
                   <FlexGrid align="center" minWidth="130px">
-                  <FlexGrid align="center" minWidth="44px">
-                    <Image
-                      size="36"
-                      src={`${process.env.REACT_APP_IMAGE_URI}/${c?.avatarUrl}`}
-                    />
+                    <FlexGrid align="center" minWidth="44px">
+                      <Image
+                        size="36"
+                        src={`${process.env.REACT_APP_IMAGE_URI}/${c?.avatarUrl}`}
+                      />
                     </FlexGrid>
                     <NicknameWrap>
                       <Text
@@ -108,15 +108,13 @@ const CommentList = (props) => {
                   </FlexGrid>
                   <FlexGrid direction="column" maxWidth="500px">
                     <Text>{c.textContent}</Text>
-                    
                   </FlexGrid>
-                  
                 </FlexGrid>
-                
+
                 {c.userId === userId ? (
                   <Trash
                     className="iconButton"
-                    style={{ width: "20px", height: "20px", minWidth:"20px"}}
+                    style={{ width: "20px", height: "20px", minWidth: "20px" }}
                     onClick={() => {
                       deleteComment(c.commentId);
                     }}
@@ -140,32 +138,32 @@ const CommentList = (props) => {
                 )}
               </FlexGrid>
               <FlexGrid marginTop="5px">
-                      <CommentLikeCnt />
-                      <Text margin="0px 5px" color="#aaaaaa">
-                        {c.commentLikeCnt}
-                      </Text>
-                      <Text
-                        margin="0px 10px"
-                        color="#aaaaaa"
-                        size="13px"
-                        pointer
-                        _onClick={() => {
-                          openCommentWrite(c.writeState, c.commentId);
-                        }}
-                      >
-                        {c.writeState ? "답글 취소" : "답글"}
-                      </Text>
-                      <Text
-                        color="#aaaaaa"
-                        size="13px"
-                        pointer
-                        _onClick={() => {
-                          openCommentReplyList(c.replyListState, c.commentId);
-                        }}
-                      >
-                        {c.replyListState? "답글 숨기기" : "답글 보기"}
-                      </Text>
-                    </FlexGrid>
+                <CommentLikeCnt />
+                <Text margin="0px 5px" color="#aaaaaa">
+                  {c.commentLikeCnt}
+                </Text>
+                <Text
+                  margin="0px 10px"
+                  color="#aaaaaa"
+                  size="13px"
+                  pointer
+                  _onClick={() => {
+                    openCommentWrite(c.writeState, c.commentId);
+                  }}
+                >
+                  {c.writeState ? "답글 취소" : "답글"}
+                </Text>
+                <Text
+                  color="#aaaaaa"
+                  size="13px"
+                  pointer
+                  _onClick={() => {
+                    openCommentReplyList(c.replyListState, c.commentId);
+                  }}
+                >
+                  {c.replyListState ? "답글 숨기기" : "답글 보기"}
+                </Text>
+              </FlexGrid>
               {c.writeState ? (
                 <FlexGrid
                   align="center"
@@ -173,10 +171,10 @@ const CommentList = (props) => {
                   justify="space-between"
                 >
                   <FlexGrid align="center" minWidth="44px">
-                  <Image
-                    size="36"
-                    src={`${process.env.REACT_APP_IMAGE_URI}/${props?.avatarUrl}`}
-                  />
+                    <Image
+                      size="36"
+                      src={`${process.env.REACT_APP_IMAGE_URI}/${props?.avatarUrl}`}
+                    />
                   </FlexGrid>
                   <Input
                     borderBottom
@@ -198,12 +196,12 @@ const CommentList = (props) => {
                 </FlexGrid>
               ) : null}
               {c.replyListState ? (
-                  <ReplyList
-                    postId={postId}
-                    commentId={c.commentId}
-                    replyList={c.childComments}
-                    currentPage = {c.currentPage}
-                  />
+                <ReplyList
+                  postId={postId}
+                  commentId={c.commentId}
+                  replyList={c.childComments}
+                  currentPage={c.currentPage}
+                />
               ) : null}
             </FlexGrid>
           );
@@ -235,14 +233,13 @@ const FlexGrid = styled.div`
 
 const NicknameWrap = styled.div`
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   margin: 0px 5px;
   min-width: 138px;
   @media screen and (max-width: 768px) {
-    max-width:76px;
+    max-width: 76px;
     min-width: 10px;
   }
 `;
-
 
 export default CommentList;

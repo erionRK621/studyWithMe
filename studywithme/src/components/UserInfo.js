@@ -7,14 +7,12 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
-import Image from "../elements/Image";
 import FollowerModal from "./FollowerModal";
 import FollowModal from "./FollowModal";
 
 dotenv.config();
 
 const UserInfo = (props) => {
-  // console.log("props", props);
 
   const dispatch = useDispatch();
 
@@ -48,7 +46,7 @@ const UserInfo = (props) => {
     dispatch(userActions.getUserDB(myPageUserId));
     dispatch(myActions.getFollowingsMiddleware(myPageUserId));
     dispatch(myActions.getFollowersMiddleware(myPageUserId));
-  }, [myPageUserId]);
+  }, [dispatch,myPageUserId]);
 
   return (
     <React.Fragment>
@@ -172,11 +170,6 @@ const UserProfileWrap = styled.section`
     height: 50%;
     margin: auto 20px;
   }
-`;
-
-const UserNicknameWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
 `;
 
 const UserNickname = styled.h2`

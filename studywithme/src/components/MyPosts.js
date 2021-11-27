@@ -5,20 +5,16 @@ import { actionCreators as userActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
 import CardPost from "../components/CardPost";
-import { GiConsoleController } from "react-icons/gi";
 
 const MyPosts = (props) => {
   const dispatch = useDispatch();
 
   const myPostList = useSelector((state) => state.mypage.myPost);
-  // console.log("myPostList", myPostList);
-
   const myPageUserId = props.myPageUserId;
-  // console.log("myPageUserId", myPageUserId);
 
   useEffect(() => {
     dispatch(userActions.getMyPostMiddleware(myPageUserId));
-  }, [myPageUserId]);
+  }, [dispatch, myPageUserId]);
   return (
     <Wrap>
       <GridWrap>
