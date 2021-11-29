@@ -23,6 +23,7 @@ const Header = (props) => {
   // const userId = useSelector((state) => state.user.user.userId);
   const [menuState, setMenuState] = useState(false);
 
+  //현재 위치해있는 페이지를 표시해주기위해
   const [menuColorStateMain, setMenuColorStateMain] = useState(true);
   const [menuColorStateList, setMenuColorStateList] = useState(false);
   const [menuColorStateMyPage, setMenuColorStateMyPage] = useState(false);
@@ -198,7 +199,7 @@ const Header = (props) => {
               history.push("/signup");
             }}
           >
-            <img src={signUpImg} alt=""/>
+            <img src={signUpImg} alt="" />
             회원가입
           </List>
 
