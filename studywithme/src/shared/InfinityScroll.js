@@ -9,7 +9,6 @@ const InfinityScroll = (props) => {
     currentPage,
     interestVal,
     spaceVal,
-    studyMateVal,
     keyword,
   } = props;
   const _handleScroll = _.throttle(() => {
@@ -19,7 +18,7 @@ const InfinityScroll = (props) => {
       (document.documentElement && document.documentElement.scrollTop) ||
       document.body.scrollTop;
     if (scrollHeight - innerHeight - scrollTop < 200) {
-      callNext(currentPage, interestVal, spaceVal, studyMateVal, keyword);
+      callNext(currentPage, interestVal, spaceVal, keyword);
     }
   }, 300);
 
@@ -27,7 +26,6 @@ const InfinityScroll = (props) => {
     currentPage,
     interestVal,
     spaceVal,
-    studyMateVal,
     keyword,
   ]);
   React.useEffect(() => {
