@@ -117,6 +117,7 @@ const PostWrite = (props) => {
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
     confirmCroppedImage();
+    console.log("onCropComplete 실행");
   };
 
   let formData = new FormData();
@@ -138,7 +139,7 @@ const PostWrite = (props) => {
       console.log("coverCropped 없음");
       console.log("coverCropped 변경 전", coverCropped, typeof (coverCropped));
       // setCoverCropped(coverOriginal);
-      setCoverCropped("coverCropped 변경!!!");
+      setCoverCropped(coverOriginal);
       console.log("coverCropped 변경 후", coverCropped, typeof (coverCropped));
     }
 
