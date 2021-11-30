@@ -91,7 +91,7 @@ const PostWrite = (props) => {
       });
   };
 
-  const confirmCroppedImage = useCallback(async () => {
+  const confirmCroppedImage = useCallback(async (croppedAreaPixels) => {
     try {
       const croppedImage = await getCroppedImg(
         imageCoverForCrop,
@@ -108,13 +108,13 @@ const PostWrite = (props) => {
         setCoverCropped(file);
       });
     } catch (e) {
-      console.error(e);
+      console.log(e);
     }
-  }, [croppedAreaPixels, rotation]);
+  }, [ rotation, imageCoverForCrop]);
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
-    confirmCroppedImage();
+    confirmCroppedImage(croppedAreaPixels);
     console.log("onCropComplete 실행");
   };
 
