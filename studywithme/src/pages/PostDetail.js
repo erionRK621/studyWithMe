@@ -23,7 +23,6 @@ import { ReactComponent as Trash } from "../icon/trash.svg";
 
 import { ReactComponent as Interest } from "../icon/interest.svg";
 import { ReactComponent as Space } from "../icon/space.svg";
-import { ReactComponent as StudyMate } from "../icon/studyMate.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -191,13 +190,6 @@ const PostDetail = (props) => {
             <TypeWrap>
               <TypeTitle>공간</TypeTitle>
               <TypeElement size="20px">{post?.categorySpace}</TypeElement>
-            </TypeWrap>
-          </TypeGrid>
-          <TypeGrid>
-            <StudyMate />
-            <TypeWrap>
-              <TypeTitle>유형</TypeTitle>
-              <TypeElement size="20px">{post?.categoryStudyMate}</TypeElement>
             </TypeWrap>
           </TypeGrid>
         </TypeAreaWrap>
