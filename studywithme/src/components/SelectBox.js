@@ -37,7 +37,7 @@ const SelectBox = (props) => {
       { option: "엔지니어링", value: "엔지니어링" },
       { option: "엔터테인먼트", value: "엔터테인먼트" },
       { option: "의료/바이오", value: "의료/바이오" },
-      { option: "자기개발", value: "자기개발" },
+      { option: "자기계발", value: "자기계발" },
     ];
   }
   return (
