@@ -42,7 +42,7 @@ const PostWrite = (props) => {
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
   const [spaceVal, setSpaceVal] = useState(_editMode ? post.categorySpace : "");
-  
+
   const [interestVal, setInterestVal] = useState(
     _editMode ? post.categoryInterest : ""
   );
