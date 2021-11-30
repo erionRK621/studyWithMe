@@ -102,6 +102,11 @@ const PostWrite = (props) => {
         rotation
       );
       // console.log("done", { croppedImage });
+      // 만약 사용자가 크롭하지 않을 경우? 원본 이미지 사용
+      if (croppedImage === null) {
+        // base64 형식의 Cropped Image 상태 저장
+        setCroppedImage(coverOriginal);
+      }
       // base64 형식의 Cropped Image 상태 저장
       setCroppedImage(croppedImage);
       // 파일 객체로 변환
@@ -124,7 +129,7 @@ const PostWrite = (props) => {
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
-    if(title.length>=25) {
+    if (title.length >= 25) {
       window.alert("제목이 24자가 넘습니다.");
       return;
     }
@@ -136,6 +141,14 @@ const PostWrite = (props) => {
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
+    console.log("coverOriginal", coverOriginal);
+    console.log("coverCropped", coverCropped);
+    console.log("title", title);
+    console.log("categorySpace", spaceVal);
+    console.log("categoryStudyMate", studyMateVal);
+    console.log("categoryInterest", interestVal);
+    console.log("contentEditor", content);
+
     if (spaceVal === "" || studyMateVal === "" || interestVal === "") {
       window.alert("카테고리를 지정해주세요");
       return;
@@ -144,7 +157,7 @@ const PostWrite = (props) => {
   };
 
   const editing = () => {
-    if(title.length>=25) {
+    if (title.length >= 25) {
       window.alert("제목이 24자가 넘습니다.");
       return;
     }
