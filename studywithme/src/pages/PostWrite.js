@@ -42,9 +42,7 @@ const PostWrite = (props) => {
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
   const [spaceVal, setSpaceVal] = useState(_editMode ? post.categorySpace : "");
-  const [studyMateVal, setStudyMateVal] = useState(
-    _editMode ? post.categoryStudyMate : ""
-  );
+  
   const [interestVal, setInterestVal] = useState(
     _editMode ? post.categoryInterest : ""
   );
@@ -124,7 +122,7 @@ const PostWrite = (props) => {
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
-    if (spaceVal === "" || studyMateVal === "" || interestVal === "") {
+    if (spaceVal === "" || interestVal === "") {
       window.alert("카테고리를 지정해주세요");
       return;
     }
@@ -147,7 +145,6 @@ const PostWrite = (props) => {
     formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
-    formData.append("categoryStudyMate", studyMateVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
@@ -155,7 +152,6 @@ const PostWrite = (props) => {
     console.log("coverCropped", coverCropped);
     console.log("title", title);
     console.log("categorySpace", spaceVal);
-    console.log("categoryStudyMate", studyMateVal);
     console.log("categoryInterest", interestVal);
     console.log("contentEditor", content);
 
@@ -173,7 +169,6 @@ const PostWrite = (props) => {
     formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
-    formData.append("categoryStudyMate", studyMateVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
@@ -186,9 +181,6 @@ const PostWrite = (props) => {
 
   const space = (e) => {
     setSpaceVal(e.target.value);
-  };
-  const studyMate = (e) => {
-    setStudyMateVal(e.target.value);
   };
   const interest = (e) => {
     setInterestVal(e.target.value);
@@ -281,11 +273,6 @@ const PostWrite = (props) => {
         />
         <FlexGrid margin="20px 0px">
           <SelectBox category="space" _onChange={space} _value={spaceVal} />
-          <SelectBox
-            category="studyMate"
-            _onChange={studyMate}
-            _value={studyMateVal}
-          />
           <SelectBox
             category="interest"
             _onChange={interest}
