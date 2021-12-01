@@ -56,9 +56,8 @@ const FollowSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <Star />
-          내 친구들의 데스크테리어
-          <Star />
+          {/* <Star /> */}내 친구들의 데스크테리어
+          {/* <Star /> */}
         </SlideUpLine>
         {post_list?.length === 0 ? null : (
           <More

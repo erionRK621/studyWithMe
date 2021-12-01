@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { KAKAO_AUTH_URL } from "../shared/kakaoOAuth";
 
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 import { actionCreators as userActions } from "../redux/modules/user";
 
@@ -29,9 +30,9 @@ const Login = () => {
 
   const onClickLogin = () => {
     if (loginInputs.email === "") {
-      window.alert("이메일을 입력해주세요");
+      Swal.fire("이메일을 입력해주세요", "", "error");
     } else if (loginInputs.password === "") {
-      window.alert("비밀번호를 입력해주세요");
+      Swal.fire("비밀번호를 입력해주세요", "", "error");
     } else {
       dispatch(userActions.loginMiddleware(loginInputs));
     }
@@ -39,10 +40,10 @@ const Login = () => {
 
   const onEnterEmailInput = () => {
     if (email === "") {
-      window.alert("이메일을 입력해주세요.");
+      Swal.fire("이메일을 입력해주세요", "", "error");
       return;
     } else if (password === "") {
-      window.alert("비밀번호를 입력해주세요.");
+      Swal.fire("비밀번호를 입력해주세요", "", "error");
       return;
     }
     // 입력된 이메일, 비밀번호 지우기
@@ -53,10 +54,10 @@ const Login = () => {
 
   const onEnterPasswordInput = () => {
     if (email === "") {
-      window.alert("이메일을 입력해주세요.");
+      Swal.fire("이메일을 입력해주세요", "", "error");
       return;
     } else if (password === "") {
-      window.alert("비밀번호를 입력해주세요.");
+      Swal.fire("비밀번호를 입력해주세요", "", "error");
       return;
     }
     // 입력된 이메일, 비밀번호 지우기

@@ -7,22 +7,29 @@ const Footer = () => {
     <FooterWrap>
       <Wrap>
         <FooterBtnList>
-          <li>
-            <Title>Front-end & Design</Title>
-            <p>권영준</p>
-            <p>김준형</p>
-            <p>김한준</p>
-          </li>
-          <li>
-            <Title>Back-end</Title>
-            <p>서연제</p>
-            <p>장재원</p>
-            <p>홍성현</p>
-          </li>
-          <li></li>
+          <MenuList>
+            <Title>Service</Title>
+            <p>서비스 소개</p>
+            <p>서비스 이용 방법</p>
+          </MenuList>
+          {/* <li>
+            <Title>Support</Title>
+            <p>공지사항</p>
+            <p>문의하기</p>
+          </li> */}
+          <MenuList>
+            <Title>Team</Title>
+            <p>프론트엔드</p>
+            <p>백엔드</p>
+          </MenuList>
+
           <li>
             <ImgContents>
-              <img src={logo} style={{ maxWidth: "100%" }} alt=""/>
+              <img src={logo} style={{ maxWidth: "100%" }} alt="" />
+
+              <CopyRight>
+                © 2021 Project Letskkirri. All rights reserved.
+              </CopyRight>
             </ImgContents>
           </li>
         </FooterBtnList>
@@ -43,7 +50,14 @@ const FooterWrap = styled.div`
 `;
 const Title = styled.p`
   font-weight: bold;
-  margin-bottom: 4px;
+  font-size: 20px;
+  margin-top: 24px;
+  margin-bottom: 8px;
+  color: black;
+  @media screen and (max-width: 768px) {
+    margin-top: 14px;
+    font-size: 14px;
+  }
 `;
 
 const Wrap = styled.div`
@@ -61,7 +75,7 @@ const Wrap = styled.div`
 
 const FooterBtnList = styled.ul`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 2fr;
   /* flex-direction:row;
     flex-wrap: wrap;
     align-items:flex-start; */
@@ -76,6 +90,19 @@ const FooterBtnList = styled.ul`
     text-align: center;
   }
 `;
+const MenuList = styled.li`
+  margin: auto;
+`;
+
+const CopyRight = styled.div`
+  font-size: 8px;
+  display: flex;
+  justify-content: space-around;
+  @media screen and (max-width: 768px) {
+    font-size: 4px;
+  }
+`;
+
 const ImgContents = styled.div`
   position: absolute;
   z-index: 2;

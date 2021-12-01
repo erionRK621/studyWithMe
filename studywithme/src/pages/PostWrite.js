@@ -1,12 +1,10 @@
-import React, {
-  useState,
-  useCallback,
-} from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
+import Swal from "sweetalert2";
 
 import Input from "../elements/Input";
 import Grid from "../elements/Grid";
@@ -29,7 +27,7 @@ const PostWrite = (props) => {
   const dispatch = useDispatch();
 
   if (!localStorage.getItem("user")) {
-    window.alert("로그인을 먼저 해주세요");
+    Swal.fire("로그인을 먼저 해주세요", "", "error");
     history.push("/login");
   }
 
@@ -42,7 +40,7 @@ const PostWrite = (props) => {
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
   const [spaceVal, setSpaceVal] = useState(_editMode ? post.categorySpace : "");
-  
+
   const [interestVal, setInterestVal] = useState(
     _editMode ? post.categoryInterest : ""
   );
@@ -91,26 +89,29 @@ const PostWrite = (props) => {
       });
   };
 
-  const confirmCroppedImage = useCallback(async (croppedAreaPixels) => {
-    try {
-      const croppedImage = await getCroppedImg(
-        imageCoverForCrop,
-        croppedAreaPixels,
-        rotation
-      );
-      // console.log("done", { croppedImage });
-      // base64 형식의 Cropped Image 상태 저장
-      setCroppedImage(croppedImage);
-      // 파일 객체로 변환
-      urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
-        file
-      ) {
-        setCoverCropped(file);
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  }, [ rotation, imageCoverForCrop]);
+  const confirmCroppedImage = useCallback(
+    async (croppedAreaPixels) => {
+      try {
+        const croppedImage = await getCroppedImg(
+          imageCoverForCrop,
+          croppedAreaPixels,
+          rotation
+        );
+        // console.log("done", { croppedImage });
+        // base64 형식의 Cropped Image 상태 저장
+        setCroppedImage(croppedImage);
+        // 파일 객체로 변환
+        urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
+          file
+        ) {
+          setCoverCropped(file);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [rotation, imageCoverForCrop]
+  );
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -123,22 +124,22 @@ const PostWrite = (props) => {
   // 작성버튼 onClick 이벤트
   const posting = () => {
     if (spaceVal === "" || interestVal === "") {
-      window.alert("카테고리를 지정해주세요");
+      Swal.fire("카테고리를 지정해주세요", "", "error");
       return;
     }
 
     if (title.length >= 25) {
-      window.alert("제목이 24자가 넘습니다.");
+      Swal.fire("제목이 24자가 넘습니다.", "", "error");
       return;
     }
 
     // 만약 사용자가 크롭하지 않을 경우? 원본 커버 이미지 사용
     if (coverCropped === null) {
       console.log("coverCropped 없음");
-      console.log("coverCropped 변경 전", coverCropped, typeof (coverCropped));
+      console.log("coverCropped 변경 전", coverCropped, typeof coverCropped);
       // setCoverCropped(coverOriginal);
       setCoverCropped(coverOriginal);
-      console.log("coverCropped 변경 후", coverCropped, typeof (coverCropped));
+      console.log("coverCropped 변경 후", coverCropped, typeof coverCropped);
     }
 
     formData.append("coverOriginal", coverOriginal);
@@ -158,11 +159,9 @@ const PostWrite = (props) => {
     dispatch(postActions.addPostDB(formData));
   };
 
-
-
   const editing = () => {
     if (title.length >= 25) {
-      window.alert("제목이 24자가 넘습니다.");
+      Swal.fire("제목이 24자가 넘습니다.", "", "error");
       return;
     }
     formData.append("coverOriginal", coverOriginal);

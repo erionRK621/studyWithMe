@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ReactHtmlParser from "react-html-parser";
 import moment from "moment";
+import Swal from "sweetalert2";
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
 import { history } from "../redux/configStore";
@@ -50,14 +51,14 @@ const PostDetail = (props) => {
 
   const onClickFollow = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.followUserMiddleware(postUserId));
   };
   const onClickUnfollow = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.unfollowUserMiddleware(postUserId));
@@ -65,7 +66,7 @@ const PostDetail = (props) => {
 
   const onClickAddLike = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.addLikeMiddleware(postId));
@@ -73,7 +74,7 @@ const PostDetail = (props) => {
 
   const onClickDeleteLike = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.deleteLikeMiddleware(postId));
@@ -81,7 +82,7 @@ const PostDetail = (props) => {
 
   const onClickAddBookmark = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.addBookmarkMiddleware(postId));
@@ -89,7 +90,7 @@ const PostDetail = (props) => {
 
   const onClickDeleteBookmark = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.deleteBookmarkMiddleware(postId));
