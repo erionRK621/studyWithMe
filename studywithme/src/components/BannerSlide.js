@@ -55,12 +55,11 @@ const BannerSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <StyledSlider {...settings}>
+          <Image shape="rectangle" paddingTop="40%" src={banner6}></Image>
           <Image shape="rectangle" paddingTop="40%" src={banner1}></Image>
           <Image shape="rectangle" paddingTop="40%" src={banner4}></Image>
           <Image shape="rectangle" paddingTop="40%" src={banner2}></Image>
           <Image shape="rectangle" paddingTop="40%" src={banner3}></Image>
-          <Image shape="rectangle" paddingTop="40%" src={banner6}></Image>
-          <Image shape="rectangle" paddingTop="40%" src={banner5}></Image>
         </StyledSlider>
       </Wrap>
     </React.Fragment>
