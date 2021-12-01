@@ -110,7 +110,7 @@ const PostWrite = (props) => {
     } catch (e) {
       console.log(e);
     }
-  }, [ rotation, imageCoverForCrop]);
+  }, [rotation, imageCoverForCrop]);
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
@@ -157,8 +157,6 @@ const PostWrite = (props) => {
 
     dispatch(postActions.addPostDB(formData));
   };
-
-
 
   const editing = () => {
     if (title.length >= 25) {
