@@ -12,6 +12,7 @@ const Image = (props) => {
     paddingTop,
     className,
     minWidth,
+    maxWidth,
   } = props;
 
   const styles = {
@@ -19,7 +20,6 @@ const Image = (props) => {
     size: size,
     borderRadius: borderRadius,
     paddingTop: paddingTop,
-    minWidth: minWidth,
   };
 
   if (shape === "circle") {
@@ -38,7 +38,7 @@ const Image = (props) => {
 
   if (shape === "rectangle") {
     return (
-      <AspectOutter className={className} borderRadius={borderRadius}>
+      <AspectOutter className={className} borderRadius={borderRadius} maxWidth={maxWidth}>
         <AspectInner {...styles} onClick={_onClick}></AspectInner>
       </AspectOutter>
     );
@@ -72,6 +72,8 @@ const ImageDefault = styled.div`
 `;
 
 const AspectOutter = styled.div`
+${(props)=> props.maxWidth? `max-width:${props.maxWidth};`:null}
+margin:auto;
   width: auto;
   min-width: 100px;
   ${(props) =>

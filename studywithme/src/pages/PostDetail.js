@@ -108,7 +108,13 @@ const PostDetail = (props) => {
 
   return (
     <div className="ck-content">
-      <ImageCover src={imageCover} />
+      {/* <ImageCover src={imageCover} /> */}
+      <Image
+        shape="rectangle"
+        src={imageCover}
+        paddingTop="50%"
+        maxWidth="1133px"
+      ></Image>
       <Wrap direction="column" margin="40px auto" padding="0px 24px">
         <TitleLineWrap>
           <H1 size="32px">{decodeURIComponent(post?.title)}</H1>
@@ -133,7 +139,6 @@ const PostDetail = (props) => {
                 src={`${process.env.REACT_APP_IMAGE_URI}/${post.User?.avatarUrl}`}
               />
             </PicDiv>
-
             <NickTimeWrap>
               <UserNick
                 onClick={() => {
@@ -358,7 +363,7 @@ const FlexGrid = styled.div`
 `;
 
 const ContentGrid = styled.div`
-  margin: 44px auto 20px auto;
+  margin: 44px 0 20px 0;
   min-height: 300px;
   p {
     word-break: break-all;
