@@ -3,6 +3,7 @@ import { produce } from "immer";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { apis } from "../../lib/axios";
+import Swal from "sweetalert2";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -67,7 +68,7 @@ const editProfileMiddleware = (userId, formData) => {
     apis
       .editProfileAxios(formData)
       .then((res) => {
-        window.alert(res.data.message);
+        Swal.fire(res.data.message, "", "success");
         history.push(`/mypage/${userId}`);
       })
       .catch((err) => {
@@ -82,10 +83,10 @@ const editPwdMiddleware = (editPwdInputs) => {
     apis
       .editUserPwdAxios(editPwdInputs)
       .then((res) => {
-        window.alert(res.data.message);
+        Swal.fire(res.data.message, "", "success");
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        Swal.fire(err.response.data.message, "", "error");
       });
   };
 };
@@ -97,11 +98,13 @@ const signUpMiddleware = (user) => {
     apis
       .signUpAxios(user)
       .then((response) => {
-        window.alert(response.data.message);
+        Swal.fire(response.data.message, "", "success");
+        // window.alert(response.data.message);
         history.push("/login");
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        Swal.fire(err.response.data.message, "", "error");
+        // window.alert(err.response.data.message);
       });
   };
 };
@@ -129,7 +132,8 @@ const loginMiddleware = (user) => {
         window.location.href = "/";
       })
       .catch((err) => {
-        window.alert(err.response.data.message);
+        // window.alert(err.response.data.message);
+        Swal.fire(err.response.data.message, "", "error");
       });
   };
 };
@@ -139,10 +143,12 @@ const checkEmailMiddleware = (emailCheckInput) => {
     apis
       .checkEmailAxios(emailCheckInput)
       .then((response) => {
-        window.alert(response.data.message);
+        // window.alert(response.data.message);
+        Swal.fire(response.data.message, "", "success");
       })
       .catch((error) => {
-        window.alert(error.response.data.message);
+        // window.alert(error.response.data.message);
+        Swal.fire(error.response.data.message, "", "error");
       });
   };
 };
@@ -152,10 +158,12 @@ const checkNicknameMiddleware = (nicknameCheckInput) => {
     apis
       .checkNicknameAxios(nicknameCheckInput)
       .then((response) => {
-        window.alert(response.data.message);
+        // window.alert(response.data.message);
+        Swal.fire(response.data.message, "", "success");
       })
       .catch((error) => {
-        window.alert(error.response.data.message);
+        // window.alert(error.response.data.message);
+        Swal.fire(error.response.data.message, "", "error");
       });
   };
 };
@@ -184,8 +192,7 @@ const kakaoLoginMiddleware = (code) => {
         window.location.href = "/";
       })
       .catch((error) => {
-        window.alert("로그인에 실패했습니다.");
-        console.log(error);
+        Swal.fire("로그인에 실패했습니다.", "", "error");
         history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
       });
   };
@@ -257,12 +264,14 @@ export default handleActions(
       produce(state, (draft) => {
         // checkEmailMsg 새로운 상태로 업데이트
       }),
-    [FOLLOW_USER]: (state, action) => produce(state, (draft) => {
-      draft.isFollowing = action.payload.isFollowing;
-    }),
-    [UNFOLLOW_USER]: (state, action) => produce(state, (draft) => {
-      draft.isFollowing = action.payload.isFollowing;
-    }),
+    [FOLLOW_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isFollowing = action.payload.isFollowing;
+      }),
+    [UNFOLLOW_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isFollowing = action.payload.isFollowing;
+      }),
   },
   initialState
 );

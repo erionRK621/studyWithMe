@@ -54,9 +54,9 @@ const RandomSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <Star />
+          {/* <Star /> */}
           새로운 게시물
-          <Star />
+          {/* <Star /> */}
         </SlideUpLine>
         {post_list?.length === 0 ? null : (
           <More

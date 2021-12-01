@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 import Input from "../elements/Input";
 import Image from "../elements/Image";
@@ -63,7 +64,7 @@ export const ProfileEdit = () => {
 
   const onClickNicknameCheck = () => {
     if (nicknameCheckInput.nickname === "") {
-      window.alert("닉네임을 입력해주세요");
+      Swal.fire("닉네임을 입력해주세요", "", "error");
     } else {
       dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
     }
@@ -71,7 +72,7 @@ export const ProfileEdit = () => {
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
-  }, [dispatch,userId]);
+  }, [dispatch, userId]);
   return (
     <React.Fragment>
       <Wrap>

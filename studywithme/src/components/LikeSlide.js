@@ -55,9 +55,9 @@ const LikeSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <Fire />
+          {/* <Fire /> */}
           추천 데스크테리어
-          <Fire />
+          {/* <Fire /> */}
         </SlideUpLine>
         {post_list?.length === 0 ? null : (
           <More

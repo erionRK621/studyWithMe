@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { actionCreators as commentActions } from "../redux/modules/comment";
 import { history } from "../redux/configStore";
+import Swal from "sweetalert2";
 //icon
 import { ReactComponent as Trash } from "../icon/trash.svg";
 import { ReactComponent as CommentLikeOff } from "../icon/commentLikeOff.svg";
@@ -31,14 +32,14 @@ const CommentList = (props) => {
   };
   const deleteLike = (postId, commentId) => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(commentActions.deleteCommentLikeMiddleWare(postId, commentId));
   };
   const addLike = (postId, commentId) => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(commentActions.addCommentLikeMiddleWare(postId, commentId));

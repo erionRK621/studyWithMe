@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import styled from "styled-components";
 import { regExPasswordTest } from "../shared/regEx";
+import Swal from "sweetalert2";
 
 import Input from "../elements/Input";
 import Image from "../elements/Image";
@@ -38,20 +39,22 @@ export const PasswordEdit = () => {
   const editPwd = () => {
     // 비밀번호 규칙 확인
     if (!regExPasswordTest(editPwdInputs.passwordNew)) {
-      window.alert(
-        "비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다."
+      Swal.fire(
+        "비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다.",
+        "",
+        "error"
       );
       return;
     }
     // 비밀번호 일치 여부 확인
     else if (editPwdInputs.passwordNew !== editPwdInputs.confirmPasswordNew) {
-      window.alert("비밀번호가 일치하지 않습니다.");
+      Swal.fire("비밀번호가 일치하지 않습니다.", "", "error");
       return;
     } else if (
       userInfo.email.split("@")[0].match(editPwdInputs.passwordNew) !== null ||
       editPwdInputs.passwordNew.match(userInfo.email.split("@")[0]) !== null
     ) {
-      window.alert("이메일이 포함된 비밀번호는 사용할 수 없습니다.");
+      Swal.fire("이메일이 포함된 비밀번호는 사용할 수 없습니다.", "", "error");
       return;
     } else {
       dispatch(userActions.editPwdMiddleware(editPwdInputs));
@@ -64,7 +67,7 @@ export const PasswordEdit = () => {
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
-  }, [dispatch,userId]);
+  }, [dispatch, userId]);
 
   return (
     <React.Fragment>
