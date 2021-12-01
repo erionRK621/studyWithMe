@@ -43,7 +43,7 @@ const FooterWrap = styled.div`
   margin: auto;
   height: 180px;
   color: #707070;
-  background-color: #ececec;
+  background-color: #f9f9f9;
   @media screen and (max-width: 768px) {
     height: 150px;
   }
@@ -62,7 +62,7 @@ const Title = styled.p`
 
 const Wrap = styled.div`
   max-width: 1134px;
-  background-color: #ececec;
+  background-color: #f9f9f9;
   padding: 0px 40px;
   margin: auto;
   @media screen and (max-width: 768px) {
