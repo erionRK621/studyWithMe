@@ -7,31 +7,24 @@ const Footer = () => {
     <FooterWrap>
       <Wrap>
         <FooterBtnList>
+          <li>
+            <img src={logo} style={{ maxWidth: "100%" }} />
+
+            <CopyRight>
+              © 2021 Project Letskkirri. All rights reserved.
+            </CopyRight>
+          </li>
           <MenuList>
             <Title>Service</Title>
             <p>서비스 소개</p>
             <p>서비스 이용 방법</p>
           </MenuList>
-          {/* <li>
-            <Title>Support</Title>
-            <p>공지사항</p>
-            <p>문의하기</p>
-          </li> */}
+
           <MenuList>
             <Title>Team</Title>
             <p>프론트엔드</p>
             <p>백엔드</p>
           </MenuList>
-
-          <li>
-            <ImgContents>
-              <img src={logo} style={{ maxWidth: "100%" }} alt="" />
-
-              <CopyRight>
-                © 2021 Project Letskkirri. All rights reserved.
-              </CopyRight>
-            </ImgContents>
-          </li>
         </FooterBtnList>
       </Wrap>
     </FooterWrap>
@@ -75,19 +68,24 @@ const Wrap = styled.div`
 
 const FooterBtnList = styled.ul`
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: 1.5fr 1fr 1fr;
   /* flex-direction:row;
     flex-wrap: wrap;
     align-items:flex-start; */
   margin: 30px auto 0 auto;
   padding: 50px auto;
   list-style: none;
+
   & li {
+    min-width: 100px;
     display: block;
     list-style-type: none;
     box-sizing: border-box;
     margin: 30px 0 16px 0;
-    text-align: center;
+    text-align: start;
+  }
+  & li:nth-child(1) {
+    margin-right: 20px;
   }
 `;
 const MenuList = styled.li`
@@ -97,19 +95,9 @@ const MenuList = styled.li`
 const CopyRight = styled.div`
   font-size: 8px;
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
   @media screen and (max-width: 768px) {
     font-size: 4px;
-  }
-`;
-
-const ImgContents = styled.div`
-  position: absolute;
-  z-index: 2;
-  right: 10%;
-  @media screen and (max-width: 768px) {
-    width: 100px;
-    right: 10%;
   }
 `;
 

@@ -4,7 +4,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled, { css } from "styled-components";
 
-import bgImg from "../icon/Component.png";
+import bigImg from "../icon/banner5.png";
+import smallImg from "../icon/none.png";
 
 const NothingSlide = (props) => {
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
@@ -43,16 +44,11 @@ const NothingSlide = (props) => {
   return (
     <React.Fragment>
       <Wrap>
-        <ImageWrap
-          style={{
-            backgroundImage: `url(${bgImg})`,
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        >
+        <ImageWrap bigImg={bigImg} smallImg={smallImg}>
           <InnerDiv>
             <div>아직 팔로우한 유저가 없어요!</div>
-            <div>나와 비슷한 관심사를 가지고 공부하는 유저들을 만나봐요!</div>
+            <div>나와 비슷한 관심사를 가지고 </div>
+            <div>공부하는 유저들을 만나봐요!</div>
           </InnerDiv>
         </ImageWrap>
       </Wrap>
@@ -90,15 +86,23 @@ const ImageWrap = styled.div`
   border-radius: 10px;
   display: flex;
   justify-content: end;
+  background-image: url("${(props) => props.bigImg}");
+  background-repeat: no-repeat;
+  background-size: cover;
+  @media screen and (max-width: 768px) {
+    background-image: url("${(props) => props.smallImg}");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 `;
 
 const InnerDiv = styled.div`
-  margin: auto 24px auto auto;
+  margin: auto auto auto 64px;
   font-size: 18px;
   color: #282828;
   @media screen and (max-width: 768px) {
     font-size: 9px;
-    margin: auto;
+    margin: auto auto auto 24px;
   }
 `;
 
