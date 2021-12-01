@@ -4,6 +4,9 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { apis } from "../../lib/axios";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 // STATES
 const initialState = {
   user: null, // 현재 로그인된 유저 정보
@@ -161,7 +164,7 @@ const kakaoLoginMiddleware = (code) => {
   return function (dispatch, getState, { history }) {
     axios({
       method: "GET",
-      url: `http://3.34.44.44/api/kakao/callback?code=${code}`,
+      url: `${process.env.REACT_APP_API_URI}/api/kakao/callback?code=${code}`,
     })
       .then((response) => {
         const token = response.data.token;
@@ -182,6 +185,7 @@ const kakaoLoginMiddleware = (code) => {
       })
       .catch((error) => {
         window.alert("로그인에 실패했습니다.");
+        console.log(error);
         history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
       });
   };
