@@ -175,6 +175,7 @@ const SlideUpLine = styled.div`
   font-size: 28px;
   font-weight: bold;
   text-align: center;
+  margin-top: 60px;
   @media screen and (max-width: 768px) {
     font-size: 14px;
   }

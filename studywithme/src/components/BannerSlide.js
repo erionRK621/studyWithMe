@@ -1,25 +1,31 @@
-import React, { useRef, useCallback } from "react";
+import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+
 import styled, { css } from "styled-components";
-import { useSelector } from "react-redux";
 
-import { history } from "../redux/configStore";
-import CardMain from "./CardMain";
+import Image from "../elements/Image";
+import banner1 from "../icon/banner1.png";
+import banner2 from "../icon/banner2.png";
+import banner3 from "../icon/banner3.png";
+import banner4 from "../icon/banner4.png";
+import banner5 from "../icon/banner5.png";
+import banner6 from "../icon/banner6.png";
 
-const LikeSlide = (props) => {
+const BannerSlide = (props) => {
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
   const settings = {
     dots: true, // 점보이게 할거니?
     infinite: true,
-    speed: 500,
+    speed: 1000,
     slidesToShow: 1, //한번에 몇 장씩 보이게 할거니?
     slidesToScroll: 1, //몇 장씩 넘어갈래?
     centerMode: true,
     centerPadding: "0px",
     arrows: false,
+    autoplay: true,
+    autoplaySpeed: 4000,
     // prevArrow: <Arrow />,
 
     responsive: [
@@ -49,24 +55,12 @@ const LikeSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <StyledSlider {...settings}>
-          <div>
-            <h3>1</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
+          <Image shape="rectangle" paddingTop="40%" src={banner1}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={banner4}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={banner2}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={banner3}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={banner6}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={banner5}></Image>
         </StyledSlider>
       </Wrap>
     </React.Fragment>
@@ -116,6 +110,7 @@ const StyledSlider = styled(Slider)`
     width: 95%;
     height: 50%;
     margin: 0 auto;
+    border-radius: 20px;
   }
 
   .slick-slide div {
@@ -124,7 +119,7 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-dots {
-    bottom: -10px;
+    bottom: 10px;
     margin-top: 1000px;
   }
 
@@ -133,4 +128,4 @@ const StyledSlider = styled(Slider)`
   }
 `;
 
-export default LikeSlide;
+export default BannerSlide;

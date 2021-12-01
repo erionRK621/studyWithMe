@@ -209,6 +209,7 @@ const SelectGrid = styled.div`
   width: 100%;
   display: flex;
   padding-left: 10px;
+
   @media screen and (max-width: 768px) {
     margin: auto;
     max-width: 358px;
@@ -250,14 +251,15 @@ const ButtonText = styled.p`
 const SearchInput = styled.input`
   margin-left: 24px;
   border: none;
-  background-color: rgba(221, 221, 221, 0);
+  background-color: white;
   width: 100%;
   &:focus {
     outline: none;
   }
 `;
 const SearchGrid = styled.div`
-  background-color: #ececec;
+  background-color: white;
+  border: gray 1px solid;
   margin-bottom: 15px;
   display: flex;
   padding: 8px 30px;

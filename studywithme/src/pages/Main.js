@@ -12,6 +12,7 @@ import Image from "../elements/Image";
 import RandomSlide from "../components/RandomSlide";
 import LikeSlide from "../components/LikeSlide";
 import FollowSlide from "../components/FollowSlide";
+import BannerSlide from "../components/BannerSlide";
 
 const Main = (props) => {
   const dispatch = useDispatch();
@@ -24,7 +25,8 @@ const Main = (props) => {
   return (
     <React.Fragment>
       <Wrap>
-        <Banner>
+        <BannerSlide></BannerSlide>
+        {/* <Banner>
           <Image shape="rectangle" src={banner} paddingTop="40%"></Image>
           <ImgContents>
             <img src={kkiriText} style={{ maxWidth: "100%" }} alt=""/>
@@ -32,7 +34,7 @@ const Main = (props) => {
           <ImgContents2>
             <img src={kkiriText2} style={{ maxWidth: "100%" }} alt=""/>
           </ImgContents2>
-        </Banner>
+        </Banner> */}
 
         <div>
           <LikeSlide></LikeSlide>
