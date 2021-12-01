@@ -73,7 +73,7 @@ class MyUploadAdapter {
               "Authorization": `Bearer ${localStorage.getItem("user")}`,
             },
           };
-          
+
           async function sendImg() {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
@@ -266,7 +266,7 @@ const Editor = ({ getContent, value }) => {
 };
 
 Editor.defaultProps = {
-  getContent: () => {},
+  getContent: () => { },
 };
 
 const StyledEditor = styled.div`

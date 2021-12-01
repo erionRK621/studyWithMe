@@ -5,6 +5,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
 import Swal from "sweetalert2";
+import heic2any from "heic2any"
 
 import Input from "../elements/Input";
 import Grid from "../elements/Grid";
@@ -64,10 +65,39 @@ const PostWrite = (props) => {
   const inputRef = React.useRef();
 
   const onSelectFile = (e) => {
-    const selectedFile = e.target.files[0];
+    const reader = new FileReader();
+    let selectedFile = e.target.files[0];
+    console.log("선택한 파일", selectedFile);
     setCoverOriginal(selectedFile);
+
+    // heic 파일일 경우
+    if (selectedFile && selectedFile.name.split('.')[1] === 'heic') {
+      let HEICcoverOriginalBlob = selectedFile;
+
+      // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
+      // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
+      heic2any({ blob: HEICcoverOriginalBlob, toType: "image/jpeg" })
+        .then(function (resultBlob) {
+          // file에 새로운 파일 데이터 덮어쓰기
+          selectedFile = new File([resultBlob], selectedFile.name.split('.')[0] + ".jpg", { type: "image/jpeg", lastModified: new Date().getTime() });
+          reader.readAsDataURL(selectedFile);
+          reader.onloadend = () => {
+            setImageCoverForCrop(reader.result);
+
+            urltoFile(reader.result, "coverOriginal.png", "image/png").then(function (
+              file
+            ) {
+              setCoverOriginal(file);
+            });
+          }
+        })
+        .catch(function (x) {
+          console.log(x);
+        })
+    }
+
+    // heic 파일이 아닌 경우
     if (selectedFile) {
-      const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
         setImageCoverForCrop(reader.result);
@@ -135,11 +165,11 @@ const PostWrite = (props) => {
 
     // 만약 사용자가 크롭하지 않을 경우? 원본 커버 이미지 사용
     if (coverCropped === null) {
-      console.log("coverCropped 없음");
-      console.log("coverCropped 변경 전", coverCropped, typeof coverCropped);
+      // console.log("coverCropped 없음");
+      // console.log("coverCropped 변경 전", coverCropped, typeof coverCropped);
       // setCoverCropped(coverOriginal);
       setCoverCropped(coverOriginal);
-      console.log("coverCropped 변경 후", coverCropped, typeof coverCropped);
+      // console.log("coverCropped 변경 후", coverCropped, typeof coverCropped);
     }
 
     formData.append("coverOriginal", coverOriginal);

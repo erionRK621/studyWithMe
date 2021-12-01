@@ -83,8 +83,8 @@ const SignUp = () => {
       return;
     }
     // 닉네임 20자 이하 여부 확인
-    else if (signUpInputs.nickname.length > 20) {
-      Swal.fire("닉네임을 20자 이하로 입력해주세요.", "", "error");
+    else if (signUpInputs.nickname.length > 10) {
+      Swal.fire("닉네임을 10자 이하로 입력해주세요.", "", "error");
       return;
     }
     // 닉네임 2자 이상 여부 확인
@@ -164,7 +164,7 @@ const SignUp = () => {
         <NicknameWrapper>
           <Label>닉네임</Label>
           <InputReqDescription>
-            한글, 영문, 숫자로 이루어진 별명을 입력해주세요. (20자 이하)
+            한글, 영문, 숫자로 이루어진 별명을 입력해주세요. (10자 이하)
           </InputReqDescription>
           <NicknameInputContainer>
             <NicknameInput
