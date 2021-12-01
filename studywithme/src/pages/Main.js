@@ -54,6 +54,8 @@ const Wrap = styled.div`
 
 const Banner = styled.div`
   position: relative;
+  max-width: 1133px;
+  margin: auto;
 `;
 const ImgContents = styled.div`
   position: absolute;
