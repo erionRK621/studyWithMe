@@ -35,7 +35,7 @@
 
 
 ## 🔨 사용기술
-* `React`
+* ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=black)
 * 상태관리: Redux
 * 배포 : AWS S3, ACM cerificate, Cloudfront
 * 통신 : Axios
