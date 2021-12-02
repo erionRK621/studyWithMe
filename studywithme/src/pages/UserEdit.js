@@ -1,20 +1,39 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+
+// 컴포넌트
 import { ProfileEdit } from "../components/ProfileEdit";
 import { PasswordEdit } from "../components/PasswordEdit";
+import { DeleteUserAccount } from "../components/DeleteUserAccount";
+
 
 const UserEdit = (props) => {
   const userType = useSelector((state) => state.user.userInfo.provider);
-  const [passwordEditState, setPasswordEditState] = useState(true);
+  const [profileEditState, setProfileEditState] = useState(true);
+  const [passwordEditState, setPasswordEditState] = useState(false);
+  const [deleteAccountState, setDeleteAccountState] = useState(false);
+
+  console.log("userType", userType);
 
   const showProfileEdit = () => {
-    setPasswordEditState(true);
+    setProfileEditState(true);
+    setPasswordEditState(false);
+    setDeleteAccountState(false);
   };
 
   const showPasswordEdit = () => {
-    setPasswordEditState(false);
+    setProfileEditState(false);
+    setPasswordEditState(true);
+    setDeleteAccountState(false);
   };
+
+  const showDeleteAccount = () => {
+    setProfileEditState(false);
+    setPasswordEditState(false);
+    setDeleteAccountState(true);
+  }
+
   return (
     <React.Fragment>
       <Wrap>
@@ -27,25 +46,18 @@ const UserEdit = (props) => {
               <MenuItem onClick={showPasswordEdit}>비밀번호 변경</MenuItem>
             </li>
           ) : null}
+          <li>
+            <MenuItem onClick={showDeleteAccount}>회원 탈퇴</MenuItem>
+          </li>
         </MenuWrap>
-
         <ContentDiv>
-          {passwordEditState === true ? <ProfileEdit /> : <PasswordEdit />}
+          {profileEditState ? <ProfileEdit /> :
+            passwordEditState ? <PasswordEdit /> : <DeleteUserAccount userType={userType} />}
         </ContentDiv>
       </Wrap>
     </React.Fragment>
   );
-};
-
-// const HeaderMenu = styled.div`
-//   @media screen and (min-width: 768px) {
-//     display: none;
-//   }
-//   @media screen and (max-width: 768px) {
-//     display: flex;
-//     justify-content: space-evenly;
-//   }
-// `;
+}
 
 const Wrap = styled.div`
   display: flex;
@@ -76,6 +88,7 @@ const MenuItem = styled.div`
   :hover {
     color: #ffc85c;
   }
+  cursor: pointer;
 `;
 
 const ContentDiv = styled.div`

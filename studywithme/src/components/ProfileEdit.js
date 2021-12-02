@@ -185,6 +185,7 @@ const Button = styled.button`
   border: none;
   padding: 8px 0px;
   margin-left: 12px;
+  cursor: pointer;
   @media screen and (max-width: 768px) {
     font-size: 12px;
     width: 80px;
@@ -205,4 +206,5 @@ const Submit = styled.button`
   border: none;
   padding: 4px 0px;
   margin-left: 3px;
+  cursor: pointer;
 `;

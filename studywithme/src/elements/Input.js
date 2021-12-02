@@ -30,7 +30,7 @@ const Input = (props) => {
     size: size,
     bgColor: bgColor,
     margin: margin,
-    borderRadius:borderRadius,
+    borderRadius: borderRadius,
   };
   if (multiLine) {
     return (
@@ -86,8 +86,8 @@ Input.defaultProps = {
   type: "text",
   value: "",
   is_Submit: false,
-  onSubmit: () => {},
-  _onChange: () => {},
+  onSubmit: () => { },
+  _onChange: () => { },
 };
 
 const ElTextarea = styled.textarea`
@@ -105,7 +105,7 @@ const ElInput = styled.input`
   padding: 12px 4px;
   box-sizing: border-box;
   /* background-color: rgba(244, 244, 244, 1); */
-  border-radius: ${(props)=> (props.borderRadius ? props.borderRadius:"10px;")};
+  border-radius: ${(props) => (props.borderRadius ? props.borderRadius : "10px;")};
   &:focus {
     outline: none;
   }

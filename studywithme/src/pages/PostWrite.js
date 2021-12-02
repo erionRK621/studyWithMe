@@ -127,6 +127,8 @@ const PostWrite = (props) => {
           croppedAreaPixels,
           rotation
         );
+
+
         // console.log("done", { croppedImage });
         // base64 형식의 Cropped Image 상태 저장
         setCroppedImage(croppedImage);
@@ -200,6 +202,13 @@ const PostWrite = (props) => {
     formData.append("categorySpace", spaceVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
+
+    console.log("coverOriginal", coverOriginal);
+    console.log("coverCropped", coverCropped);
+    console.log("title", title);
+    console.log("categorySpace", spaceVal);
+    console.log("categoryInterest", interestVal);
+    console.log("contentEditor", content);
 
     dispatch(postActions.editPostMiddleware(postId, formData));
   };

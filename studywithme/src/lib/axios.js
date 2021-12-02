@@ -25,6 +25,9 @@ export const apis = {
   // 회원가입
   signUpAxios: (user) => instance.post("/api/users/signup", user),
 
+  // 회원탈퇴
+  deleteUserAccountAxios: (password) => instance.delete("/api/users/withdrawal", { data: { password: password } }),
+
   // 이메일 중복 확인
   checkEmailAxios: (email) => instance.post("/api/users/emailexist", email),
 
@@ -34,9 +37,6 @@ export const apis = {
 
   // 로그인
   logInAxios: (user) => instance.post("/api/users/login", user),
-
-  // 회원탈퇴
-  deleteAccountAxios: () => instance.post("/api/users/withdrawal"),
 
   //게시물
   getPost: () => instance.get("/api/posts?searchMode=main", {}),
@@ -97,11 +97,8 @@ export const apis = {
   // 대댓글
   addCommentReplyAxios: (postId, commentId, textContent) =>
     instance.post(`/api/posts/${postId}/comments/${commentId}/childs`, { textContent }),
-  getCommentReplyAxios: (postId, commentId,currentPage) =>
+  getCommentReplyAxios: (postId, commentId, currentPage) =>
     instance.get(`/api/posts/${postId}/comments/${commentId}/childs?page=${currentPage}`),
   deleteCommentReplyAxios: (postId, commentId, childCommentId) =>
     instance.delete(`/api/posts/${postId}/comments/${commentId}/childs/${childCommentId}`),
-
-  // 게시물 수정시 커버 이미지 원본 파일 객체 가져오기
-  // getCoverOriginalObjAxios: (postId) => instance.get(`/api/posts/${postId}/coverOriginal`),
 };
