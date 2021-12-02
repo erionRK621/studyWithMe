@@ -1,6 +1,8 @@
 import React from "react";
 
 import styled from "styled-components";
+// import bgImg from "../icon/mailbox.png";
+import bgImg from "../icon/mailbox1.png";
 
 export default function Button(props) {
   const {
@@ -20,7 +22,10 @@ export default function Button(props) {
   if (is_float) {
     return (
       <React.Fragment>
-        <FloatButton onClick={_onClick}>{text ? text : children}</FloatButton>
+        <FloatButton onClick={_onClick}>
+          {text ? text : children}
+          <img src={bgImg} />
+        </FloatButton>
       </React.Fragment>
     );
   }
@@ -62,6 +67,7 @@ const ElButton = styled.button`
   padding: ${(props) => (props.padding ? props.padding : "12px 0px")};
   box-sizing: border-box;
   border: none;
+
   padding: ${(props) => props.padding};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "")};
   ${(props) => (props.radius ? `border-radius: ${props.radius}` : null)};
@@ -76,21 +82,23 @@ const FloatButton = styled.button`
   width: 50px;
   height: 50px;
   background: none;
-  /* color: #ffffff; */
   box-sizing: border-box;
   font-size: 48px;
   font-weight: 800;
   position: fixed;
   bottom: 200px;
-  right: 40px;
+  right: 60px;
   text-align: center;
   vertical-align: middle;
   border: none;
   border-radius: 50px;
   padding: 0px;
   z-index: 999;
+  &:hover {
+    cursor: pointer;
+  }
   @media screen and (max-width: 768px) {
-    right: 4px;
+    right: 16px;
     bottom: 240px;
   }
 `;
