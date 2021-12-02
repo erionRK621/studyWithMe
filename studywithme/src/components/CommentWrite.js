@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "../elements/Image";
@@ -53,6 +53,8 @@ const CommentWrite = (props) => {
           placeholder={
             isLoggedIn ? "댓글을 입력해주세요." : "로그인 후 이용해주세요."
           }
+          is_Submit
+          onSubmit={registComment}
           value={comment}
         />
         <Button
@@ -82,9 +84,9 @@ const FlexGrid = styled.div`
   &:hover {
     ${(props) => (!props.isLoggedIn ? ` cursor:pointer;` : null)};
   }
-  &>div>input:hover {
+  & > div > input:hover {
     ${(props) => (!props.isLoggedIn ? ` cursor:pointer;` : null)};
-    }
+  }
 `;
 
 export default CommentWrite;

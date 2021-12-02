@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -55,9 +55,9 @@ const LikeSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <Fire />
+          {/* <Fire /> */}
           추천 데스크테리어
-          <Fire />
+          {/* <Fire /> */}
         </SlideUpLine>
         {post_list?.length === 0 ? null : (
           <More
@@ -173,6 +173,7 @@ const SlideUpLine = styled.div`
   font-size: 28px;
   font-weight: bold;
   text-align: center;
+  margin-top: 60px;
   @media screen and (max-width: 768px) {
     font-size: 14px;
   }

@@ -1,12 +1,9 @@
 // Packages
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2,
-} from "react-html-parser";
+import ReactHtmlParser from "react-html-parser";
 import moment from "moment";
+import Swal from "sweetalert2";
 // Redux Modules
 import { actionCreators as postActions } from "../redux/modules/post";
 import { history } from "../redux/configStore";
@@ -27,7 +24,6 @@ import { ReactComponent as Trash } from "../icon/trash.svg";
 
 import { ReactComponent as Interest } from "../icon/interest.svg";
 import { ReactComponent as Space } from "../icon/space.svg";
-import { ReactComponent as StudyMate } from "../icon/studyMate.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -55,14 +51,14 @@ const PostDetail = (props) => {
 
   const onClickFollow = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.followUserMiddleware(postUserId));
   };
   const onClickUnfollow = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.unfollowUserMiddleware(postUserId));
@@ -70,7 +66,7 @@ const PostDetail = (props) => {
 
   const onClickAddLike = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.addLikeMiddleware(postId));
@@ -78,7 +74,7 @@ const PostDetail = (props) => {
 
   const onClickDeleteLike = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.deleteLikeMiddleware(postId));
@@ -86,7 +82,7 @@ const PostDetail = (props) => {
 
   const onClickAddBookmark = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.addBookmarkMiddleware(postId));
@@ -94,26 +90,44 @@ const PostDetail = (props) => {
 
   const onClickDeleteBookmark = () => {
     if (!isLoggedIn) {
-      window.alert("로그인 후 사용해주세요.");
+      Swal.fire("로그인 후 사용해주세요.", "", "error");
       history.push("/login");
     }
     dispatch(postActions.deleteBookmarkMiddleware(postId));
   };
 
   const deletePost = () => {
-    if (window.confirm("삭제하시겠습니까?") === true) {
-      dispatch(postActions.deletePostMiddleware(postId));
-    }
+    Swal.fire({
+      title: "게시물 삭제",
+      text: "정말로 게시물을 삭제하시겠어요?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네, 삭제할래요.",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("삭제완료!", "게시물이 삭제되었습니다.", "success");
+        dispatch(postActions.deletePostMiddleware(postId));
+      }
+    });
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(postActions.getDetailPostDB(postId));
-  }, []);
+  }, [dispatch, postId]);
 
   return (
     <div className="ck-content">
-      <ImageCover src={imageCover} />
+      {/* <ImageCover src={imageCover} /> */}
+      <Image
+        shape="rectangle"
+        src={imageCover}
+        paddingTop="50%"
+        maxWidth="1133px"
+      ></Image>
       <Wrap direction="column" margin="40px auto" padding="0px 24px">
         <TitleLineWrap>
           <H1 size="32px">{decodeURIComponent(post?.title)}</H1>
@@ -138,7 +152,6 @@ const PostDetail = (props) => {
                 src={`${process.env.REACT_APP_IMAGE_URI}/${post.User?.avatarUrl}`}
               />
             </PicDiv>
-
             <NickTimeWrap>
               <UserNick
                 onClick={() => {
@@ -169,7 +182,7 @@ const PostDetail = (props) => {
               <Button
                 height="40px"
                 fontSize="16px"
-                bgColor="#FFC85C"
+                bgColor="#ececec"
                 radius="30px"
                 width="100px"
                 color="#000000"
@@ -195,13 +208,6 @@ const PostDetail = (props) => {
             <TypeWrap>
               <TypeTitle>공간</TypeTitle>
               <TypeElement size="20px">{post?.categorySpace}</TypeElement>
-            </TypeWrap>
-          </TypeGrid>
-          <TypeGrid>
-            <StudyMate />
-            <TypeWrap>
-              <TypeTitle>유형</TypeTitle>
-              <TypeElement size="20px">{post?.categoryStudyMate}</TypeElement>
             </TypeWrap>
           </TypeGrid>
         </TypeAreaWrap>
@@ -370,22 +376,13 @@ const FlexGrid = styled.div`
 `;
 
 const ContentGrid = styled.div`
-  margin: 44px auto 20px auto;
+  margin: 44px 0 20px 0;
   min-height: 300px;
   p {
     word-break: break-all;
   }
   img {
     max-width: 750px;
-  }
-`;
-
-const Span = styled.span`
-  margin-left: ${(props) => props.marginLeft};
-  font-size: ${(props) => props.fontSize};
-  color: ${(props) => (props.color ? props.color : "black")};
-  &:hover {
-    ${(props) => (props.pointer ? "cursor:pointer;" : null)};
   }
 `;
 

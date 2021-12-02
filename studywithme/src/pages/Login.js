@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { history } from "../redux/configStore";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { KAKAO_AUTH_URL } from "../shared/kakaoOAuth";
 
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 import { actionCreators as userActions } from "../redux/modules/user";
 
-import Grid from "../elements/Grid";
-import Text from "../elements/Text";
-// import Input from "../elements/Input";
-import Button from "../elements/Button";
-import KakaoLoginButton from "../components/KakaoLoginButton";
 import KakaoLogo from "../icon/KakaoLogo.png";
+import logo from "../icon/footerLogo.png";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -26,21 +22,18 @@ const Login = () => {
   };
 
   const onChangeEmail = (e) => {
-    // console.log(e.target.value);
     setEmail(e.target.value);
   };
 
   const onChangePassword = (e) => {
-    // console.log(e.target.value);
     setPassword(e.target.value);
   };
 
   const onClickLogin = () => {
-    console.log("로그인 실행");
     if (loginInputs.email === "") {
-      window.alert("이메일을 입력해주세요");
+      Swal.fire("이메일을 입력해주세요", "", "error");
     } else if (loginInputs.password === "") {
-      window.alert("비밀번호를 입력해주세요");
+      Swal.fire("비밀번호를 입력해주세요", "", "error");
     } else {
       dispatch(userActions.loginMiddleware(loginInputs));
     }
@@ -48,43 +41,38 @@ const Login = () => {
 
   const onEnterEmailInput = () => {
     if (email === "") {
-      window.alert("이메일을 입력해주세요.");
+      Swal.fire("이메일을 입력해주세요", "", "error");
       return;
     } else if (password === "") {
-      window.alert("비밀번호를 입력해주세요.");
+      Swal.fire("비밀번호를 입력해주세요", "", "error");
       return;
     }
     // 입력된 이메일, 비밀번호 지우기
     setEmail("");
     setPassword("");
-
-    console.log("onEnterEmailInput 실행");
     dispatch(userActions.loginMiddleware(loginInputs));
   };
 
   const onEnterPasswordInput = () => {
     if (email === "") {
-      window.alert("이메일을 입력해주세요.");
+      Swal.fire("이메일을 입력해주세요", "", "error");
       return;
     } else if (password === "") {
-      window.alert("비밀번호를 입력해주세요.");
+      Swal.fire("비밀번호를 입력해주세요", "", "error");
       return;
     }
     // 입력된 이메일, 비밀번호 지우기
     setEmail("");
     setPassword("");
 
-    console.log("onEnterPasswordInput 실행");
     dispatch(userActions.loginMiddleware(loginInputs));
-  };
-
-  const onClickToSignUpPage = () => {
-    console.log("회원가입 페이지로 이동");
-    history.push("/signup");
   };
 
   return (
     <Wrap>
+      <LogoWrap>
+        <img src={logo} alt="logo" style={{ maxWidth: "100%" }} />
+      </LogoWrap>
       <Form>
         <InputWrapper>
           <Label>이메일</Label>
@@ -191,7 +179,6 @@ const PasswordInput = styled.input`
   min-height: 40px;
   margin: 0;
   border: 1px solid #dbdbdb;
-  backrgound-color: #fff;
   color: #000;
   border-radius: 4px;
   box-sizing: border-box;
@@ -246,4 +233,9 @@ const KakaoLoginTitle = styled.div`
   text-align: center;
   margin: 15px 0px;
   color: rgb(117, 117, 117);
+`;
+
+const LogoWrap = styled.div`
+  padding-bottom: 50px;
+  text-align: center;
 `;

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 import Input from "../elements/Input";
 import Image from "../elements/Image";
@@ -62,9 +63,8 @@ export const ProfileEdit = () => {
   };
 
   const onClickNicknameCheck = () => {
-    // console.log("nicknameCheckInput", nicknameCheckInput);
     if (nicknameCheckInput.nickname === "") {
-      window.alert("닉네임을 입력해주세요");
+      Swal.fire("닉네임을 입력해주세요", "", "error");
     } else {
       dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
     }
@@ -72,7 +72,7 @@ export const ProfileEdit = () => {
 
   useEffect(() => {
     dispatch(userActions.getUserDB(userId));
-  }, [userId]);
+  }, [dispatch, userId]);
   return (
     <React.Fragment>
       <Wrap>
@@ -154,7 +154,6 @@ const UserNickname = styled.div`
     font-size: 16px;
   }
 `;
-const ChangePic = styled.div``;
 
 const InputWrap = styled.div`
   margin: 30px 0 32px 0px;
@@ -186,6 +185,7 @@ const Button = styled.button`
   border: none;
   padding: 8px 0px;
   margin-left: 12px;
+  cursor: pointer;
   @media screen and (max-width: 768px) {
     font-size: 12px;
     width: 80px;
@@ -206,4 +206,5 @@ const Submit = styled.button`
   border: none;
   padding: 4px 0px;
   margin-left: 3px;
+  cursor: pointer;
 `;

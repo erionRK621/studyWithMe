@@ -54,9 +54,9 @@ const RandomSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <SlideUpLine>
-          <Star />
+          {/* <Star /> */}
           새로운 게시물
-          <Star />
+          {/* <Star /> */}
         </SlideUpLine>
         {post_list?.length === 0 ? null : (
           <More
@@ -173,6 +173,7 @@ const SlideUpLine = styled.div`
   font-size: 28px;
   font-weight: bold;
   text-align: center;
+  margin-top: 60px;
   @media screen and (max-width: 768px) {
     font-size: 14px;
   }

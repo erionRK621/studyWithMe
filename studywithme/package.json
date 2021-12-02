@@ -38,6 +38,8 @@
     "connected-react-router": "6.8.0",
     "craco": "0.0.3",
     "dotenv": "^10.0.0",
+    "env-cmd": "^10.1.0",
+    "heic2any": "^0.0.3",
     "history": "4.10.1",
     "immer": "^9.0.6",
     "jsonwebtoken": "^8.5.1",
@@ -63,11 +65,12 @@
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.1",
+    "sweetalert2": "^11.2.1",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "env-cmd -f .env craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },

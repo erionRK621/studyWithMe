@@ -2,7 +2,6 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { apis } from "../../lib/axios";
 import { actionCreators as pageActions } from "./pagination";
-import { CardFooter } from "reactstrap";
 
 const ADD_COMMENT = "ADD_COMMENT";
 const GET_COMMENT = "GET_COMMENT";
@@ -107,7 +106,7 @@ const addCommentMiddleware = (postId, textContent) => {
         dispatch(addComment(userNick, comment, avatarUrl));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -121,11 +120,10 @@ const getCommentMiddleware = (postId, page) => {
         dispatch(
           getComment(res.data.cmtsList, res.data.totalPg, res.data.totCmtCount)
         );
-        console.log(res.data);
         dispatch(pageActions.setPage(page, res.data.totalPg));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -138,7 +136,7 @@ const deleteCommentMiddleware = (postId, commentId) => {
         dispatch(deleteComment(commentId));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -153,7 +151,7 @@ const addCommentLikeMiddleWare = (postId, commentId) => {
         dispatch(addCommentLike(isCommentLiked, commentId));
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -166,7 +164,7 @@ const deleteCommentLikeMiddleWare = (postId, commentId) => {
         dispatch(DeleteCommentLike(isCommentLiked, commentId));
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -178,14 +176,13 @@ const addCommentReplyMiddleware = (postId, commentId, content) => {
     apis
       .addCommentReplyAxios(postId, commentId, content)
       .then((res) => {
-        console.log(res);
         const addReply = res.data;
         const user = addReply.user;
         const child = addReply.child;
         dispatch(addCommentReply(commentId, user, child));
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -198,19 +195,17 @@ const getCommentReplyMiddleware = (postId, commentId, currentPage = 1) => {
       c.commentId === commentId
     );
     const beforePage = comment[idx].currentPage;
-    console.log(beforePage, currentPage);
     if(beforePage ===currentPage) {
       return;
     }
     apis
       .getCommentReplyAxios(postId, commentId, currentPage)
       .then((res) => {
-        console.log(res);
         const childComments = res.data.childComments;
         dispatch(getCommentReply(commentId, childComments, currentPage));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -224,7 +219,7 @@ const deleteCommentReplyMiddleware = (postId, commentId, childCommentId) => {
         dispatch(deleteCommentReply(commentId, childCommentId));
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err.response.data.message);
       });
   };
 };

@@ -31,9 +31,7 @@ const PostList = (props) => {
   const querySpace = getQueryString.includes("&categorySpace=")
     ? decodeURI(getQueryString.split("&categorySpace=")[1].split("&")[0])
     : null;
-  const queryStudyMate = getQueryString.includes("&categoryStudyMate=")
-    ? decodeURI(getQueryString.split("&categoryStudyMate=")[1].split("&")[0])
-    : null;
+
   const queryKeyword = getQueryString.includes("&keyword=")
     ? decodeURI(getQueryString.split("&keyword=")[1].split("&")[0])
     : null;
@@ -46,9 +44,6 @@ const PostList = (props) => {
     queryInterest ? queryInterest : ""
   );
   const [spaceVal, setSpaceVal] = useState(querySpace ? querySpace : "");
-  const [studyMateVal, setStudyMateVal] = useState(
-    queryStudyMate ? queryStudyMate : ""
-  );
   const [sortVal, setSortVal] = useState(querySort ? querySort : "");
   const [keywordInput, setKeywordInput] = useState("");
   const [keyword, setKeyword] = useState(queryKeyword ? queryKeyword : "");
@@ -57,10 +52,9 @@ const PostList = (props) => {
   const _selectArray = [
     { value: interestVal, func: setInterestVal },
     { value: spaceVal, func: setSpaceVal },
-    { value: studyMateVal, func: setStudyMateVal },
     { value: keyword, func: setKeyword },
   ];
-  const selectArray = _selectArray.filter((s, idx) => {
+  const selectArray = _selectArray.filter((s) => {
     if (s.value !== "") {
       return s;
     }
@@ -71,9 +65,6 @@ const PostList = (props) => {
   };
   const space = (e) => {
     setSpaceVal(e.target.value);
-  };
-  const studyMate = (e) => {
-    setStudyMateVal(e.target.value);
   };
   const interest = (e) => {
     setInterestVal(e.target.value);
@@ -93,12 +84,10 @@ const PostList = (props) => {
     let setQueryString = `${
       interestVal ? "&categoryInterest=" + interestVal : ""
     }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
-      studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-    }${keyword ? "&keyword=" + keyword : ""}&page=1${
-      sortVal ? "&sort=" + sortVal : ""
-    }`;
+      keyword ? "&keyword=" + keyword : ""
+    }&page=1${sortVal ? "&sort=" + sortVal : ""}`;
     dispatch(postActions.getFilterPostDB(setQueryString, 0));
-  }, [dispatch, keyword, interestVal, spaceVal, studyMateVal, sortVal]);
+  }, [dispatch, keyword, interestVal, spaceVal, sortVal]);
   return (
     <Wrap>
       <SearchGrid>
@@ -123,11 +112,6 @@ const PostList = (props) => {
           _value={interestVal}
         />
         <SelectBox category="space" _onChange={space} _value={spaceVal} />
-        <SelectBox
-          category="studyMate"
-          _onChange={studyMate}
-          _value={studyMateVal}
-        />
       </SelectGrid>
 
       {selectArray.length > 0 ? (
@@ -150,7 +134,6 @@ const PostList = (props) => {
               onClick={() => {
                 setInterestVal("");
                 setSpaceVal("");
-                setStudyMateVal("");
                 setKeyword("");
               }}
               color="#FFC85C"
@@ -168,16 +151,13 @@ const PostList = (props) => {
           currentPage={currentPage}
           interestVal={interestVal}
           spaceVal={spaceVal}
-          studyMateVal={studyMateVal}
           keyword={keyword}
-          callNext={(page, interestVal, spaceVal, studyMateVal) => {
+          callNext={(page, interestVal, spaceVal) => {
             let setQueryString = `${
               interestVal ? "&categoryInterest=" + interestVal : ""
-            }${spaceVal ? "&categorySpace=" + spaceVal : ""}${
-              studyMateVal ? "&categoryStudyMate=" + studyMateVal : ""
-            }&page=${page + 1}${keyword ? "&keyword=" + keyword : ""}${
-              sortVal ? "&sort=" + sortVal : ""
-            }`;
+            }${spaceVal ? "&categorySpace=" + spaceVal : ""}&page=${page + 1}${
+              keyword ? "&keyword=" + keyword : ""
+            }${sortVal ? "&sort=" + sortVal : ""}`;
             dispatch(postActions.getFilterPostDB(setQueryString, page));
           }}
         >
@@ -229,6 +209,7 @@ const SelectGrid = styled.div`
   width: 100%;
   display: flex;
   padding-left: 10px;
+
   @media screen and (max-width: 768px) {
     margin: auto;
     max-width: 358px;
@@ -270,14 +251,15 @@ const ButtonText = styled.p`
 const SearchInput = styled.input`
   margin-left: 24px;
   border: none;
-  background-color: rgba(221, 221, 221, 0);
+  background-color: white;
   width: 100%;
   &:focus {
     outline: none;
   }
 `;
 const SearchGrid = styled.div`
-  background-color: #ececec;
+  background-color: white;
+  border: gray 1px solid;
   margin-bottom: 15px;
   display: flex;
   padding: 8px 30px;

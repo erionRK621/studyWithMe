@@ -3,10 +3,22 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { KAKAO_AUTH_URL } from "../shared/kakaoOAuth";
 import { actionCreators as userActions } from "../redux/modules/user";
-import { regExEmailTest, regExPasswordTest, regExNicknameTest } from "../shared/regEx";
+import {
+  regExEmailTest,
+  regExPasswordTest,
+  regExNicknameTest,
+} from "../shared/regEx";
+import Swal from "sweetalert2";
+import axios from "axios";
+import { apis } from "../lib/axios";
+
+// Font Awesome-related
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle as farCheckCircle } from "@fortawesome/free-regular-svg-icons"
 
 import Grid from "../elements/Grid";
 import KakaoLogo from "../icon/KakaoLogo.png";
+import logo from "../icon/footerLogo.png";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -16,51 +28,71 @@ const SignUp = () => {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  // *** 추가 구현 필요 ***
-  // 이메일 중복 확인 여부 체크 (feat. useState)
-  // 닉네임 중복 확인 여부 체크 (feat. useState)
+  const [checkEmailSuccessState, setCheckEmailSuccessState] = useState(false);
+  const [checkNicknameSuccessState, setCheckNicknameSuccessState] = useState(false);
 
   const onChangeEmailUsername = (e) => {
-    // console.log(e.target.value);
     setEmailUsername(e.target.value);
   };
 
   const onChangeEmailDomain = (e) => {
-    // console.log(e.target.value);
     setEmailDomain(e.target.value);
   };
 
   const onChangeNickName = (e) => {
-    // console.log(e.target.value);
     setNickname(e.target.value);
   };
 
   const onChangePassword = (e) => {
-    // console.log(e.target.value);
     setPassword(e.target.value);
   };
 
   const onChangeConfirmPassword = (e) => {
-    // console.log(e.target.value);
     setConfirmPassword(e.target.value);
   };
 
   const onClickEmailCheck = () => {
     if (emailUsername === "" || emailDomain === "") {
-      window.alert("이메일을 입력해주세요");
-    } else {
+      Swal.fire("이메일을 입력해주세요", "", "error");
+    }
+    else {
       const emailCheckInput = { email: `${emailUsername}@${emailDomain}` };
-      dispatch(userActions.checkEmailMiddleware(emailCheckInput));
+      // 이메일 중복확인 미들웨어 실행
+      apis
+        .checkEmailAxios(emailCheckInput)
+        .then((response) => {
+          // window.alert(response.data.message);
+          Swal.fire(response.data.message, "", "success");
+          setCheckEmailSuccessState(true);
+        })
+        .catch((error) => {
+          // window.alert(error.response.data.message);
+          Swal.fire(error.response.data.message, "", "error");
+          setCheckEmailSuccessState(false);
+        });
+
     }
   };
 
   const onClickNicknameCheck = () => {
     if (nickname === "") {
-      window.alert("닉네임을 입력해주세요");
-    } else {
+      Swal.fire("닉네임을 입력해주세요", "", "error");
+    }
+    else {
       const nicknameCheckInput = { nickname: nickname };
-      dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
+      // dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
+      // 닉네임 중복확인 미들웨어 실행
+      apis
+        .checkNicknameAxios(nicknameCheckInput)
+        .then((response) => {
+          Swal.fire(response.data.message, "", "success");
+          setCheckNicknameSuccessState(true);
+        })
+        .catch((error) => {
+          Swal.fire(error.response.data.message, "", "error");
+          setCheckNicknameSuccessState(false);
+        });
+
     }
   };
 
@@ -71,55 +103,63 @@ const SignUp = () => {
       password: password,
       confirmPassword: confirmPassword,
     };
-    // console.log("signUpInputs", signUpInputs);
 
     // 이메일 규칙 확인
     if (!regExEmailTest(signUpInputs.email)) {
-      window.alert("이메일 형식이 올바르지 않습니다.");
-      // console.log("이메일 형식이 올바르지 않습니다.");
+      Swal.fire("이메일 형식이 올바르지 않습니다.", "", "error");
       return;
     }
     // 이메일 50자 이하 여부 확인
     if (signUpInputs.email.length > 50) {
-      window.alert("이메일을 50자 이하로 입력해주세요.");
+      Swal.fire("이메일을 50자 이하로 입력해주세요.", "", "error");
     }
     // 닉네임 규칙 확인
     else if (!regExNicknameTest(signUpInputs.nickname)) {
-      window.alert("닉네임 형식이 올바르지 않습니다.");
-      // console.log("닉네임 형식이 올바르지 않습니다.");
+      Swal.fire("닉네임 형식이 올바르지 않습니다.", "", "error");
       return;
     }
     // 닉네임 20자 이하 여부 확인
-    else if (signUpInputs.nickname.length > 20) {
-      window.alert("닉네임을 20자 이하로 입력해주세요.");
-      // console.log("닉네임을 20자 이하로 입력해주세요.");
+    else if (signUpInputs.nickname.length > 10) {
+      Swal.fire("닉네임을 10자 이하로 입력해주세요.", "", "error");
       return;
     }
     // 닉네임 2자 이상 여부 확인
     else if (signUpInputs.nickname.length < 2) {
-      window.alert("닉네임을 2자 이상 입력해주세요.");
+      Swal.fire("닉네임을 2자 이상 입력해주세요.", "", "error");
       return;
     }
 
     // 비밀번호 규칙 확인
     else if (!regExPasswordTest(signUpInputs.password)) {
-      window.alert("비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다.");
-      // console.log("비밀번호는 영문, 숫자를 포함하여 8자 이상이어야 합니다.");
+      Swal.fire(
+        "비밀번호는 영문, 숫자, 특수 문자를 포함하여 8자 이상이어야 합니다.",
+        "",
+        "error"
+      );
       return;
     }
     // 비밀번호 일치 여부 확인
     else if (signUpInputs.password !== signUpInputs.confirmPassword) {
-      window.alert("비밀번호가 일치하지 않습니다.");
-      // console.log("비밀번호가 일치하지 않습니다.");
+      Swal.fire("비밀번호가 일치하지 않습니다.", "", "error");
       return;
     }
     // 이메일, 비밀번호간 상호간에 포함되었는지 여부 확인
-    else if (signUpInputs.email.split("@")[0].match(signUpInputs.password) !== null ||
+    else if (
+      signUpInputs.email.split("@")[0].match(signUpInputs.password) !== null ||
       signUpInputs.password.match(signUpInputs.email.split("@")[0]) !== null
     ) {
-      window.alert("이메일이 포함된 비밀번호는 사용할 수 없습니다.");
+      Swal.fire("이메일이 포함된 비밀번호는 사용할 수 없습니다.", "", "error");
       return;
     }
+
+    else if (checkEmailSuccessState === false) {
+      Swal.fire("이메일 중복 확인을 해주세요.", "", "error");
+    }
+
+    else if (checkNicknameSuccessState === false) {
+      Swal.fire("닉네임 중복 확인을 해주세요.", "", "error");
+    }
+
     else {
       dispatch(userActions.signUpMiddleware(signUpInputs));
     }
@@ -127,6 +167,9 @@ const SignUp = () => {
 
   return (
     <Grid width="360px" margin="0px auto" padding="60px 0px">
+      <LogoWrap>
+        <img src={logo} alt="logo" style={{ maxWidth: "100%" }} />
+      </LogoWrap>
       <SignUpTitle>회원가입</SignUpTitle>
       <KakaoSignUpWrapper>
         <a
@@ -135,10 +178,7 @@ const SignUp = () => {
             margin: "0px 10px",
           }}
         >
-          <KakaoIcon
-            src={KakaoLogo}
-            alt="카카오 아이콘"
-          />
+          <KakaoIcon src={KakaoLogo} alt="카카오 아이콘" />
         </a>
         <KakaoLoginTitle>카카오 계정으로 간편하게 회원가입</KakaoLoginTitle>
       </KakaoSignUpWrapper>
@@ -165,15 +205,33 @@ const SignUp = () => {
             </EmailInputDomain>
           </EmailInputGroup>
         </EmailWrapper>
-        <EmailCheckButtonWrapper>
-          <EmailValidationButton onClick={onClickEmailCheck}>
-            이메일 중복 확인
-          </EmailValidationButton>
-        </EmailCheckButtonWrapper>
+        {checkEmailSuccessState === true ?
+          <EmailCheckButtonWrapper>
+            <EmailValidationButton onClick={onClickEmailCheck}>
+              이메일 중복 확인
+              <CheckIconWrap>
+                <FontAwesomeIcon
+                  style={{
+                    width: "18px",
+                    height: "18px",
+                    color: "yellowgreen",
+                  }}
+                  icon={farCheckCircle}
+                />
+              </CheckIconWrap>
+            </EmailValidationButton>
+          </EmailCheckButtonWrapper>
+          :
+          <EmailCheckButtonWrapper>
+            <EmailValidationButton onClick={onClickEmailCheck}>
+              이메일 중복 확인
+            </EmailValidationButton>
+          </EmailCheckButtonWrapper>
+        }
         <NicknameWrapper>
           <Label>닉네임</Label>
           <InputReqDescription>
-            한글, 영문, 숫자로 이루어진 별명을 입력해주세요. (20자 이하)
+            한글, 영문, 숫자로 이루어진 별명을 입력해주세요. (10자 이하)
           </InputReqDescription>
           <NicknameInputContainer>
             <NicknameInput
@@ -182,9 +240,25 @@ const SignUp = () => {
               type="text"
               onChange={onChangeNickName}
             />
-            <NicknameValidationButton onClick={onClickNicknameCheck}>
-              닉네임 중복 확인
-            </NicknameValidationButton>
+            {checkNicknameSuccessState === true ?
+              <NicknameValidationButton onClick={onClickNicknameCheck}>
+                닉네임 중복 확인
+                <CheckIconWrap>
+                  <FontAwesomeIcon
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      color: "yellowgreen",
+                    }}
+                    icon={farCheckCircle}
+                  />
+                </CheckIconWrap>
+              </NicknameValidationButton>
+              :
+              <NicknameValidationButton onClick={onClickNicknameCheck}>
+                닉네임 중복 확인
+              </NicknameValidationButton>
+            }
           </NicknameInputContainer>
         </NicknameWrapper>
         <PasswordWrapper>
@@ -295,6 +369,7 @@ const EmailInputSeparator = styled.span`
 const EmailInputDomain = styled.span``;
 
 const EmailCheckButtonWrapper = styled.div`
+  display: flex;
   margin-bottom: 30px;
   padding-top: 2px;
 `;
@@ -305,7 +380,7 @@ const EmailValidationButton = styled.button`
   height: 40px;
   padding: 0;
   background: #f7f8fa;
-  color: #c2c8cc;
+  color: black;
   border-color: #dadce0;
   line-height: 20px;
   font-size: 15px;
@@ -336,7 +411,6 @@ const NicknameInput = styled.input`
   min-height: 40px;
   margin: 0;
   border: 1px solid #dbdbdb;
-  backrgound-color: #fff;
   color: #000;
   border-radius: 4px;
   box-sizing: border-box;
@@ -350,7 +424,7 @@ const NicknameValidationButton = styled.button`
   height: 40px;
   padding: 0;
   background: #f7f8fa;
-  color: #c2c8cc;
+  color: black;
   border-color: #dadce0;
   line-height: 20px;
   font-size: 15px;
@@ -384,7 +458,6 @@ const PasswordInput = styled.input`
   min-height: 40px;
   margin: 0;
   border: 1px solid #dbdbdb;
-  backrgound-color: #fff;
   color: #000;
   border-radius: 4px;
   box-sizing: border-box;
@@ -398,7 +471,7 @@ const SignUpButton = styled.button`
   line-height: 26px;
   padding: 11px 10px;
   background: #f7f8fa;
-  color: #c2c8cc;
+  color: black;
   border-color: #dadce0;
   display: inline-block;
   border: 1px solid transparent;
@@ -422,5 +495,15 @@ const ToLoginLink = styled.a`
   padding-left: 10px;
   cursor: pointer;
   font-size: 15px;
+  text-align: center;
+`;
+
+const CheckIconWrap = styled.div`
+  align-items: center;
+  margin-left: 4px;
+`;
+
+const LogoWrap = styled.div`
+  padding-bottom: 50px;
   text-align: center;
 `;

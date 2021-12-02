@@ -3,6 +3,10 @@ import { produce } from "immer";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import { apis } from "../../lib/axios";
+import Swal from "sweetalert2";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 // STATES
 const initialState = {
@@ -25,17 +29,12 @@ const CHECK_NICKNAME = "CHECK_NICKNAME";
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
 
+
 // ACTION CREATORS
 const setUser = createAction(SET_USER, (token) => ({ token }));
 const getUser = createAction(GET_USER, (userInfo, isFollowing) => ({
   userInfo,
   isFollowing,
-}));
-const editUserProfile = createAction(EDIT_PROFILE, (userInfo) => ({
-  userInfo,
-}));
-const editPassword = createAction(EDIT_PASSWORD, (password) => ({
-  password,
 }));
 const logOut = createAction(LOG_OUT, (user) => ({ user }));
 const checkEmail = createAction(CHECK_EMAIL, (email) => ({ email }));
@@ -56,34 +55,26 @@ const getUserDB = (userId) => {
     apis
       .getUser(userId)
       .then((res) => {
-        console.log("마이페이지 유저 정보", res);
         dispatch(getUser(res.data.userInfo[0], res.data.isFollowing));
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
-        console.log(err, "에러");
+        console.error(err.response.data.message);
       });
   };
 };
 
 const editProfileMiddleware = (userId, formData) => {
   return function (dispatch, getState, { history }) {
-    for (let a of formData.entries()) {
-      console.log(a);
-    }
     apis
       .editProfileAxios(formData)
       .then((res) => {
-        window.alert(res.data.message);
-        console.log(res);
+        Swal.fire(res.data.message, "", "success");
         history.push(`/mypage/${userId}`);
-        // dispatch(editUserProfile(res.data.userInfo));
       })
       .catch((err) => {
         //요청이 정상적으로 안됬을때 수행
-        console.log(err, "에러");
-
-        // console.log(err.response.data.message);
+        console.error(err.response.data.message);
       });
   };
 };
@@ -93,12 +84,10 @@ const editPwdMiddleware = (editPwdInputs) => {
     apis
       .editUserPwdAxios(editPwdInputs)
       .then((res) => {
-        console.log(res);
-        window.alert(res.data.message);
+        Swal.fire(res.data.message, "", "success");
       })
       .catch((err) => {
-        console.log(err);
-        window.alert(err.response.data.message);
+        Swal.fire(err.response.data.message, "", "error");
       });
   };
 };
@@ -106,28 +95,23 @@ const editPwdMiddleware = (editPwdInputs) => {
 const signUpMiddleware = (user) => {
   // return function (dispatch, getState, { history }) {
   return function (dispatch, getState, { history }) {
-    console.log("회원가입 미들웨어 실행!");
-    console.log("user", user);
     // 회원가입 API 실행
     apis
       .signUpAxios(user)
       .then((response) => {
-        console.log(response.data.message);
-        window.alert(response.data.message);
+        Swal.fire(response.data.message, "", "success");
+        // window.alert(response.data.message);
         history.push("/login");
       })
-      .catch((error) => {
-        console.log("에러 발생");
-        console.log(error.response);
-        console.log(error.response.data.message);
-        window.alert(error.response.data.message);
+      .catch((err) => {
+        Swal.fire(err.response.data.message, "", "error");
+        // window.alert(err.response.data.message);
       });
   };
 };
 
 const loginMiddleware = (user) => {
   return (dispatch, { history }) => {
-    console.log("loginMiddleware 실행!");
     // 로그인 API 실행
     apis
       .logInAxios(user)
@@ -137,7 +121,6 @@ const loginMiddleware = (user) => {
         // 기존 user 토큰이 localStorage에 존재하면? 삭제
         if (localStorage.getItem("user")) {
           localStorage.removeItem("user");
-          console.log("localStorage에 저장된 기존 user 토큰 삭제");
         }
 
         // localStorage에 user 토큰 저장
@@ -149,61 +132,55 @@ const loginMiddleware = (user) => {
         // 로그인이 완료됐으므로 메인페이지로 이동
         window.location.href = "/";
       })
-      .catch((error) => {
-        window.alert(error.response.data.message);
+      .catch((err) => {
+        // window.alert(err.response.data.message);
+        Swal.fire(err.response.data.message, "", "error");
       });
   };
 };
 
 const checkEmailMiddleware = (emailCheckInput) => {
   return (dispatch, { history }) => {
-    console.log("이메일 중복 체크 미들웨어 실행!");
-    console.log("emailCheckInput", emailCheckInput);
     apis
       .checkEmailAxios(emailCheckInput)
       .then((response) => {
-        console.log(response.data.message);
-        window.alert(response.data.message);
+        // window.alert(response.data.message);
+        Swal.fire(response.data.message, "", "success");
       })
       .catch((error) => {
-        console.log(error.response.data.message);
-        window.alert(error.response.data.message);
+        // window.alert(error.response.data.message);
+        Swal.fire(error.response.data.message, "", "error");
       });
   };
 };
 
 const checkNicknameMiddleware = (nicknameCheckInput) => {
   return (dispatch, { history }) => {
-    console.log("이메일 중복 체크 미들웨어 실행!");
-    // console.log("nicknameCheckInput", nicknameCheckInput);
     apis
       .checkNicknameAxios(nicknameCheckInput)
       .then((response) => {
-        console.log(response.data.message);
-        window.alert(response.data.message);
+        // window.alert(response.data.message);
+        Swal.fire(response.data.message, "", "success");
       })
       .catch((error) => {
-        console.log(error.response.data.message);
-        window.alert(error.response.data.message);
+        // window.alert(error.response.data.message);
+        Swal.fire(error.response.data.message, "", "error");
       });
   };
 };
 
 const kakaoLoginMiddleware = (code) => {
   return function (dispatch, getState, { history }) {
-    console.log("kakaoLoginMiddleware 실행");
     axios({
       method: "GET",
-      url: `http://3.34.44.44/api/kakao/callback?code=${code}`,
+      url: `${process.env.REACT_APP_API_URI}/api/kakao/callback?code=${code}`,
     })
       .then((response) => {
-        console.log("kakaoLoginMiddleware 응답받기 성공");
         const token = response.data.token;
 
         // 기존 user 토큰이 localStorage에 존재하면? 삭제
         if (localStorage.getItem("user")) {
           localStorage.removeItem("user");
-          console.log("localStorage에 저장된 기존 user 토큰 삭제");
         }
 
         // localStorage에 user 토큰 저장
@@ -216,8 +193,7 @@ const kakaoLoginMiddleware = (code) => {
         window.location.href = "/";
       })
       .catch((error) => {
-        console.log("카카오 로그인 에러", error);
-        window.alert("로그인에 실패했습니다.");
+        Swal.fire("로그인에 실패했습니다.", "", "error");
         history.replace("/login"); // 로그인이 실패했으니 로그인 화면으로 돌려보냄
       });
   };
@@ -232,8 +208,8 @@ const followUserMiddleware = (userId) => {
         const isFollowing = response.data.isUser;
         dispatch(followUser(isFollowing));
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -246,8 +222,8 @@ const unfollowUserMiddleware = (userId) => {
         const isFollowing = response.data.isUser;
         dispatch(unfollowUser(isFollowing));
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch((err) => {
+        console.error(err.response.data.message);
       });
   };
 };
@@ -257,7 +233,6 @@ export default handleActions(
   {
     [SET_USER]: (state, action) =>
       produce(state, (draft) => {
-        console.log("SET_USER 리듀서 실행!");
         const decodedToken = jwt_decode(action.payload.token);
         draft.user = decodedToken;
         draft.isLoggedIn = true;
@@ -274,11 +249,9 @@ export default handleActions(
     [EDIT_PASSWORD]: (state, action) =>
       produce(state, (draft) => {
         draft.password = action.payload.password;
-        console.log("리듀서 실행되냐?", action.payload.password);
       }),
     [LOG_OUT]: (state, action) =>
       produce(state, (draft) => {
-        console.log("LOG_OUT 리듀서 실행!");
         localStorage.removeItem("user");
         draft.user = null;
         draft.isLoggedIn = false;
@@ -286,20 +259,20 @@ export default handleActions(
       }),
     [CHECK_EMAIL]: (state, action) =>
       produce(state, (draft) => {
-        console.log("CHECK_EMAIL 리듀서 실행!");
         // checkEmailMsg 새로운 상태로 업데이트
       }),
     [CHECK_NICKNAME]: (state, action) =>
       produce(state, (draft) => {
-        console.log("CHECK_NICKNAME 리듀서 실행!");
         // checkEmailMsg 새로운 상태로 업데이트
       }),
-    [FOLLOW_USER]: (state, action) => produce(state, (draft) => {
-      draft.isFollowing = action.payload.isFollowing;
-    }),
-    [UNFOLLOW_USER]: (state, action) => produce(state, (draft) => {
-      draft.isFollowing = action.payload.isFollowing;
-    }),
+    [FOLLOW_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isFollowing = action.payload.isFollowing;
+      }),
+    [UNFOLLOW_USER]: (state, action) =>
+      produce(state, (draft) => {
+        draft.isFollowing = action.payload.isFollowing;
+      }),
   },
   initialState
 );

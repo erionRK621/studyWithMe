@@ -17,15 +17,13 @@ import { GiHamburgerMenu } from "react-icons/gi";
 const Header = (props) => {
   const dispatch = useDispatch();
 
-  const { value } = props;
-
   const user = useSelector((state) => state.user.user);
   const userId = useSelector((state) => state.user.user?.userId);
 
   // const userId = useSelector((state) => state.user.user.userId);
-  // console.log(user.userId);
   const [menuState, setMenuState] = useState(false);
 
+  //현재 위치해있는 페이지를 표시해주기위해
   const [menuColorStateMain, setMenuColorStateMain] = useState(true);
   const [menuColorStateList, setMenuColorStateList] = useState(false);
   const [menuColorStateMyPage, setMenuColorStateMyPage] = useState(false);
@@ -47,7 +45,6 @@ const Header = (props) => {
   };
 
   const onClickLogOut = () => {
-    console.log("로그아웃 버튼 클릭");
     dispatch(userActions.logOut());
   };
 
@@ -69,7 +66,9 @@ const Header = (props) => {
               src={logologo}
               onClick={() => {
                 history.push("/");
+                changeMainColor();
               }}
+              alt=""
             />
           </NavbarLogo>
           <NavbarLogo>
@@ -77,7 +76,9 @@ const Header = (props) => {
               src={logoImg}
               onClick={() => {
                 history.push("/");
+                changeMainColor();
               }}
+              alt=""
             />
           </NavbarLogo>
         </LogoWrap>
@@ -150,6 +151,7 @@ const Header = (props) => {
               onClick={() => {
                 history.push("/");
               }}
+              alt=""
             />
           </NavbarLogo>
           <NavbarLogo>
@@ -158,6 +160,7 @@ const Header = (props) => {
               onClick={() => {
                 history.push("/");
               }}
+              alt=""
             />
           </NavbarLogo>
         </LogoWrap>
@@ -196,7 +199,7 @@ const Header = (props) => {
               history.push("/signup");
             }}
           >
-            <img src={signUpImg} />
+            <img src={signUpImg} style={{ marginRight: "4px" }} />
             회원가입
           </List>
 
@@ -251,11 +254,6 @@ const NavbarLogo = styled.div`
   &:hover {
     cursor: pointer;
   }
-`;
-
-const NavBtnWrap = styled.div`
-  display: flex;
-  justify-content: space-evenly;
 `;
 
 const NavbarMenu = styled.ul`
@@ -385,21 +383,6 @@ const NavbarIcon = styled.ul`
   }
 `;
 
-const InfoList = styled.div`
-  padding: 0 12px;
-
-  :hover {
-    color: #ffc85c;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-  @media screen and (max-width: 768px) {
-    text-align: center; /*로고는 현재 반대축이므로 justify-content 사용*/
-    width: 100%;
-    padding-right: 35px;
-  }
-`;
-
 const Hamberger = styled.div`
   display: none;
   position: absolute; /*소속된 배치와 무관하게 위치 설정*/
@@ -412,13 +395,6 @@ const Hamberger = styled.div`
   }
   @media screen and (max-width: 768px) {
     display: block;
-  }
-`;
-
-const IMG = styled.img`
-  max-width: 160px;
-  :hover {
-    cursor: pointer;
   }
 `;
 

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { getCookie } from "../shared/cookie";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-editor-classic/src/classiceditor";
@@ -74,7 +73,7 @@ class MyUploadAdapter {
               "Authorization": `Bearer ${localStorage.getItem("user")}`,
             },
           };
-          
+
           async function sendImg() {
             //서버에 파일 객체를 보내서 imgUrl을 얻어온다.
             try {
@@ -267,7 +266,7 @@ const Editor = ({ getContent, value }) => {
 };
 
 Editor.defaultProps = {
-  getContent: () => {},
+  getContent: () => { },
 };
 
 const StyledEditor = styled.div`

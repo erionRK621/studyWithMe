@@ -1,41 +1,34 @@
-import React, {
-  isValidElement,
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-} from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
+import Swal from "sweetalert2";
+import heic2any from "heic2any";
 
 import Input from "../elements/Input";
 import Grid from "../elements/Grid";
-import Upload from "../components/Upload";
 import SelectBox from "../components/SelectBox";
 
 // Cropper 관련
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../shared/cropImage";
 import Slider from "@material-ui/core/Slider";
-import Button from "@material-ui/core/Button";
 
 // icon
-import { ReactComponent as InputFile } from "../icon/inputFile.svg";
 import logoImg from "../icon/logo.png";
 import logologo from "../icon/logologo.png";
+import { ReactComponent as InputFile } from "../icon/inputFile.svg";
 
-import dotenv, { load } from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 const PostWrite = (props) => {
-  const inputFile = useRef();
   const dispatch = useDispatch();
 
   if (!localStorage.getItem("user")) {
-    window.alert("로그인을 먼저 해주세요");
+    Swal.fire("로그인을 먼저 해주세요", "", "error");
     history.push("/login");
   }
 
@@ -48,9 +41,7 @@ const PostWrite = (props) => {
     _editMode ? decodeURIComponent(post.contentEditor) : ""
   );
   const [spaceVal, setSpaceVal] = useState(_editMode ? post.categorySpace : "");
-  const [studyMateVal, setStudyMateVal] = useState(
-    _editMode ? post.categoryStudyMate : ""
-  );
+
   const [interestVal, setInterestVal] = useState(
     _editMode ? post.categoryInterest : ""
   );
@@ -64,34 +55,54 @@ const PostWrite = (props) => {
       ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}`
       : null
   );
-
-  // console.log("coverOriginal", coverOriginal);
-  // console.log("imageCoverForCrop", imageCoverForCrop);
-
-  // Cropper를 위한 states
-  const [rotation, setRotation] = useState(0);
+  const rotation = 0;
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
 
   const inputRef = React.useRef();
 
   const onSelectFile = (e) => {
-    const selectedFile = e.target.files[0];
-    console.log("selectedFile", selectedFile, typeof selectedFile);
+    const reader = new FileReader();
+    let selectedFile = e.target.files[0];
     setCoverOriginal(selectedFile);
+
+    // heic 파일일 경우
+    if (selectedFile && selectedFile.name.split(".")[1] === "heic") {
+      let HEICcoverOriginalBlob = selectedFile;
+
+      // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
+      // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
+      heic2any({ blob: HEICcoverOriginalBlob, toType: "image/jpeg" })
+        .then(function (resultBlob) {
+          // file에 새로운 파일 데이터 덮어쓰기
+          selectedFile = new File(
+            [resultBlob],
+            selectedFile.name.split(".")[0] + ".jpg",
+            { type: "image/jpeg", lastModified: new Date().getTime() }
+          );
+          reader.readAsDataURL(selectedFile);
+          reader.onloadend = () => {
+            setImageCoverForCrop(reader.result);
+
+            urltoFile(reader.result, "coverOriginal.png", "image/png").then(
+              function (file) {
+                setCoverOriginal(file);
+              }
+            );
+          };
+        })
+        .catch(function (x) {
+          console.log(x);
+        });
+    }
+
+    // heic 파일이 아닌 경우
     if (selectedFile) {
-      const reader = new FileReader();
       reader.readAsDataURL(selectedFile);
       reader.onloadend = () => {
         setImageCoverForCrop(reader.result);
       };
     }
-  };
-
-  const triggerFileSelectedPopUp = () => {
-    inputRef.current.click();
   };
 
   const urltoFile = (url, filename, mimeType) => {
@@ -104,65 +115,71 @@ const PostWrite = (props) => {
       });
   };
 
-  const confirmCroppedImage = useCallback(async () => {
-    try {
-      const croppedImage = await getCroppedImg(
-        imageCoverForCrop,
-        croppedAreaPixels,
-        rotation
-      );
-      // console.log("done", { croppedImage });
-      // base64 형식의 Cropped Image 상태 저장
-      setCroppedImage(croppedImage);
-      // 파일 객체로 변환
-      urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
-        file
-      ) {
-        setCoverCropped(file);
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  }, [croppedAreaPixels, rotation]);
+  const confirmCroppedImage = useCallback(
+    async (croppedAreaPixels) => {
+      try {
+        const croppedImage = await getCroppedImg(
+          imageCoverForCrop,
+          croppedAreaPixels,
+          rotation
+        );
+        // base64 형식의 Cropped Image 상태 저장
+        // setCroppedImage(croppedImage);
+        // 파일 객체로 변환
+        urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
+          file
+        ) {
+          setCoverCropped(file);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    [rotation, imageCoverForCrop]
+  );
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
-    confirmCroppedImage();
+    confirmCroppedImage(croppedAreaPixels);
   };
 
   let formData = new FormData();
 
   // 작성버튼 onClick 이벤트
   const posting = () => {
-    if(title.length>=25) {
-      window.alert("제목이 24자가 넘습니다.");
+    if (spaceVal === "" || interestVal === "") {
+      Swal.fire("카테고리를 지정해주세요", "", "error");
       return;
     }
+
+    if (title.length >= 25) {
+      Swal.fire("제목이 24자가 넘습니다.", "", "error");
+      return;
+    }
+
+    // 만약 사용자가 크롭하지 않을 경우? 원본 커버 이미지 사용
+    if (coverCropped === null) {
+      setCoverCropped(coverOriginal);
+    }
+
     formData.append("coverOriginal", coverOriginal);
     formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
-    formData.append("categoryStudyMate", studyMateVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
-    if (spaceVal === "" || studyMateVal === "" || interestVal === "") {
-      window.alert("카테고리를 지정해주세요");
-      return;
-    }
     dispatch(postActions.addPostDB(formData));
   };
 
   const editing = () => {
-    if(title.length>=25) {
-      window.alert("제목이 24자가 넘습니다.");
+    if (title.length >= 25) {
+      Swal.fire("제목이 24자가 넘습니다.", "", "error");
       return;
     }
     formData.append("coverOriginal", coverOriginal);
     formData.append("coverCropped", coverCropped);
     formData.append("title", title);
     formData.append("categorySpace", spaceVal);
-    formData.append("categoryStudyMate", studyMateVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
@@ -175,9 +192,6 @@ const PostWrite = (props) => {
 
   const space = (e) => {
     setSpaceVal(e.target.value);
-  };
-  const studyMate = (e) => {
-    setStudyMateVal(e.target.value);
   };
   const interest = (e) => {
     setInterestVal(e.target.value);
@@ -211,6 +225,14 @@ const PostWrite = (props) => {
           <Write onClick={posting}>작성</Write>
         )}
       </Navbar>
+      <FlexGrid
+        style={{
+          fontSize: "20px",
+          marginBottom: "10px"
+        }}
+      >
+        커버 이미지
+      </FlexGrid>
       <CropperContainerOuter>
         <CropperContainerInner>
           {imageCoverForCrop ? (
@@ -249,14 +271,9 @@ const PostWrite = (props) => {
             onChange={onSelectFile}
             style={{ display: "none" }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={triggerFileSelectedPopUp}
-            style={{ marginRight: "10px" }}
-          >
+          <InputFile className="iconButton">
             이미지 선택
-          </Button>
+          </InputFile>
         </ButtonsContainer>
       </CropperContainerOuter>
       <FlexGrid direction="column" justify="space-evenly">
@@ -270,11 +287,6 @@ const PostWrite = (props) => {
         />
         <FlexGrid margin="20px 0px">
           <SelectBox category="space" _onChange={space} _value={spaceVal} />
-          <SelectBox
-            category="studyMate"
-            _onChange={studyMate}
-            _value={studyMateVal}
-          />
           <SelectBox
             category="interest"
             _onChange={interest}
@@ -294,27 +306,11 @@ const FlexGrid = styled.div`
   ${(props) => (props.direction ? `flex-direction:${props.direction};` : null)};
 `;
 
-const ImageCover = styled.div`
-  position: relative;
-  overflow: hidden;
-  height: calc(100vh - 350px);
-  background-color: #eeeeee;
-  background-image: url(${(props) => props.src});
-  background-size: cover;
-`;
-const UploadButton = styled.label`
-  position: absolute;
-  left: calc(50% - 30px);
-  top: calc(50% - 30px);
-  opacity: 0.5;
-  &:hover {
-    opacity: 0.8;
-    cursor: pointer;
-  }
-`;
-
 const Navbar = styled.div`
   position: sticky;
+  padding: 10px 40px;
+  max-width: 1134px;
+  margin: auto;
   top: 0;
   display: flex;
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
@@ -354,23 +350,28 @@ const Write = styled.li`
 
 // Cropper 관련
 const CropperContainerOuter = styled.div`
-  height: 70vh;
-  width: 70vw;
+  height: 50vh;
+  max-width: 750px;
   margin: auto;
 `;
 
 const CropperContainerInner = styled.div`
-  width: 70%;
-  height: 70%;
+  width: 100%;
+  max-width: 750px;
+  height: 50%;
   margin: auto;
   background-color: gray;
+  position: absolute;
 `;
 
-const ButtonsContainer = styled.div`
-  height: 10%;
-  display: flex;
+const ButtonsContainer = styled.label`
+  width:auto;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
+  position: relative;
+  top: 88%;
+  left: 90%;
 `;
 
 const CropperWrap = styled.div`
@@ -387,5 +388,11 @@ const SliderWrap = styled.div`
   align-items: center;
   margin: auto;
 `;
+
+const CoverImageLabel = styled.div`
+  margin: auto;  
+  margin-bottom: 10px;
+`;
+
 
 export default PostWrite;

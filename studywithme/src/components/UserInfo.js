@@ -7,14 +7,12 @@ import { actionCreators as userActions } from "../redux/modules/user";
 import { actionCreators as myActions } from "../redux/modules/mypage";
 import { history } from "../redux/configStore";
 
-import Image from "../elements/Image";
 import FollowerModal from "./FollowerModal";
 import FollowModal from "./FollowModal";
 
 dotenv.config();
 
 const UserInfo = (props) => {
-  // console.log("props", props);
 
   const dispatch = useDispatch();
 
@@ -48,7 +46,7 @@ const UserInfo = (props) => {
     dispatch(userActions.getUserDB(myPageUserId));
     dispatch(myActions.getFollowingsMiddleware(myPageUserId));
     dispatch(myActions.getFollowersMiddleware(myPageUserId));
-  }, [myPageUserId]);
+  }, [dispatch,myPageUserId]);
 
   return (
     <React.Fragment>
@@ -72,6 +70,7 @@ const UserInfo = (props) => {
                 onClick={() => {
                   changeFollowState(userInfo.userId, isFollowing);
                 }}
+                isFollowing={isFollowing}
               >
                 {isFollowing ? "언팔로우" : "팔로우"}
               </FollowButton>
@@ -113,7 +112,7 @@ const UserInfoWrap = styled.div`
   padding: 0;
   position: relative;
   @media screen and (max-width: 768px) {
-    margin:0px;
+    margin: 0px;
   }
 `;
 
@@ -142,13 +141,14 @@ const ProfilePic = styled.img`
   @media screen and (max-width: 768px) {
     height: 150px;
     width: 150px;
-    margin:auto;
+    margin: auto;
   }
 `;
 const NicknameWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   @media screen and (max-width: 768px) {
     flex-direction: column;
     height: 50%;
@@ -173,11 +173,6 @@ const UserProfileWrap = styled.section`
   }
 `;
 
-const UserNicknameWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
 const UserNickname = styled.h2`
   display: block;
   overflow: hidden;
@@ -187,8 +182,11 @@ const UserNickname = styled.h2`
   font-size: 32px;
   line-height: 45px;
   margin: -5px 0 -6px;
+  width: 70%;
+  text-align: center;
   @media screen and (max-width: 768px) {
     font-size: 20px;
+    min-width: 200px;
   }
 `;
 
@@ -213,10 +211,10 @@ const FollowButton = styled.button`
   height: 32px;
   border: 0;
   border-radius: 10px;
-  background: #ffc85c;
   color: black;
   cursor: pointer;
   font-size: 16px;
+  background-color: ${(props)=>props.isFollowing? `#ececec;`:`#ffc85c;`};
   @media screen and (max-width: 768px) {
     width: 80px;
     font-size: 8px;
