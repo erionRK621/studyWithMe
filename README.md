@@ -17,11 +17,11 @@
 ## 개요
 -프로젝트 이름: 렛츠끼리<br/>
 -제작 기간 : 2021.10.23 ~ 2021.12.02 (41일)<br/>
--개발 언어 : JavaScript
--개발 라이브러리 : React.js
--형상 관리 툴 : git
--협업 툴 : git / Notion / google spreadsheets / figma / slack
--개발 인원 : 6명
+-개발 언어 : JavaScript<br/>
+-개발 라이브러리 : React.js<br/>
+-형상 관리 툴 : git<br/>
+-협업 툴 : git / Notion / google spreadsheets / figma / slack<br/>
+-개발 인원 : 6명<br/>
 
 프로젝트 설명
 
