@@ -5,7 +5,7 @@ import { actionCreators as postActions } from "../redux/modules/post";
 import Editor from "../components/Editor";
 import { history } from "../redux/configStore";
 import Swal from "sweetalert2";
-import heic2any from "heic2any"
+import heic2any from "heic2any";
 
 import Input from "../elements/Input";
 import Grid from "../elements/Grid";
@@ -15,11 +15,11 @@ import SelectBox from "../components/SelectBox";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../shared/cropImage";
 import Slider from "@material-ui/core/Slider";
-import Button from "@material-ui/core/Button";
 
 // icon
 import logoImg from "../icon/logo.png";
 import logologo from "../icon/logologo.png";
+import { ReactComponent as InputFile } from "../icon/inputFile.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -55,45 +55,45 @@ const PostWrite = (props) => {
       ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}`
       : null
   );
-
-  const [rotation, setRotation] = useState(0);
+const rotation =0;
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
 
   const inputRef = React.useRef();
 
   const onSelectFile = (e) => {
     const reader = new FileReader();
     let selectedFile = e.target.files[0];
-    console.log("선택한 파일", selectedFile);
     setCoverOriginal(selectedFile);
 
     // heic 파일일 경우
-    if (selectedFile && selectedFile.name.split('.')[1] === 'heic') {
+    if (selectedFile && selectedFile.name.split(".")[1] === "heic") {
       let HEICcoverOriginalBlob = selectedFile;
 
-      // blob에다가 변환 시키고 싶은 file값을 value로 놓는다. 
+      // blob에다가 변환 시키고 싶은 file값을 value로 놓는다.
       // toType에다가는 heic를 변환시키고싶은 이미지 타입을 넣는다.
       heic2any({ blob: HEICcoverOriginalBlob, toType: "image/jpeg" })
         .then(function (resultBlob) {
           // file에 새로운 파일 데이터 덮어쓰기
-          selectedFile = new File([resultBlob], selectedFile.name.split('.')[0] + ".jpg", { type: "image/jpeg", lastModified: new Date().getTime() });
+          selectedFile = new File(
+            [resultBlob],
+            selectedFile.name.split(".")[0] + ".jpg",
+            { type: "image/jpeg", lastModified: new Date().getTime() }
+          );
           reader.readAsDataURL(selectedFile);
           reader.onloadend = () => {
             setImageCoverForCrop(reader.result);
 
-            urltoFile(reader.result, "coverOriginal.png", "image/png").then(function (
-              file
-            ) {
-              setCoverOriginal(file);
-            });
-          }
+            urltoFile(reader.result, "coverOriginal.png", "image/png").then(
+              function (file) {
+                setCoverOriginal(file);
+              }
+            );
+          };
         })
         .catch(function (x) {
           console.log(x);
-        })
+        });
     }
 
     // heic 파일이 아닌 경우
@@ -103,10 +103,6 @@ const PostWrite = (props) => {
         setImageCoverForCrop(reader.result);
       };
     }
-  };
-
-  const triggerFileSelectedPopUp = () => {
-    inputRef.current.click();
   };
 
   const urltoFile = (url, filename, mimeType) => {
@@ -127,11 +123,8 @@ const PostWrite = (props) => {
           croppedAreaPixels,
           rotation
         );
-
-
-        // console.log("done", { croppedImage });
         // base64 형식의 Cropped Image 상태 저장
-        setCroppedImage(croppedImage);
+        // setCroppedImage(croppedImage);
         // 파일 객체로 변환
         urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
           file
@@ -146,9 +139,7 @@ const PostWrite = (props) => {
   );
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
     confirmCroppedImage(croppedAreaPixels);
-    console.log("onCropComplete 실행");
   };
 
   let formData = new FormData();
@@ -167,11 +158,7 @@ const PostWrite = (props) => {
 
     // 만약 사용자가 크롭하지 않을 경우? 원본 커버 이미지 사용
     if (coverCropped === null) {
-      // console.log("coverCropped 없음");
-      // console.log("coverCropped 변경 전", coverCropped, typeof coverCropped);
-      // setCoverCropped(coverOriginal);
       setCoverCropped(coverOriginal);
-      // console.log("coverCropped 변경 후", coverCropped, typeof coverCropped);
     }
 
     formData.append("coverOriginal", coverOriginal);
@@ -180,13 +167,6 @@ const PostWrite = (props) => {
     formData.append("categorySpace", spaceVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
-
-    console.log("coverOriginal", coverOriginal);
-    console.log("coverCropped", coverCropped);
-    console.log("title", title);
-    console.log("categorySpace", spaceVal);
-    console.log("categoryInterest", interestVal);
-    console.log("contentEditor", content);
 
     dispatch(postActions.addPostDB(formData));
   };
@@ -290,14 +270,9 @@ const PostWrite = (props) => {
             onChange={onSelectFile}
             style={{ display: "none" }}
           />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={triggerFileSelectedPopUp}
-            style={{ marginRight: "10px" }}
-          >
+          <InputFile className="iconButton">
             이미지 선택
-          </Button>
+          </InputFile>
         </ButtonsContainer>
       </CropperContainerOuter>
       <FlexGrid direction="column" justify="space-evenly">
@@ -332,6 +307,9 @@ const FlexGrid = styled.div`
 
 const Navbar = styled.div`
   position: sticky;
+  padding: 10px 40px;
+  max-width: 1134px;
+  margin: auto;
   top: 0;
   display: flex;
   align-items: center; /*반대축(현재는 반대축이 수직축)의 속성값 활용 */
@@ -371,23 +349,28 @@ const Write = styled.li`
 
 // Cropper 관련
 const CropperContainerOuter = styled.div`
-  height: 70vh;
-  width: 70vw;
+  height: 50vh;
+  max-width: 750px;
   margin: auto;
 `;
 
 const CropperContainerInner = styled.div`
-  width: 70%;
-  height: 70%;
+  width: 100%;
+  max-width: 750px;
+  height: 50%;
   margin: auto;
   background-color: gray;
+  position: absolute;
 `;
 
-const ButtonsContainer = styled.div`
-  height: 10%;
-  display: flex;
+const ButtonsContainer = styled.label`
+  width:auto;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
+  position: relative;
+  top: 88%;
+  left: 90%;
 `;
 
 const CropperWrap = styled.div`
