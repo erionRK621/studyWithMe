@@ -97,9 +97,21 @@ const PostDetail = (props) => {
   };
 
   const deletePost = () => {
-    if (window.confirm("삭제하시겠습니까?") === true) {
-      dispatch(postActions.deletePostMiddleware(postId));
-    }
+    Swal.fire({
+      title: "게시물 삭제",
+      text: "정말로 게시물을 삭제하시겠어요?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네, 삭제할래요.",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("삭제완료!", "게시물이 삭제되었습니다.", "success");
+        dispatch(postActions.deletePostMiddleware(postId));
+      }
+    });
   };
 
   useEffect(() => {
@@ -170,7 +182,7 @@ const PostDetail = (props) => {
               <Button
                 height="40px"
                 fontSize="16px"
-                bgColor="#FFC85C"
+                bgColor="#ececec"
                 radius="30px"
                 width="100px"
                 color="#000000"
