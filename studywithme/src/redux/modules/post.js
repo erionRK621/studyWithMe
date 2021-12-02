@@ -150,7 +150,9 @@ const getDetailPostDB = (postId) => {
         );
       })
       .catch((err) => {
-        console.error(err.response.data.message);
+        // console.error(err.response.data.message);
+        Swal.fire("해당 게시물이 존재하지 않습니다.", "", "error");
+        history.push("/");
       });
   };
 };
