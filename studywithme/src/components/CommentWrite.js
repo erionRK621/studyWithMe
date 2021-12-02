@@ -53,6 +53,8 @@ const CommentWrite = (props) => {
           placeholder={
             isLoggedIn ? "댓글을 입력해주세요." : "로그인 후 이용해주세요."
           }
+          is_Submit
+          onSubmit={registComment}
           value={comment}
         />
         <Button
