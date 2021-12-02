@@ -18,6 +18,7 @@ import { faCheckCircle as farCheckCircle } from "@fortawesome/free-regular-svg-i
 
 import Grid from "../elements/Grid";
 import KakaoLogo from "../icon/KakaoLogo.png";
+import logo from "../icon/footerLogo.png";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -166,6 +167,9 @@ const SignUp = () => {
 
   return (
     <Grid width="360px" margin="0px auto" padding="60px 0px">
+      <LogoWrap>
+        <img src={logo} alt="logo" style={{ maxWidth: "100%" }} />
+      </LogoWrap>
       <SignUpTitle>회원가입</SignUpTitle>
       <KakaoSignUpWrapper>
         <a
@@ -497,4 +501,9 @@ const ToLoginLink = styled.a`
 const CheckIconWrap = styled.div`
   align-items: center;
   margin-left: 4px;
+`;
+
+const LogoWrap = styled.div`
+  padding-bottom: 50px;
+  text-align: center;
 `;
