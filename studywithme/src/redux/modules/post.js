@@ -203,7 +203,7 @@ const deletePostMiddleware = (postId) => {
     apis
       .deletePostAxios(postId)
       .then((res) => {
-        history.goBack();
+        history.push("/");
       })
       .catch((err) => {
         console.error(err.response.data.message);
@@ -217,7 +217,7 @@ const editPostMiddleware = (postId, formData) => {
     apis
       .editPostAxios(postId, formData)
       .then((res) => {
-        history.push("/");
+        history.push(`/detail/${postId}`);
       })
       .catch((err) => {
         console.error(err.response.data.message);
