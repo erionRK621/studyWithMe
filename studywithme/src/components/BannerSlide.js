@@ -6,12 +6,10 @@ import "slick-carousel/slick/slick-theme.css";
 import styled, { css } from "styled-components";
 
 import Image from "../elements/Image";
-import banner1 from "../icon/banner1.png";
-import banner2 from "../icon/banner2.png";
-import banner3 from "../icon/banner3.png";
 import banner4 from "../icon/banner4.png";
-import banner5 from "../icon/banner5.png";
-import banner6 from "../icon/banner6.png";
+import banner9 from "../icon/banner9.png";
+import bannertext1 from "../icon/bannertext1.png";
+import bannertext2 from "../icon/bannertext2.png";
 
 const BannerSlide = (props) => {
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
@@ -55,11 +53,10 @@ const BannerSlide = (props) => {
     <React.Fragment>
       <Wrap>
         <StyledSlider {...settings}>
-          <Image shape="rectangle" paddingTop="40%" src={banner1}></Image>
-          <Image shape="rectangle" paddingTop="40%" src={banner6}></Image>
-          <Image shape="rectangle" paddingTop="40%" src={banner2}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={bannertext1}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={banner9}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={bannertext2}></Image>
           <Image shape="rectangle" paddingTop="40%" src={banner4}></Image>
-          <Image shape="rectangle" paddingTop="40%" src={banner3}></Image>
         </StyledSlider>
       </Wrap>
     </React.Fragment>
