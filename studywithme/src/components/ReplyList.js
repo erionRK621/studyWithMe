@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import Swal from "sweetalert2";
 
 import { actionCreators as commentActions } from "../redux/modules/comment";
 import { history } from "../redux/configStore";
@@ -19,15 +20,27 @@ const ReplyList = (props) => {
   const currentPage = props.currentPage;
 
   const deleteReply = (childCommentId) => {
-    if (window.confirm("삭제하시겠습니까?") === true) {
-      dispatch(
-        commentActions.deleteCommentReplyMiddleware(
-          postId,
-          commentId,
-          childCommentId
-        )
-      );
-    }
+    Swal.fire({
+      title: "답글 삭제",
+      text: "정말로 답글을 삭제하시겠어요?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네, 삭제할래요.",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("삭제완료!", "답글이 삭제되었습니다.", "success");
+        dispatch(
+          commentActions.deleteCommentReplyMiddleware(
+            postId,
+            commentId,
+            childCommentId
+          )
+        );
+      }
+    });
   };
   const moreReply = (currentPage) => {
     currentPage++;
