@@ -8,6 +8,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { history } from "./redux/configStore";
 import NotFound from "./shared/NotFound";
+import styled from "styled-components";
 
 // Redux Modules
 import { actionCreators as userActions } from "./redux/modules/user";
@@ -76,7 +77,6 @@ function App() {
       </ConnectedRouter>
       <Button
         is_float
-        text="📮"
         _onClick={() => {
           window.location.href = "https://forms.gle/J1LtrgDdgmvX9ZsC8";
         }}

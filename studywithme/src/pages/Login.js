@@ -8,6 +8,7 @@ import Swal from "sweetalert2";
 import { actionCreators as userActions } from "../redux/modules/user";
 
 import KakaoLogo from "../icon/KakaoLogo.png";
+import logo from "../icon/footerLogo.png";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -69,6 +70,9 @@ const Login = () => {
 
   return (
     <Wrap>
+      <LogoWrap>
+        <img src={logo} alt="logo" style={{ maxWidth: "100%" }} />
+      </LogoWrap>
       <Form>
         <InputWrapper>
           <Label>이메일</Label>
@@ -229,4 +233,9 @@ const KakaoLoginTitle = styled.div`
   text-align: center;
   margin: 15px 0px;
   color: rgb(117, 117, 117);
+`;
+
+const LogoWrap = styled.div`
+  padding-bottom: 50px;
+  text-align: center;
 `;

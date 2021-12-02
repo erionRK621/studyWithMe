@@ -116,8 +116,15 @@ const InputWrap = styled.div`
 `;
 
 const PasswordInput = styled.input`
-    bgColor="#E0E0E0"
-    width="200px"
+  background-color: #E0E0E0;
+  border: none;
+  padding: 12px 4px;
+  width:200px;
+  box-sizing: border-box;
+  border-radius:10px;
+  &:focus {
+    outline: none;
+  }
 `;
 
 const Label = styled.div`
