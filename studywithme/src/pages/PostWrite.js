@@ -183,13 +183,6 @@ const rotation =0;
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
 
-    console.log("coverOriginal", coverOriginal);
-    console.log("coverCropped", coverCropped);
-    console.log("title", title);
-    console.log("categorySpace", spaceVal);
-    console.log("categoryInterest", interestVal);
-    console.log("contentEditor", content);
-
     dispatch(postActions.editPostMiddleware(postId, formData));
   };
 
