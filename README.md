@@ -15,13 +15,13 @@
 
 
 ## 개요
--프로젝트 이름: 렛츠끼리<br/>
--제작 기간 : 2021.10.23 ~ 2021.12.02 (41일)<br/>
--개발 언어 : JavaScript<br/>
--개발 라이브러리 : React.js<br/>
--형상 관리 툴 : git<br/>
--협업 툴 : git / Notion / google spreadsheets / figma / slack<br/>
--개발 인원 : 6명<br/>
+- 프로젝트 이름: 렛츠끼리
+- 제작 기간 : 2021.10.23 ~ 2021.12.02 (41일)
+- 개발 언어 : JavaScript
+- 개발 라이브러리 : React.js
+- 형상 관리 툴 : git
+- 협업 툴 : git / Notion / google spreadsheets / figma / slack
+- 개발 인원 : 6명
 
 프로젝트 설명
 
@@ -57,8 +57,8 @@
 
 ## 기능소개
 
--로그인/회원가입/로그인유지 (JWT인증&리프레시토큰방식)
--다양한 플러그인과 이미지업로드 기능을 가지고 있는 CK-Editor5 적용
+- 로그인/회원가입/로그인유지 (JWT인증&리프레시토큰방식)
+- 다양한 플러그인과 이미지업로드 기능을 가지고 있는 CK-Editor5 적용
 
 
 
@@ -67,15 +67,15 @@
 
 Front (저장소)
 
--권영준(Github)
--김준형(Github)
--김한준(Github)
+- 권영준(Github)
+- 김준형(Github)
+- 김한준(Github)
 
 Back (저장소)
 
--서연제(Github)
--장재원(Github)
--홍성현(Github)
+- 서연제(Github)
+- 장재원(Github)
+- 홍성현(Github)
 
 
 
