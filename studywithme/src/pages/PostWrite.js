@@ -55,7 +55,7 @@ const PostWrite = (props) => {
       ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}`
       : null
   );
-const rotation =0;
+  const rotation = 0;
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
@@ -225,6 +225,14 @@ const rotation =0;
           <Write onClick={posting}>작성</Write>
         )}
       </Navbar>
+      <FlexGrid
+        style={{
+          fontSize: "20px",
+          marginBottom: "10px"
+        }}
+      >
+        커버 이미지
+      </FlexGrid>
       <CropperContainerOuter>
         <CropperContainerInner>
           {imageCoverForCrop ? (
@@ -380,5 +388,11 @@ const SliderWrap = styled.div`
   align-items: center;
   margin: auto;
 `;
+
+const CoverImageLabel = styled.div`
+  margin: auto;  
+  margin-bottom: 10px;
+`;
+
 
 export default PostWrite;
