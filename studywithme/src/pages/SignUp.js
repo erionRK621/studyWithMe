@@ -9,9 +9,16 @@ import {
   regExNicknameTest,
 } from "../shared/regEx";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { apis } from "../lib/axios";
+
+// Font Awesome-related
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle as farCheckCircle } from "@fortawesome/free-regular-svg-icons"
 
 import Grid from "../elements/Grid";
 import KakaoLogo from "../icon/KakaoLogo.png";
+import logo from "../icon/footerLogo.png";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -21,6 +28,8 @@ const SignUp = () => {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [checkEmailSuccessState, setCheckEmailSuccessState] = useState(false);
+  const [checkNicknameSuccessState, setCheckNicknameSuccessState] = useState(false);
 
   const onChangeEmailUsername = (e) => {
     setEmailUsername(e.target.value);
@@ -45,18 +54,45 @@ const SignUp = () => {
   const onClickEmailCheck = () => {
     if (emailUsername === "" || emailDomain === "") {
       Swal.fire("이메일을 입력해주세요", "", "error");
-    } else {
+    }
+    else {
       const emailCheckInput = { email: `${emailUsername}@${emailDomain}` };
-      dispatch(userActions.checkEmailMiddleware(emailCheckInput));
+      // 이메일 중복확인 미들웨어 실행
+      apis
+        .checkEmailAxios(emailCheckInput)
+        .then((response) => {
+          // window.alert(response.data.message);
+          Swal.fire(response.data.message, "", "success");
+          setCheckEmailSuccessState(true);
+        })
+        .catch((error) => {
+          // window.alert(error.response.data.message);
+          Swal.fire(error.response.data.message, "", "error");
+          setCheckEmailSuccessState(false);
+        });
+
     }
   };
 
   const onClickNicknameCheck = () => {
     if (nickname === "") {
       Swal.fire("닉네임을 입력해주세요", "", "error");
-    } else {
+    }
+    else {
       const nicknameCheckInput = { nickname: nickname };
-      dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
+      // dispatch(userActions.checkNicknameMiddleware(nicknameCheckInput));
+      // 닉네임 중복확인 미들웨어 실행
+      apis
+        .checkNicknameAxios(nicknameCheckInput)
+        .then((response) => {
+          Swal.fire(response.data.message, "", "success");
+          setCheckNicknameSuccessState(true);
+        })
+        .catch((error) => {
+          Swal.fire(error.response.data.message, "", "error");
+          setCheckNicknameSuccessState(false);
+        });
+
     }
   };
 
@@ -114,13 +150,26 @@ const SignUp = () => {
     ) {
       Swal.fire("이메일이 포함된 비밀번호는 사용할 수 없습니다.", "", "error");
       return;
-    } else {
+    }
+
+    else if (checkEmailSuccessState === false) {
+      Swal.fire("이메일 중복 확인을 해주세요.", "", "error");
+    }
+
+    else if (checkNicknameSuccessState === false) {
+      Swal.fire("닉네임 중복 확인을 해주세요.", "", "error");
+    }
+
+    else {
       dispatch(userActions.signUpMiddleware(signUpInputs));
     }
   };
 
   return (
     <Grid width="360px" margin="0px auto" padding="60px 0px">
+      <LogoWrap>
+        <img src={logo} alt="logo" style={{ maxWidth: "100%" }} />
+      </LogoWrap>
       <SignUpTitle>회원가입</SignUpTitle>
       <KakaoSignUpWrapper>
         <a
@@ -156,11 +205,29 @@ const SignUp = () => {
             </EmailInputDomain>
           </EmailInputGroup>
         </EmailWrapper>
-        <EmailCheckButtonWrapper>
-          <EmailValidationButton onClick={onClickEmailCheck}>
-            이메일 중복 확인
-          </EmailValidationButton>
-        </EmailCheckButtonWrapper>
+        {checkEmailSuccessState === true ?
+          <EmailCheckButtonWrapper>
+            <EmailValidationButton onClick={onClickEmailCheck}>
+              이메일 중복 확인
+              <CheckIconWrap>
+                <FontAwesomeIcon
+                  style={{
+                    width: "18px",
+                    height: "18px",
+                    color: "yellowgreen",
+                  }}
+                  icon={farCheckCircle}
+                />
+              </CheckIconWrap>
+            </EmailValidationButton>
+          </EmailCheckButtonWrapper>
+          :
+          <EmailCheckButtonWrapper>
+            <EmailValidationButton onClick={onClickEmailCheck}>
+              이메일 중복 확인
+            </EmailValidationButton>
+          </EmailCheckButtonWrapper>
+        }
         <NicknameWrapper>
           <Label>닉네임</Label>
           <InputReqDescription>
@@ -173,9 +240,25 @@ const SignUp = () => {
               type="text"
               onChange={onChangeNickName}
             />
-            <NicknameValidationButton onClick={onClickNicknameCheck}>
-              닉네임 중복 확인
-            </NicknameValidationButton>
+            {checkNicknameSuccessState === true ?
+              <NicknameValidationButton onClick={onClickNicknameCheck}>
+                닉네임 중복 확인
+                <CheckIconWrap>
+                  <FontAwesomeIcon
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      color: "yellowgreen",
+                    }}
+                    icon={farCheckCircle}
+                  />
+                </CheckIconWrap>
+              </NicknameValidationButton>
+              :
+              <NicknameValidationButton onClick={onClickNicknameCheck}>
+                닉네임 중복 확인
+              </NicknameValidationButton>
+            }
           </NicknameInputContainer>
         </NicknameWrapper>
         <PasswordWrapper>
@@ -286,6 +369,7 @@ const EmailInputSeparator = styled.span`
 const EmailInputDomain = styled.span``;
 
 const EmailCheckButtonWrapper = styled.div`
+  display: flex;
   margin-bottom: 30px;
   padding-top: 2px;
 `;
@@ -296,7 +380,7 @@ const EmailValidationButton = styled.button`
   height: 40px;
   padding: 0;
   background: #f7f8fa;
-  color: #c2c8cc;
+  color: black;
   border-color: #dadce0;
   line-height: 20px;
   font-size: 15px;
@@ -340,7 +424,7 @@ const NicknameValidationButton = styled.button`
   height: 40px;
   padding: 0;
   background: #f7f8fa;
-  color: #c2c8cc;
+  color: black;
   border-color: #dadce0;
   line-height: 20px;
   font-size: 15px;
@@ -387,7 +471,7 @@ const SignUpButton = styled.button`
   line-height: 26px;
   padding: 11px 10px;
   background: #f7f8fa;
-  color: #c2c8cc;
+  color: black;
   border-color: #dadce0;
   display: inline-block;
   border: 1px solid transparent;
@@ -411,5 +495,15 @@ const ToLoginLink = styled.a`
   padding-left: 10px;
   cursor: pointer;
   font-size: 15px;
+  text-align: center;
+`;
+
+const CheckIconWrap = styled.div`
+  align-items: center;
+  margin-left: 4px;
+`;
+
+const LogoWrap = styled.div`
+  padding-bottom: 50px;
   text-align: center;
 `;

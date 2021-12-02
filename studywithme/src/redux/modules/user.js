@@ -29,6 +29,7 @@ const CHECK_NICKNAME = "CHECK_NICKNAME";
 const FOLLOW_USER = "FOLLOW_USER";
 const UNFOLLOW_USER = "UNFOLLOW_USER";
 
+
 // ACTION CREATORS
 const setUser = createAction(SET_USER, (token) => ({ token }));
 const getUser = createAction(GET_USER, (userInfo, isFollowing) => ({

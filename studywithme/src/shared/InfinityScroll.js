@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 
 const InfinityScroll = (props) => {
   const {
@@ -11,7 +10,19 @@ const InfinityScroll = (props) => {
     spaceVal,
     keyword,
   } = props;
-  const _handleScroll = _.throttle(() => {
+  
+  function throttle(fn, delay) {
+    let timer;
+    return function() {
+        if(!timer) {
+            timer=setTimeout(()=> {
+                timer=null;
+                fn.apply(this,arguments)
+            },delay)
+        }
+    }
+}
+  const _handleScroll = throttle(() => {
     const { innerHeight } = window;
     const { scrollHeight } = document.body;
     const scrollTop =
