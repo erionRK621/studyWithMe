@@ -15,7 +15,6 @@ import SelectBox from "../components/SelectBox";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../shared/cropImage";
 import Slider from "@material-ui/core/Slider";
-import Button from "@material-ui/core/Button";
 
 // icon
 import logoImg from "../icon/logo.png";
@@ -56,19 +55,15 @@ const PostWrite = (props) => {
       ? `${process.env.REACT_APP_IMAGE_URI}/${coverOriginalForEdit}`
       : null
   );
-
-  const [rotation, setRotation] = useState(0);
+const rotation =0;
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
-  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  const [croppedImage, setCroppedImage] = useState(null);
 
   const inputRef = React.useRef();
 
   const onSelectFile = (e) => {
     const reader = new FileReader();
     let selectedFile = e.target.files[0];
-    console.log("선택한 파일", selectedFile);
     setCoverOriginal(selectedFile);
 
     // heic 파일일 경우
@@ -110,10 +105,6 @@ const PostWrite = (props) => {
     }
   };
 
-  // const triggerFileSelectedPopUp = () => {
-  //   inputRef.current.click();
-  // };
-
   const urltoFile = (url, filename, mimeType) => {
     return fetch(url)
       .then(function (res) {
@@ -132,9 +123,8 @@ const PostWrite = (props) => {
           croppedAreaPixels,
           rotation
         );
-        // console.log("done", { croppedImage });
         // base64 형식의 Cropped Image 상태 저장
-        setCroppedImage(croppedImage);
+        // setCroppedImage(croppedImage);
         // 파일 객체로 변환
         urltoFile(croppedImage, "croppedImage.png", "image/png").then(function (
           file
@@ -149,9 +139,7 @@ const PostWrite = (props) => {
   );
 
   const onCropComplete = (croppedArea, croppedAreaPixels) => {
-    setCroppedAreaPixels(croppedAreaPixels);
     confirmCroppedImage(croppedAreaPixels);
-    console.log("onCropComplete 실행");
   };
 
   let formData = new FormData();
@@ -170,11 +158,7 @@ const PostWrite = (props) => {
 
     // 만약 사용자가 크롭하지 않을 경우? 원본 커버 이미지 사용
     if (coverCropped === null) {
-      // console.log("coverCropped 없음");
-      // console.log("coverCropped 변경 전", coverCropped, typeof coverCropped);
-      // setCoverCropped(coverOriginal);
       setCoverCropped(coverOriginal);
-      // console.log("coverCropped 변경 후", coverCropped, typeof coverCropped);
     }
 
     formData.append("coverOriginal", coverOriginal);
@@ -183,13 +167,6 @@ const PostWrite = (props) => {
     formData.append("categorySpace", spaceVal);
     formData.append("categoryInterest", interestVal);
     formData.append("contentEditor", content);
-
-    console.log("coverOriginal", coverOriginal);
-    console.log("coverCropped", coverCropped);
-    console.log("title", title);
-    console.log("categorySpace", spaceVal);
-    console.log("categoryInterest", interestVal);
-    console.log("contentEditor", content);
 
     dispatch(postActions.addPostDB(formData));
   };
