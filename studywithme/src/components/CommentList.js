@@ -26,9 +26,21 @@ const CommentList = (props) => {
   const user = useSelector((state) => state.user.user);
   const userId = user?.userId;
   const deleteComment = (commentId) => {
-    if (window.confirm("삭제하시겠습니까?") === true) {
-      dispatch(commentActions.deleteCommentMiddleware(postId, commentId));
-    }
+    Swal.fire({
+      title: "댓글 삭제",
+      text: "정말로 댓글을 삭제하시겠어요?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "네, 삭제할래요.",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("삭제완료!", "댓글이 삭제되었습니다.", "success");
+        dispatch(commentActions.deleteCommentMiddleware(postId, commentId));
+      }
+    });
   };
   const deleteLike = (postId, commentId) => {
     if (!isLoggedIn) {

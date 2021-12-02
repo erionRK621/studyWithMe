@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import logo from "../icon/footerLogo.png";
+import Swal from "sweetalert2";
 
 const Footer = () => {
   return (
@@ -16,14 +17,40 @@ const Footer = () => {
           </li>
           <MenuList>
             <Title>Service</Title>
-            <p>서비스 소개</p>
-            <p>서비스 이용 방법</p>
+            <Element
+              onClick={() => {
+                Swal.fire("서비스 준비중입니다.", "", "error");
+              }}
+            >
+              서비스 소개
+            </Element>
+            <Element
+              onClick={() => {
+                Swal.fire("서비스 준비중입니다.", "", "error");
+              }}
+            >
+              서비스 이용 방법
+            </Element>
           </MenuList>
 
           <MenuList>
             <Title>Team</Title>
-            <p>프론트엔드</p>
-            <p>백엔드</p>
+            <Element
+              onClick={() => {
+                window.location.href =
+                  "https://github.com/erionRK621/studyWithMe";
+              }}
+            >
+              프론트엔드
+            </Element>
+            <Element
+              onClick={() => {
+                window.location.href =
+                  "https://github.com/JangJaeWon22/focus-with-me";
+              }}
+            >
+              백엔드
+            </Element>
           </MenuList>
         </FooterBtnList>
       </Wrap>
@@ -47,10 +74,14 @@ const Title = styled.p`
   margin-top: 24px;
   margin-bottom: 8px;
   color: black;
+
   @media screen and (max-width: 768px) {
     margin-top: 14px;
     font-size: 14px;
   }
+`;
+const Element = styled.p`
+  cursor: pointer;
 `;
 
 const Wrap = styled.div`

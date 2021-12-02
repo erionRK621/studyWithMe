@@ -199,7 +199,7 @@ const Header = (props) => {
               history.push("/signup");
             }}
           >
-            <img src={signUpImg} alt="" />
+            <img src={signUpImg} style={{ marginRight: "4px" }} />
             회원가입
           </List>
 
