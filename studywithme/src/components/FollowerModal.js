@@ -10,8 +10,6 @@ import Image from "../elements/Image";
 
 const FollowerModal = ({ modalClose, followerList }) => {
 
-  console.log("followerList", followerList);
-
   const onCloseModal = (e) => {
     if (e.target === e.currentTarget) {
       modalClose();
