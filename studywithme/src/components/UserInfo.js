@@ -70,6 +70,7 @@ const UserInfo = (props) => {
                 onClick={() => {
                   changeFollowState(userInfo.userId, isFollowing);
                 }}
+                isFollowing={isFollowing}
               >
                 {isFollowing ? "언팔로우" : "팔로우"}
               </FollowButton>
@@ -210,10 +211,10 @@ const FollowButton = styled.button`
   height: 32px;
   border: 0;
   border-radius: 10px;
-  background: #ffc85c;
   color: black;
   cursor: pointer;
   font-size: 16px;
+  background-color: ${(props)=>props.isFollowing? `#ececec;`:`#ffc85c;`};
   @media screen and (max-width: 768px) {
     width: 80px;
     font-size: 8px;
