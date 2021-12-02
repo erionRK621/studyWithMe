@@ -3,30 +3,59 @@
 
 # 🗒목차
 
-[1.제작 기간 & 팀원 소개](#제작-기간-&-팀원-소개)
+[1.개요](#개요)
 
-[2.스택](#스택)
+[2.사용기술](#사용기술)
 
-[3.웹페이지 링크](#웹페이지-링크)
+[3.기능 소개](#기능-소개)
 
-[4.동영상 링크](#동영상-링크)
+[4.팀원 소개](#팀원-소개)
 
-## 👨‍👧‍👦 제작 기간 & 팀원 소개
-- 제작 기간 : 2021.10.23 ~ 2021.12.02 (6 weeks)
-  - FE(React) : 권영준, 김준형, 김한준
-  - BE(Node) : 서연제, 장재원, 홍성현
-
-## 🔨 스택
-* `React`
-* `Redux`
-* `JavaScript`
-* `JSX`
-* `CSS`
-* `Styled Component`
-* `Axios`
+## 개요
+제작 기간 : 2021.10.23 ~ 2021.12.02 (41일)
+프로젝트 설명
 
 ## 🔗 웹페이지 링크
 [웹페이지 링크](https://letskkirri.com/)
 
 ## 🔗 동영상 링크
 [동영상 링크](https://youtu.be/YNJTVbOcyKs)
+
+## 🔨 사용기술
+* `React`
+* 상태관리: Redux
+* 배포 : AWS S3, ACM cerificate, Cloudfront
+* 통신 : Axios
+* 라우터 : connected-react-router
+* 스타일 : styled-components
+
+### 라이브러리
+- craco
+- sweetalert2
+- jwt-decode
+- moment
+- ckeditor5
+- react-slick
+
+## 기능소개
+
+-로그인/회원가입/로그인유지 (JWT인증&리프레시토큰방식)
+-다양한 플러그인과 이미지업로드 기능을 가지고 있는 CK-Editor5 적용
+
+
+## 👨‍👨‍👦 팀원 소개
+
+Front (저장소)
+
+-권영준(Github)
+-김준형(Github)
+-김한준(Github)
+
+Back (저장소)
+
+-서연제(Github)
+-장재원(Github)
+-홍성현(Github)
+
+
+
