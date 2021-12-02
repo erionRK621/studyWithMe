@@ -29,7 +29,7 @@
 - 협업 툴 : git / Notion / google spreadsheets / figma / slack
 - 개발 인원 : 6명
 
-프로젝트 설명
+
 
 ## 🔗 웹페이지 링크
 [웹페이지 링크](https://letskkirri.com/)
