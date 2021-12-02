@@ -195,6 +195,10 @@ const CommentList = (props) => {
                     placeholder="답글을 작성 해주세요."
                     _onChange={commentReplyHandler}
                     value={reply}
+                    is_Submit
+                    onSubmit={()=>{
+                      registReply(c.commentId);
+                    }}
                   />
                   <Button
                     width="40px"
