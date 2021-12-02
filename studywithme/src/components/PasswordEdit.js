@@ -185,4 +185,5 @@ const Submit = styled.button`
   border: none;
   padding: 8px 0px;
   margin-left: 5px;
+  cursor: pointer;
 `;
