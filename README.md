@@ -81,13 +81,13 @@
 
 Front (저장소)
 
-- 권영준([Github])(https://github.com/ynjnkn)
+- 권영준[Github](https://github.com/ynjnkn)
 > - 010-9269-8319
 > - yjun_k@hotmail.com
-- 김준형([Github])(https://github.com/erionRK621)
+- 김준형[Github](https://github.com/erionRK621)
 > - 010-2664-0405
 > - jhkim62134@naver.com
-- 김한준([Github])(https://github.com/kimhanjune93)
+- 김한준[Github](https://github.com/kimhanjune93)
 > - 010-6593-1711
 > - kimhanjune93@gmail.com
 
