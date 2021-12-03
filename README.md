@@ -82,12 +82,14 @@
 Front (저장소)
 
 - 권영준(Github)
+> - 010-9269-8319
+> - yjun_k@hotmail.com
 - 김준형(Github)
-> 010-2664-0405
-> jhkim62134@naver.com
+> - 010-2664-0405
+> - jhkim62134@naver.com
 - 김한준(Github)
-> 010-6593-1711
-> kimhanjune93@gmail.com
+> - 010-6593-1711
+> - kimhanjune93@gmail.com
 
 Back (저장소)
 
