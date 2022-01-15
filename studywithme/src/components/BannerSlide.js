@@ -10,8 +10,6 @@ import banner4 from "../icon/banner4.png";
 import banner9 from "../icon/banner9.png";
 import bannertext1 from "../icon/bannertext1.png";
 import bannertext2 from "../icon/bannertext2.png";
-import { history } from "../redux/configStore";
-import isLogin from "../lib/isLogin";
 
 const BannerSlide = (props) => {
   //settings 부분, 슬라이더의 기능을 조정할 수 있다.
@@ -51,24 +49,13 @@ const BannerSlide = (props) => {
     ],
   };
 
-  const toPostWrite = () => {
-    if(!isLogin()) {
-      history.push("/login");
-      return;
-    }
-    history.push("/write");
-  }
-  const toPostList = () => {
-    history.push("/list?searchMode=filter&page=1");
-  }
-
   return (
     <React.Fragment>
       <Wrap>
         <StyledSlider {...settings}>
-          <Image shape="rectangle" paddingTop="40%" src={bannertext1} _onClick={toPostWrite}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={bannertext1}></Image>
           <Image shape="rectangle" paddingTop="40%" src={banner9}></Image>
-          <Image shape="rectangle" paddingTop="40%" src={bannertext2} _onClick={toPostList}></Image>
+          <Image shape="rectangle" paddingTop="40%" src={bannertext2}></Image>
           <Image shape="rectangle" paddingTop="40%" src={banner4}></Image>
         </StyledSlider>
       </Wrap>
